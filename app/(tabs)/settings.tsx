@@ -1,51 +1,161 @@
-import { ThemedText, ThemedView } from '@/components';
-import React, { useState } from 'react';
-import { Appearance, StyleSheet, Switch, View } from 'react-native';
+import {
+  ThemedCard,
+  ThemedDivider,
+  ThemedText,
+  ThemedView,
+} from '@/components';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { useTheme } from '@/hooks';
+import React, { useEffect, useState } from 'react';
+import { Appearance, Pressable, StyleSheet, View } from 'react-native';
 
-const Settings = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState(
-    Appearance.getColorScheme() === 'dark'
-  );
+type ThemeMode = 'automatic' | 'light' | 'dark';
 
-  const toggleTheme = () => {
-    const newScheme = isDarkTheme ? 'light' : 'dark';
-    Appearance.setColorScheme(newScheme);
-    setIsDarkTheme(!isDarkTheme);
+const ThemeOption = ({
+  label,
+  selected,
+  onPress,
+  icon,
+  theme,
+}: {
+  label: string;
+  selected: boolean;
+  onPress: () => void;
+  icon: any;
+  theme: any;
+}) => (
+  <Pressable
+    onPress={onPress}
+    style={[styles.option, { borderBottomColor: theme.border }]}>
+    <View style={styles.optionContent}>
+      {icon && <View style={{ marginRight: 15 }}>{icon}</View>}
+      <ThemedText style={styles.optionLabel}>{label}</ThemedText>
+    </View>
+    <View style={[styles.radioOuter, { borderColor: theme.border }]}>
+      {selected && (
+        <View style={[styles.radioInner, { backgroundColor: theme.border }]} />
+      )}
+    </View>
+  </Pressable>
+);
+
+export default function Settings() {
+  const theme = useTheme();
+  const [themeMode, setThemeMode] = useState<ThemeMode>('automatic');
+  const [_, setSystemTheme] = useState(Appearance.getColorScheme());
+
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      setSystemTheme(colorScheme);
+    });
+
+    return () => subscription?.remove();
+  }, []);
+
+  const handleThemeChange = (newTheme: ThemeMode) => {
+    setThemeMode(newTheme);
+
+    switch (newTheme) {
+      case 'automatic':
+        Appearance.setColorScheme(null);
+        break;
+      case 'light':
+        Appearance.setColorScheme('light');
+        break;
+      case 'dark':
+        Appearance.setColorScheme('dark');
+        break;
+    }
+  };
+
+  const getSelectedTheme = () => {
+    return themeMode;
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText>Settings</ThemedText>
-      <View style={styles.switchRow}>
-        <ThemedText>Dark Mode</ThemedText>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={isDarkTheme ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor='#3e3e3e'
-          onValueChange={toggleTheme}
-          value={isDarkTheme}
+    <ThemedView safe={true}>
+      <ThemedText style={styles.sectionTitle}>Theme</ThemedText>
+
+      <ThemedCard>
+        <ThemeOption
+          theme={theme}
+          label='Automatic'
+          selected={getSelectedTheme() === 'automatic'}
+          onPress={() => handleThemeChange('automatic')}
+          icon={
+            <IconSymbol
+              size={20}
+              color={theme.border}
+              name='circle.lefthalf.fill'
+            />
+          }
         />
-      </View>
+        <ThemedDivider />
+        <ThemeOption
+          theme={theme}
+          label='Light'
+          selected={getSelectedTheme() === 'light'}
+          onPress={() => handleThemeChange('light')}
+          icon={
+            <IconSymbol size={20} color={theme.border} name='sun.max.fill' />
+          }
+        />
+        <ThemedDivider />
+        <ThemeOption
+          theme={theme}
+          label='Dark'
+          selected={getSelectedTheme() === 'dark'}
+          onPress={() => handleThemeChange('dark')}
+          icon={<IconSymbol size={20} color={theme.border} name='moon.fill' />}
+        />
+      </ThemedCard>
+
+      <ThemedText style={styles.note}>
+        Automatic is only supported on operating systems that allow you to
+        control the system-wide color scheme.
+      </ThemedText>
     </ThemedView>
   );
-};
-
-export default Settings;
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'flex-start',
+  sectionTitle: {
+    marginVertical: 12,
+    marginLeft: 16,
   },
-  switchRow: {
+  option: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    // borderBottomWidth: 0.5,
   },
-  text: {
-    fontSize: 18,
-    marginBottom: 12,
+  optionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  optionLabel: {
+    fontSize: 16,
+  },
+  radioOuter: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 10,
+  },
+  note: {
+    fontSize: 12,
+    marginTop: 8,
+    lineHeight: 16,
+    marginLeft: 16,
   },
 });

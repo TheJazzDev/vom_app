@@ -6,46 +6,42 @@
 // Brand-based color variables
 const brandColor = '#0780f2';
 const backgroundLight = '#F9FAFB';
-const backgroundDark = '#121318';
+const backgroundDark = '#010101';
 const textLight = '#11181C';
-const textDark = '#ECEDEE';
+const textDark = '#C9D2D9';
 const iconLight = '#4B5563';
 const iconDark = '#9CA3AF';
-const tabIconDefaultLight = '#9CA3AF';
-const tabIconDefaultDark = '#6B7280';
-// const navBackgroundLight = '#FFFFFF';
-// const navBackgroundDark = '#201e2b';
-const iconSecondaryLight = '#6B7280';
-const iconSecondaryDark = '#86838F';
+const secondaryBackgroundLight = '#FFFFFF';
+const secondaryBackgroundDark = '#161B21';
+const inactiveTintLight = '#6B7280';
+const inactiveTintDark = '#9E9E9E';
 const logoBackgroundLight = '#A1CEDC';
 const logoBackgroundDark = '#1D3D47';
 
 // Colors object using variables
 export const Colors = {
   light: {
+    border: textLight,
+    card: secondaryBackgroundLight,
     text: textLight,
     background: backgroundLight,
-    tint: brandColor,
     icon: iconLight,
-    tabIconDefault: tabIconDefaultLight,
-    tabIconSelected: brandColor,
-    iconColorFocused: brandColor,
-    // navBackground: navBackgroundLight,
-    iconColor: iconSecondaryLight,
-    logoBackground: logoBackgroundLight,
+    activeTint: brandColor,
     uiBackground: backgroundLight,
+    inactiveTint: inactiveTintLight,
+    navBackground: secondaryBackgroundLight,
+    logoBackground: logoBackgroundLight,
   },
   dark: {
+    border: textDark,
+    card: secondaryBackgroundDark,
     text: textDark,
     background: backgroundDark,
-    tint: brandColor,
     icon: iconDark,
-    tabIconDefault: tabIconDefaultDark,
-    tabIconSelected: brandColor,
-    iconColorFocused: brandColor,
-    // navBackground: navBackgroundDark,
-    iconColor: iconSecondaryDark,
-    logoBackground: logoBackgroundDark,
+    activeTint: brandColor,
     uiBackground: backgroundDark,
+    inactiveTint: inactiveTintDark,
+    navBackground: secondaryBackgroundDark,
+    logoBackground: logoBackgroundDark,
   },
 };

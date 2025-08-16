@@ -5,8 +5,11 @@ import { HelloWave } from './HelloWave';
 import ParallaxScrollView from './ParallaxScrollView';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
+import { ThemedCard } from './ThemedCard';
+import {ThemedDivider} from './ThemedDivider'
 
 export {
+  ThemedDivider,
   Collapsible,
   ExternalLink,
   HapticTab,
@@ -14,4 +17,5 @@ export {
   ParallaxScrollView,
   ThemedText,
   ThemedView,
+  ThemedCard
 };

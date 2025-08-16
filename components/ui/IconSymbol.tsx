@@ -18,13 +18,13 @@ type IconSymbolName = keyof typeof MAPPING;
  */
 const MAPPING: IconMapping = {
   'house.fill': 'home',
-  'house': 'home-outline',
+  house: 'home-outline',
 
   'person.fill': 'person',
-  'person': 'person-outline',
+  person: 'person-outline',
 
   'gearshape.fill': 'settings',
-  'gearshape': 'settings-outline',
+  gearshape: 'settings-outline',
 
   'person.3.sequence.fill': 'people',
   'person.3.sequence': 'people-outline',
@@ -32,9 +32,12 @@ const MAPPING: IconMapping = {
   'list.bullet.clipboard.fill': 'reader',
   'list.bullet.clipboard': 'reader-outline',
 
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'home',
   'bell.fill': 'notifications',
+
+  // 🔥 Theme icons
+  'moon.fill': 'moon',
+  'sun.max.fill': 'sunny',
+  'circle.lefthalf.fill': 'contrast',
 } satisfies IconMapping;
 
 /**
@@ -55,11 +58,6 @@ export function IconSymbol({
   weight?: SymbolWeight;
 }) {
   return (
-    <Ionicons
-      color={color}
-      size={size}
-      name={MAPPING[name]}
-      style={style}
-    />
+    <Ionicons color={color} size={size} name={MAPPING[name]} style={style} />
   );
 }

@@ -34,6 +34,8 @@ export function ThemedView({
           backgroundColor: theme.uiBackground,
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
+          paddingHorizontal: 10,
+          height: '100%',
         },
         style,
       ]}

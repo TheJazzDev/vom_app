@@ -1,6 +1,5 @@
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/constants';
-import { useColorScheme } from '@/hooks';
+import { useColorScheme, useTheme } from '@/hooks';
 import {
   DarkTheme,
   DefaultTheme,
@@ -13,6 +12,7 @@ import { TouchableOpacity } from 'react-native';
 import 'react-native-reanimated';
 
 export default function RootLayout() {
+  const theme = useTheme();
   const router = useRouter();
   const colorScheme = useColorScheme();
 
@@ -33,18 +33,14 @@ export default function RootLayout() {
           headerShown: true,
           title: 'Vallery of Mercy',
           headerTitleAlign: 'center',
-          // headerTintColor: theme.navBackground,
+          headerTintColor: theme.text,
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
                 router.push('/notification');
               }}
               style={{ marginRight: 16 }}>
-              <IconSymbol
-                size={28}
-                name='bell.fill'
-                color={Colors[colorScheme ?? 'light'].icon}
-              />
+              <IconSymbol size={28} name='bell.fill' color={theme.icon} />
             </TouchableOpacity>
           ),
         }}>

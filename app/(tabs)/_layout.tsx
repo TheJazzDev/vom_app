@@ -14,15 +14,16 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarInactiveTintColor: theme.iconColor,
-        tabBarActiveTintColor: theme.iconColorFocused,
+        headerTintColor: theme.navBackground,
+        tabBarActiveTintColor: theme.activeTint,
+        tabBarInactiveTintColor: theme.inactiveTint,
         tabBarStyle: Platform.select({
           ios: {
             position: 'absolute',
           },
           default: {
-            paddingTop: 10,
             height: 90,
+            paddingTop: 10,
           },
         }),
       }}>
