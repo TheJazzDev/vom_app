@@ -2,42 +2,87 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { HapticTab } from '@/components/HapticTab';
+import { HapticTab } from '@/components';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useTheme } from '@/hooks';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const theme = useTheme();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
+        tabBarInactiveTintColor: theme.iconColor,
+        tabBarActiveTintColor: theme.iconColorFocused,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
           },
-          default: {},
+          default: {
+            paddingTop: 10,
+            height: 90,
+          },
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name='index'
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol name={focused ? 'house.fill' : 'house'} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name='order-of-service'
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Order of Service',
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol
+              name={
+                focused ? 'list.bullet.clipboard.fill' : 'list.bullet.clipboard'
+              }
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='members'
+        options={{
+          title: 'Members',
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol
+              name={focused ? 'person.3.sequence.fill' : 'person.3.sequence'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='profile'
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol
+              name={focused ? 'person.fill' : 'person'}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='settings'
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color, focused }) => (
+            <IconSymbol
+              name={focused ? 'gearshape.fill' : 'gearshape'}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>
