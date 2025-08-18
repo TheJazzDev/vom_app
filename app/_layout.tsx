@@ -1,23 +1,19 @@
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { useColorScheme, useTheme } from '@/hooks';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native';
+import Providers from '@/context/Providers';
+import { useTheme } from '@/hooks';
+
 import { useFonts } from 'expo-font';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity } from 'react-native';
 import 'react-native-reanimated';
 
 export default function RootLayout() {
   const theme = useTheme();
-  const router = useRouter();
-  const colorScheme = useColorScheme();
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SplineSans: require('../assets/fonts/SplineSans-Regular.ttf'),
   });
 
   if (!loaded) {
@@ -26,18 +22,18 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <Providers>
       <StatusBar style='auto' />
       <Stack
         screenOptions={{
-          headerShown: true,
-          title: 'Vallery of Mercy',
+          headerShown: false,
+          title: 'VOM',
           headerTitleAlign: 'center',
           headerTintColor: theme.text,
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                router.push('/notification');
+                // router.push('/notification');
               }}
               style={{ marginRight: 16 }}>
               <IconSymbol size={28} name='bell.fill' color={theme.icon} />
@@ -48,6 +44,6 @@ export default function RootLayout() {
         <Stack.Screen name='+not-found' />
         <Stack.Screen name='notification' />
       </Stack>
-    </ThemeProvider>
+    </Providers>
   );
 }

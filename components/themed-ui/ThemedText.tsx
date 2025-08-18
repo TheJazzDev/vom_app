@@ -15,12 +15,16 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  const text = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  const text600 = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    'text600'
+  );
 
   return (
     <Text
       style={[
-        { color },
+        { color: type === 'defaultSemiBold' ? text600 : text },
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
@@ -37,6 +41,7 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    // fontFamily: 'SplineSans',
   },
   defaultSemiBold: {
     fontSize: 16,

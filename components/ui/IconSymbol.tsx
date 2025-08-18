@@ -10,7 +10,7 @@ type IconMapping = Partial<
   Record<SymbolViewProps['name'], ComponentProps<typeof Ionicons>['name']>
 >;
 
-type IconSymbolName = keyof typeof MAPPING;
+export type IconSymbolName = keyof typeof MAPPING;
 /**
  * Add your SF Symbols to Material Icons mappings here.
  * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
@@ -19,22 +19,20 @@ type IconSymbolName = keyof typeof MAPPING;
 const MAPPING: IconMapping = {
   'house.fill': 'home',
   house: 'home-outline',
-
   'person.fill': 'person',
   person: 'person-outline',
-
   'gearshape.fill': 'settings',
   gearshape: 'settings-outline',
-
   'person.3.sequence.fill': 'people',
   'person.3.sequence': 'people-outline',
-
   'list.bullet.clipboard.fill': 'reader',
   'list.bullet.clipboard': 'reader-outline',
-
   'bell.fill': 'notifications',
-
-  // 🔥 Theme icons
+  mail: 'mail-outline',
+  magnifyingglass: 'search-outline',
+  lock: 'lock-closed-outline',
+  eye: 'eye-outline',
+  'eye.slash': 'eye-off-outline',
   'moon.fill': 'moon',
   'sun.max.fill': 'sunny',
   'circle.lefthalf.fill': 'contrast',
@@ -51,8 +49,8 @@ export function IconSymbol({
   color,
   style,
 }: {
-  name: IconSymbolName;
   size?: number;
+  name: IconSymbolName;
   color: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
   weight?: SymbolWeight;

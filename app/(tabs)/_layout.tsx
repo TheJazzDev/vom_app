@@ -1,31 +1,37 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/hooks';
+import { TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
+  // const router = useRouter();
   const theme = useTheme();
 
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         tabBarButton: HapticTab,
-        headerTintColor: theme.navBackground,
+        headerTitleAlign: 'center',
+        headerTintColor: theme.text,
         tabBarActiveTintColor: theme.activeTint,
         tabBarInactiveTintColor: theme.inactiveTint,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: 'absolute',
-          },
-          default: {
-            height: 90,
-            paddingTop: 10,
-          },
-        }),
+        tabBarStyle: {
+          height: 90,
+          paddingTop: 10,
+        },
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              // router.push('/notification');
+            }}
+            style={{ marginRight: 16 }}>
+            <IconSymbol size={28} name='bell.fill' color={theme.icon} />
+          </TouchableOpacity>
+        ),
       }}>
       <Tabs.Screen
         name='index'
@@ -39,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name='order-of-service'
         options={{
-          title: 'Order of Service',
+          title: 'Service Order',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               name={
@@ -51,9 +57,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='members'
+        name='members/index'
         options={{
           title: 'Members',
+          // headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               name={focused ? 'person.3.sequence.fill' : 'person.3.sequence'}

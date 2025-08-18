@@ -39,6 +39,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b4d0037a-17e7-47c1-a202-8819b7cdd578"
+      }
+    },
+    "owner": "jazzdev"
   }
 }

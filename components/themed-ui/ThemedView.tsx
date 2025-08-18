@@ -1,7 +1,6 @@
 import { View, type ViewProps } from 'react-native';
 
 import { useTheme } from '@/hooks';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ThemedViewProps = ViewProps & {
   safe?: boolean;
@@ -17,7 +16,6 @@ export function ThemedView({
   ...otherProps
 }: ThemedViewProps) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
 
   if (!safe)
     return (
@@ -32,8 +30,8 @@ export function ThemedView({
       style={[
         {
           backgroundColor: theme.uiBackground,
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
+          paddingTop: 10,
+          paddingBottom: 10,
           paddingHorizontal: 10,
           height: '100%',
         },

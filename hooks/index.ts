@@ -1,5 +1,5 @@
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useColorScheme } from 'react-native';
+import { useTheme } from './useTheme';
 import { useThemeColor } from './useThemeColor';
-import {useTheme} from './useTheme'
 
-export { useTheme, useColorScheme, useThemeColor };
+export { useColorScheme, useTheme, useThemeColor };

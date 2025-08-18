@@ -76,7 +76,7 @@ export default function Settings() {
     <ThemedView safe={true}>
       <ThemedText style={styles.sectionTitle}>Theme</ThemedText>
 
-      <ThemedCard>
+      <ThemedCard border>
         <ThemeOption
           theme={theme}
           label='Automatic'
@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
     paddingHorizontal: 16,
-    // borderBottomWidth: 0.5,
   },
   optionContent: {
     flexDirection: 'row',
