@@ -35,7 +35,7 @@ export default function ChurchMembersScreen() {
   return (
     <ThemedView safe={true}>
       <ThemedView>
-        <ThemedText>Total Members count: {filteredMembers.length}</ThemedText>
+        <ThemedText className='text-green-700'>Total Members count: {filteredMembers.length}</ThemedText>
       </ThemedView>
 
       <ThemedTextInput

@@ -2,8 +2,8 @@ declare global {
   interface Member {
     id: string;
     name: string;
-    roles: Array<string>;
     band: Array<string>;
+    roles: Array<string>;
     rank: number;
     department: string;
     image: string;

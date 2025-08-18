@@ -1,10 +1,10 @@
-
 import { useTheme } from '@/hooks';
 import { Ionicons } from '@expo/vector-icons';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useCallback, useMemo } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../themed-ui';
+import { IconSymbol } from '../ui/IconSymbol';
 
 interface BottomSheetProps {
   selectedMember: any;
@@ -43,7 +43,7 @@ const MemberBottomSheet: React.FC<BottomSheetProps> = ({
       enablePanDownToClose={true}
       backgroundStyle={{
         backgroundColor: theme.card,
-        borderTopColor: '#ffffff',
+        borderTopColor: theme.activeTint,
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
       }}
@@ -51,49 +51,54 @@ const MemberBottomSheet: React.FC<BottomSheetProps> = ({
       <BottomSheetView style={styles.bottomSheetContent}>
         {selectedMember && (
           <>
-            <View style={styles.modalMemberInfo}>
+            <View style={styles.container}>
               <Image
                 source={{ uri: selectedMember.image }}
-                style={styles.modalAvatar}
+                style={styles.avatar}
               />
-              <View style={styles.modalMemberDetails}>
-                <ThemedText style={styles.modalMemberName}>
-                  {selectedMember.name}
-                </ThemedText>
-                <ThemedText style={styles.modalMemberBio}>
-                  {selectedMember.bio}
-                </ThemedText>
-              </View>
-            </View>
+              <ThemedText type='subtitle' style={styles.name}>
+                {selectedMember.name}
+              </ThemedText>
 
-            {/* Contact Information */}
-            <View style={styles.modalInfoGrid}>
-              <View style={styles.modalInfoItem}>
-                <Ionicons name='call' size={20} color='#6B7280' />
-                <ThemedText style={styles.modalInfoText}>
-                  {selectedMember.phone}
-                </ThemedText>
+              <View style={styles.section}>
+                <ThemedText style={styles.label}>Role(s):</ThemedText>
+                <ThemedText>{selectedMember.roles.join(', ')}</ThemedText>
               </View>
 
-              <View style={styles.modalInfoItem}>
-                <Ionicons name='mail' size={20} color='#6B7280' />
-                <ThemedText style={styles.modalInfoText}>
-                  {selectedMember.email}
-                </ThemedText>
+              <View style={styles.section}>
+                <ThemedText style={styles.label}>Band(s):</ThemedText>
+                <ThemedText>{selectedMember.band.join(', ')}</ThemedText>
               </View>
 
-              <View style={styles.modalInfoItem}>
-                <Ionicons name='location' size={20} color='#6B7280' />
-                <ThemedText style={styles.modalInfoText}>
-                  {selectedMember.address}
-                </ThemedText>
-              </View>
+              {/* Contact Information */}
+              <View style={styles.modalInfoGrid}>
+                <View style={styles.modalInfoItem}>
+                  <Ionicons name='call' size={16} color='#6B7280' />
+                  <ThemedText style={styles.modalInfoText}>
+                    {selectedMember.phone}
+                  </ThemedText>
+                </View>
 
-              <View style={styles.modalInfoItem}>
-                <Ionicons name='calendar' size={20} color='#6B7280' />
-                <ThemedText style={styles.modalInfoText}>
-                  Joined {formatJoinDate(selectedMember.joinDate)}
-                </ThemedText>
+                <View style={styles.modalInfoItem}>
+                  <IconSymbol name='mail.fill' size={16} color='#6B7280' />
+                  <ThemedText style={styles.modalInfoText}>
+                    {selectedMember.email}
+                  </ThemedText>
+                </View>
+
+                <View style={styles.modalInfoItem}>
+                  <Ionicons name='location' size={16} color='#6B7280' />
+                  <ThemedText style={styles.modalInfoText}>
+                    {selectedMember.address}
+                  </ThemedText>
+                </View>
+
+                <View style={styles.modalInfoItem}>
+                  <Ionicons name='calendar' size={16} color='#6B7280' />
+                  <ThemedText style={styles.modalInfoText}>
+                    Joined {formatJoinDate(selectedMember.joinDate)}
+                  </ThemedText>
+                </View>
               </View>
             </View>
 
@@ -121,53 +126,44 @@ const MemberBottomSheet: React.FC<BottomSheetProps> = ({
 export default MemberBottomSheet;
 
 const styles = StyleSheet.create({
-  bottomSheetHandle: { backgroundColor: '#D1D5DB' },
-  bottomSheetContent: { flex: 1, paddingHorizontal: 24, paddingBottom: 40 },
-  modalMemberInfo: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 24,
+  bottomSheetHandle: { backgroundColor: '#D1D5DB', width: 100 },
+  bottomSheetContent: { paddingHorizontal: 24 },
+  container: {
+    paddingVertical: 16,
   },
-  modalAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 20,
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    alignSelf: 'center',
+    marginBottom: 12,
   },
-  modalMemberDetails: { flex: 1 },
-  modalMemberName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 6,
+  name: {
+    textAlign: 'center',
   },
-  modalMemberPosition: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
+  section: {
+    marginBottom: 12,
   },
-  modalMemberBio: {
-    fontSize: 14,
-    opacity: 0.7,
-    lineHeight: 20,
+  label: {
+    fontWeight: '500',
   },
-  modalInfoGrid: { marginBottom: 24 },
+  modalInfoGrid: { display: 'contents' },
   modalInfoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    paddingVertical: 2,
+    gap: 10,
   },
-  modalInfoText: { marginLeft: 16, flex: 1 },
+  modalInfoText: { fontSize: 14 },
   actionButtons: { flexDirection: 'row', gap: 12 },
   actionButton: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 16,
+    paddingVertical: 14,
     borderRadius: 12,
-    gap: 8,
+    gap: 9,
   },
   callButton: { backgroundColor: '#8B5CF6' },
   callButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
@@ -179,4 +175,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+
+
 });

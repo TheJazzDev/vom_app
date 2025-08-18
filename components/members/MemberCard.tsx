@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedCard, ThemedText } from '../themed-ui';
+import { IconSymbol } from '../ui/IconSymbol';
 
 interface MemberCardProps {
   item: Member;
@@ -31,13 +32,13 @@ const MemberCard: React.FC<MemberCardProps> = ({ item, handleMemberPress }) => {
         </View>
 
         <View>
-          <ThemedText
+          {/* <ThemedText
             style={item.active ? styles.activeBadge : styles.inactiveBadge}>
             {item.active ? 'Active' : 'Inactive'}
-          </ThemedText>
-          {/* <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name='call-outline' size={20} color='#6B7280' />
-          </TouchableOpacity> */}
+          </ThemedText> */}
+          <TouchableOpacity style={styles.iconButton}>
+            <IconSymbol name='phone' size={20} color='#6B7280' />
+          </TouchableOpacity>
           {/* <TouchableOpacity style={styles.iconButton}>
             <Ionicons name='mail-outline' size={20} color='#6B7280' />
           </TouchableOpacity> */}

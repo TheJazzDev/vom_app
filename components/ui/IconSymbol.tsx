@@ -29,6 +29,7 @@ const MAPPING: IconMapping = {
   'list.bullet.clipboard': 'reader-outline',
   'bell.fill': 'notifications',
   mail: 'mail-outline',
+  'mail.fill': 'mail',
   magnifyingglass: 'search-outline',
   lock: 'lock-closed-outline',
   eye: 'eye-outline',
@@ -36,6 +37,7 @@ const MAPPING: IconMapping = {
   'moon.fill': 'moon',
   'sun.max.fill': 'sunny',
   'circle.lefthalf.fill': 'contrast',
+  'phone': 'call-outline'
 } satisfies IconMapping;
 
 /**
