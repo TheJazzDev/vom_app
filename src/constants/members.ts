@@ -18,6 +18,7 @@ export const mockMembers: Member[] = [
     status: 'Active',
     verified: true,
     gender: 'Male',
+    dob: 'Sept 20',
   },
   {
     id: '2',
@@ -36,6 +37,7 @@ export const mockMembers: Member[] = [
     status: 'Active',
     verified: true,
     gender: 'Female',
+    dob: 'Sept 20',
   },
   {
     id: '3',
@@ -54,6 +56,7 @@ export const mockMembers: Member[] = [
     status: 'Active',
     verified: true,
     gender: 'Male',
+    dob: 'Sept 20',
   },
   {
     id: '4',
@@ -72,6 +75,7 @@ export const mockMembers: Member[] = [
     status: 'Active',
     verified: true,
     gender: 'Male',
+    dob: 'Sept 20',
   },
   {
     id: '5',
@@ -90,6 +94,7 @@ export const mockMembers: Member[] = [
     status: 'Active',
     verified: true,
     gender: 'Female',
+    dob: 'Sept 20',
   },
   {
     id: '6',
@@ -108,5 +113,6 @@ export const mockMembers: Member[] = [
     status: 'Active',
     verified: true,
     gender: 'Male',
+    dob: 'Sept 20',
   },
 ];

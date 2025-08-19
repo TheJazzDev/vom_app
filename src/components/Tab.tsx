@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useTheme } from '../hooks';
 import { Text } from './themed-ui';
 
 interface Tab<T> {
@@ -20,9 +21,10 @@ interface TabsProps<T> {
 }
 
 export function Tabs<T>({ tabs, value, onChange }: TabsProps<T>) {
-  const indicator = useRef(new Animated.Value(0)).current;
+  const theme = useTheme();
   const widths = useRef<number[]>([]);
   const positions = useRef<number[]>([]);
+  const indicator = useRef(new Animated.Value(0)).current;
   const activeIndex = tabs.findIndex((t) => t.value === value);
 
   useEffect(() => {
@@ -41,20 +43,21 @@ export function Tabs<T>({ tabs, value, onChange }: TabsProps<T>) {
   };
 
   return (
-    <View className='relative flex-row bg-background-elevated dark:bg-background-dark-elevated rounded-lg overflow-hidden'>
+    <View className='relative flex-row border border-border-primary dark:border-border-dark-primary bg-background-elevated dark:bg-background-dark-elevated rounded-lg overflow-hidden'>
       {tabs.map((tab, i) => {
         const isActive = value === tab.value;
+
         return (
           <TouchableOpacity
             key={String(tab.value)}
             onPress={() => onChange(tab.value)}
             onLayout={(e) => handleLayout(e, i)}
-            className={`flex-1 py-2 items-center justify-center ${
+            className={`flex-1 py-3 items-center justify-center ${
               isActive ? 'bg-interactive-primary' : 'bg-transparent'
             }`}>
             <Text
-              variant='body2'
-              color={isActive ? 'inverse' : 'primary'}
+              variant='h6'
+              color={isActive ? 'neutral' : 'primary'}
               className='font-medium'>
               {tab.label}
               {typeof tab.count === 'number' ? ` (${tab.count})` : ''}

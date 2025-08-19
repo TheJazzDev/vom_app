@@ -1,32 +1,29 @@
-import { View, type ViewProps } from 'react-native';
+import { View as RNView, type ViewProps as RNViewProps } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTheme } from '@/src/hooks';
-
-export type ThemedViewProps = ViewProps & {
+export type ViewProps = RNViewProps & {
   safe?: boolean;
   lightColor?: string;
   darkColor?: string;
 };
 
-export function ThemedView({
+export function View({
   style,
   darkColor,
   lightColor,
   safe = false,
   ...otherProps
-}: ThemedViewProps) {
-  const theme = useTheme();
-
+}: ViewProps) {
   if (!safe)
     return (
-      <View
+      <RNView
         className='bg-background-primary dark:bg-background-dark-primary'
         {...otherProps}
       />
     );
 
   return (
-    <View
+    <RNView
       className='bg-background-primary dark:bg-background-dark-primary'
       style={[
         {

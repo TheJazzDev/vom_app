@@ -38,7 +38,13 @@ const MAPPING: IconMapping = {
   'sun.max.fill': 'sunny',
   'circle.lefthalf.fill': 'contrast',
   'phone': 'call-outline',
-  'shield.checkered': 'shield-checkmark-sharp'
+  'shield.checkered': 'shield-checkmark-sharp',
+  'phone.fill': 'call',
+  'message.badge.fill': 'chatbubble-ellipses',
+  'location.circle': 'location-outline',
+  'birthday.cake': 'happy',
+  'timer.square': 'time-outline',
+  'info.bubble.fill': 'information-circle'
 } satisfies IconMapping;
 
 /**

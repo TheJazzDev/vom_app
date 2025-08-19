@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/src/components';
@@ -7,8 +7,8 @@ import { useTheme } from '@/src/hooks';
 import { TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
-  // const router = useRouter();
   const theme = useTheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -26,7 +26,7 @@ export default function TabLayout() {
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
-              // router.push('/notification');
+              router.push('/notification');
             }}
             style={{ marginRight: 16 }}>
             <IconSymbol size={28} name='bell.fill' color={theme.icon} />
@@ -57,10 +57,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='members/index'
+        name='members'
         options={{
           title: 'Members',
-          // headerShown: true,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               name={focused ? 'person.3.sequence.fill' : 'person.3.sequence'}
@@ -93,6 +93,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
     </Tabs>
   );
 }

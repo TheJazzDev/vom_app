@@ -2,23 +2,7 @@ import React from 'react';
 import { Text as RNText, TextProps as RNTextProps } from 'react-native';
 
 interface TextProps extends RNTextProps {
-  variant?:
-    | 'text'
-    | 'paragraph'
-    | 'h1'
-    | 'h2'
-    | 'h3'
-    | 'h4'
-    | 'h5'
-    | 'h6'
-    | 'caption'
-    | 'overline'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'body1'
-    | 'body2'
-    | 'button'
-    | 'label';
+  variant?: TextVariant;
   color?:
     | 'primary'
     | 'secondary'
@@ -28,7 +12,8 @@ interface TextProps extends RNTextProps {
     | 'warning'
     | 'error'
     | 'info'
-    | 'brand';
+    | 'brand'
+    | string;
   children: React.ReactNode;
   className?: string;
 }
@@ -81,6 +66,8 @@ const getColorStyles = (color: TextProps['color']) => {
       return 'text-text-tertiary dark:text-text-dark-tertiary';
     case 'inverse':
       return 'text-text-inverse dark:text-text-dark-inverse';
+    case 'neutral':
+      return 'text-white';
     case 'success':
       return 'text-semantic-success dark:text-semantic-success';
     case 'warning':

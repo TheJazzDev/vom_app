@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import Badge from '../Badge';
@@ -5,17 +6,15 @@ import { Text, ThemedCard } from '../themed-ui';
 
 interface MemberCardProps {
   member: Member;
-  handleMemberPress: (member: Member) => void;
 }
 
-const MemberCard: React.FC<MemberCardProps> = ({
-  member,
-  handleMemberPress,
-}) => {
+const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
+  const router = useRouter();
+
   return (
     <ThemedCard shadow borderRadius={8} marginBottom={12}>
       <TouchableOpacity
-        onPress={() => handleMemberPress(member)}
+        onPress={() => router.push(`/members/${member.id}`)}
         className='flex flex-row p-4'
         activeOpacity={0.7}>
         <View className='mr-4'>

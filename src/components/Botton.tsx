@@ -8,15 +8,7 @@ import {
 import { Text } from './themed-ui';
 
 interface ButtonProps extends TouchableOpacityProps {
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'outline'
-    | 'ghost'
-    | 'destructive'
-    | 'success'
-    | 'warning'
-    | 'info';
+  variant?: ButtonVariant;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: React.ReactNode;
   className?: string;
@@ -25,6 +17,7 @@ interface ButtonProps extends TouchableOpacityProps {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
+  textVariant?: TextVariant;
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
 }
 
@@ -135,22 +128,6 @@ const getTextColor = (
   }
 };
 
-const getTextSize = (size: ButtonProps['size']) => {
-  switch (size) {
-    case 'xs':
-      return 'caption';
-    case 'sm':
-      return 'body2';
-    case 'lg':
-      return 'body1';
-    case 'xl':
-      return 'subtitle2';
-    case 'md':
-    default:
-      return 'body2';
-  }
-};
-
 const getIconSpacing = (
   size: ButtonProps['size'],
   position: 'left' | 'right'
@@ -188,6 +165,7 @@ export const Button: React.FC<ButtonProps> = ({
   rounded = 'md',
   style,
   onPress,
+  textVariant,
   ...props
 }) => {
   const isDisabled = disabled || loading;
@@ -195,7 +173,6 @@ export const Button: React.FC<ButtonProps> = ({
   const sizeStyles = getSizeStyles(size);
   const roundedStyles = getRoundedStyles(rounded);
   const textColor = getTextColor(variant, disabled, loading);
-  const textVariant = getTextSize(size);
   const fullWidthStyle = fullWidth ? 'w-full' : '';
   const opacityStyle = isDisabled ? 'opacity-60' : '';
 
@@ -206,7 +183,7 @@ export const Button: React.FC<ButtonProps> = ({
     ${fullWidthStyle}
     ${opacityStyle}
     border
-    flex-row
+    flex-1
     items-center
     justify-center
     ${className}
@@ -229,10 +206,10 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <TouchableOpacity
-      className={combinedClassName}
       style={style}
       onPress={handlePress}
       disabled={isDisabled}
+      className={combinedClassName}
       activeOpacity={isDisabled ? 1 : 0.8}
       {...props}>
       {loading ? (
@@ -251,22 +228,19 @@ export const Button: React.FC<ButtonProps> = ({
           )}
         </View>
       ) : (
-        <>
+        <View className='flex-row items-center gap-1 py-1'>
           {icon && iconPosition === 'left' && (
             <View className={getIconSpacing(size, 'left')}>{icon}</View>
           )}
 
-          <Text
-            variant={textVariant}
-            color={textColor}
-            className='font-medium text-center'>
+          <Text variant={textVariant} color={textColor}>
             {children}
           </Text>
 
           {icon && iconPosition === 'right' && (
             <View className={getIconSpacing(size, 'right')}>{icon}</View>
           )}
-        </>
+        </View>
       )}
     </TouchableOpacity>
   );

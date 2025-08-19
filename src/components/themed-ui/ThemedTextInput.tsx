@@ -132,7 +132,7 @@ export function ThemedTextInput({
   ];
 
   return (
-    <View style={[containerStyle, style]}>
+    <View style={[containerStyle, style]} className='border border-border-primary dark:border-border-dark-primary'>
       {finalLeftIcon && (
         <View style={styles.leftIconContainer}>
           <IconSymbol

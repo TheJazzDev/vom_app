@@ -138,6 +138,7 @@ const darkTheme = {
 
 export const Colors = {
   light: {
+    neutral: neutral.white,
     border: lightTheme.border.primary,
     card: lightTheme.surface.card,
     background2: lightTheme.background.tertiary,
@@ -152,6 +153,7 @@ export const Colors = {
     logoBackground: lightTheme.surface.logo,
   },
   dark: {
+    neutral: neutral.white,
     border: darkTheme.border.primary,
     background2: darkTheme.background.elevated,
     card: darkTheme.surface.card,

@@ -1,13 +1,8 @@
-import {
-    ThemedCard,
-    ThemedDivider,
-    Text,
-    ThemedView,
-} from '@/src/components';
+import { Text, ThemedCard, ThemedDivider, View } from '@/src/components';
 import { IconSymbol } from '@/src/components/ui/IconSymbol';
 import { useTheme } from '@/src/hooks';
 import React, { useEffect, useState } from 'react';
-import { Appearance, Pressable, StyleSheet, View } from 'react-native';
+import { Appearance, Pressable, StyleSheet } from 'react-native';
 
 type ThemeMode = 'automatic' | 'light' | 'dark';
 
@@ -73,7 +68,7 @@ export default function Settings() {
   };
 
   return (
-    <ThemedView safe={true}>
+    <View safe={true}>
       <Text style={styles.sectionTitle}>Theme</Text>
 
       <ThemedCard border>
@@ -114,7 +109,7 @@ export default function Settings() {
         Automatic is only supported on operating systems that allow you to
         control the system-wide color scheme.
       </Text>
-    </ThemedView>
+    </View>
   );
 }
 

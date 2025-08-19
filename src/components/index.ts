@@ -2,6 +2,7 @@ export * from './members';
 export * from './themed-ui';
 
 import Tab from './Tab'
+import {BandBadge} from './BandBadge'
 import Spacer from './Spacer';
 import { Badge } from './Badge';
 import { ExternalLink } from './ExternalLink';
@@ -14,6 +15,7 @@ export {
   Tab,
   Badge,
   Spacer,
+  BandBadge,
   Collapsible,
   ExternalLink,
   HapticTab,

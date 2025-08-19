@@ -1,4 +1,5 @@
 declare global {
+  type Gender = 'all' | 'Male' | 'Female';
   interface Member {
     id: string;
     title: string;
@@ -15,6 +16,7 @@ declare global {
     status: string;
     verified: boolean
     gender: string
+    dob: string
   }
 }
 

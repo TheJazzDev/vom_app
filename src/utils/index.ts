@@ -1,3 +1,3 @@
-import { getBandColor } from './getBandColor';
+import { formatDate } from './formatDate';
 
-export { getBandColor };
+export { formatDate };
