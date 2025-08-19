@@ -7,4 +7,4 @@ config.resolver.extraNodeModules = {
     'react-native-css-interop/jsx-runtime': require.resolve('react-native-css-interop/jsx-runtime')
   };
 
-module.exports = withNativeWind(config, { input: './app/global.css' })
+module.exports = withNativeWind(config, { input: './src/app/global.css' })

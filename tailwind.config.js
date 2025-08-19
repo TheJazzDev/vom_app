@@ -1,10 +1,93 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // NOTE: Update this to include the paths to all files that contain Nativewind classes.
-  content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
-  presets: [require("nativewind/preset")],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  presets: [require('nativewind/preset')],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brand: {
+          primary: '#8B5CF6',
+          'primary-light': '#A78BFA',
+          'primary-dark': '#7C3AED',
+        },
+        semantic: {
+          success: '#10B981',
+          warning: '#F59E0B',
+          error: '#EF4444',
+          info: '#3B82F6',
+        },
+        text: {
+          primary: '#11181C',
+          secondary: '#6B7280',
+          tertiary: '#9CA3AF',
+          inverse: '#FFFFFF',
+          'dark-primary': '#FFFFFF',
+          'dark-secondary': '#A3A3A3',
+          'dark-tertiary': '#6B7280',
+          'dark-inverse': '#11181C',
+        },
+        background: {
+          primary: '#F9FAFB',
+          secondary: '#FFFFFF',
+          tertiary: '#F3F4F6',
+          elevated: '#FFFFFF',
+          'dark-primary': '#010101',
+          'dark-secondary': '#161B21',
+          'dark-tertiary': '#1F2937',
+          'dark-elevated': '#262626',
+        },
+        border: {
+          primary: '#E5E7EB',
+          secondary: '#D1D5DB',
+          focus: '#8B5CF6',
+          'dark-primary': '#374151',
+          'dark-secondary': '#4B5563',
+          'dark-focus': '#8B5CF6',
+        },
+        interactive: {
+          primary: '#8B5CF6',
+          secondary: '#F3F4F6',
+          disabled: '#D1D5DB',
+          hover: '#A78BFA',
+          'dark-primary': '#8B5CF6',
+          'dark-secondary': '#374151',
+          'dark-disabled': '#4B5563',
+          'dark-hover': '#A78BFA',
+        },
+        icon: {
+          primary: '#4B5563',
+          secondary: '#9CA3AF',
+          active: '#8B5CF6',
+          inactive: '#D1D5DB',
+          'dark-primary': '#9CA3AF',
+          'dark-secondary': '#6B7280',
+          'dark-active': '#8B5CF6',
+          'dark-inactive': '#4B5563',
+        },
+        navigation: {
+          background: '#FFFFFF',
+          border: '#E5E7EB',
+          'active-tint': '#8B5CF6',
+          'inactive-tint': '#6B7280',
+          'dark-background': '#161B21',
+          'dark-border': '#374151',
+          'dark-active-tint': '#8B5CF6',
+          'dark-inactive-tint': '#9CA3AF',
+        },
+        surface: {
+          card: '#FFFFFF',
+          modal: '#FFFFFF',
+          logo: '#A1CEDC',
+          'dark-card': '#161B21',
+          'dark-modal': '#262626',
+          'dark-logo': '#1D3D47',
+        },
+      },
+      backgroundColor: {
+        overlay: 'rgba(0, 0, 0, 0.5)',
+        'dark-overlay': 'rgba(0, 0, 0, 0.7)',
+      },
+    },
   },
   plugins: [],
-}
+};

@@ -1,18 +1,20 @@
 declare global {
   interface Member {
     id: string;
-    name: string;
+    title: string;
+    firstName: string;
+    lastName: string;
     band: Array<string>;
     roles: Array<string>;
     rank: number;
-    department: string;
     image: string;
-    bio: string;
-    phone: string;
+    phone: Array<string>;
     email: string;
     address: string;
     joinDate: string;
-    active: boolean
+    status: string;
+    verified: boolean
+    gender: string
   }
 }
 
