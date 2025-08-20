@@ -2,7 +2,23 @@ import React from 'react';
 import { Text as RNText, TextProps as RNTextProps } from 'react-native';
 
 interface TextProps extends RNTextProps {
-  variant?: TextVariant;
+  variant?:
+    | 'text'
+    | 'paragraph'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'caption'
+    | 'overline'
+    | 'subtitle1'
+    | 'subtitle2'
+    | 'body1'
+    | 'body2'
+    | 'button'
+    | 'label';
   color?:
     | 'primary'
     | 'secondary'

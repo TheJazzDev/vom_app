@@ -8,7 +8,15 @@ import {
 import { Text } from './themed-ui';
 
 interface ButtonProps extends TouchableOpacityProps {
-  variant?: ButtonVariant;
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'outline'
+    | 'ghost'
+    | 'destructive'
+    | 'success'
+    | 'warning'
+    | 'info';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: React.ReactNode;
   className?: string;
@@ -17,7 +25,23 @@ interface ButtonProps extends TouchableOpacityProps {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
-  textVariant?: TextVariant;
+  textVariant?:
+    | 'text'
+    | 'paragraph'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'caption'
+    | 'overline'
+    | 'subtitle1'
+    | 'subtitle2'
+    | 'body1'
+    | 'body2'
+    | 'button'
+    | 'label';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
 }
 
@@ -39,8 +63,8 @@ const getVariantStyles = (
         : 'bg-interactive-secondary dark:bg-interactive-dark-secondary border-border-primary dark:border-border-dark-primary active:bg-neutral-200 dark:active:bg-neutral-600';
     case 'outline':
       return isDisabledOrLoading
-        ? 'bg-transparent border-interactive-disabled dark:border-interactive-dark-disabled border-2'
-        : 'bg-transparent border-border-secondary dark:border-border-dark-secondary border-2 active:bg-neutral-50 dark:active:bg-neutral-800';
+        ? 'bg-transparent border-interactive-disabled dark:border-interactive-dark-disabled border'
+        : 'bg-transparent border-border-secondary dark:border-border-dark-secondary border active:bg-neutral-50 dark:active:bg-neutral-800';
     case 'ghost':
       return isDisabledOrLoading
         ? 'bg-transparent border-transparent'
@@ -118,6 +142,7 @@ const getTextColor = (
     case 'secondary':
       return 'primary';
     case 'primary':
+      return 'inverse';
     case 'destructive':
     case 'success':
     case 'warning':
@@ -183,7 +208,6 @@ export const Button: React.FC<ButtonProps> = ({
     ${fullWidthStyle}
     ${opacityStyle}
     border
-    flex-1
     items-center
     justify-center
     ${className}

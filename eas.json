@@ -20,10 +20,5 @@
   },
   "submit": {
     "production": {}
-  },
-  "expo": {
-    "web": {
-      "bundler": "metro"
-    }
   }
 }

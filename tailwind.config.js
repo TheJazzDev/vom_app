@@ -29,11 +29,11 @@ module.exports = {
         background: {
           primary: '#F9FAFB',
           secondary: '#FFFFFF',
-          tertiary: '#F3F4F6',
-          elevated: '#FFFFFF',
+          tertiary: '#e5e7eb',
+          elevated: '#f5f5f5',
           'dark-primary': '#010101',
           'dark-secondary': '#161B21',
-          'dark-tertiary': '#1F2937',
+          'dark-tertiary': '#262626',
           'dark-elevated': '#262626',
         },
         border: {

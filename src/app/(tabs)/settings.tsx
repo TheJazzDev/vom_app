@@ -22,7 +22,7 @@ const ThemeOption = ({
   <Pressable
     onPress={onPress}
     style={[styles.option, { borderBottomColor: theme.border }]}>
-    <View style={styles.optionContent}>
+    <View className='flex-row gap-2'>
       {icon && <View style={{ marginRight: 15 }}>{icon}</View>}
       <Text style={styles.optionLabel}>{label}</Text>
     </View>

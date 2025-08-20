@@ -1,5 +1,4 @@
 import { View as RNView, type ViewProps as RNViewProps } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export type ViewProps = RNViewProps & {
   safe?: boolean;
@@ -14,13 +13,7 @@ export function View({
   safe = false,
   ...otherProps
 }: ViewProps) {
-  if (!safe)
-    return (
-      <RNView
-        className='bg-background-primary dark:bg-background-dark-primary'
-        {...otherProps}
-      />
-    );
+  if (!safe) return <RNView {...otherProps} />;
 
   return (
     <RNView

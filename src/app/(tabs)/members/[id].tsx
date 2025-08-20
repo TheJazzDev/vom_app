@@ -67,9 +67,10 @@ export default function MembersDetails() {
         </View>
 
         {/* Buttons */}
-        <View className='flex-row gap-2'>
+        <View className='flex flex-row gap-2'>
           <Button
             textVariant='h4'
+            className='w-[50%]'
             icon={
               <IconSymbol
                 name='phone.fill'
@@ -81,6 +82,7 @@ export default function MembersDetails() {
           </Button>
           <Button
             textVariant='h4'
+            className='w-[50%]'
             variant='secondary'
             icon={
               <IconSymbol
