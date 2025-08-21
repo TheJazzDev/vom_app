@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import Providers from '@/src/context/Providers';
 import { useTheme } from '@/src/hooks';
 

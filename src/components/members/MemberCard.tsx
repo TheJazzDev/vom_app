@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import Badge from '../Badge';
-import { Text, ThemedCard } from '../themed-ui';
+import { Card, Text } from '../UI';
 
 interface MemberCardProps {
   member: Member;
@@ -12,7 +12,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
   const router = useRouter();
 
   return (
-    <ThemedCard shadow borderRadius={8} marginBottom={12}>
+    <Card className='mb-3 rounded-lg'>
       <TouchableOpacity
         onPress={() => router.push(`/members/${member.id}`)}
         className='flex flex-row p-4'
@@ -57,7 +57,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
           </TouchableOpacity> */}
         </View>
       </TouchableOpacity>
-    </ThemedCard>
+    </Card>
   );
 };
 

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { IconSymbol, IconSymbolName } from '../ui/IconSymbol';
+import { IconSymbol, IconSymbolName } from '../Icons/IconSymbol';
 
 export type ThemedTextInputProps = Omit<TextInputProps, 'style'> & {
   iconSize?: number;
@@ -132,7 +132,9 @@ export function ThemedTextInput({
   ];
 
   return (
-    <View style={[containerStyle, style]} className='border border-border-primary dark:border-border-dark-primary'>
+    <View
+      style={[containerStyle, style]}
+      className='border border-border-primary dark:border-border-dark-primary'>
       {finalLeftIcon && (
         <View style={styles.leftIconContainer}>
           <IconSymbol

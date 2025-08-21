@@ -1,7 +1,8 @@
+import { Button } from './Button';
+import { Card } from './Card';
 import { Text } from './Text';
-import { ThemedCard } from './ThemedCard';
 import { ThemedDivider } from './ThemedDivider';
 import { ThemedTextInput } from './ThemedTextInput';
 import { View } from './View';
 
-export { Text, ThemedCard, ThemedDivider, ThemedTextInput, View };
+export { Button, Card, Text, ThemedDivider, ThemedTextInput, View };

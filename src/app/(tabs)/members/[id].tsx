@@ -1,6 +1,4 @@
-import { Badge, BandBadge, ContactInfo, Text, View } from '@/src/components';
-import { Button } from '@/src/components/Botton';
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { Badge, BandBadge, ContactInfo, Text, View,  Button, IconSymbol } from '@/src/components';
 import { mockMembers } from '@/src/constants/members';
 import { useTheme } from '@/src/hooks';
 import { useLocalSearchParams } from 'expo-router';
@@ -47,7 +45,11 @@ export default function MembersDetails() {
         {/* Bands */}
         <View className='mb-4'>
           <View className='flex-row items-center gap-4'>
-            <IconSymbol name='person.3.sequence.fill' size={20} color='#6B7280' />
+            <IconSymbol
+              name='person.3.sequence.fill'
+              size={20}
+              color='#6B7280'
+            />
             <Text variant='h5'>Bands</Text>
           </View>
           <View className='flex-row gap-2 mt-2 flex-wrap'>

@@ -3,22 +3,26 @@ import { Bands } from "@/src/enum";
 export const getBandIcon = (band: string) => {
   switch (band) {
     case Bands.Choir:
-      return '🎵';
+      return '🎵'; // ✅ Choir = Music
     case Bands.LoveDevine:
-      return '💚';
+      return '💚'; // ✅ Love = Heart works
     case Bands.YouthFellowship:
-      return '✨';
+      return '✨'; // ✅ Youth = Energy, Sparkle works
     case Bands.Deborah:
-      return '🌹';
+      return '🌸'; // ✅ Changed: flower (🌹) → blossom (🌸) to reflect feminine leadership
     case Bands.Daniel:
-      return '⚡';
-    case Bands.Esther:
-      return '👑';
+      return '⚡'; // ✅ Daniel = Power, boldness
+    case Bands.QueenEsther:
+      return '👑'; // ✅ Esther = Queen, crown works
     case Bands.GoodWomen:
-      return '🌟';
+      return '🤲'; // ✅ Changed: (🌟) → (🤲) symbolizing care, nurturing women
     case Bands.Warden:
-      return '🛡️';
+      return '🛡️'; // ✅ Warden = Protection, shield works
+    case Bands.JohnBeloved:
+      return '❤️'; // ✅ Changed: (🛡️) → (❤️) John the beloved = love
+    case Bands.HolyMary:
+      return '🙏'; // ✅ Changed: (🛡️) → (🙏) Holy Mary = devotion, prayer
     default:
-      return '⭐';
+      return '⭐'; // fallback
   }
 };

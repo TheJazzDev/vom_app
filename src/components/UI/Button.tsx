@@ -5,7 +5,7 @@ import {
   TouchableOpacityProps,
   View,
 } from 'react-native';
-import { Text } from './themed-ui';
+import { Text } from './Text';
 
 interface ButtonProps extends TouchableOpacityProps {
   variant?:

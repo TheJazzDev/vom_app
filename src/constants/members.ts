@@ -7,7 +7,7 @@ export const mockMembers: Member[] = [
     firstName: 'John',
     lastName: 'Emmanuel',
     roles: ['Leader-in-charge'],
-    band: [Bands.Choir, Bands.Deborah, Bands.Esther],
+    band: [Bands.Choir, Bands.Deborah, Bands.QueenEsther],
     rank: 1,
     phone: ['+234 801 234 5678'],
     email: 'pastor.john@church.com',

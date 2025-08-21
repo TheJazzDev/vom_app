@@ -1,6 +1,4 @@
-import { Text, View } from '@/src/components';
-import { Button } from '@/src/components/Botton';
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { Text, View, Button, IconSymbol } from '@/src/components';
 import React from 'react';
 
 const guestFeatures = [

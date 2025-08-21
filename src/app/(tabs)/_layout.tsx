@@ -2,7 +2,7 @@ import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/src/components';
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useTheme } from '@/src/hooks';
 import { TouchableOpacity } from 'react-native';
 
@@ -43,9 +43,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='order-of-service'
+        name='programme'
         options={{
-          title: 'Service Order',
+          title: 'Programme',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               name={
@@ -93,7 +93,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
     </Tabs>
   );
 }

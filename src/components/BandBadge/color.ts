@@ -22,13 +22,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#E9D5FF] dark:bg-[#4C1D95]',
         text: 'text-[#6B21A8] dark:text-[#E9D5FF]',
-        border: 'border-[#C084FC] dark:border-[#9333EA] border-2',
+        border: 'border-[#C084FC] dark:border-[#9333EA] border',
         shadow: 'shadow-lg shadow-[#D8B4FE] dark:shadow-[#5B21B6]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#6B21A8] dark:text-[#A855F7]',
-        border: 'border-[#C084FC] dark:border-[#A855F7] border-2',
+        border: 'border-[#C084FC] dark:border-[#A855F7] border',
         shadow: '',
       },
       minimal: {
@@ -56,13 +56,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#A7F3D0] dark:bg-[#064E3B]',
         text: 'text-[#065F46] dark:text-[#A7F3D0]',
-        border: 'border-[#34D399] dark:border-[#059669] border-2',
+        border: 'border-[#34D399] dark:border-[#059669] border',
         shadow: 'shadow-lg shadow-[#6EE7B7] dark:shadow-[#065F46]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#065F46] dark:text-[#34D399]',
-        border: 'border-[#34D399] dark:border-[#10B981] border-2',
+        border: 'border-[#34D399] dark:border-[#10B981] border',
         shadow: '',
       },
       minimal: {
@@ -90,13 +90,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#C7D2FE] dark:bg-[#312E81]',
         text: 'text-[#3730A3] dark:text-[#C7D2FE]',
-        border: 'border-[#818CF8] dark:border-[#4F46E5] border-2',
+        border: 'border-[#818CF8] dark:border-[#4F46E5] border',
         shadow: 'shadow-lg shadow-[#A5B4FC] dark:shadow-[#3730A3]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#3730A3] dark:text-[#818CF8]',
-        border: 'border-[#818CF8] dark:border-[#6366F1] border-2',
+        border: 'border-[#818CF8] dark:border-[#6366F1] border',
         shadow: '',
       },
       minimal: {
@@ -124,13 +124,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#FECACA] dark:bg-[#7F1D1D]',
         text: 'text-[#991B1B] dark:text-[#FECACA]',
-        border: 'border-[#F87171] dark:border-[#DC2626] border-2',
+        border: 'border-[#F87171] dark:border-[#DC2626] border',
         shadow: 'shadow-lg shadow-[#FCA5A5] dark:shadow-[#991B1B]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#991B1B] dark:text-[#F87171]',
-        border: 'border-[#F87171] dark:border-[#EF4444] border-2',
+        border: 'border-[#F87171] dark:border-[#EF4444] border',
         shadow: '',
       },
       minimal: {
@@ -158,13 +158,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#BFDBFE] dark:bg-[#1E3A8A]',
         text: 'text-[#1E40AF] dark:text-[#BFDBFE]',
-        border: 'border-[#60A5FA] dark:border-[#2563EB] border-2',
+        border: 'border-[#60A5FA] dark:border-[#2563EB] border',
         shadow: 'shadow-lg shadow-[#93C5FD] dark:shadow-[#1E40AF]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#1E40AF] dark:text-[#60A5FA]',
-        border: 'border-[#60A5FA] dark:border-[#3B82F6] border-2',
+        border: 'border-[#60A5FA] dark:border-[#3B82F6] border',
         shadow: '',
       },
       minimal: {
@@ -175,7 +175,7 @@ export const getBandColor = (
       },
     },
 
-    [Bands.Esther]: {
+    [Bands.QueenEsther]: {
       default: {
         container: 'bg-[#FBCFE8] dark:bg-[#831843]',
         text: 'text-[#9D174D] dark:text-[#FBCFE8]',
@@ -192,13 +192,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#FBCFE8] dark:bg-[#831843]',
         text: 'text-[#9D174D] dark:text-[#FBCFE8]',
-        border: 'border-[#F472B6] dark:border-[#DB2777] border-2',
+        border: 'border-[#F472B6] dark:border-[#DB2777] border',
         shadow: 'shadow-lg shadow-[#F9A8D4] dark:shadow-[#9D174D]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#9D174D] dark:text-[#F472B6]',
-        border: 'border-[#F472B6] dark:border-[#EC4899] border-2',
+        border: 'border-[#F472B6] dark:border-[#EC4899] border',
         shadow: '',
       },
       minimal: {
@@ -225,13 +225,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#FED7AA] dark:bg-[#7C2D12]',
         text: 'text-[#9A3412] dark:text-[#FED7AA]',
-        border: 'border-[#FB923C] dark:border-[#EA580C] border-2',
+        border: 'border-[#FB923C] dark:border-[#EA580C] border',
         shadow: 'shadow-lg shadow-[#FDBA74] dark:shadow-[#9A3412]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#9A3412] dark:text-[#FB923C]',
-        border: 'border-[#FB923C] dark:border-[#F97316] border-2',
+        border: 'border-[#FB923C] dark:border-[#F97316] border',
         shadow: '',
       },
       minimal: {
@@ -259,13 +259,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#FDE68A] dark:bg-[#78350F]',
         text: 'text-[#92400E] dark:text-[#FDE68A]',
-        border: 'border-[#FBBF24] dark:border-[#D97706] border-2',
+        border: 'border-[#FBBF24] dark:border-[#D97706] border',
         shadow: 'shadow-lg shadow-[#FCD34D] dark:shadow-[#92400E]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#92400E] dark:text-[#FBBF24]',
-        border: 'border-[#FBBF24] dark:border-[#F59E0B] border-2',
+        border: 'border-[#FBBF24] dark:border-[#F59E0B] border',
         shadow: '',
       },
       minimal: {
@@ -292,13 +292,13 @@ export const getBandColor = (
       glow: {
         container: 'bg-[#BAE6FD] dark:bg-[#0C4A6E]',
         text: 'text-[#075985] dark:text-[#BAE6FD]',
-        border: 'border-[#38BDF8] dark:border-[#0284C7] border-2',
+        border: 'border-[#38BDF8] dark:border-[#0284C7] border',
         shadow: 'shadow-lg shadow-[#7DD3FC] dark:shadow-[#075985]',
       },
       outlined: {
         container: 'bg-transparent',
         text: 'text-[#075985] dark:text-[#38BDF8]',
-        border: 'border-[#38BDF8] dark:border-[#0EA5E9] border-2',
+        border: 'border-[#38BDF8] dark:border-[#0EA5E9] border',
         shadow: '',
       },
       minimal: {
@@ -393,13 +393,13 @@ export const getBandColor = (
     glow: {
       container: 'bg-gray-200 dark:bg-gray-900',
       text: 'text-gray-800 dark:text-gray-200',
-      border: 'border-gray-400 dark:border-gray-600 border-2',
+      border: 'border-gray-400 dark:border-gray-600 border',
       shadow: 'shadow-lg shadow-gray-300 dark:shadow-gray-800',
     },
     outlined: {
       container: 'bg-transparent',
       text: 'text-gray-800 dark:text-gray-400',
-      border: 'border-gray-400 dark:border-gray-500 border-2',
+      border: 'border-gray-400 dark:border-gray-500 border',
       shadow: '',
     },
     minimal: {

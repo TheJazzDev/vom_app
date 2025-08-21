@@ -1,11 +1,11 @@
 import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { Colors } from '@/src/constants/Colors';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
-import { Text } from './Text';
-import { View } from './View';
+import { Text } from './UI/Text';
+import { View } from './UI/View';
 
 export function Collapsible({
   children,

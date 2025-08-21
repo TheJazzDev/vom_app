@@ -1,4 +1,4 @@
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useTheme } from '@/src/hooks';
 import { Stack, useRouter } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
@@ -23,7 +23,10 @@ export default function MembersLayout() {
         ),
       }}>
       <Stack.Screen name='index' options={{ title: 'Members' }} />
-      <Stack.Screen name='[id]' options={{ title: 'Details', headerBackTitle: 'Back' }} />
+      <Stack.Screen
+        name='[id]'
+        options={{ title: 'Details', headerBackTitle: 'Back' }}
+      />
     </Stack>
   );
 }

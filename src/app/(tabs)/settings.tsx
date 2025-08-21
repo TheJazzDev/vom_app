@@ -1,5 +1,4 @@
-import { Text, ThemedCard, ThemedDivider, View } from '@/src/components';
-import { IconSymbol } from '@/src/components/ui/IconSymbol';
+import { Text, ThemedCard, ThemedDivider, View , IconSymbol } from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import React, { useEffect, useState } from 'react';
 import { Appearance, Pressable, StyleSheet } from 'react-native';

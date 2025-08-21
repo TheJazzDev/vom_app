@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Text } from '../themed-ui';
+import { Text } from '../UI';
 import { getBandColor } from './color';
 import { getBandIcon } from './icon';
 import { getBandDisplayName } from './name';

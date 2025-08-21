@@ -1,12 +1,17 @@
-import { MemberCard, Spacer, ThemedTextInput, View } from '@/src/components';
-import { Tabs } from '@/src/components/Tab';
+import {
+  MemberCard,
+  Spacer,
+  Tab,
+  ThemedTextInput,
+  View,
+} from '@/src/components';
 import { mockMembers } from '@/src/constants/members';
 import React, { useState } from 'react';
 import { FlatList, Platform, StyleSheet } from 'react-native';
 
 export default function MembersScreen() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [genderFilter, setGenderFilter] = useState<Gender>('all');
+  const [gender, setGender] = useState<Gender>('all');
 
   const filteredMembers = mockMembers.filter((member) => {
     const matchesSearch =
@@ -16,8 +21,7 @@ export default function MembersScreen() {
         role.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
-    const matchesGender =
-      genderFilter === 'all' || member.gender === genderFilter;
+    const matchesGender = gender === 'all' || member.gender === gender;
 
     return matchesSearch && matchesGender;
   });
@@ -29,9 +33,9 @@ export default function MembersScreen() {
         placeholder='Search members, roles, bands, or departments...'
       />
 
-      <Tabs<Gender>
-        value={genderFilter}
-        onChange={setGenderFilter}
+      <Tab<Gender>
+        value={gender}
+        onChange={setGender}
         tabs={[
           { label: 'All', value: 'all', count: mockMembers.length },
           {

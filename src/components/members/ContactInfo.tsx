@@ -1,8 +1,8 @@
 import { formatDate } from '@/src/utils';
 import React from 'react';
 import { View } from 'react-native';
-import { Text } from '../themed-ui';
-import { IconSymbol } from '../ui/IconSymbol';
+import { IconSymbol } from '../Icons/IconSymbol';
+import { Text } from '../UI';
 
 type ContactInfoProps = {
   member: Member;

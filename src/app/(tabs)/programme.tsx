@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function OrderOfService() {
+const programme = () => {
   return (
     <View>
-      <Text>OrderOfService</Text>
+      <Text>programme</Text>
     </View>
   )
 }
+
+export default programme
 
 const styles = StyleSheet.create({})

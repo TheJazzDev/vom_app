@@ -1,7 +1,6 @@
-import { Bands } from '@/src/enum/bands';
 import React from 'react';
 import { View, ViewProps } from 'react-native';
-import { Text } from './themed-ui';
+import { Text } from './UI';
 
 interface BadgeProps extends ViewProps {
   variant?:
@@ -21,7 +20,7 @@ interface BadgeProps extends ViewProps {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   dot?: boolean;
-  band?: boolean
+  band?: boolean;
 }
 
 const getVariantStyles = (variant: BadgeProps['variant']) => {
