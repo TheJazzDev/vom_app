@@ -17,7 +17,7 @@ export function View({
 
   return (
     <RNView
-      className='bg-background-primary dark:bg-background-dark-primary'
+      className='bg-white dark:bg-black'
       style={[
         {
           paddingTop: 10,

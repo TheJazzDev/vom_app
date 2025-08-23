@@ -44,11 +44,11 @@ export function ThemedTextInput({
 
   const textColor = useThemeColor(
     { light: lightColor, dark: darkColor },
-    'text'
+    'body'
   );
   const borderColor = useThemeColor({}, 'border');
   const backgroundColor = useThemeColor({}, 'card');
-  const defaultIconColor = useThemeColor({}, 'inactiveTint');
+  const defaultIconColor = useThemeColor({}, 'muted');
 
   // Get default icons based on input type
   const getDefaultIcons = (): {
@@ -134,7 +134,7 @@ export function ThemedTextInput({
   return (
     <View
       style={[containerStyle, style]}
-      className='border border-border-primary dark:border-border-dark-primary'>
+      className='border border-border dark:border-dark-border'>
       {finalLeftIcon && (
         <View style={styles.leftIconContainer}>
           <IconSymbol

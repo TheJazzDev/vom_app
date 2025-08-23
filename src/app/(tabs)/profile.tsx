@@ -1,4 +1,4 @@
-import { Text, View, Button, IconSymbol } from '@/src/components';
+import { Button, IconSymbol, Text, View } from '@/src/components';
 import React from 'react';
 
 const guestFeatures = [
@@ -16,11 +16,11 @@ const accountFeatures = [
 
 const profile = () => {
   return (
-    <View className='py-6' safe={true}>
-      <View className='mx-auto bg-background-tertiary dark:bg-background-dark-tertiary p-6 rounded-full'>
-        <IconSymbol name='person' size={40} color='gray' />
+    <View className='py-6' safe>
+      <View className='mx-auto bg-primary/20 dark:bg-primary/20 p-6 rounded-full'>
+        <IconSymbol name='person' size={40} color='#0084ff' />
       </View>
-      <Text variant='h2' className='text-center my-2'>
+      <Text variant='h2' color='heading' className='text-center my-2'>
         Welcome, Guest
       </Text>
       <Text variant='paragraph' className='text-center max-w-[85vw] mx-auto'>
@@ -37,20 +37,22 @@ const profile = () => {
         </Button>
       </View>
 
-      <View className='p-4 bg-background-tertiary dark:bg-background-dark-tertiary rounded-xl gap-0.5'>
-        <Text variant='h5'>As a guest, you can:</Text>
+      <View className='p-4 bg-card dark:bg-dark-card rounded-xl gap-0.5'>
+        <Text variant='h5' color='heading'>
+          As a guest, you can:
+        </Text>
         {guestFeatures.map((feature, index) => (
-          <Text key={index} color='secondary'>
-            <>&bull; </>
+          <Text key={index} color='body'>
+            <>&bull;{'  '}</>
             {feature}
           </Text>
         ))}
-        <Text variant='h5' className='mt-2'>
+        <Text variant='h5' color='heading' className='mt-2'>
           With an account, you can:
         </Text>
         {accountFeatures.map((feature, index) => (
-          <Text key={index} color='secondary'>
-            <>&bull; </>
+          <Text key={index} color='body'>
+            <>&bull;{'  '}</>
             {feature}
           </Text>
         ))}

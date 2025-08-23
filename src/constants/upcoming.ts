@@ -1,0 +1,42 @@
+export const upcomingPrograms: UpcomingProgramme[] = [
+  {
+    id: '1',
+    date: '2025-09-10T18:00:00Z',
+    topic: 'The Power of Prayer',
+    type: 'shilo',
+    time: '09:00 AM',
+    status: 'upcoming',
+  },
+  {
+    id: '2',
+    date: '2025-10-05T16:00:00Z',
+    topic: 'Empowered for Excellence',
+    type: 'sunday',
+    time: '07:00 AM',
+    status: 'past',
+  },
+  {
+    id: '3',
+    date: '2025-11-02T09:00:00Z',
+    topic: 'Gratitude and Praise',
+    type: 'sunday',
+    time: '07:00 AM',
+    status: 'upcoming',
+  },
+  {
+    id: '4',
+    date: '2025-11-15T20:00:00Z',
+    topic: "Seeking God's Presence",
+    type: 'shilo',
+    time: '09:00 AM',
+    status: 'past',
+  },
+  {
+    id: '5',
+    date: '2025-12-20T17:00:00Z',
+    topic: 'Joy to the World',
+    type: 'shilo',
+    time: '09:00 AM',
+    status: 'upcoming',
+  },
+];

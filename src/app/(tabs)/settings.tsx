@@ -1,4 +1,4 @@
-import { Text, ThemedCard, ThemedDivider, View , IconSymbol } from '@/src/components';
+import { Card, IconSymbol, Text, ThemedDivider, View } from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import React, { useEffect, useState } from 'react';
 import { Appearance, Pressable, StyleSheet } from 'react-native';
@@ -70,7 +70,7 @@ export default function Settings() {
     <View safe={true}>
       <Text style={styles.sectionTitle}>Theme</Text>
 
-      <ThemedCard border>
+      <Card variant='primary'>
         <ThemeOption
           theme={theme}
           label='Automatic'
@@ -102,7 +102,7 @@ export default function Settings() {
           onPress={() => handleThemeChange('dark')}
           icon={<IconSymbol size={20} color={theme.border} name='moon.fill' />}
         />
-      </ThemedCard>
+      </Card>
 
       <Text style={styles.note}>
         Automatic is only supported on operating systems that allow you to

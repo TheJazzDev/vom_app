@@ -6,12 +6,15 @@ import {
   View,
 } from '@/src/components';
 import { mockMembers } from '@/src/constants/members';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { FlatList, Platform, StyleSheet } from 'react-native';
+import { FlatList, Platform, TouchableOpacity } from 'react-native';
 
 export default function MembersScreen() {
   const [searchTerm, setSearchTerm] = useState('');
   const [gender, setGender] = useState<Gender>('all');
+
+  const router = useRouter();
 
   const filteredMembers = mockMembers.filter((member) => {
     const matchesSearch =
@@ -27,7 +30,7 @@ export default function MembersScreen() {
   });
 
   return (
-    <View safe={true}>
+    <View safe>
       <ThemedTextInput
         inputType='search'
         placeholder='Search members, roles, bands, or departments...'
@@ -36,6 +39,7 @@ export default function MembersScreen() {
       <Tab<Gender>
         value={gender}
         onChange={setGender}
+        variant='cards'
         tabs={[
           { label: 'All', value: 'all', count: mockMembers.length },
           {
@@ -56,17 +60,17 @@ export default function MembersScreen() {
       <FlatList
         data={filteredMembers}
         keyExtractor={(member) => member.id}
-        renderItem={({ item }) => <MemberCard member={item} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => router.push(`/members/${item.id}`)}
+            activeOpacity={0.7}>
+            <MemberCard member={item} />
+          </TouchableOpacity>
+        )}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
+        contentContainerStyle={{ paddingHorizontal: 5 }}
         showsHorizontalScrollIndicator={Platform.OS === 'web'}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  listContainer: {
-    paddingHorizontal: 5,
-  },
-});

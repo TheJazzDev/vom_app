@@ -1,3 +1,4 @@
+import { capitalizeFirstLetter } from './capitalizeFirstLetter';
 import { formatDate } from './formatDate';
 
-export { formatDate };
+export { capitalizeFirstLetter, formatDate };

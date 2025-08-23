@@ -2,9 +2,9 @@ import { Fragment } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import Spacer from '../../Spacer';
 import { Text, View } from '../../UI';
-import { InfoRow } from '../InfoRow';
-import { OfficiatingCard } from '../OfficiatingCard';
-import { Section } from '../Section';
+import { InfoRow } from '../components/InfoRow';
+import { OfficiatingCard } from '../components/OfficiatingCard';
+import { Section } from '../components/Section';
 
 function formatList(arr: number[]) {
   if (!arr || arr.length === 0) return '';
@@ -22,10 +22,13 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
   }
 
   return (
-    <ScrollView id='Current'>
+    <ScrollView>
       <View className='flex-col gap-2 py-2'>
         {/* Header */}
-        <Text variant='h4' className='text-center tracking-widest'>
+        <Text
+          variant='h4'
+          color='heading'
+          className='text-center tracking-widest'>
           SUNDAY SERVICE PROGRAMME
         </Text>
         <InfoRow className='mx-auto' label='Date' value={data.date} />
@@ -52,19 +55,29 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
         </View>
 
         {/* Officiating Section */}
-        <View className='flex-row *:flex-1 gap-2'>
+        <View className='flex-row justify-between flex-wrap gap-y-2'>
           <OfficiatingCard
-            className='flex-1'
+            className='w-[49%]'
             label='Worship Leader'
             value={data.officiating.worshipLeader}
           />
           <OfficiatingCard
-            className='flex-1'
+            className='w-[49%]'
             label='Alt Worship Leader'
             value={data.officiating.alternateWorshipLeader}
           />
+          <OfficiatingCard
+            className='w-[49%]'
+            label='Preacher'
+            value={data.officiating.preacher}
+          />
+          <OfficiatingCard
+            className='w-[49%]'
+            label='Prayer Ministration'
+            value={data.officiating.prayerMinistration}
+          />
         </View>
-        <OfficiatingCard label='Preacher' value={data.officiating.preacher} />
+
         <OfficiatingCard
           label='Officiating Band'
           value={data.officiating.band.join(', ')}
@@ -76,7 +89,7 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
 
         <Spacer height={6} />
 
-        <Section title="WORKER'S PRAYER">
+        <Section title="A.  WORKER'S PRAYER">
           <InfoRow label='Time' value='7:00 AM - 07:30 AM' />
           <InfoRow
             name
@@ -85,7 +98,7 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
           />
         </Section>
 
-        <Section title='BIBLE STUDY'>
+        <Section title='B.  BIBLE STUDY'>
           <InfoRow label='Time' value='7:30 AM - 8:30 AM' />
           <InfoRow
             name
@@ -94,7 +107,7 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
           />
         </Section>
 
-        <Section title='A.  OPENING'>
+        <Section title='C.  OPENING'>
           <InfoRow
             label='1.  Processional Hynm'
             value={data.hynms.processional}
@@ -125,7 +138,7 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
           </View>
         </Section>
 
-        <Section title='B.  APPRECIATION, THANKSGIVING & TESTIMONIES'>
+        <Section title='D.  APPRECIATION, THANKSGIVING & TESTIMONIES'>
           <View className='flex-row gap-4'>
             <Text variant='h6'>6. Thanksgiving Hynm:</Text>
             <View>
@@ -158,13 +171,13 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
           <Text variant='h6'>10. Collection of Thanksgiving Offering</Text>
         </Section>
 
-        <Section title="C.  THE WORD / APOSTLES' CREED">
+        <Section title="E.  THE WORD / APOSTLES' CREED">
           <InfoRow name label='11.  Leson' value={data.officiating.lesson} />
           <InfoRow label='12.  Gloria' value='Choir to lead the Congregation' />
           <InfoRow label='13.  Apostless Creed' value='Church Minister' />
         </Section>
 
-        <Section title='D.  INTERCESSORY PRAYER'>
+        <Section title='F.  INTERCESSORY PRAYER'>
           <View className='flex-row gap-4'>
             <Text variant='h6'>14.</Text>
             <View>
@@ -195,13 +208,13 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
           </View>
         </Section>
 
-        <Section title='E.  ANNOUNCEMENT / FIRST TIMER'>
+        <Section title='G.  ANNOUNCEMENT / FIRST TIMER'>
           <InfoRow label='15.  Announcement' value='Church Secetary' />
           <InfoRow label='16.  Welcoming First Timer' value='Church Secetary' />
           <Text variant='h6'>17. Building Offereing</Text>
         </Section>
 
-        <Section title='F.  SERMON / PRAYER MINISTRATION'>
+        <Section title='H.  SERMON / PRAYER MINISTRATION'>
           <InfoRow label='18.  Hymn for Sermon' value={data.hynms.sermon} />
           <InfoRow label='19.  Sermonist' value={data.officiating.preacher} />
           <InfoRow
@@ -210,7 +223,7 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
           />
         </Section>
 
-        <Section title='G.  CLOSING'>
+        <Section title='I.  CLOSING'>
           <InfoRow label='21.  Closing Prayer' value='Worship Leader' />
           <InfoRow label='22.  Vesper' value={data.hynms.vesper} />
           <InfoRow label='23.  Grace' value='Leader-In-Charge' />

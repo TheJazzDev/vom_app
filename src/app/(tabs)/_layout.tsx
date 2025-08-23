@@ -4,7 +4,7 @@ import React from 'react';
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useTheme } from '@/src/hooks';
-import { TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
   const theme = useTheme();
@@ -16,20 +16,30 @@ export default function TabLayout() {
         headerShown: true,
         tabBarButton: HapticTab,
         headerTitleAlign: 'center',
-        headerTintColor: theme.text,
-        tabBarActiveTintColor: theme.activeTint,
-        tabBarInactiveTintColor: theme.inactiveTint,
+        headerTintColor: theme.brand,
+        tabBarActiveTintColor: theme.brand,
+        tabBarInactiveTintColor: theme.muted,
+        headerStyle: {
+          // height: 90,
+          backgroundColor: theme.background2,
+        },
         tabBarStyle: {
-          height: 90,
+          height: 85,
           paddingTop: 10,
+          borderTopColor: theme.border,
+          borderTopWidth: 1,
+          backgroundColor: theme.background2,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderStyle: 'solid',
         },
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
               router.push('/notification');
             }}
-            style={{ marginRight: 16 }}>
-            <IconSymbol size={28} name='bell.fill' color={theme.icon} />
+            style={{ marginRight: 12 }}>
+            <IconSymbol size={24} name='bell.fill' color={theme.muted} />
           </TouchableOpacity>
         ),
       }}>
@@ -38,7 +48,11 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol name={focused ? 'house.fill' : 'house'} color={color} />
+            <IconSymbol
+              size={22}
+              name={focused ? 'house.fill' : 'house'}
+              color={color}
+            />
           ),
         }}
       />
@@ -46,8 +60,10 @@ export default function TabLayout() {
         name='programme'
         options={{
           title: 'Programme',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
+              size={22}
               name={
                 focused ? 'list.bullet.clipboard.fill' : 'list.bullet.clipboard'
               }
@@ -63,6 +79,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
+              size={Platform.OS === 'ios' ? 32 : 22}
               name={focused ? 'person.3.sequence.fill' : 'person.3.sequence'}
               color={color}
             />
@@ -75,6 +92,7 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
+              size={22}
               name={focused ? 'person.fill' : 'person'}
               color={color}
             />
@@ -87,6 +105,7 @@ export default function TabLayout() {
           title: 'Settings',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
+              size={22}
               name={focused ? 'gearshape.fill' : 'gearshape'}
               color={color}
             />

@@ -12,13 +12,17 @@ export default function MembersLayout() {
       screenOptions={{
         headerShown: true,
         headerTitleAlign: 'center',
+        headerTintColor: theme.brand,
+        headerStyle: {
+          backgroundColor: theme.background2,
+        },
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
               router.push('/notification');
             }}
-            style={{ marginRight: 16 }}>
-            <IconSymbol size={28} name='bell.fill' color={theme.icon} />
+            style={{ marginRight: 12 }}>
+            <IconSymbol size={24} name='bell.fill' color={theme.muted} />
           </TouchableOpacity>
         ),
       }}>

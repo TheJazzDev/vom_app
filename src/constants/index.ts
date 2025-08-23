@@ -1,3 +1,5 @@
 import { Colors } from './Colors';
+import { sundayProgramme } from './sundayProgramme';
+import { mockMembers } from './members';
 
-export { Colors };
+export { Colors, sundayProgramme, mockMembers };

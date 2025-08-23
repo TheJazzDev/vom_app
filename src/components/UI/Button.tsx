@@ -25,23 +25,7 @@ interface ButtonProps extends TouchableOpacityProps {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
-  textVariant?:
-    | 'text'
-    | 'paragraph'
-    | 'h1'
-    | 'h2'
-    | 'h3'
-    | 'h4'
-    | 'h5'
-    | 'h6'
-    | 'caption'
-    | 'overline'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'body1'
-    | 'body2'
-    | 'button'
-    | 'label';
+  textVariant?: TextVariant;
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
 }
 
@@ -55,40 +39,40 @@ const getVariantStyles = (
   switch (variant) {
     case 'primary':
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-interactive-primary dark:bg-interactive-dark-primary border-interactive-primary dark:border-interactive-dark-primary active:bg-brand-primary-dark';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-primary border-border-primary dark:bg-dark-primary dark:border-dark-border-primary active:bg-tertiary dark:active:bg-dark-tertiary';
     case 'secondary':
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-interactive-secondary dark:bg-interactive-dark-secondary border-border-primary dark:border-border-dark-primary active:bg-neutral-200 dark:active:bg-neutral-600';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-secondary border-border-secondary dark:bg-dark-secondary dark:border-dark-border-secondary active:bg-tertiary dark:active:bg-dark-tertiary';
     case 'outline':
       return isDisabledOrLoading
-        ? 'bg-transparent border-interactive-disabled dark:border-interactive-dark-disabled border'
-        : 'bg-transparent border-border-secondary dark:border-border-dark-secondary border active:bg-neutral-50 dark:active:bg-neutral-800';
+        ? 'bg-transparent border-muted dark:border-dark-muted'
+        : 'bg-transparent border-border dark:border-dark-border active:bg-background dark:active:bg-dark-background';
     case 'ghost':
       return isDisabledOrLoading
         ? 'bg-transparent border-transparent'
-        : 'bg-transparent border-transparent active:bg-neutral-100 dark:active:bg-neutral-800';
+        : 'bg-transparent border-transparent active:bg-card dark:active:bg-dark-card';
     case 'destructive':
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-semantic-error border-semantic-error active:bg-red-600';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-error border-border-error dark:bg-dark-error dark:border-dark-border-error active:bg-red-700';
     case 'success':
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-semantic-success border-semantic-success active:bg-green-600';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-success border-border-success dark:bg-dark-success dark:border-dark-border-success active:bg-green-700';
     case 'warning':
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-semantic-warning border-semantic-warning active:bg-yellow-600';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-warning border-border-warning dark:bg-dark-warning dark:border-dark-border-warning active:bg-yellow-700';
     case 'info':
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-semantic-info border-semantic-info active:bg-blue-600';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-info border-border-info dark:bg-dark-info dark:border-dark-border-info active:bg-blue-700';
     default:
       return isDisabledOrLoading
-        ? 'bg-interactive-disabled dark:bg-interactive-dark-disabled border-interactive-disabled dark:border-interactive-dark-disabled'
-        : 'bg-interactive-primary dark:bg-interactive-dark-primary border-interactive-primary dark:border-interactive-dark-primary active:bg-brand-primary-dark';
+        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
+        : 'bg-primary border-border-primary dark:bg-dark-primary dark:border-dark-border-primary active:bg-tertiary dark:active:bg-dark-tertiary';
   }
 };
 
@@ -136,13 +120,15 @@ const getTextColor = (
   }
 
   switch (variant) {
+    case 'primary':
+      return 'neutral';
     case 'outline':
     case 'ghost':
       return 'primary';
     case 'secondary':
       return 'primary';
-    case 'primary':
-      return 'inverse';
+    // case 'primary':
+    //   return 'inverse';
     case 'destructive':
     case 'success':
     case 'warning':
@@ -221,12 +207,15 @@ export const Button: React.FC<ButtonProps> = ({
     }
   };
 
+  // const spinnerColor =
+  //   textColor === 'inverse'
+  //     ? '#FFFFFF'
+  //     : variant === 'outline' || variant === 'ghost'
+  //       ? '#8B5CF6'
+  //       : '#6B7280';
+
   const spinnerColor =
-    textColor === 'inverse'
-      ? '#FFFFFF'
-      : variant === 'outline' || variant === 'ghost'
-        ? '#8B5CF6'
-        : '#6B7280';
+    textColor === 'neutral' || textColor === 'inverse' ? '#FFFFFF' : '#0084ff';
 
   return (
     <TouchableOpacity

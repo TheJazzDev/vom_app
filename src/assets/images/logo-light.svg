@@ -1,0 +1,19 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners (app store compliant) -->
+  <rect width="256" height="256" rx="50" ry="50" fill="#e5f2ff"/>
+
+  <!-- Main text: CSMC -->
+  <text x="128" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="2px" fill="#0084ff">
+    CSMC
+  </text>
+
+  <!-- Sub text: VOM -->
+  <text x="128" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="2px" fill="#0084ff">
+    VOM
+  </text>
+
+  <!-- Tagline -->
+  <text x="128" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" letter-spacing="2px" fill="#0084ff" opacity="0.8">
+    CONNECT • SERVE • GROW
+  </text>
+</svg>

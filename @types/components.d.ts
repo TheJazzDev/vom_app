@@ -12,7 +12,7 @@ declare global {
     | 'overline'
     | 'subtitle1'
     | 'subtitle2'
-    | 'body1'
+    | 'body'
     | 'body2'
     | 'button'
     | 'label';

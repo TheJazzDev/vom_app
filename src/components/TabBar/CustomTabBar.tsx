@@ -2,10 +2,10 @@ import { BlurView } from 'expo-blur';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Tab } from '../Tab';
-import { ThemedCard } from '../UI';
+import { Card } from '../UI';
+import { Tab } from '../UI/Tab';
 
-// Enhanced blur background with ThemedCard integration
+// Enhanced blur background with Card integration
 export function EnhancedBlurTabBarBackground() {
   //   const tabBarHeight = useBottomTabBarHeight();
 
@@ -19,11 +19,11 @@ export function EnhancedBlurTabBarBackground() {
     );
   }
 
-  // Android fallback with ThemedCard gradient
+  // Android fallback with Card gradient
   return (
-    <ThemedCard
-      gradient
-      gradientType='subtle'
+    <Card
+      // gradient
+      // gradientType='subtle'
       shadow
       style={[
         StyleSheet.absoluteFill,
@@ -105,7 +105,7 @@ export function CustomTabBar({
   );
 }
 
-// Alternative: Floating Tab Bar with ThemedCard
+// Alternative: Floating Tab Bar with Card
 export function FloatingTabBar({
   state,
   descriptors,
@@ -137,9 +137,9 @@ export function FloatingTabBar({
 
   return (
     <View style={styles.floatingContainer}>
-      <ThemedCard
-        gradient
-        gradientType='brand'
+      <Card
+        // gradient
+        // gradientType='brand'
         shadow
         style={styles.floatingCard}>
         <Tab
@@ -151,7 +151,7 @@ export function FloatingTabBar({
           size='sm'
           fullWidth
         />
-      </ThemedCard>
+      </Card>
     </View>
   );
 }
@@ -193,9 +193,9 @@ export function CardTabBar({
   };
 
   return (
-    <ThemedCard
-      gradient
-      gradientType='subtle'
+    <Card
+      // gradient
+      // gradientType='subtle'
       shadow
       style={[
         styles.cardTabBarContainer,
@@ -210,7 +210,7 @@ export function CardTabBar({
         size='md'
         fullWidth
       />
-    </ThemedCard>
+    </Card>
   );
 }
 

@@ -90,7 +90,7 @@ export default function MembersDetails() {
               <IconSymbol
                 name='message.badge.fill'
                 size={16}
-                color={theme.text}
+                color={theme.primary}
               />
             }>
             Hello

@@ -30,14 +30,14 @@ export default function RootLayout() {
           headerShown: false,
           title: 'VOM',
           headerTitleAlign: 'center',
-          headerTintColor: theme.text,
+          headerTintColor: theme.brand,
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
                 // router.push('/notification');
               }}
               style={{ marginRight: 16 }}>
-              <IconSymbol size={28} name='bell.fill' color={theme.icon} />
+              <IconSymbol size={28} name='bell.fill' color={theme.brand} />
             </TouchableOpacity>
           ),
         }}>

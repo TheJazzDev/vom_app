@@ -15,7 +15,7 @@ interface TextProps extends RNTextProps {
     | 'overline'
     | 'subtitle1'
     | 'subtitle2'
-    | 'body1'
+    | 'body'
     | 'body2'
     | 'button'
     | 'label';
@@ -23,7 +23,13 @@ interface TextProps extends RNTextProps {
     | 'primary'
     | 'secondary'
     | 'tertiary'
-    | 'inverse'
+    | 'accent'
+    | 'muted'
+    | 'body'
+    | 'heading'
+    | 'placeholder'
+    | 'background'
+    | 'card'
     | 'success'
     | 'warning'
     | 'error'
@@ -52,7 +58,7 @@ const getVariantStyles = (variant: TextProps['variant']) => {
       return 'text-base font-medium leading-relaxed tracking-normal';
     case 'subtitle2':
       return 'text-sm font-medium leading-relaxed tracking-wide';
-    case 'body1':
+    case 'body':
       return 'text-base font-normal leading-relaxed tracking-normal';
     case 'body2':
       return 'text-sm font-normal leading-relaxed tracking-normal';
@@ -75,33 +81,47 @@ const getVariantStyles = (variant: TextProps['variant']) => {
 const getColorStyles = (color: TextProps['color']) => {
   switch (color) {
     case 'primary':
-      return 'text-text-primary dark:text-text-dark-primary';
+      return 'text-primary dark:text-dark-primary';
     case 'secondary':
-      return 'text-text-secondary dark:text-text-dark-secondary';
+      return 'text-secondary dark:text-dark-secondary';
     case 'tertiary':
-      return 'text-text-tertiary dark:text-text-dark-tertiary';
-    case 'inverse':
-      return 'text-text-inverse dark:text-text-dark-inverse';
-    case 'neutral':
-      return 'text-white';
+      return 'text-tertiary dark:text-dark-tertiary';
+    case 'accent':
+      return 'text-accent dark:text-dark-accent';
+    case 'muted':
+      return 'text-muted dark:text-dark-muted';
+    case 'heading':
+      return 'text-heading dark:text-dark-heading';
+    case 'body':
+      return 'text-body dark:text-dark-body';
+    case 'body2':
+      return 'text-body2 dark:text-dark-body2';
+    case 'placeholder':
+      return 'text-placeholder dark:text-dark-placeholder';
+    case 'background':
+      return 'text-background dark:text-dark-background';
+    case 'card':
+      return 'text-card dark:text-dark-card';
     case 'success':
-      return 'text-semantic-success dark:text-semantic-success';
+      return 'text-success dark:text-dark-success';
     case 'warning':
-      return 'text-semantic-warning dark:text-semantic-warning';
+      return 'text-warning dark:text-dark-warning';
     case 'error':
-      return 'text-semantic-error dark:text-semantic-error';
+      return 'text-error dark:text-dark-error';
     case 'info':
-      return 'text-semantic-info dark:text-semantic-info';
+      return 'text-info dark:text-dark-info';
     case 'brand':
-      return 'text-brand-primary dark:text-brand-primary';
+      return 'text-brand dark:text-dark-brand';
+    case 'neutral':
+      return 'text-white dark:text-white/90';
     default:
-      return 'text-text-primary dark:text-text-dark-primary';
+      return 'text-body dark:text-dark-body';
   }
 };
 
 export const Text: React.FC<TextProps> = ({
   variant = 'text',
-  color = 'primary',
+  color = 'body',
   children,
   className = '',
   style,

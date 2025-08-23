@@ -1,24 +1,24 @@
 {
   "expo": {
-    "name": "vom_app",
-    "slug": "vom_app",
+    "name": "VOM",
+    "slug": "vom",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/images/VOM_Dark_512x512.png",
     "scheme": "vomapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jazzdev.vom-app"
+      "bundleIdentifier": "com.jazzdev.vom"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0D0D2B"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.jazzdev.vom_app"
+      "package": "com.jazzdev.vom"
     },
     "web": {
       "bundler": "metro",
@@ -30,10 +30,10 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash-icon.png",
+          "image": "./src/assets/images/VOM_Light_512x512.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#0D0D2B"
         }
       ]
     ],

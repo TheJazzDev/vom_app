@@ -7,10 +7,10 @@ export type CardProps = ViewProps & {
     | 'default'
     | 'elevated'
     | 'outlined'
-    | 'filled'
     | 'ghost'
     | 'primary'
     | 'secondary'
+    | 'tertiary'
     | 'success'
     | 'warning'
     | 'error';
@@ -24,62 +24,62 @@ export type CardProps = ViewProps & {
 
 const cardVariants = {
   default: {
-    light: 'bg-white border-gray-200',
-    dark: 'bg-gray-900 border-gray-700',
+    light: 'bg-background/50 border border-border',
+    dark: 'dark:bg-dark-background/50 border dark:border-dark-border',
     shadow: 'shadow-sm',
     border: true,
   },
   elevated: {
-    light: 'bg-white border-gray-100',
-    dark: 'bg-gray-800 border-gray-600',
+    light: 'bg-card border border',
+    dark: 'dark:bg-dark-card border dark:border',
     shadow: 'shadow-lg',
     border: false,
   },
   outlined: {
-    light: 'bg-transparent border-gray-300',
-    dark: 'bg-transparent border-gray-600',
+    light: 'bg-transparent border border-border',
+    dark: 'dark:bg-transparent border dark:border-dark-border',
     shadow: '',
     border: true,
-  },
-  filled: {
-    light: 'bg-gray-50 border-gray-200',
-    dark: 'bg-gray-800 border-gray-700',
-    shadow: '',
-    border: false,
   },
   ghost: {
-    light: 'bg-gray-50/50 border-transparent',
-    dark: 'bg-gray-800/50 border-transparent',
+    light: 'bg-background/50 border border-transparent',
+    dark: 'dark:bg-dark-background/50 border border-transparent',
+    shadow: '',
+    border: true,
+  },
+  primary: {
+    light: 'bg-primary/10 border border-primary',
+    dark: 'dark:bg-primary/20 border dark:border-primary',
+    shadow: 'shadow-sm',
+    border: false,
+  },
+  secondary: {
+    light: 'bg-secondary/10 border border-secondary',
+    dark: 'dark:bg-secondary/20 border dark:border-secondary',
+    shadow: 'shadow-sm',
+    border: true,
+  },
+  tertiary: {
+    light: 'bg-background border border-tertiary',
+    dark: 'dark:bg-dark-background border dark:border-dark-tertiary',
     shadow: '',
     border: false,
   },
-  primary: {
-    light: 'bg-blue-50 border-blue-200',
-    dark: 'bg-blue-900/20 border-blue-700/50',
-    shadow: 'shadow-sm',
-    border: true,
-  },
-  secondary: {
-    light: 'bg-purple-50 border-purple-200',
-    dark: 'bg-purple-900/20 border-purple-700/50',
-    shadow: 'shadow-sm',
-    border: true,
-  },
   success: {
-    light: 'bg-green-50 border-green-200',
-    dark: 'bg-green-900/20 border-green-700/50',
+    light: 'bg-success/10 border border-success',
+    dark: 'dark:bg-success/20 border dark:border-success',
     shadow: 'shadow-sm',
     border: true,
   },
   warning: {
-    light: 'bg-yellow-50 border-yellow-200',
-    dark: 'bg-yellow-900/20 border-yellow-700/50',
+    light: 'bg-warning/10 border border-warning',
+    dark: 'dark:bg-warning/20 border dark:border-warning',
     shadow: 'shadow-sm',
     border: true,
   },
   error: {
-    light: 'bg-red-50 border-red-200',
-    dark: 'bg-red-900/20 border-red-700/50',
+    light: 'bg-error/10 border border-error',
+    dark: 'dark:bg-error/20 border dark:border-error',
     shadow: 'shadow-sm',
     border: true,
   },
@@ -105,6 +105,22 @@ export function Card({
   ...otherProps
 }: CardProps) {
   const isLightMode = useColorScheme() === 'light';
+  const variantConfig = cardVariants[variant];
+  const sizeClasses = cardSizes[size];
+
+  const variantClasses = isLightMode ? variantConfig.light : variantConfig.dark;
+
+  const classes = [
+    fullWidth ? 'w-full' : 'w-auto',
+    sizeClasses,
+    variantClasses,
+    variantConfig.shadow,
+    disabled ? 'opacity-50' : '',
+    interactive ? 'active:scale-95 active:opacity-80' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const getShadowStyle = () => {
     if (!shadow) return {};
@@ -124,33 +140,6 @@ export function Card({
     }
   };
 
-  const variantConfig = cardVariants[variant];
-  const sizeClasses = cardSizes[size];
-
-  // Get variant classes based on theme
-  const variantClasses = isLightMode ? variantConfig.light : variantConfig.dark;
-
-  // Build complete class string
-  const classes = [
-    // Base classes
-    fullWidth ? 'w-full' : 'w-auto',
-    sizeClasses,
-    variantClasses,
-    variantConfig.shadow,
-
-    // Border classes
-    variantConfig.border ? 'border' : '',
-
-    // State classes
-    disabled ? 'opacity-50' : '',
-    interactive ? 'active:scale-95 active:opacity-80' : '',
-
-    // Custom classes
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   if (shadow) {
     return (
       <View style={getShadowStyle()}>
@@ -161,16 +150,9 @@ export function Card({
     );
   }
 
-  // No shadow - single container
   return (
     <View style={style} className={classes} {...otherProps}>
       {children}
     </View>
   );
-
-  // return (
-  //   <View style={style} className={classes} {...otherProps}>
-  //     {children}
-  //   </View>
-  // );
 }
