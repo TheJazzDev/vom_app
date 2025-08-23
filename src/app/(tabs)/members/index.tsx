@@ -30,7 +30,7 @@ export default function MembersScreen() {
   });
 
   return (
-    <View safe>
+    <View safe gradient>
       <ThemedTextInput
         inputType='search'
         placeholder='Search members, roles, bands, or departments...'
@@ -39,7 +39,7 @@ export default function MembersScreen() {
       <Tab<Gender>
         value={gender}
         onChange={setGender}
-        variant='cards'
+        variant='pills'
         tabs={[
           { label: 'All', value: 'all', count: mockMembers.length },
           {

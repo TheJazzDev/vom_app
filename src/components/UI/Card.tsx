@@ -15,7 +15,6 @@ export type CardProps = ViewProps & {
     | 'warning'
     | 'error';
   shadow?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
   disabled?: boolean;
   interactive?: boolean;
   fullWidth?: boolean;
@@ -23,79 +22,29 @@ export type CardProps = ViewProps & {
 };
 
 const cardVariants = {
-  default: {
-    light: 'bg-background/50 border border-border',
-    dark: 'dark:bg-dark-background/50 border dark:border-dark-border',
-    shadow: 'shadow-sm',
-    border: true,
-  },
-  elevated: {
-    light: 'bg-card border border',
-    dark: 'dark:bg-dark-card border dark:border',
-    shadow: 'shadow-lg',
-    border: false,
-  },
-  outlined: {
-    light: 'bg-transparent border border-border',
-    dark: 'dark:bg-transparent border dark:border-dark-border',
-    shadow: '',
-    border: true,
-  },
-  ghost: {
-    light: 'bg-background/50 border border-transparent',
-    dark: 'dark:bg-dark-background/50 border border-transparent',
-    shadow: '',
-    border: true,
-  },
-  primary: {
-    light: 'bg-primary/10 border border-primary',
-    dark: 'dark:bg-primary/20 border dark:border-primary',
-    shadow: 'shadow-sm',
-    border: false,
-  },
-  secondary: {
-    light: 'bg-secondary/10 border border-secondary',
-    dark: 'dark:bg-secondary/20 border dark:border-secondary',
-    shadow: 'shadow-sm',
-    border: true,
-  },
-  tertiary: {
-    light: 'bg-background border border-tertiary',
-    dark: 'dark:bg-dark-background border dark:border-dark-tertiary',
-    shadow: '',
-    border: false,
-  },
-  success: {
-    light: 'bg-success/10 border border-success',
-    dark: 'dark:bg-success/20 border dark:border-success',
-    shadow: 'shadow-sm',
-    border: true,
-  },
-  warning: {
-    light: 'bg-warning/10 border border-warning',
-    dark: 'dark:bg-warning/20 border dark:border-warning',
-    shadow: 'shadow-sm',
-    border: true,
-  },
-  error: {
-    light: 'bg-error/10 border border-error',
-    dark: 'dark:bg-error/20 border dark:border-error',
-    shadow: 'shadow-sm',
-    border: true,
-  },
-};
-
-const cardSizes = {
-  sm: 'rounded-md',
-  md: 'rounded-lg',
-  lg: 'rounded-xl',
-  xl: 'rounded-2xl',
+  default: 'bg-surface dark:bg-dark-surface p-4 mb-2 rounded-xl',
+  outlined:
+    'bg-transparent border border-border dark:bg-transparent border dark:border-dark-border p-4 mb-2 rounded-xl',
+  elevated: 'bg-secondary/10 dark:bg-secondary/20 border border-secondary dark:border-secondary p-2 mb-2 rounded-md',
+  ghost:
+    'bg-background/50 border border-transparent dark:bg-dark-background/50 border border-transparent',
+  primary:
+    'bg-primary/10 border border-primary dark:bg-primary/20 border dark:border-primary',
+  secondary:
+    'bg-secondary/10 border border-secondary dark:bg-secondary/20 border dark:border-secondary mb-2',
+  tertiary:
+    'bg-background border border-tertiary dark:bg-dark-background border dark:border-dark-tertiary',
+  success:
+    'bg-success/10 border border-success dark:bg-success/20 border dark:border-success',
+  warning:
+    'bg-warning/10 border border-warning dark:bg-warning/20 border dark:border-warning',
+  error:
+    'bg-error/10 border border-error dark:bg-error/20 border dark:border-error',
 };
 
 export function Card({
   style,
   variant = 'default',
-  size = 'md',
   shadow = false,
   disabled = false,
   interactive = false,
@@ -106,15 +55,13 @@ export function Card({
 }: CardProps) {
   const isLightMode = useColorScheme() === 'light';
   const variantConfig = cardVariants[variant];
-  const sizeClasses = cardSizes[size];
 
-  const variantClasses = isLightMode ? variantConfig.light : variantConfig.dark;
+  // const variantClasses = isLightMode ? variantConfig.light : variantConfig.dark;
 
   const classes = [
     fullWidth ? 'w-full' : 'w-auto',
-    sizeClasses,
-    variantClasses,
-    variantConfig.shadow,
+    variantConfig,
+    // variantConfig.shadow,
     disabled ? 'opacity-50' : '',
     interactive ? 'active:scale-95 active:opacity-80' : '',
     className,

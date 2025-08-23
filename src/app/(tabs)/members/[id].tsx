@@ -1,4 +1,12 @@
-import { Badge, BandBadge, ContactInfo, Text, View,  Button, IconSymbol } from '@/src/components';
+import {
+  Badge,
+  BandBadge,
+  Button,
+  ContactInfo,
+  IconSymbol,
+  Text,
+  View,
+} from '@/src/components';
 import { mockMembers } from '@/src/constants/members';
 import { useTheme } from '@/src/hooks';
 import { useLocalSearchParams } from 'expo-router';
@@ -16,8 +24,8 @@ export default function MembersDetails() {
   }
 
   return (
-    <ScrollView>
-      <View className='py-4 px-2'>
+    <View safe gradient className='py-4 px-4'>
+      <ScrollView>
         <Image
           source={{ uri: selectedMember.image }}
           className='w-32 h-32 rounded-md mx-auto'
@@ -35,7 +43,7 @@ export default function MembersDetails() {
           </View>
           <View className='flex-row gap-2 mt-2 flex-wrap'>
             {selectedMember.roles.map((role: string) => (
-              <Badge key={role} size='sm' variant='secondary'>
+              <Badge key={role} size='sm' variant='outline'>
                 {role}
               </Badge>
             ))}
@@ -56,6 +64,7 @@ export default function MembersDetails() {
             {selectedMember.band.map((band: string) => (
               <BandBadge key={band} band={band} />
             ))}
+            {selectedMember.band.length === 0 && <Text>-</Text>}
           </View>
         </View>
 
@@ -71,21 +80,17 @@ export default function MembersDetails() {
         {/* Buttons */}
         <View className='flex flex-row gap-2'>
           <Button
-            textVariant='h4'
-            className='w-[50%]'
+            textVariant='h6'
+            className='w-[49%]'
             icon={
-              <IconSymbol
-                name='phone.fill'
-                size={16}
-                color={theme.background}
-              />
+              <IconSymbol name='phone.fill' size={16} color={theme.heading} />
             }>
             Hello
           </Button>
           <Button
-            textVariant='h4'
-            className='w-[50%]'
-            variant='secondary'
+            textVariant='h6'
+            className='w-[49%]'
+            variant='outline'
             icon={
               <IconSymbol
                 name='message.badge.fill'
@@ -96,7 +101,7 @@ export default function MembersDetails() {
             Hello
           </Button>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }

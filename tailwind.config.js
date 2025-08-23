@@ -65,7 +65,6 @@
 //   plugins: [],
 // };
 
-
 /** @type {import('tailwindcss').Config} */
 // Tailwind: extend colors → https://tailwindcss.com/docs/theme#extending-the-default-theme
 // Tailwind: border color utilities → https://tailwindcss.com/docs/border-color
@@ -76,71 +75,48 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /* ===== Brand system (LIGHT) ===== */
-        brand: '#0D1B2A',         // identity
-        primary: '#1B263B',       // headings / strong UI
-        secondary: '#415A77',     // secondary text / icons
-        tertiary: '#778DA9',      // buttons / accents
-        accent: '#A9BCD0',        // subtle accents
-
+        brand: '#2563EB', 
+        primary: '#1D4ED8',
+        secondary: '#415A77',
+        tertiary: '#778DA9',
         heading: '#0D1B2A',
         body: '#1B263B',
         muted: '#415A77',
-        text: '#0D1B2A',          // alias if you prefer text-*
-
+        text: '#0D1B2A',
         background: '#E5F2FF',
         card: '#FFFFFF',
         surface: 'rgba(0,0,0,0.05)',
         surfaceStrong: 'rgba(0,0,0,0.08)',
-
-        // Borders (LIGHT)
-        border: '#C7D3E6',                // default hairline/dividers
-        'border-primary': '#1B263B',      // strong strokes / focus
-        'border-secondary': '#415A77',    // medium strokes
-        'border-tertiary': '#778DA9',     // subtle strokes
-        'border-accent': '#A9BCD0',       // accent strokes
+        border: '#C7D3E6',
+        'border-primary': '#1B263B',
+        'border-secondary': '#415A77',
+        'border-tertiary': '#778DA9',
         'border-muted': 'rgba(0,0,0,0.10)',
-
-        // Light gradient tokens to mirror dark palette
-        light: {
-          gradient1: '#E5F2FF',
-          gradient2: '#CFE0F5',
-          gradient3: '#B0C9E8',
-        },
-
-        /* ===== Brand system (DARK) ===== */
+        gradient1: '#E5F2FF',
+        gradient2: '#CFE0F5',
+        gradient3: '#B0C9E8',
         dark: {
-          brand: '#0D1B2A',
-          primary: '#1B263B',
+          brand: '#60A5FA',
+          primary: '#3B82F6',
           secondary: '#415A77',
           tertiary: '#778DA9',
-          accent: '#A9BCD0',
-
           heading: '#FFFFFF',
           body: '#A9BCD0',
-          muted: '#A9BCD0',
+          muted: '#707d97',
           text: '#FFFFFF',
-
           background: '#0D0D2B',
           card: '#112240',
           surface: 'rgba(255,255,255,0.08)',
           surfaceStrong: 'rgba(255,255,255,0.10)',
-
-          // Borders (DARK)
-          border: '#2B3A55',                // neutral divider on dark
-          'border-primary': '#415A77',      // strong strokes / focus
+          border: '#2B3A55',
+          'border-primary': '#415A77',
           'border-secondary': '#778DA9',
           'border-tertiary': '#A9BCD0',
-          'border-accent': '#A9BCD0',
           'border-muted': 'rgba(255,255,255,0.12)',
-
-          // Dark gradient tokens from your LinearGradient
           gradient1: '#0D1B2A',
           gradient2: '#1B263B',
           gradient3: '#415A77',
         },
-
-        // Status (shared)
         success: '#16a34a',
         error: '#dc2626',
         warning: '#f59e0b',

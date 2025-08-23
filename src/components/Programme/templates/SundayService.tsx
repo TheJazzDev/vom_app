@@ -12,7 +12,7 @@ function formatList(arr: number[]) {
   return arr.slice(0, -1).join(', ') + ' & ' + arr[arr.length - 1];
 }
 
-export function SundayServiceTemplate({ data }: { data: SundayService }) {
+export function SundayServiceTemplate({ data }: { data: SundayProgramme }) {
   if (!data) {
     return (
       <Text variant='h6' className='text-center mt-10 italic'>
@@ -55,7 +55,7 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
         </View>
 
         {/* Officiating Section */}
-        <View className='flex-row justify-between flex-wrap gap-y-2'>
+        <View className='flex-row justify-between flex-wrap'>
           <OfficiatingCard
             className='w-[49%]'
             label='Worship Leader'
@@ -76,16 +76,17 @@ export function SundayServiceTemplate({ data }: { data: SundayService }) {
             label='Prayer Ministration'
             value={data.officiating.prayerMinistration}
           />
+          <OfficiatingCard
+            className='w-[100%]'
+            label='Officiating Band'
+            value={data.officiating.band.join(', ')}
+          />
+          <OfficiatingCard
+            className='w-[100%]'
+            label='Officiating Ministers'
+            value={data.officiating.ministers.join(', ')}
+          />
         </View>
-
-        <OfficiatingCard
-          label='Officiating Band'
-          value={data.officiating.band.join(', ')}
-        />
-        <OfficiatingCard
-          label='Officiating Ministers'
-          value={data.officiating.ministers.join(', ')}
-        />
 
         <Spacer height={6} />
 

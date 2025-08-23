@@ -67,7 +67,7 @@ export default function Settings() {
   };
 
   return (
-    <View safe={true}>
+    <View safe={true} gradient>
       <Text style={styles.sectionTitle}>Theme</Text>
 
       <Card variant='primary'>

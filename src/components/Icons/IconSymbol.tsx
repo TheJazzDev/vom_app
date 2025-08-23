@@ -47,6 +47,13 @@ const MAPPING: IconMapping = {
   'info.bubble.fill': 'information-circle',
   calendar: 'calendar-outline',
   'clock.circle': 'time-outline',
+  'megaphone.fill': 'megaphone',
+  'book.fill': 'book',
+  'book': 'book-outline',
+  'play.circle.fill': 'play-circle',
+  'hand.palm.facing.fill': 'hand-left',
+  'hands.clap.fill': 'hand-right',
+  'hands.sparkles': 'sparkles',
 } satisfies IconMapping;
 
 /**

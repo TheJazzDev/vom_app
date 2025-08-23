@@ -54,45 +54,54 @@ export function Tab<T>({
   const widths = useRef<number[]>([]);
   const positions = useRef<number[]>([]);
   const indicator = useRef(new Animated.Value(0)).current;
+  const layoutComplete = useRef<boolean[]>([]);
   const activeIndex = tabs.findIndex((t) => t.value === value);
 
+  // Initialize indicator position after all layouts are complete
   useEffect(() => {
-    if (
-      positions.current[activeIndex] !== undefined &&
-      animationType !== 'none'
-    ) {
-      const animation =
-        animationType === 'spring'
-          ? Animated.spring(indicator, {
-              toValue: positions.current[activeIndex],
-              useNativeDriver: false,
-              tension: 100,
-              friction: 8,
-            })
-          : Animated.timing(indicator, {
-              toValue: positions.current[activeIndex],
-              duration: 200,
-              useNativeDriver: false,
-            });
-      animation.start();
+    const allLayoutsComplete =
+      layoutComplete.current.length === tabs.length &&
+      layoutComplete.current.every(Boolean);
+
+    if (allLayoutsComplete && positions.current[activeIndex] !== undefined) {
+      if (animationType === 'none') {
+        indicator.setValue(positions.current[activeIndex]);
+      } else {
+        const animation =
+          animationType === 'spring'
+            ? Animated.spring(indicator, {
+                toValue: positions.current[activeIndex],
+                useNativeDriver: false,
+                tension: 100,
+                friction: 8,
+              })
+            : Animated.timing(indicator, {
+                toValue: positions.current[activeIndex],
+                duration: 200,
+                useNativeDriver: false,
+              });
+        animation.start();
+      }
     }
-  }, [activeIndex, animationType]);
+  }, [activeIndex, animationType, layoutComplete.current]);
 
   const handleLayout = (e: LayoutChangeEvent, i: number) => {
     const { width, x } = e.nativeEvent.layout;
     widths.current[i] = width;
     positions.current[i] = x;
+    layoutComplete.current[i] = true;
   };
 
   const getContainerStyle = () => {
     const baseStyle = 'relative flex-row overflow-hidden';
 
     const backgroundStyle = {
-      elevated: 'bg-background dark:bg-dark-background',
-      primary: 'bg-primary/10 dark:bg-dark-primary/20',
+      elevated: 'bg-card dark:bg-dark-card',
+      primary: 'bg-brand/10 dark:bg-dark-brand/20',
       secondary: 'bg-secondary/10 dark:bg-dark-secondary/20',
       transparent: 'bg-transparent',
-      gradient: '',
+      gradient:
+        'bg-gradient-to-r from-gradient1 to-gradient2 dark:from-dark-gradient1 dark:to-dark-gradient2',
     }[background];
 
     const variantStyle = {
@@ -101,8 +110,7 @@ export function Tab<T>({
       underline: '',
       buttons: fullWidth ? 'gap-2' : 'gap-2 justify-center',
       minimal: '',
-      cards: 'gap-0',
-      none: '',
+      cards: 'gap-1',
     }[variant];
 
     const roundedStyle = {
@@ -125,7 +133,7 @@ export function Tab<T>({
   };
 
   const getTabStyle = (isActive: boolean, isDisabled: boolean) => {
-    const baseStyle = 'items-center justify-center';
+    const baseStyle = 'items-center justify-center transition-colors';
 
     const sizeStyle = {
       sm: 'py-2 px-3',
@@ -143,36 +151,35 @@ export function Tab<T>({
     let variantStyle = '';
 
     switch (variant) {
-      case 'default':
-        variantStyle = isActive
-          ? 'bg-primary/20 dark:bg-dark-primary/20'
-          : 'bg-transparent';
-        break;
       case 'pills':
-        // Remove background - let the animated indicator handle it
-        variantStyle = 'bg-transparent rounded-full mx-0.5 relative z-10';
+        variantStyle = isActive
+          ? 'bg-brand text-white rounded-full dark:bg-dark-brand'
+          : 'bg-transparent text-body rounded-full hover:bg-surface dark:hover:bg-dark-surface';
         break;
       case 'underline':
-        variantStyle = 'bg-transparent';
+        variantStyle = isActive
+          ? 'border-b-2 border-brand text-brand dark:border-dark-brand dark:text-dark-brand'
+          : 'text-body dark:text-dark-body border-b-2 border-transparent';
         break;
       case 'buttons':
-        // Remove background for active state - let the animated indicator handle it
-        variantStyle =
-          'bg-transparent border border-primary/30 dark:border-dark-primary/30 rounded-md relative z-10';
+        variantStyle = isActive
+          ? 'bg-brand text-white rounded-md dark:bg-dark-brand'
+          : 'border border-border text-body rounded-md dark:border-dark-border dark:text-dark-body hover:bg-surface dark:hover:bg-dark-surface';
+        break;
+      case 'cards':
+        variantStyle = isActive
+          ? 'bg-brand text-white rounded-lg dark:bg-dark-brand'
+          : 'bg-card text-body rounded-lg border border-border dark:bg-dark-card dark:text-dark-body dark:border-dark-border hover:bg-surface dark:hover:bg-dark-surface';
         break;
       case 'minimal':
         variantStyle = isActive
-          ? 'bg-primary/10 dark:bg-dark-primary/10'
-          : 'bg-transparent';
-        break;
-      case 'cards':
-        // Remove background - let the animated indicator handle it
-        variantStyle = 'bg-transparent rounded-lg mx-1 relative z-10';
+          ? 'text-brand dark:text-dark-brand'
+          : 'text-body dark:text-dark-body';
         break;
       default:
         variantStyle = isActive
-          ? 'bg-primary/10 dark:bg-dark-primary/10'
-          : 'bg-transparent';
+          ? 'bg-brand/10 text-brand rounded-md dark:bg-dark-brand/20 dark:text-dark-brand'
+          : 'text-body dark:text-dark-body hover:bg-surface dark:hover:bg-dark-surface';
     }
 
     const disabledStyle = isDisabled ? 'opacity-50' : '';
@@ -181,27 +188,20 @@ export function Tab<T>({
   };
 
   const getTextColor = (isActive: boolean, isDisabled: boolean) => {
-    if (isDisabled) return 'tertiary';
+    if (isDisabled) return 'muted';
 
-    switch (variant) {
-      case 'default':
-        return isActive ? 'inverse' : 'primary';
-      case 'pills':
-      case 'buttons':
-      case 'cards':
-        return isActive ? 'neutral' : 'body';
-      case 'underline':
-      case 'minimal':
-        return isActive ? 'brand' : 'body';
-      default:
-        return isActive ? 'brand' : 'inverse';
+    // For variants that handle their own text colors in styles
+    if (['pills', 'buttons', 'cards'].includes(variant) && isActive) {
+      return 'inverse';
     }
+
+    return isActive ? 'brand' : 'body';
   };
 
   const getIndicatorStyle = () => {
     if (!showIndicator) return null;
 
-    const baseStyle = 'absolute bg-primary dark:bg-dark-primary';
+    const baseStyle = 'absolute bg-brand dark:bg-dark-brand';
 
     // Handle variants that need background sliding animation
     if (['pills', 'buttons', 'cards'].includes(variant)) {
@@ -211,7 +211,7 @@ export function Tab<T>({
         case 'buttons':
           return `top-0 bottom-0 rounded-md ${baseStyle}`;
         case 'cards':
-          return `top-1 bottom-1 rounded-lg ${baseStyle} mx-1`;
+          return `top-0 bottom-0 rounded-lg ${baseStyle}`;
         default:
           return null;
       }
@@ -219,27 +219,38 @@ export function Tab<T>({
 
     switch (indicatorType) {
       case 'line':
-        return 'bottom-0 h-1 rounded-t-md ' + baseStyle;
+        return `bottom-0 h-1 rounded-t-md ${baseStyle}`;
       case 'dot':
-        return 'absolute bottom-0 h-2 w-2 rounded-full ' + baseStyle;
+        return `bottom-1 h-1.5 w-1.5 rounded-full ${baseStyle} left-1/2 transform -translate-x-1/2`;
       case 'background':
-        return 'top-0 bottom-0 rounded-md opacity-20 ' + baseStyle;
+        return `top-0 bottom-0 rounded-md opacity-10 ${baseStyle}`;
       case 'border':
-        return 'top-0 bottom-0 w-0.5 left-0 ' + baseStyle;
+        return `top-0 bottom-0 w-0.5 left-0 rounded-r-sm ${baseStyle}`;
       default:
-        return 'bottom-0 h-0.5 ' + baseStyle;
+        return `bottom-0 h-0.5 ${baseStyle}`;
     }
   };
 
   const renderIndicator = () => {
     const indicatorStyle = getIndicatorStyle();
 
-    if (!indicatorStyle || !widths.current[activeIndex]) return null;
+    if (!indicatorStyle || !widths.current[activeIndex] || activeIndex === -1) {
+      return null;
+    }
 
     let animatedStyle = {};
 
     if (indicatorType === 'dot') {
-      animatedStyle = { left: indicator };
+      // For dot indicator, center it within the tab
+      animatedStyle = {
+        left: Animated.add(
+          indicator,
+          Animated.multiply(
+            new Animated.Value(widths.current[activeIndex] || 0),
+            0.5
+          )
+        ),
+      };
     } else if (['pills', 'buttons', 'cards'].includes(variant)) {
       // For background sliding variants, animate both width and position
       animatedStyle = {
@@ -248,7 +259,10 @@ export function Tab<T>({
         zIndex: -1, // Place behind the tab content
       };
     } else {
-      animatedStyle = { width: widths.current[activeIndex], left: indicator };
+      animatedStyle = {
+        width: widths.current[activeIndex],
+        left: indicator,
+      };
     }
 
     return <Animated.View className={indicatorStyle} style={animatedStyle} />;

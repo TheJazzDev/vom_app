@@ -16,7 +16,8 @@ interface ButtonProps extends TouchableOpacityProps {
     | 'destructive'
     | 'success'
     | 'warning'
-    | 'info';
+    | 'info'
+    | 'tertiary';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   children: React.ReactNode;
   className?: string;
@@ -36,43 +37,45 @@ const getVariantStyles = (
 ) => {
   const isDisabledOrLoading = disabled || loading;
 
+  if (isDisabledOrLoading) {
+    return 'bg-surface border-border-muted dark:bg-dark-surface dark:border-dark-border-muted';
+  }
+
   switch (variant) {
     case 'primary':
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-primary border-border-primary dark:bg-dark-primary dark:border-dark-border-primary active:bg-tertiary dark:active:bg-dark-tertiary';
+      // Strong brand color - most prominent
+      return 'bg-brand border-brand active:bg-primary dark:bg-dark-primary dark:border-dark-primary dark:active:bg-dark-secondary';
+
     case 'secondary':
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-secondary border-border-secondary dark:bg-dark-secondary dark:border-dark-border-secondary active:bg-tertiary dark:active:bg-dark-tertiary';
+      // Light background with brand text - less prominent than primary
+      return 'bg-card border-border active:bg-background dark:bg-dark-card dark:border-dark-border dark:active:bg-dark-background';
+
+    case 'tertiary':
+      // Subtle tertiary color
+      return 'bg-tertiary border-tertiary active:bg-muted dark:bg-dark-tertiary dark:border-dark-tertiary dark:active:bg-dark-muted';
+
     case 'outline':
-      return isDisabledOrLoading
-        ? 'bg-transparent border-muted dark:border-dark-muted'
-        : 'bg-transparent border-border dark:border-dark-border active:bg-background dark:active:bg-dark-background';
+      // Transparent with border
+      return 'bg-transparent border-border-secondary active:bg-surface dark:border-dark-border-secondary dark:active:bg-dark-surface';
+
     case 'ghost':
-      return isDisabledOrLoading
-        ? 'bg-transparent border-transparent'
-        : 'bg-transparent border-transparent active:bg-card dark:active:bg-dark-card';
+      // No border, minimal styling
+      return 'bg-transparent border-transparent active:bg-surface dark:active:bg-dark-surface';
+
     case 'destructive':
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-error border-border-error dark:bg-dark-error dark:border-dark-border-error active:bg-red-700';
+      return 'bg-error border-error active:bg-red-700 dark:bg-error dark:border-error dark:active:bg-red-700';
+
     case 'success':
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-success border-border-success dark:bg-dark-success dark:border-dark-border-success active:bg-green-700';
+      return 'bg-success border-success active:bg-green-700 dark:bg-success dark:border-success dark:active:bg-green-700';
+
     case 'warning':
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-warning border-border-warning dark:bg-dark-warning dark:border-dark-border-warning active:bg-yellow-700';
+      return 'bg-warning border-warning active:bg-yellow-700 dark:bg-warning dark:border-warning dark:active:bg-yellow-700';
+
     case 'info':
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-info border-border-info dark:bg-dark-info dark:border-dark-border-info active:bg-blue-700';
+      return 'bg-info border-info active:bg-blue-700 dark:bg-info dark:border-info dark:active:bg-blue-700';
+
     default:
-      return isDisabledOrLoading
-        ? 'bg-muted border-border dark:bg-dark-muted dark:border-dark-border'
-        : 'bg-primary border-border-primary dark:bg-dark-primary dark:border-dark-border-primary active:bg-tertiary dark:active:bg-dark-tertiary';
+      return 'bg-brand border-brand active:bg-primary dark:bg-dark-primary dark:border-dark-primary dark:active:bg-dark-secondary';
   }
 };
 
@@ -116,24 +119,31 @@ const getTextColor = (
   const isDisabledOrLoading = disabled || loading;
 
   if (isDisabledOrLoading) {
-    return 'tertiary';
+    return 'muted';
   }
 
   switch (variant) {
     case 'primary':
-      return 'neutral';
-    case 'outline':
-    case 'ghost':
-      return 'primary';
+      return 'inverse'; // White text for dark brand background
+
     case 'secondary':
-      return 'primary';
-    // case 'primary':
-    //   return 'inverse';
+      return 'brand'; // Brand color text on light background
+
+    case 'tertiary':
+      return 'inverse'; // White text for tertiary background
+
+    case 'outline':
+      return 'secondary'; // Uses secondary color for text
+
+    case 'ghost':
+      return 'body'; // Uses body color for subtle appearance
+
     case 'destructive':
     case 'success':
     case 'warning':
     case 'info':
-      return 'inverse';
+      return 'inverse'; // White text for colored backgrounds
+
     default:
       return 'inverse';
   }
@@ -163,6 +173,40 @@ const getLoadingSpinnerSize = (size: ButtonProps['size']) => {
   }
 };
 
+const getSpinnerColor = (
+  variant: ButtonProps['variant'],
+  disabled?: boolean,
+  loading?: boolean
+) => {
+  const isDisabledOrLoading = disabled || loading;
+
+  if (isDisabledOrLoading) {
+    return '#778DA9'; // tertiary color for disabled state
+  }
+
+  switch (variant) {
+    case 'primary':
+    case 'tertiary':
+    case 'destructive':
+    case 'success':
+    case 'warning':
+    case 'info':
+      return '#FFFFFF'; // White spinner for colored backgrounds
+
+    case 'secondary':
+      return '#0D1B2A'; // Brand color for secondary variant
+
+    case 'outline':
+      return '#415A77'; // secondary color
+
+    case 'ghost':
+      return '#1B263B'; // body color
+
+    default:
+      return '#FFFFFF';
+  }
+};
+
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
@@ -184,6 +228,7 @@ export const Button: React.FC<ButtonProps> = ({
   const sizeStyles = getSizeStyles(size);
   const roundedStyles = getRoundedStyles(rounded);
   const textColor = getTextColor(variant, disabled, loading);
+  const spinnerColor = getSpinnerColor(variant, disabled, loading);
   const fullWidthStyle = fullWidth ? 'w-full' : '';
   const opacityStyle = isDisabled ? 'opacity-60' : '';
 
@@ -206,16 +251,6 @@ export const Button: React.FC<ButtonProps> = ({
       onPress(event);
     }
   };
-
-  // const spinnerColor =
-  //   textColor === 'inverse'
-  //     ? '#FFFFFF'
-  //     : variant === 'outline' || variant === 'ghost'
-  //       ? '#8B5CF6'
-  //       : '#6B7280';
-
-  const spinnerColor =
-    textColor === 'neutral' || textColor === 'inverse' ? '#FFFFFF' : '#0084ff';
 
   return (
     <TouchableOpacity

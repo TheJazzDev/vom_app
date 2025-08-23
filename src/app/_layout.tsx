@@ -1,7 +1,6 @@
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import Providers from '@/src/context/Providers';
 import { useTheme } from '@/src/hooks';
-
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';

@@ -2,7 +2,7 @@ import { formatDate } from '@/src/utils';
 import React from 'react';
 import { View } from 'react-native';
 import { IconSymbol } from '../Icons/IconSymbol';
-import { Text } from '../UI';
+import { Card, Text } from '../UI';
 
 type ContactInfoProps = {
   member: Member;
@@ -10,7 +10,7 @@ type ContactInfoProps = {
 
 export default function ContactInfo({ member }: ContactInfoProps) {
   return (
-    <View className='mt-2 border rounded-2xl border-border-primary dark:border-border-dark-primary bg-background-elevated dark:bg-transparent'>
+    <Card className='mt-2'>
       <View className='flex-row items-center gap-2 px-4 py-2 border-b border-border-primary dark:border-border-dark-primary'>
         <IconSymbol name='phone' size={16} color='green' />
         <View className='flex-1'>
@@ -60,6 +60,6 @@ export default function ContactInfo({ member }: ContactInfoProps) {
           </Text>
         </View>
       </View>
-    </View>
+    </Card>
   );
 }

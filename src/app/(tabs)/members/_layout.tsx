@@ -12,9 +12,9 @@ export default function MembersLayout() {
       screenOptions={{
         headerShown: true,
         headerTitleAlign: 'center',
-        headerTintColor: theme.brand,
+        headerTintColor: theme.heading,
         headerStyle: {
-          backgroundColor: theme.background2,
+          backgroundColor: theme.background,
         },
         headerRight: () => (
           <TouchableOpacity

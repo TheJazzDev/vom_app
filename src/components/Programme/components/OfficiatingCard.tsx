@@ -9,7 +9,7 @@ export const OfficiatingCard = ({
   value: string;
   className?: string;
 }) => (
-  <Card variant='default' className={`p-1.5 ${className}`}>
+  <Card variant='elevated' className={`${className}`}>
     <Text color='heading' className='text-center'>
       {value}
     </Text>

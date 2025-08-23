@@ -3,17 +3,16 @@ import React, { ReactNode } from 'react';
 import {
   ColorValue,
   View as RNView,
-  SafeAreaView,
   useColorScheme,
   type ViewProps as RNViewProps,
 } from 'react-native';
 
-type GraientColor = [ColorValue, ColorValue, ...ColorValue[]];
+type GradientColor = [ColorValue, ColorValue, ...ColorValue[]];
 
 export type ViewProps = RNViewProps & {
   safe?: boolean;
   gradient?: boolean;
-  gradientColors?: GraientColor;
+  gradientColors?: GradientColor;
   gradientStart?: { x: number; y: number };
   gradientEnd?: { x: number; y: number };
   gradientStyle?: RNViewProps['style'];
@@ -32,14 +31,23 @@ export function View({
   ...containerProps
 }: ViewProps) {
   const theme = useColorScheme();
-  const Container = safe ? SafeAreaView : RNView;
 
-  const baseContainerStyle = [{ flex: 1, paddingHorizontal: 10 }, style];
+  const baseContainerStyle = [
+    {
+      flex: 1,
+      paddingHorizontal: 10,
+    },
+    style,
+  ];
 
-  const defaultGradient: GraientColor =
+  const defaultGradient: GradientColor =
     theme === 'dark'
       ? ['#0D0D2B', '#0D1B2A', '#1B263B']
-      : ['#E5F2FF', '#CFE0F5', '#B0C9E8'];
+      : ['#F5F9FC', '#E0E9F2', '#C5D4E3'];
+
+  // ["#E6F0FF", "#D0E0F5", "#AFC9E8"]
+
+  const appliedStyle = safe ? baseContainerStyle : style;
 
   if (gradient) {
     return (
@@ -48,19 +56,16 @@ export function View({
         start={gradientStart}
         end={gradientEnd}
         style={[{ flex: 1 }, gradientStyle]}>
-        <Container {...containerProps} style={baseContainerStyle}>
+        <RNView {...containerProps} style={appliedStyle}>
           {children}
-        </Container>
+        </RNView>
       </LinearGradient>
     );
   }
 
   return (
-    <Container
-      {...containerProps}
-      // className="bg-background dark:bg-dark-background"
-      style={baseContainerStyle}>
+    <RNView {...containerProps} style={appliedStyle}>
       {children}
-    </Container>
+    </RNView>
   );
 }

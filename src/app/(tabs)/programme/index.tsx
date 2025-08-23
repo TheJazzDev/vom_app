@@ -19,11 +19,12 @@ export default function Programme() {
   const past = upcomingPrograms.filter((program) => program.status === 'past');
 
   return (
-    <View safe gradient>
+    <View safe gradient className='py-2'>
       <Tab<ServiceSections>
         value={section}
         onChange={setSection}
-        indicatorType='line'
+        // indicatorType='line'
+        variant='underline'
         tabs={[
           { label: 'Current', value: 'Current' },
           { label: 'Upcoming', value: 'Upcoming' },
