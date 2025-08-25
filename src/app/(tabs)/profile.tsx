@@ -16,7 +16,7 @@ const accountFeatures = [
 
 const profile = () => {
   return (
-    <View safe gradient className='py-6'>
+    <View gradient scrollable className='py-6'>
       <View className='mx-auto bg-primary/20 dark:bg-primary/20 p-6 rounded-full'>
         <IconSymbol name='person' size={40} color='#0084ff' />
       </View>

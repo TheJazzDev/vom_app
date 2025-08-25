@@ -30,7 +30,7 @@ export default function MembersScreen() {
   });
 
   return (
-    <View safe gradient>
+    <View gradient>
       <ThemedTextInput
         inputType='search'
         placeholder='Search members, roles, bands, or departments...'

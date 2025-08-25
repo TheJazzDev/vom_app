@@ -24,7 +24,7 @@ export default function MembersDetails() {
   }
 
   return (
-    <View safe gradient className='py-4 px-4'>
+    <View scrollable gradient className='py-4 px-4'>
       <ScrollView>
         <Image
           source={{ uri: selectedMember.image }}

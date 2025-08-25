@@ -19,11 +19,10 @@ export default function Programme() {
   const past = upcomingPrograms.filter((program) => program.status === 'past');
 
   return (
-    <View safe gradient className='py-2'>
+    <View gradient className='py-2'>
       <Tab<ServiceSections>
         value={section}
         onChange={setSection}
-        // indicatorType='line'
         variant='underline'
         tabs={[
           { label: 'Current', value: 'Current' },
@@ -36,7 +35,7 @@ export default function Programme() {
         <SundayServiceTemplate data={sundayProgramme} />
       )}
       {section === 'Upcoming' && (
-        <View safe>
+        <View>
           <FlatList
             data={upcoming}
             keyExtractor={(program) => program.id}
@@ -47,7 +46,7 @@ export default function Programme() {
         </View>
       )}
       {section === 'Past' && (
-        <View safe>
+        <View>
           <FlatList
             data={past}
             keyExtractor={(program) => program.id}

@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import Spacer from '../../Spacer';
 import { Text, View } from '../../UI';
 import { InfoRow } from '../components/InfoRow';
@@ -22,7 +21,7 @@ export function SundayServiceTemplate({ data }: { data: SundayProgramme }) {
   }
 
   return (
-    <ScrollView>
+    <View scrollable>
       <View className='flex-col gap-2 py-2'>
         {/* Header */}
         <Text
@@ -182,7 +181,7 @@ export function SundayServiceTemplate({ data }: { data: SundayProgramme }) {
           <View className='flex-row gap-4'>
             <Text variant='h6'>14.</Text>
             <View>
-              <Text variant='paragraph'>
+              <Text variant='h6'>
                 (a){'   '}Prayer for Power of Holy Spirit, Mercy, Blessing and
                 Provision
               </Text>
@@ -237,6 +236,6 @@ export function SundayServiceTemplate({ data }: { data: SundayProgramme }) {
       <Text variant='h2' className='text-center'>
         AYO NI O
       </Text>
-    </ScrollView>
+    </View>
   );
 }

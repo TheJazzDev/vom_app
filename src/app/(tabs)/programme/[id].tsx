@@ -15,7 +15,7 @@ const ProgrammeDetails = () => {
   }
 
   return (
-    <View safe>
+    <View scrollable>
       <Text variant='h2'>ProgrammeDetails</Text>
       <Text>{selectedProgramme.type}</Text>
       <Text>{selectedProgramme.topic}</Text>

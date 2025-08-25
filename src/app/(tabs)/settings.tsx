@@ -67,10 +67,10 @@ export default function Settings() {
   };
 
   return (
-    <View safe={true} gradient>
+    <View gradient scrollable>
       <Text style={styles.sectionTitle}>Theme</Text>
 
-      <Card variant='primary'>
+      <Card variant='outlined'>
         <ThemeOption
           theme={theme}
           label='Automatic'
