@@ -6,6 +6,7 @@ import {
   View,
 } from '@/src/components';
 import { mockMembers } from '@/src/constants/members';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { FlatList, Platform, TouchableOpacity } from 'react-native';
@@ -15,6 +16,7 @@ export default function MembersScreen() {
   const [gender, setGender] = useState<Gender>('all');
 
   const router = useRouter();
+  const tabBarHeight = useBottomTabBarHeight();
 
   const filteredMembers = mockMembers.filter((member) => {
     const matchesSearch =
@@ -30,7 +32,8 @@ export default function MembersScreen() {
   });
 
   return (
-    <View safe>
+    <View gradient paddingHorizontal={10}>
+      <Spacer height={10} />
       <ThemedTextInput
         inputType='search'
         placeholder='Search members, roles, bands, or departments...'
@@ -39,7 +42,7 @@ export default function MembersScreen() {
       <Tab<Gender>
         value={gender}
         onChange={setGender}
-        variant='cards'
+        variant='pills'
         tabs={[
           { label: 'All', value: 'all', count: mockMembers.length },
           {
@@ -68,7 +71,7 @@ export default function MembersScreen() {
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 5 }}
+        contentContainerStyle={{ paddingBottom: tabBarHeight + 50 }}
         showsHorizontalScrollIndicator={Platform.OS === 'web'}
       />
     </View>

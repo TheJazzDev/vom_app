@@ -16,7 +16,6 @@ interface BadgeProps extends ViewProps {
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   className?: string;
-  rounded?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   dot?: boolean;
@@ -26,13 +25,13 @@ const variantClasses: Record<NonNullable<BadgeProps['variant']>, string> = {
   default:
     'bg-background border-border dark:bg-dark-background dark:border-dark-border-border',
   primary: 'bg-primary border-border-primary',
-  secondary: 'bg-secondary border-border-secondary',
-  success: 'bg-success border-border-success da',
+  secondary: 'bg-secondary dark:bg-dark-secondary border-border-secondary',
+  success: 'bg-success border-border-success',
   warning: 'bg-warning border-border-warning',
   error: 'bg-error border-border-error',
   info: 'bg-info border-border-info',
   outline:
-    'bg-transparent border-2 border-border-secondary dark:border-dark-border-secondary',
+    'bg-transparent border border-border-secondary dark:border-dark-border-secondary',
   ghost: 'bg-transparent border-transparent',
 };
 
@@ -96,7 +95,6 @@ export const Badge: React.FC<BadgeProps> = ({
   size = 'md',
   children,
   className = '',
-  rounded = true,
   icon,
   iconPosition = 'left',
   dot = false,
@@ -104,10 +102,9 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const baseClasses = [
-    'flex-row items-center justify-center border self-start',
+    'flex-row items-center justify-center border self-start rounded-md',
     variantClasses[variant],
     sizeClasses[size],
-    rounded ? 'rounded-full' : 'rounded-md',
     className,
   ]
     .filter(Boolean)

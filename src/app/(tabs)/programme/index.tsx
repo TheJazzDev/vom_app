@@ -7,11 +7,14 @@ import {
 } from '@/src/components';
 import { sundayProgramme } from '@/src/constants';
 import { upcomingPrograms } from '@/src/constants/upcoming';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import React, { useState } from 'react';
 import { FlatList, Platform } from 'react-native';
 
 export default function Programme() {
   const [section, setSection] = useState<ServiceSections>('Current');
+
+  const tabBarHeight = useBottomTabBarHeight();
 
   const upcoming = upcomingPrograms.filter(
     (program) => program.status === 'upcoming'
@@ -19,11 +22,11 @@ export default function Programme() {
   const past = upcomingPrograms.filter((program) => program.status === 'past');
 
   return (
-    <View safe>
+    <View gradient>
       <Tab<ServiceSections>
         value={section}
         onChange={setSection}
-        indicatorType='line'
+        variant='underline'
         tabs={[
           { label: 'Current', value: 'Current' },
           { label: 'Upcoming', value: 'Upcoming' },
@@ -34,28 +37,34 @@ export default function Programme() {
       {section === 'Current' && (
         <SundayServiceTemplate data={sundayProgramme} />
       )}
-      {section === 'Upcoming' && (
-        <View className='py-6' safe>
+      <View>
+        {section === 'Upcoming' && (
           <FlatList
             data={upcoming}
             keyExtractor={(program) => program.id}
             renderItem={({ item }) => <UpcomimgCard programmes={item} />}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={Platform.OS === 'web'}
+            contentContainerStyle={{
+              paddingHorizontal: 10,
+              paddingBottom: tabBarHeight + 24,
+            }}
           />
-        </View>
-      )}
-      {section === 'Past' && (
-        <View className='py-6' safe>
+        )}
+        {section === 'Past' && (
           <FlatList
             data={past}
             keyExtractor={(program) => program.id}
             renderItem={({ item }) => <UpcomimgCard programmes={item} />}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={Platform.OS === 'web'}
+            contentContainerStyle={{
+              paddingHorizontal: 10,
+              paddingBottom: tabBarHeight + 24,
+            }}
           />
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 }

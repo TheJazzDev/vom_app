@@ -8,7 +8,7 @@ interface MemberCardProps {
 
 const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
   return (
-    <Card variant='outlined' className='flex flex-row py-4 px-3 mb-3 rounded-lg'>
+    <Card className='flex flex-row mb-3'>
       <Image
         source={{ uri: member?.image }}
         className='w-12 h-12 rounded-full mr-4'
@@ -29,7 +29,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
       <View>
         <View className='flex flex-row items-center gap-1'>
           <View
-            className={`w-3 h-3 rounded-full ${member.gender === 'Male' ? 'bg-blue-400' : 'bg-pink-400'}`}
+            className={`w-2 h-2 rounded-full ${member.gender === 'Male' ? 'bg-blue-400' : 'bg-pink-400'}`}
           />
           <Text variant='overline'>{member.gender}</Text>
         </View>

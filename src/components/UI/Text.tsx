@@ -86,8 +86,6 @@ const getColorStyles = (color: TextProps['color']) => {
       return 'text-secondary dark:text-dark-secondary';
     case 'tertiary':
       return 'text-tertiary dark:text-dark-tertiary';
-    case 'accent':
-      return 'text-accent dark:text-dark-accent';
     case 'muted':
       return 'text-muted dark:text-dark-muted';
     case 'heading':

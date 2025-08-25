@@ -1,4 +1,4 @@
-import { Button, IconSymbol, Text, View } from '@/src/components';
+import { Button, Card, IconSymbol, Spacer, Text, View } from '@/src/components';
 import React from 'react';
 
 const guestFeatures = [
@@ -16,7 +16,8 @@ const accountFeatures = [
 
 const profile = () => {
   return (
-    <View className='py-6' safe>
+    <View gradient scrollable>
+      <Spacer height={20}/>
       <View className='mx-auto bg-primary/20 dark:bg-primary/20 p-6 rounded-full'>
         <IconSymbol name='person' size={40} color='#0084ff' />
       </View>
@@ -37,7 +38,7 @@ const profile = () => {
         </Button>
       </View>
 
-      <View className='p-4 bg-card dark:bg-dark-card rounded-xl gap-0.5'>
+      <Card>
         <Text variant='h5' color='heading'>
           As a guest, you can:
         </Text>
@@ -56,7 +57,7 @@ const profile = () => {
             {feature}
           </Text>
         ))}
-      </View>
+      </Card>
     </View>
   );
 };

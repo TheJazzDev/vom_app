@@ -1,4 +1,4 @@
-import { Card, IconSymbol, Text, ThemedDivider, View } from '@/src/components';
+import { Card, Divider, IconSymbol, Text, View } from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import React, { useEffect, useState } from 'react';
 import { Appearance, Pressable, StyleSheet } from 'react-native';
@@ -18,16 +18,14 @@ const ThemeOption = ({
   icon: any;
   theme: any;
 }) => (
-  <Pressable
-    onPress={onPress}
-    style={[styles.option, { borderBottomColor: theme.border }]}>
+  <Pressable onPress={onPress} style={[styles.option]}>
     <View className='flex-row gap-2'>
       {icon && <View style={{ marginRight: 15 }}>{icon}</View>}
-      <Text style={styles.optionLabel}>{label}</Text>
+      <Text className=''>{label}</Text>
     </View>
-    <View style={[styles.radioOuter, { borderColor: theme.border }]}>
+    <View style={[styles.radioOuter, { borderColor: theme.muted }]}>
       {selected && (
-        <View style={[styles.radioInner, { backgroundColor: theme.border }]} />
+        <View style={[styles.radioInner, { backgroundColor: theme.muted }]} />
       )}
     </View>
   </Pressable>
@@ -67,10 +65,14 @@ export default function Settings() {
   };
 
   return (
-    <View safe={true}>
-      <Text style={styles.sectionTitle}>Theme</Text>
+    <View gradient scrollable>
+      <Text variant='h5' className='m-4 mb-1'>
+        Theme
+      </Text>
 
-      <Card variant='primary'>
+      <Card
+        variant='outlined'
+        className='p-0 border-muted dark:border-dark-muted'>
         <ThemeOption
           theme={theme}
           label='Automatic'
@@ -79,32 +81,32 @@ export default function Settings() {
           icon={
             <IconSymbol
               size={20}
-              color={theme.border}
+              color={theme.muted}
               name='circle.lefthalf.fill'
             />
           }
         />
-        <ThemedDivider />
+        <Divider colorVariant='muted' height={1.1} />
         <ThemeOption
           theme={theme}
           label='Light'
           selected={getSelectedTheme() === 'light'}
           onPress={() => handleThemeChange('light')}
           icon={
-            <IconSymbol size={20} color={theme.border} name='sun.max.fill' />
+            <IconSymbol size={20} color={theme.muted} name='sun.max.fill' />
           }
         />
-        <ThemedDivider />
+        <Divider colorVariant='muted' height={1.1} />
         <ThemeOption
           theme={theme}
           label='Dark'
           selected={getSelectedTheme() === 'dark'}
           onPress={() => handleThemeChange('dark')}
-          icon={<IconSymbol size={20} color={theme.border} name='moon.fill' />}
+          icon={<IconSymbol size={20} color={theme.muted} name='moon.fill' />}
         />
       </Card>
 
-      <Text style={styles.note}>
+      <Text variant='body2' className='mt-2'>
         Automatic is only supported on operating systems that allow you to
         control the system-wide color scheme.
       </Text>
@@ -113,24 +115,12 @@ export default function Settings() {
 }
 
 const styles = StyleSheet.create({
-  sectionTitle: {
-    marginVertical: 12,
-    marginLeft: 16,
-  },
   option: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
     paddingHorizontal: 16,
-  },
-  optionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  optionLabel: {
-    fontSize: 16,
+    paddingVertical: 16,
   },
   radioOuter: {
     width: 20,
@@ -144,11 +134,5 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 10,
-  },
-  note: {
-    fontSize: 12,
-    marginTop: 8,
-    lineHeight: 16,
-    marginLeft: 16,
   },
 });

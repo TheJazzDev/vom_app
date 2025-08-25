@@ -10,13 +10,19 @@ import { HapticTab } from './HapticTab';
 import { HelloWave } from './HelloWave';
 import ParallaxScrollView from './ParallaxScrollView';
 import Spacer from './Spacer';
+import EnglishWatchWord from './Devotionals/English';
+import YorubaWatchWord from './Devotionals/Yoruba';
+import {DrawerContent} from './DrawerContent'
 
 export {
   BandBadge,
   Collapsible,
+  EnglishWatchWord,
   ExternalLink,
   HapticTab,
   HelloWave,
   ParallaxScrollView,
   Spacer,
+  YorubaWatchWord,
+  DrawerContent
 };
