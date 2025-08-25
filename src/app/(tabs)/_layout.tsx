@@ -1,14 +1,17 @@
-import { Tabs, useRouter } from 'expo-router';
+import { Tabs, useNavigation, useRouter } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useTheme } from '@/src/hooks';
+import { Feather } from '@expo/vector-icons';
+import { DrawerActions } from '@react-navigation/native';
 import { Platform, TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
   const theme = useTheme();
   const router = useRouter();
+  const navigation = useNavigation();
 
   return (
     <Tabs
@@ -32,6 +35,13 @@ export default function TabLayout() {
           shadowOpacity: 0,
           borderStyle: 'solid',
         },
+        headerLeft: () => (
+          <TouchableOpacity
+            style={{ marginLeft: 12 }}
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Feather name='align-left' size={24} color={theme.muted} />
+          </TouchableOpacity>
+        ),
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
@@ -59,7 +69,6 @@ export default function TabLayout() {
         name='programme'
         options={{
           title: 'Programme',
-          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={22}
@@ -75,7 +84,6 @@ export default function TabLayout() {
         name='members'
         options={{
           title: 'Members',
-          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={Platform.OS === 'ios' ? 32 : 22}
@@ -98,19 +106,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name='settings'
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
-              size={22}
-              name={focused ? 'gearshape.fill' : 'gearshape'}
-              color={color}
-            />
-          ),
-        }}
-      />
+      
     </Tabs>
   );
 }

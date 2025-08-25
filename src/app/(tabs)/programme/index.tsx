@@ -7,11 +7,14 @@ import {
 } from '@/src/components';
 import { sundayProgramme } from '@/src/constants';
 import { upcomingPrograms } from '@/src/constants/upcoming';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import React, { useState } from 'react';
 import { FlatList, Platform } from 'react-native';
 
 export default function Programme() {
   const [section, setSection] = useState<ServiceSections>('Current');
+
+  const tabBarHeight = useBottomTabBarHeight();
 
   const upcoming = upcomingPrograms.filter(
     (program) => program.status === 'upcoming'
@@ -19,7 +22,7 @@ export default function Programme() {
   const past = upcomingPrograms.filter((program) => program.status === 'past');
 
   return (
-    <View gradient className='py-2'>
+    <View gradient>
       <Tab<ServiceSections>
         value={section}
         onChange={setSection}
@@ -34,28 +37,34 @@ export default function Programme() {
       {section === 'Current' && (
         <SundayServiceTemplate data={sundayProgramme} />
       )}
-      {section === 'Upcoming' && (
-        <View>
+      <View>
+        {section === 'Upcoming' && (
           <FlatList
             data={upcoming}
             keyExtractor={(program) => program.id}
             renderItem={({ item }) => <UpcomimgCard programmes={item} />}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={Platform.OS === 'web'}
+            contentContainerStyle={{
+              paddingHorizontal: 10,
+              paddingBottom: tabBarHeight + 24,
+            }}
           />
-        </View>
-      )}
-      {section === 'Past' && (
-        <View>
+        )}
+        {section === 'Past' && (
           <FlatList
             data={past}
             keyExtractor={(program) => program.id}
             renderItem={({ item }) => <UpcomimgCard programmes={item} />}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={Platform.OS === 'web'}
+            contentContainerStyle={{
+              paddingHorizontal: 10,
+              paddingBottom: tabBarHeight + 24,
+            }}
           />
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 }

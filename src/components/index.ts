@@ -12,6 +12,7 @@ import ParallaxScrollView from './ParallaxScrollView';
 import Spacer from './Spacer';
 import EnglishWatchWord from './Devotionals/English';
 import YorubaWatchWord from './Devotionals/Yoruba';
+import {DrawerContent} from './DrawerContent'
 
 export {
   BandBadge,
@@ -23,4 +24,5 @@ export {
   ParallaxScrollView,
   Spacer,
   YorubaWatchWord,
+  DrawerContent
 };

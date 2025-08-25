@@ -51,6 +51,11 @@ export function View({
     },
   ];
 
+  const baseViewStyle = [
+    style,
+    paddingHorizontal != null ? { paddingHorizontal } : {},
+  ];
+
   const defaultGradient: GradientColor =
     theme === 'dark'
       ? ['#0D0D2B', '#0D1B2A', '#1B263B']
@@ -79,7 +84,13 @@ export function View({
       );
     }
 
-    return <LinearGradient {...gradientProps}>{children}</LinearGradient>;
+    return (
+      <LinearGradient {...gradientProps}>
+        <RNView style={baseViewStyle} {...containerProps}>
+          {children}
+        </RNView>
+      </LinearGradient>
+    );
   }
 
   if (scrollable) {
@@ -97,5 +108,9 @@ export function View({
     );
   }
 
-  return <RNView {...containerProps}>{children}</RNView>;
+  return (
+    <RNView style={baseViewStyle} {...containerProps}>
+      {children}
+    </RNView>
+  );
 }

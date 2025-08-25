@@ -10,6 +10,7 @@ import {
 import Devotionals from '@/src/components/Devotionals';
 import { useTheme } from '@/src/hooks';
 import { truncateText } from '@/src/utils';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 
 export default function ChurchDashboard() {
@@ -26,7 +27,7 @@ export default function ChurchDashboard() {
         <HelloWave />
       </View>
 
-      <Text className='mb-5'>Stay connected with your church family.</Text>
+      <Text className='mb-5'>Stay connected with church activities.</Text>
 
       {/* Quick Actions */}
       <View className='flex-row justify-between mb-5'>
@@ -52,7 +53,7 @@ export default function ChurchDashboard() {
           Sunday Service
         </Text>
         <View className='flex-row gap-2 items-center'>
-          <IconSymbol name='clock.circle' size={16} color={theme.muted} />
+          <MaterialIcons name='access-time' size={16} color={theme.muted} />
           <Text variant='body2'>Time: 10:00 AM</Text>
         </View>
         <View className='flex-row gap-2 items-center my-0.5'>
