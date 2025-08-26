@@ -5,10 +5,11 @@ export default function ProgrammeLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-      }}>
-      <Stack.Screen name='index' options={{ title: 'Programme' }} />
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: 'Programme' }} />
       <Stack.Screen
-        name='[id]'
+        name="[id]"
         options={{ title: 'Programme Details', headerBackTitle: 'Back' }}
       />
     </Stack>

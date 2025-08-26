@@ -14,10 +14,13 @@ export const InfoRow = ({
   value: string | number;
 }) => (
   <View className={`flex-row items-start gap-2 mb-0.5 ${className}`}>
-    <Text variant={variant} className="flex-shrink-0">{label}:</Text>
+    <Text variant={variant} className="flex-shrink-0">
+      {label}:
+    </Text>
     <Text
       variant={variant}
-      className={`flex-1 flex-shrink ${name ? 'italic font-extrabold' : ''}`}>
+      className={`flex-1 flex-shrink ${name ? 'italic font-extrabold' : ''}`}
+    >
       {value}
     </Text>
   </View>

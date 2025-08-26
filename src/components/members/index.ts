@@ -1,4 +1,4 @@
 import MemberCard from './MemberCard';
-import ContactInfo from './ContactInfo'
+import ContactInfo from './ContactInfo';
 
 export { MemberCard, ContactInfo };

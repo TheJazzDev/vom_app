@@ -11,6 +11,8 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
-, "src/app/(tabs)/members"  ]
+    "nativewind-env.d.ts",
+    "src/app/(tabs)/members",
+    "src/config/firebase.ts"
+  ]
 }

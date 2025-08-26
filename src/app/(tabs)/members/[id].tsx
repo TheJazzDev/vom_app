@@ -29,22 +29,22 @@ export default function MembersDetails() {
       <Spacer height={20} />
       <Image
         source={{ uri: selectedMember.image }}
-        className='w-32 h-32 rounded-md mx-auto'
+        className="w-32 h-32 rounded-md mx-auto"
       />
-      <Text variant='h3' className='text-center my-4'>
+      <Text variant="h3" className="text-center my-4">
         {selectedMember.title} {selectedMember.firstName}{' '}
         {selectedMember.lastName}
       </Text>
 
       {/* Roles */}
-      <View className='mb-4'>
-        <View className='flex-row items-center gap-4'>
-          <IconSymbol name='shield.checkered' size={20} color='#6B7280' />
-          <Text variant='h5'>Roles</Text>
+      <View className="mb-4">
+        <View className="flex-row items-center gap-4">
+          <IconSymbol name="shield.checkered" size={20} color="#6B7280" />
+          <Text variant="h5">Roles</Text>
         </View>
-        <View className='flex-row gap-2 mt-2 flex-wrap'>
+        <View className="flex-row gap-2 mt-2 flex-wrap">
           {selectedMember.roles.map((role: string) => (
-            <Badge key={role} size='sm' variant='outline'>
+            <Badge key={role} size="sm" variant="outline">
               {role}
             </Badge>
           ))}
@@ -52,12 +52,12 @@ export default function MembersDetails() {
       </View>
 
       {/* Bands */}
-      <View className='mb-4'>
-        <View className='flex-row items-center gap-4'>
-          <IconSymbol name='person.3.sequence.fill' size={20} color='#6B7280' />
-          <Text variant='h5'>Bands</Text>
+      <View className="mb-4">
+        <View className="flex-row items-center gap-4">
+          <IconSymbol name="person.3.sequence.fill" size={20} color="#6B7280" />
+          <Text variant="h5">Bands</Text>
         </View>
-        <View className='flex-row gap-2 mt-2 flex-wrap'>
+        <View className="flex-row gap-2 mt-2 flex-wrap">
           {selectedMember.band.map((band: string) => (
             <BandBadge key={band} band={band} />
           ))}
@@ -66,35 +66,37 @@ export default function MembersDetails() {
       </View>
 
       {/* Contact Info */}
-      <View className='mb-4'>
-        <View className='flex-row items-center gap-4'>
-          <IconSymbol name='info.bubble.fill' size={20} color='#6B7280' />
-          <Text variant='h5'>Contact Information</Text>
+      <View className="mb-4">
+        <View className="flex-row items-center gap-4">
+          <IconSymbol name="info.bubble.fill" size={20} color="#6B7280" />
+          <Text variant="h5">Contact Information</Text>
         </View>
         <ContactInfo member={selectedMember} />
       </View>
 
       {/* Buttons */}
-      <View className='flex flex-row gap-2'>
+      <View className="flex flex-row gap-2">
         <Button
-          textVariant='h6'
-          className='w-[49%]'
+          textVariant="h6"
+          className="w-[49%]"
           icon={
-            <IconSymbol name='phone.fill' size={16} color={theme.heading} />
-          }>
+            <IconSymbol name="phone.fill" size={16} color={theme.heading} />
+          }
+        >
           Hello
         </Button>
         <Button
-          textVariant='h6'
-          className='w-[49%]'
-          variant='outline'
+          textVariant="h6"
+          className="w-[49%]"
+          variant="outline"
           icon={
             <IconSymbol
-              name='message.badge.fill'
+              name="message.badge.fill"
               size={16}
               color={theme.primary}
             />
-          }>
+          }
+        >
           Hello
         </Button>
       </View>

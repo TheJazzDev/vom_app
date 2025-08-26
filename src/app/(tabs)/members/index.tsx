@@ -23,7 +23,7 @@ export default function MembersScreen() {
       member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.roles.some((role) =>
-        role.toLowerCase().includes(searchTerm.toLowerCase())
+        role.toLowerCase().includes(searchTerm.toLowerCase()),
       );
 
     const matchesGender = gender === 'all' || member.gender === gender;
@@ -35,14 +35,14 @@ export default function MembersScreen() {
     <View gradient paddingHorizontal={10}>
       <Spacer height={10} />
       <ThemedTextInput
-        inputType='search'
-        placeholder='Search members, roles, bands, or departments...'
+        inputType="search"
+        placeholder="Search members, roles, bands, or departments..."
       />
 
       <Tab<Gender>
         value={gender}
         onChange={setGender}
-        variant='pills'
+        variant="pills"
         tabs={[
           { label: 'All', value: 'all', count: mockMembers.length },
           {
@@ -66,7 +66,8 @@ export default function MembersScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => router.push(`/members/${item.id}`)}
-            activeOpacity={0.7}>
+            activeOpacity={0.7}
+          >
             <MemberCard member={item} />
           </TouchableOpacity>
         )}

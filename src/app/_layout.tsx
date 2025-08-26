@@ -22,7 +22,7 @@ export default function RootLayout() {
 
   return (
     <Providers>
-      <StatusBar style='auto' />
+      <StatusBar style="auto" />
       <Drawer
         drawerContent={(props) => <DrawerContent {...props} />}
         screenOptions={{
@@ -45,13 +45,15 @@ export default function RootLayout() {
               onPress={() => {
                 router.push('/notification');
               }}
-              style={{ marginRight: 12 }}>
-              <IconSymbol size={24} name='bell.fill' color={theme.muted} />
+              style={{ marginRight: 12 }}
+            >
+              <IconSymbol size={24} name="bell.fill" color={theme.muted} />
             </TouchableOpacity>
           ),
-        }}>
+        }}
+      >
         <Drawer.Screen
-          name='(tabs)'
+          name="(tabs)"
           options={{
             headerShown: false,
             title: 'Home',

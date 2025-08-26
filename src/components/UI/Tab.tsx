@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Text } from './Text';
 
-interface Tab<T> {
+interface TabItemProps<T> {
   label: string;
   value: T;
   count?: number;
@@ -16,7 +16,7 @@ interface Tab<T> {
 }
 
 interface TabProps<T> {
-  tabs: Tab<T>[];
+  tabs: TabItemProps<T>[];
   value: T;
   onChange: (val: T) => void;
   variant?: 'default' | 'pills' | 'underline' | 'buttons' | 'minimal' | 'cards';
@@ -83,7 +83,7 @@ export function Tab<T>({
         animation.start();
       }
     }
-  }, [activeIndex, animationType, layoutComplete.current]);
+  }, [indicator, tabs.length, activeIndex, animationType]);
 
   const handleLayout = (e: LayoutChangeEvent, i: number) => {
     const { width, x } = e.nativeEvent.layout;
@@ -247,8 +247,8 @@ export function Tab<T>({
           indicator,
           Animated.multiply(
             new Animated.Value(widths.current[activeIndex] || 0),
-            0.5
-          )
+            0.5,
+          ),
         ),
       };
     } else if (['pills', 'buttons', 'cards'].includes(variant)) {
@@ -281,16 +281,18 @@ export function Tab<T>({
             onLayout={(e) => handleLayout(e, i)}
             className={getTabStyle(isActive, isDisabled)}
             onPress={() => !isDisabled && onChange(tab.value)}
-            activeOpacity={isDisabled ? 1 : 0.7}>
-            <View className='flex-row items-center justify-center gap-2'>
-              {tab.icon && <View className='opacity-80'>{tab.icon}</View>}
+            activeOpacity={isDisabled ? 1 : 0.7}
+          >
+            <View className="flex-row items-center justify-center gap-2">
+              {tab.icon && <View className="opacity-80">{tab.icon}</View>}
 
               <Text
                 variant={
                   size === 'sm' ? 'caption' : size === 'lg' ? 'h5' : 'h6'
                 }
                 color={getTextColor(isActive, isDisabled)}
-                className='font-medium text-center'>
+                className="font-medium text-center"
+              >
                 {tab.label}
                 {typeof tab.count === 'number' ? ` (${tab.count})` : ''}
               </Text>

@@ -1,81 +1,11 @@
-// /** @type {import('tailwindcss').Config} */
-// module.exports = {
-//   content: ['./src/**/*.{js,jsx,ts,tsx}'],
-//   presets: [require('nativewind/preset')],
-//   theme: {
-//     extend: {
-//       colors: {
-//         brand: '#0084ff',
-//         primary: '#0084ff',
-//         secondary: '#1372cc',
-//         tertiary: '#005099',
-//         accent: '#013565',
-//         muted: '#666666',
-//         body: '#333333',
-//         body2: '#333333',
-//         heading: '#333333',
-//         heading: '#333333',
-//         placeholder: '#999999',
-//         background: '#e5f2ff',
-//         card: '#f3f9ff',
-//         backdrop: 'rgba(0, 0, 0, 0.8)',
-//         success: '#16a34a',
-//         error: '#dc2626',
-//         warning: '#f59e0b',
-//         info: '#0ea5e9',
-//         border: '#1372cc',
-//         'border-primary': '#0084ff',
-//         'border-secondary': '#1372cc',
-//         'border-tertiary': '#005099',
-//         'border-success': '#15803d',
-//         'border-warning': '#d97706',
-//         'border-error': '#b91c1c',
-//         'border-info': '#0284c7',
-//         dark: {
-//           brand: '#0084ff',
-//           primary: '#1690ff',
-//           secondary: '#46a5ff',
-//           tertiary: '#73bcff',
-//           accent: '#a2d2ff',
-//           muted: '#707d97',
-//           body: '#707d97',
-//           body2: '#8891b0',
-//           heading: '#ccd7f7',
-//           heading2: '#ffffff',
-//           placeholder: '#5a6376',
-//           background: '#0D0D2B',
-//           card: '#112240',
-//           backdrop: '#0b0b0b',
-//           success: '#22c55e',
-//           error: '#f87171',
-//           warning: '#fbbf24',
-//           info: '#38bdf8',
-//           border: '#004080',
-//           'border-primary': '#1690ff',
-//           'border-secondary': '#46a5ff',
-//           'border-tertiary': '#73bcff',
-//           'border-success': '#16a34a',
-//           'border-warning': '#f59e0b',
-//           'border-error': '#ef4444',
-//           'border-info': '#0ea5e9',
-//         },
-//       },
-//     },
-//   },
-//   plugins: [],
-// };
-
 /** @type {import('tailwindcss').Config} */
-// Tailwind: extend colors → https://tailwindcss.com/docs/theme#extending-the-default-theme
-// Tailwind: border color utilities → https://tailwindcss.com/docs/border-color
-// NativeWind: theming & dark mode → https://www.nativewind.dev/guides/dark-mode
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
       colors: {
-        brand: '#2563EB', 
+        brand: '#2563EB',
         primary: '#1D4ED8',
         secondary: '#415A77',
         tertiary: '#778DA9',

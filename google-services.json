@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "72770096721",
+    "project_id": "vom-app-e20ae",
+    "storage_bucket": "vom-app-e20ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72770096721:android:c7d8d60c471849e85a3270",
+        "android_client_info": {
+          "package_name": "com.jazzdev.vom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxSgj4YNoTr4CzPGYUMmQsU6uTsveCA7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

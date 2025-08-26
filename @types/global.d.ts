@@ -1,5 +1,5 @@
 declare global {
-    type GradientColor = [ColorValue, ColorValue, ...ColorValue[]];
+  type GradientColor = [ColorValue, ColorValue, ...ColorValue[]];
 }
 
-export {}
+export {};

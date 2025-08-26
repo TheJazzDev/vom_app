@@ -22,9 +22,9 @@ export const BandBadge: React.FC<BandBadgeProps> = ({
   const icon = getBandIcon(band);
 
   const combinedClassName = `
-    ${colors.container}
-    ${colors.border}
-    ${colors.shadow}
+  ${colors.container}
+  ${colors.border}
+  ${colors.shadow}
     ${sizeStyles.container}
     rounded-full
     flex-row
@@ -65,18 +65,21 @@ export const BandBadge: React.FC<BandBadgeProps> = ({
         },
         style,
       ]}
-      {...props}>
+      {...props}
+    >
       {showIcon && (
         <Text
           className={`${sizeStyles.icon} mr-1.5`}
-          style={{ lineHeight: size === 'lg' ? 24 : size === 'md' ? 20 : 16 }}>
+          style={{ lineHeight: size === 'lg' ? 24 : size === 'md' ? 20 : 16 }}
+        >
           {icon}
         </Text>
       )}
 
       <Text
         variant={sizeStyles.text as any}
-        className={`${colors.text} font-semibold tracking-wide`}>
+        className={`${colors.text} font-semibold tracking-wide`}
+      >
         {displayName}
       </Text>
     </View>

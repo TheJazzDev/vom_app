@@ -1,3 +1,3 @@
-import {Bands} from './bands'
+import { Bands } from './bands';
 
-export {Bands}
+export { Bands };

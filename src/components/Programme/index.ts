@@ -4,4 +4,10 @@ import { Section } from './components/Section';
 import { SundayServiceTemplate } from './templates/SundayService';
 import UpcomimgCard from './templates/Upcoming';
 
-export { InfoRow, OfficiatingCard, Section, UpcomimgCard, SundayServiceTemplate };
+export {
+  InfoRow,
+  OfficiatingCard,
+  Section,
+  UpcomimgCard,
+  SundayServiceTemplate,
+};

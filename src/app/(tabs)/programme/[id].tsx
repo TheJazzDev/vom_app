@@ -7,7 +7,7 @@ const ProgrammeDetails = () => {
   const { id } = useLocalSearchParams();
 
   const selectedProgramme = upcomingPrograms.find(
-    (programme) => programme.id === id
+    (programme) => programme.id === id,
   );
 
   if (!selectedProgramme) {
@@ -16,7 +16,7 @@ const ProgrammeDetails = () => {
 
   return (
     <View scrollable>
-      <Text variant='h2'>ProgrammeDetails</Text>
+      <Text variant="h2">ProgrammeDetails</Text>
       <Text>{selectedProgramme.type}</Text>
       <Text>{selectedProgramme.topic}</Text>
     </View>
@@ -24,4 +24,3 @@ const ProgrammeDetails = () => {
 };
 
 export default ProgrammeDetails;
-

@@ -1,4 +1,3 @@
-
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Card } from './Card';
@@ -6,17 +5,8 @@ import { Countdown } from './Countdown';
 import { Tab } from './Tab';
 import { Text } from './Text';
 import { Divider } from './Divider';
-import { ThemedTextInput } from './ThemedTextInput';
+import { TextInput } from './TextInput';
 import { View } from './View';
+import {RHFTextInput} from './RHFTextInput'
 
-export {
-  Badge,
-  Button,
-  Card,
-  Countdown,
-  Tab,
-  Text,
-  Divider,
-  ThemedTextInput,
-  View,
-};
+export { Badge, Button, Card, Countdown, Tab, Text, Divider, TextInput, View, RHFTextInput };

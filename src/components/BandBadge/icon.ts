@@ -1,4 +1,4 @@
-import { Bands } from "@/src/enum";
+import { Bands } from '@/src/enum';
 
 export const getBandIcon = (band: string) => {
   switch (band) {

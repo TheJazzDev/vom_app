@@ -26,7 +26,8 @@ const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
         {
           backgroundColor: pressed ? theme.secondary : 'transparent',
         },
-      ]}>
+      ]}
+    >
       <IconSymbol
         name={iconName}
         color={focused ? theme.natural : theme.muted}
@@ -37,7 +38,8 @@ const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
           marginLeft: 16,
           fontWeight: 600,
           color: focused ? theme.natural : theme.muted,
-        }}>
+        }}
+      >
         {label}
       </Text>
     </Pressable>

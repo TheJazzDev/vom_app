@@ -1,7 +1,6 @@
-
 export const getSizeStyles = (
   size: BandBadgeProps['size'],
-  variant: BandBadgeProps['variant']
+  variant: BandBadgeProps['variant'],
 ) => {
   const isGlow = variant === 'glow';
   const isOutlined = variant === 'outlined';

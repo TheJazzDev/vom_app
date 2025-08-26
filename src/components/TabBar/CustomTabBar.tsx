@@ -12,7 +12,7 @@ export function EnhancedBlurTabBarBackground() {
   if (Platform.OS === 'ios') {
     return (
       <BlurView
-        tint='systemChromeMaterial'
+        tint="systemChromeMaterial"
         intensity={100}
         style={StyleSheet.absoluteFill}
       />
@@ -84,7 +84,8 @@ export function CustomTabBar({
       style={[
         styles.tabBarContainer,
         { height: tabBarHeight, paddingBottom: insets.bottom },
-      ]}>
+      ]}
+    >
       {/* Background */}
       <EnhancedBlurTabBarBackground />
 
@@ -94,9 +95,9 @@ export function CustomTabBar({
           tabs={tabs}
           value={state.routes[state.index].key}
           onChange={handleTabChange}
-          variant='minimal'
-          background='transparent'
-          size='sm'
+          variant="minimal"
+          background="transparent"
+          size="sm"
           showIndicator={false}
           fullWidth
         />
@@ -141,14 +142,15 @@ export function FloatingTabBar({
         // gradient
         // gradientType='brand'
         shadow
-        style={styles.floatingCard}>
+        style={styles.floatingCard}
+      >
         <Tab
           tabs={tabs}
           value={state.routes[state.index].key}
           onChange={handleTabChange}
-          variant='pills'
-          background='transparent'
-          size='sm'
+          variant="pills"
+          background="transparent"
+          size="sm"
           fullWidth
         />
       </Card>
@@ -200,14 +202,15 @@ export function CardTabBar({
       style={[
         styles.cardTabBarContainer,
         { height: tabBarHeight + 10 }, // Extra padding
-      ]}>
+      ]}
+    >
       <Tab
         tabs={tabs}
         value={state.routes[state.index].key}
         onChange={handleTabChange}
-        variant='cards'
-        background='transparent'
-        size='md'
+        variant="cards"
+        background="transparent"
+        size="md"
         fullWidth
       />
     </Card>

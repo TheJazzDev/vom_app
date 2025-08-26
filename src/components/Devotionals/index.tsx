@@ -9,24 +9,25 @@ export default function Devotionals() {
   const [parentWidth, setParentWidth] = useState<number>(0);
 
   const data = [
-    <VerseOfTheDay key='verse' />,
-    <YorubaWatchWord key='yoruba' />,
-    <EnglishWatchWord key='english' />,
+    <VerseOfTheDay key="verse" />,
+    <YorubaWatchWord key="yoruba" />,
+    <EnglishWatchWord key="english" />,
   ];
 
   return (
     <View
-      className='mb-3'
+      className="mb-3"
       onLayout={(event) => {
         const { width } = event.nativeEvent.layout;
         setParentWidth(width);
-      }}>
+      }}
+    >
       {parentWidth > 0 && (
         <Carousel
           loop
           autoPlay
           data={data}
-          mode='parallax'
+          mode="parallax"
           height={150}
           width={parentWidth}
           autoPlayInterval={5000}

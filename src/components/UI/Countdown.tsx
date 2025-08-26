@@ -58,14 +58,14 @@ function getAccurateDateDifference(now: Date, target: Date) {
 }
 
 export const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
-  const date = new Date(targetDate);
-
   const [timeLeft, setTimeLeft] = useState<{ text: string; type: string }>({
     text: '',
     type: '',
   });
 
   useEffect(() => {
+    const date = new Date(targetDate);
+
     const interval = setInterval(() => {
       const now = new Date();
       const diff = date.getTime() - now.getTime();
@@ -121,7 +121,7 @@ export const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [date]);
+  }, []);
 
   // Get width based on scenario type
   const getWidthForType = (type: string) => {
@@ -144,13 +144,14 @@ export const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
   };
 
   return (
-    <Badge variant='default'>
+    <Badge variant="default">
       <Text
         style={{
           width: getWidthForType(timeLeft.type),
           textAlign: 'center',
           fontVariant: ['tabular-nums'], // Use monospace numbers for consistent spacing
-        }}>
+        }}
+      >
         {timeLeft.text}
       </Text>
     </Badge>

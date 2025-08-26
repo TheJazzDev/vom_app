@@ -5,10 +5,11 @@ export default function MembersLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-      }}>
-      <Stack.Screen name='index' options={{ title: 'Members' }} />
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: 'Members' }} />
       <Stack.Screen
-        name='[id]'
+        name="[id]"
         options={{ title: 'Member Details', headerBackTitle: 'Back' }}
       />
     </Stack>

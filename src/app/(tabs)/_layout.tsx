@@ -38,8 +38,9 @@ export default function TabLayout() {
         headerLeft: () => (
           <TouchableOpacity
             style={{ marginLeft: 12 }}
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Feather name='align-left' size={24} color={theme.muted} />
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          >
+            <Feather name="align-left" size={24} color={theme.muted} />
           </TouchableOpacity>
         ),
         headerRight: () => (
@@ -47,13 +48,15 @@ export default function TabLayout() {
             onPress={() => {
               router.push('/notification');
             }}
-            style={{ marginRight: 12 }}>
-            <IconSymbol size={24} name='bell.fill' color={theme.muted} />
+            style={{ marginRight: 12 }}
+          >
+            <IconSymbol size={24} name="bell.fill" color={theme.muted} />
           </TouchableOpacity>
         ),
-      }}>
+      }}
+    >
       <Tabs.Screen
-        name='index'
+        name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
@@ -66,7 +69,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='programme'
+        name="programme"
         options={{
           title: 'Programme',
           tabBarIcon: ({ color, focused }) => (
@@ -81,7 +84,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='members'
+        name="members"
         options={{
           title: 'Members',
           tabBarIcon: ({ color, focused }) => (
@@ -94,7 +97,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name='profile'
+        name="profile"
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
@@ -106,7 +109,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      
     </Tabs>
   );
 }

@@ -73,7 +73,7 @@ const textVariants: Record<NonNullable<BadgeProps['size']>, TextVariant> = {
  */
 const getDotClasses = (
   variant: BadgeProps['variant'],
-  size: BadgeProps['size']
+  size: BadgeProps['size'],
 ) => {
   const dotSize =
     size === 'sm' ? 'w-1.5 h-1.5' : size === 'lg' ? 'w-2.5 h-2.5' : 'w-2 h-2';
@@ -126,7 +126,8 @@ export const Badge: React.FC<BadgeProps> = ({
       <Text
         variant={textVariants[size]}
         color={textColors[variant]}
-        className='font-medium'>
+        className="font-medium"
+      >
         {children}
       </Text>
 

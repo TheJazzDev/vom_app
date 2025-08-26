@@ -11,5 +11,5 @@ export enum Bands {
   JohnBeloved = 'John Beloved',
   ChildrenMinistry = 'Children Ministry',
   Faith = 'Faith',
-  HolyMary = 'Holy Mary'
+  HolyMary = 'Holy Mary',
 }

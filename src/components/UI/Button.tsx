@@ -33,7 +33,7 @@ interface ButtonProps extends TouchableOpacityProps {
 const getVariantStyles = (
   variant: ButtonProps['variant'],
   disabled?: boolean,
-  loading?: boolean
+  loading?: boolean,
 ) => {
   const isDisabledOrLoading = disabled || loading;
 
@@ -114,7 +114,7 @@ const getRoundedStyles = (rounded: ButtonProps['rounded']) => {
 const getTextColor = (
   variant: ButtonProps['variant'],
   disabled?: boolean,
-  loading?: boolean
+  loading?: boolean,
 ) => {
   const isDisabledOrLoading = disabled || loading;
 
@@ -151,7 +151,7 @@ const getTextColor = (
 
 const getIconSpacing = (
   size: ButtonProps['size'],
-  position: 'left' | 'right'
+  position: 'left' | 'right',
 ) => {
   const spacing = size === 'xs' || size === 'sm' ? '1' : '1.5';
   return position === 'left' ? `mr-${spacing}` : `ml-${spacing}`;
@@ -176,7 +176,7 @@ const getLoadingSpinnerSize = (size: ButtonProps['size']) => {
 const getSpinnerColor = (
   variant: ButtonProps['variant'],
   disabled?: boolean,
-  loading?: boolean
+  loading?: boolean,
 ) => {
   const isDisabledOrLoading = disabled || loading;
 
@@ -259,9 +259,10 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={isDisabled}
       className={combinedClassName}
       activeOpacity={isDisabled ? 1 : 0.8}
-      {...props}>
+      {...props}
+    >
       {loading ? (
-        <View className='flex-row items-center'>
+        <View className="flex-row items-center">
           <ActivityIndicator
             size={getLoadingSpinnerSize(size)}
             color={spinnerColor}
@@ -270,13 +271,14 @@ export const Button: React.FC<ButtonProps> = ({
             <Text
               variant={textVariant}
               color={textColor}
-              className='ml-2 font-medium'>
+              className="ml-2 font-medium"
+            >
               {children}
             </Text>
           )}
         </View>
       ) : (
-        <View className='flex-row items-center gap-1 py-1'>
+        <View className="flex-row items-center gap-1 py-1">
           {icon && iconPosition === 'left' && (
             <View className={getIconSpacing(size, 'left')}>{icon}</View>
           )}

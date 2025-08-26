@@ -17,7 +17,7 @@ export default function Programme() {
   const tabBarHeight = useBottomTabBarHeight();
 
   const upcoming = upcomingPrograms.filter(
-    (program) => program.status === 'upcoming'
+    (program) => program.status === 'upcoming',
   );
   const past = upcomingPrograms.filter((program) => program.status === 'past');
 
@@ -26,7 +26,7 @@ export default function Programme() {
       <Tab<ServiceSections>
         value={section}
         onChange={setSection}
-        variant='underline'
+        variant="underline"
         tabs={[
           { label: 'Current', value: 'Current' },
           { label: 'Upcoming', value: 'Upcoming' },

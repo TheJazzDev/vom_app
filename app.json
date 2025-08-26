@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jazzdev.vom"
+      "bundleIdentifier": "com.jazzdev.vom",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +19,8 @@
         "backgroundColor": "#0D0D2B"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.jazzdev.vom"
+      "package": "com.jazzdev.vom",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -35,7 +37,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#0D0D2B"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

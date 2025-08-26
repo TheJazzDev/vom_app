@@ -26,7 +26,7 @@ export const Colors = {
     gradient2: '#CFE0F5',
     gradient3: '#B0C9E8',
     natural: '#FAF9F6',
-    inactiveTint: ''
+    inactiveTint: '',
   },
   dark: {
     brand: '#60A5FA',
@@ -50,6 +50,6 @@ export const Colors = {
     gradient2: '#1B263B',
     gradient3: '#415A77',
     natural: '#dce9fa',
-    inactiveTint: ''
+    inactiveTint: '',
   },
 };

@@ -77,7 +77,8 @@ export function View({
             style={scrollViewProps.style}
             showsVerticalScrollIndicator={showsVerticalScrollIndicator}
             showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
-            contentContainerStyle={scrollContentStyle}>
+            contentContainerStyle={scrollContentStyle}
+          >
             {children}
           </ScrollView>
         </LinearGradient>
@@ -101,7 +102,8 @@ export function View({
           style={scrollViewProps.style}
           showsVerticalScrollIndicator={showsVerticalScrollIndicator}
           showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
-          contentContainerStyle={scrollContentStyle}>
+          contentContainerStyle={scrollContentStyle}
+        >
           {children}
         </ScrollView>
       </RNView>

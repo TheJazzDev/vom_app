@@ -1,8 +1,3 @@
-export * from './Icons';
-export * from './Members';
-export * from './Programme';
-export * from './UI';
-
 import { BandBadge } from './BandBadge';
 import { Collapsible } from './Collapsible';
 import { ExternalLink } from './ExternalLink';
@@ -12,7 +7,12 @@ import ParallaxScrollView from './ParallaxScrollView';
 import Spacer from './Spacer';
 import EnglishWatchWord from './Devotionals/English';
 import YorubaWatchWord from './Devotionals/Yoruba';
-import {DrawerContent} from './DrawerContent'
+import { DrawerContent } from './DrawerContent';
+
+export * from './Icons';
+export * from './Members';
+export * from './Programme';
+export * from './UI';
 
 export {
   BandBadge,
@@ -24,5 +24,5 @@ export {
   ParallaxScrollView,
   Spacer,
   YorubaWatchWord,
-  DrawerContent
+  DrawerContent,
 };

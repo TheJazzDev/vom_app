@@ -19,9 +19,9 @@ const ThemeOption = ({
   theme: any;
 }) => (
   <Pressable onPress={onPress} style={[styles.option]}>
-    <View className='flex-row gap-2'>
+    <View className="flex-row gap-2">
       {icon && <View style={{ marginRight: 15 }}>{icon}</View>}
-      <Text className=''>{label}</Text>
+      <Text className="">{label}</Text>
     </View>
     <View style={[styles.radioOuter, { borderColor: theme.muted }]}>
       {selected && (
@@ -34,7 +34,7 @@ const ThemeOption = ({
 export default function Settings() {
   const theme = useTheme();
   const [themeMode, setThemeMode] = useState<ThemeMode>('automatic');
-  const [_, setSystemTheme] = useState(Appearance.getColorScheme());
+  const [, setSystemTheme] = useState(Appearance.getColorScheme());
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
@@ -66,47 +66,48 @@ export default function Settings() {
 
   return (
     <View gradient scrollable>
-      <Text variant='h5' className='m-4 mb-1'>
+      <Text variant="h5" className="m-4 mb-1">
         Theme
       </Text>
 
       <Card
-        variant='outlined'
-        className='p-0 border-muted dark:border-dark-muted'>
+        variant="outlined"
+        className="p-0 border-muted dark:border-dark-muted"
+      >
         <ThemeOption
           theme={theme}
-          label='Automatic'
+          label="Automatic"
           selected={getSelectedTheme() === 'automatic'}
           onPress={() => handleThemeChange('automatic')}
           icon={
             <IconSymbol
               size={20}
               color={theme.muted}
-              name='circle.lefthalf.fill'
+              name="circle.lefthalf.fill"
             />
           }
         />
-        <Divider colorVariant='muted' height={1.1} />
+        <Divider colorVariant="muted" height={1.1} />
         <ThemeOption
           theme={theme}
-          label='Light'
+          label="Light"
           selected={getSelectedTheme() === 'light'}
           onPress={() => handleThemeChange('light')}
           icon={
-            <IconSymbol size={20} color={theme.muted} name='sun.max.fill' />
+            <IconSymbol size={20} color={theme.muted} name="sun.max.fill" />
           }
         />
-        <Divider colorVariant='muted' height={1.1} />
+        <Divider colorVariant="muted" height={1.1} />
         <ThemeOption
           theme={theme}
-          label='Dark'
+          label="Dark"
           selected={getSelectedTheme() === 'dark'}
           onPress={() => handleThemeChange('dark')}
-          icon={<IconSymbol size={20} color={theme.muted} name='moon.fill' />}
+          icon={<IconSymbol size={20} color={theme.muted} name="moon.fill" />}
         />
       </Card>
 
-      <Text variant='body2' className='mt-2'>
+      <Text variant="body2" className="mt-2">
         Automatic is only supported on operating systems that allow you to
         control the system-wide color scheme.
       </Text>

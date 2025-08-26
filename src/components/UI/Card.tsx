@@ -32,7 +32,7 @@ export type CardProps = ViewProps & {
 
 // Helper function to get text color for gradient cards
 export const getCardTextColor = (
-  variant: CardProps['variant']
+  variant: CardProps['variant'],
 ): string | undefined => {
   if (!variant) return undefined;
   const variantConfig = cardVariants[variant];
@@ -228,7 +228,8 @@ export function Card({
             style,
           ]}
           className={baseClasses}
-          {...otherProps}>
+          {...otherProps}
+        >
           {children}
         </LinearGradient>
       );
@@ -246,7 +247,8 @@ export function Card({
       <View
         style={cardStyle}
         className={`${variantConfig.className} ${baseClasses}`}
-        {...otherProps}>
+        {...otherProps}
+      >
         {children}
       </View>
     );
