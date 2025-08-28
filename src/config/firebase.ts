@@ -19,12 +19,16 @@ const app = initializeApp(firebaseConfig);
 
 export const initializePhoneAuth = (): RecaptchaVerifier => {
   if (!window.recaptchaVerifier) {
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: () => {
-        console.log('reCAPTCHA solved');
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      'recaptcha-container',
+      {
+        size: 'invisible',
+        callback: () => {
+          console.log('reCAPTCHA solved');
+        },
       },
-    });
+    );
   }
   return window.recaptchaVerifier;
 };

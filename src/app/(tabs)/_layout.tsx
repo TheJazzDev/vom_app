@@ -9,7 +9,7 @@ import { DrawerActions } from '@react-navigation/native';
 import { Platform, TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
-  useAuthPersistence()
+  useAuthPersistence();
   const theme = useTheme();
   const router = useRouter();
   const navigation = useNavigation();

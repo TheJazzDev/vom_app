@@ -66,7 +66,7 @@ const MAPPING: IconMapping = {
   'rectangle.portrait.and.arrow.right': 'log-out-outline',
   'rectangle.portrait.and.arrow.right.fill': 'log-out',
   'info.circle': 'information',
-  'arrow.backward': 'arrow-back'
+  'arrow.backward': 'arrow-back',
   // 'phone.fill': 'phone-landscape',
 } satisfies IconMapping;
 

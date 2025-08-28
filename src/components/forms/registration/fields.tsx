@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { Control } from 'react-hook-form';
+import { RHFTextInput, Text, View } from '../../UI';
 import {
   getValidationMessageColor,
   validateContactInfo,
   validateName,
   validatePassword,
 } from './validation';
-import { RHFTextInput, Text, View } from '../../UI';
 
 interface ContactFieldProps {
   control: Control<RegistrationProps>;
@@ -43,8 +42,8 @@ export const RegTypeField: React.FC<ContactFieldProps> = ({
         label="Email or Phone Number"
         leftIcon="envelope"
         placeholder="Enter your email or phone number"
-        keyboardType="email-address"
-        // showValidationMessage={false}
+        autoCapitalize="none"
+        autoCorrect={false}
       />
       {value && (
         <Text className={`text-xs mb-2 px-1 ${colorClass}`}>
@@ -74,7 +73,6 @@ export const NameField: React.FC<NameFieldProps> = ({
         label={label}
         leftIcon="person"
         placeholder={placeholder}
-        // showValidationMessage={false}
       />
       {shouldShowValidation && (
         <Text className="text-xs text-red-500 mb-2 px-1">
@@ -102,7 +100,6 @@ export const PasswordField: React.FC<PasswordFieldProps> = ({
         leftIcon="lock"
         rightIcon="eye"
         placeholder="Create a password"
-        // showValidationMessage={false}
       />
       {value && (
         <Text className={`text-xs mb-2 px-1 ${colorClass}`}>

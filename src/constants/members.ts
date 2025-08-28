@@ -8,7 +8,8 @@ export enum ContactType {
 export const mockMembers: MemberProfile[] = [
   {
     id: '1',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     firstName: 'John',
     lastName: 'Emmanuel',
     email: 'john.emmanuel@church.com',
@@ -31,11 +32,12 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Email,
     secondaryContact: '+234 801 234 5678',
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '2',
-    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
     firstName: 'Mary',
     lastName: 'Johnson',
     email: 'mary.johnson@church.com',
@@ -58,11 +60,12 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Phone,
     secondaryContact: 'mary.johnson@church.com',
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '3',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     firstName: 'David',
     lastName: 'Adebayo',
     email: 'david.adebayo@gmail.com',
@@ -84,11 +87,12 @@ export const mockMembers: MemberProfile[] = [
     accountType: 'member',
     primaryContact: ContactType.Email,
     emailVerified: false,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '4',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
     firstName: 'Grace',
     lastName: 'Okonkwo',
     email: 'grace.okonkwo@yahoo.com',
@@ -111,11 +115,12 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Email,
     secondaryContact: '+234 804 567 8901',
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '5',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
     firstName: 'Samuel',
     lastName: 'Okafor',
     email: 'samuel.okafor@hotmail.com',
@@ -137,11 +142,12 @@ export const mockMembers: MemberProfile[] = [
     accountType: 'guest',
     primaryContact: ContactType.Phone,
     emailVerified: false,
-    phoneVerified: false
+    phoneVerified: false,
   },
   {
     id: '6',
-    avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1554151228-14d9def656e4?w=150&h=150&fit=crop&crop=face',
     firstName: 'Esther',
     lastName: 'Akinwale',
     email: 'esther.akinwale@church.com',
@@ -164,11 +170,12 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Email,
     secondaryContact: '+234 806 789 0123',
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '7',
-    avatar: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face',
     firstName: 'Peter',
     lastName: 'Nwankwo',
     email: 'peter.nwankwo@gmail.com',
@@ -191,11 +198,12 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Phone,
     secondaryContact: 'peter.nwankwo@gmail.com',
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '8',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
     firstName: 'Rebecca',
     lastName: 'Ojo',
     email: 'rebecca.ojo@outlook.com',
@@ -217,11 +225,12 @@ export const mockMembers: MemberProfile[] = [
     accountType: 'member',
     primaryContact: ContactType.Email,
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '9',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
     firstName: 'Joshua',
     lastName: 'Bamidele',
     email: 'joshua.bamidele@church.com',
@@ -244,11 +253,12 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Email,
     secondaryContact: '+234 809 012 3456',
     emailVerified: true,
-    phoneVerified: true
+    phoneVerified: true,
   },
   {
     id: '10',
-    avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face',
+    avatar:
+      'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face',
     firstName: 'Ruth',
     lastName: 'Okoro',
     email: 'ruth.okoro@gmail.com',
@@ -271,6 +281,6 @@ export const mockMembers: MemberProfile[] = [
     primaryContact: ContactType.Phone,
     secondaryContact: 'ruth.okoro@gmail.com',
     emailVerified: false,
-    phoneVerified: true
-  }
+    phoneVerified: true,
+  },
 ];

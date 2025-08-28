@@ -1,6 +1,6 @@
-import { Text } from '@/src/components';
 import React, { useEffect, useRef } from 'react';
 import { Animated, View } from 'react-native';
+import { Text } from './UI';
 
 interface ProgressStep {
   label?: string;
@@ -28,7 +28,7 @@ export default function ProgressIndicator({
       duration: 1000,
       useNativeDriver: false,
     }).start();
-  }, [currentStep, steps.length]);
+  }, [currentStep, steps.length, progressAnimation]);
 
   return (
     <View className={`mb-6 ${className}`}>

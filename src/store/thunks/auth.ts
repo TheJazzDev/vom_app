@@ -1,12 +1,13 @@
 import {
-  findMember,
   getMemberByAuthUid,
   login,
+  logout,
   register,
   resetPasswordWithPhone,
   sendEmailVerificationCode,
   sendForgotPasswordCode,
   sendPhoneVerificationCode,
+  updateMemberProfile,
   verifyEmailCode,
   verifyPhoneCodeAndSignIn,
 } from '@/src/services/auth';
@@ -52,25 +53,12 @@ export const getMemberByAuthUidThunk = createAsyncThunk(
 );
 
 // Get member by email thunk (fallback)
-// export const getMemberByEmailThunk = createAsyncThunk(
-//   'auth/getMemberByEmail',
-//   async (email: string, { rejectWithValue }) => {
-//     try {
-//       const member = await getMemberByEmail(email);
-//       return member;
-//     } catch (error: any) {
-//       return rejectWithValue(error.message);
-//     }
-//   },
-// );
-
-// Find member thunk (for search functionality)
-export const findMemberThunk = createAsyncThunk(
-  'auth/findMember',
-  async (emailOrPhone: string, { rejectWithValue }) => {
+export const getMemberByEmailThunk = createAsyncThunk(
+  'auth/getMemberByEmail',
+  async (email: string, { rejectWithValue }) => {
     try {
-      const member = await findMember(emailOrPhone);
-      return member;
+      // const member = await getMemberByEmail(email);
+      // return member;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -172,6 +160,32 @@ export const resetPasswordThunk = createAsyncThunk(
         newPassword,
       );
       return { success: true };
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const updateProfileThunk = createAsyncThunk(
+  'auth/updateProfile',
+  async (
+    data: { memberId: string; updates: Partial<MemberProfile> },
+    { rejectWithValue },
+  ) => {
+    try {
+      await updateMemberProfile(data.memberId, data.updates);
+      return data.updates;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const logoutThunk = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await logout();
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

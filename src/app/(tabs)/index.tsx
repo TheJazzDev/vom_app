@@ -9,6 +9,7 @@ import {
 } from '@/src/components';
 import Devotionals from '@/src/components/Devotionals';
 import { useTheme } from '@/src/hooks';
+import { useAuthSlice } from '@/src/store';
 import { truncateText } from '@/src/utils';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
@@ -16,6 +17,7 @@ import React from 'react';
 
 export default function ChurchDashboard() {
   const theme = useTheme();
+  const { currentMember } = useAuthSlice();
 
   return (
     <View gradient scrollable>
@@ -23,7 +25,7 @@ export default function ChurchDashboard() {
 
       <View className="flex-row gap-2 items-center">
         <Text variant="h2" color="heading">
-          Welcome, John
+          Welcome, {currentMember?.firstName}
         </Text>
         <HelloWave />
       </View>

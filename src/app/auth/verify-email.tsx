@@ -46,13 +46,6 @@ export default function EmailVerificationScreen() {
     }
   }, [countdown]);
 
-  // Send initial verification code when screen loads
-  useEffect(() => {
-    if (userEmail && countdown === 0) {
-      handleSendCode();
-    }
-  }, [userEmail]);
-
   const handleSendCode = async () => {
     if (!userEmail) {
       Alert.alert('Error', 'No email address found');
@@ -64,8 +57,17 @@ export default function EmailVerificationScreen() {
     try {
       await dispatch(sendEmailVerificationThunk(userEmail));
       setCountdown(60);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // Send initial verification code when screen loads
+  useEffect(() => {
+    if (userEmail && countdown === 0) {
+      handleSendCode();
+    }
+  }, [userEmail, countdown]);
 
   const handleVerifyCode = async () => {
     dispatch(clearError());
@@ -82,6 +84,7 @@ export default function EmailVerificationScreen() {
         router.replace('/profile');
       }
     } catch (error) {
+      console.log(error);
       // Error handled by Redux
     }
   };
@@ -99,7 +102,7 @@ export default function EmailVerificationScreen() {
         <View className="items-center py-8 mb-6">
           <Text variant="h3">Verify Your Email</Text>
           <Text className="text-center mt-4 text-gray-600 max-w-[90%]">
-            We've sent a 6-digit verification code to:
+            We&apos;ve sent a 6-digit verification code to:
           </Text>
           <Text className="text-center mt-2 font-semibold text-blue-600">
             {userEmail}

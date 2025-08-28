@@ -1,6 +1,6 @@
 import { useColorScheme } from 'react-native';
+import { useAuthPersistence } from './useAuthPersistence';
 import { useTheme } from './useTheme';
 import { useThemeColor } from './useThemeColor';
-import {useAuthPersistence} from './useAuthPersistence'
 
-export { useColorScheme, useTheme, useThemeColor, useAuthPersistence };
+export { useAuthPersistence, useColorScheme, useTheme, useThemeColor };

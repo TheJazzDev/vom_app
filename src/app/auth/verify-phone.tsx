@@ -18,7 +18,7 @@ const verificationSchema = yup.object().shape({
 export default function VerifyPhoneScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { error, isSigningIn, clearError } = useAuthSlice();
+  const { error, isLoggingIn, clearError } = useAuthSlice();
 
   const phoneNumber = params.phoneNumber as string;
 
@@ -85,7 +85,7 @@ export default function VerifyPhoneScreen() {
         <View className="items-center py-6 mb-8">
           <Text variant="h2">Verify Phone Number</Text>
           <Text className="text-center mt-2 text-gray-600 max-w-[90%]">
-            We've sent a 6-digit verification code to
+            We&apos;ve sent a 6-digit verification code to
           </Text>
           <Text className="text-center font-semibold text-lg mt-1">
             {phoneNumber}
@@ -118,16 +118,16 @@ export default function VerifyPhoneScreen() {
 
         {/* Verify Button */}
         <TouchableOpacity
-          disabled={isSigningIn || verificationCode.length !== 6}
+          disabled={isLoggingIn || verificationCode.length !== 6}
           onPress={handleSubmit(onSubmit)}
           className={`py-4 rounded-lg mb-6 ${
-            isSigningIn || verificationCode.length !== 6
+            isLoggingIn || verificationCode.length !== 6
               ? 'bg-gray-400'
               : 'bg-blue-500'
           }`}
         >
           <Text className="text-white text-center font-semibold text-lg">
-            {isSigningIn ? 'Verifying...' : 'Verify Code'}
+            {isLoggingIn ? 'Verifying...' : 'Verify Code'}
           </Text>
         </TouchableOpacity>
 
@@ -136,7 +136,7 @@ export default function VerifyPhoneScreen() {
           <TouchableOpacity
             onPress={handleResendCode}
             className="py-3 px-6 rounded-lg border border-blue-500"
-            disabled={isSigningIn}
+            disabled={isLoggingIn}
           >
             <Text className="text-blue-500 font-medium">Resend Code</Text>
           </TouchableOpacity>
@@ -152,7 +152,9 @@ export default function VerifyPhoneScreen() {
         {/* Info Section */}
         <View className="p-4 bg-blue-50 rounded-lg">
           <Text className="text-blue-800 text-sm text-center">
-            <Text className="font-semibold">Didn't receive the code? </Text>
+            <Text className="font-semibold">
+              Didn&apos;t receive the code?{' '}
+            </Text>
             Check your messages or try resending. The code expires in 10
             minutes.
           </Text>

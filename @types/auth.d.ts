@@ -1,3 +1,5 @@
+import { FieldValue } from 'firebase/firestore';
+
 declare global {
   type Gender = 'Male' | 'Female';
   type Role = 'member' | 'guest' | 'admin';
@@ -11,7 +13,7 @@ declare global {
   }
 
   export interface RegistrationResult {
-    member: MemberProfile;
+    member: MemberProfile | null;
     isExistingMember: boolean;
     requiresPhoneVerification: boolean;
     requiresEmailVerification: boolean;
@@ -33,7 +35,8 @@ declare global {
   };
 
   interface MemberProfile {
-    id: string;
+    memberId: string;
+    authUid: string;
     avatar: string;
     firstName: string;
     lastName: string;
@@ -44,6 +47,7 @@ declare global {
     rank: number;
     address: string;
     joinDate: string;
+    createdAt: string;
     status: 'active' | 'inactive';
     verified: boolean;
     gender: string;
@@ -57,6 +61,35 @@ declare global {
     secondaryPhone?: string;
     emailVerified: boolean;
     phoneVerified: boolean;
+  }
+
+  interface AuthState {
+    // Current user data
+    currentMember: MemberProfile | null;
+    isAuthenticated: boolean;
+    registrationResult: RegistrationResult | null;
+    // Found member during registration flow
+    foundMember: MemberProfile | null;
+    // Phone authentication
+    phoneVerificationId: string | null;
+    phoneNumber: string | null;
+    isWaitingForSMS: boolean;
+    // Loading states
+    isLoading: boolean;
+    isRegistering: boolean;
+    isVerifyingEmail: boolean;
+    isSendingEmailCode: boolean;
+    isLoggingIn: boolean;
+    isSigningOut: boolean;
+    isResettingPassword: boolean;
+    isUpdatingProfile: boolean;
+    isSendingPhoneCode: boolean;
+    // Error states
+    error: string | null;
+    // Success messages
+    successMessage: string | null;
+    // Auth persistence
+    isInitialized: boolean;
   }
 }
 

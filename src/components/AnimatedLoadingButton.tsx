@@ -1,7 +1,5 @@
-// components/AnimatedLoadingButton.tsx
 import React, { useEffect, useRef } from 'react';
-import { TouchableOpacity, Animated, View } from 'react-native';
-import { Text } from '@/src/components';
+import { Animated, Text, TouchableOpacity, View } from 'react-native';
 
 interface AnimatedLoadingButtonProps {
   onPress: () => void;
@@ -20,12 +18,11 @@ export default function AnimatedLoadingButton({
   loadingText,
   children,
   className = '',
-  variant = 'primary'
+  variant = 'primary',
 }: AnimatedLoadingButtonProps) {
-
   const spinValue = useRef(new Animated.Value(0)).current;
   const scaleValue = useRef(new Animated.Value(1)).current;
-  const opacityValue = useRef(new Animated.Value(1)).current;
+  // const opacityValue = useRef(new Animated.Value(1)).current;
 
   // Spinning animation for loading
   useEffect(() => {
@@ -35,7 +32,7 @@ export default function AnimatedLoadingButton({
           toValue: 1,
           duration: 1000,
           useNativeDriver: true,
-        })
+        }),
       );
 
       const scaleAnimation = Animated.sequence([
@@ -64,7 +61,8 @@ export default function AnimatedLoadingButton({
   });
 
   const getButtonStyles = () => {
-    const baseStyles = 'py-4 rounded-lg flex-row items-center justify-center';
+    const baseStyles =
+      'mb-6 py-4 rounded-lg flex-row items-center justify-center';
 
     if (disabled || isLoading) {
       return `${baseStyles} bg-gray-400`;
@@ -125,14 +123,14 @@ export default function AnimatedLoadingButton({
                 duration: 300,
                 useNativeDriver: true,
               }),
-            ])
+            ]),
           );
 
         createDotAnimation(dot1, 0).start();
         createDotAnimation(dot2, 200).start();
         createDotAnimation(dot3, 400).start();
       }
-    }, [isLoading]);
+    }, [dot1, dot2, dot3]);
 
     return (
       <View className="flex-row items-center mr-2">
@@ -168,8 +166,10 @@ export default function AnimatedLoadingButton({
         {isLoading && (
           <View className="flex-row items-center">
             <LoadingSpinner />
+            {LoadingDots()}
           </View>
         )}
+
         <Text className={`text-center font-semibold text-lg ${getTextColor()}`}>
           {isLoading && loadingText ? loadingText : children}
         </Text>

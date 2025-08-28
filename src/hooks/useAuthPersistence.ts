@@ -1,19 +1,15 @@
-import { auth } from '@/src/config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
+import { auth } from '../config/firebase';
 import { dispatch, getMemberByAuthUidThunk, useAuthSlice } from '../store';
 
-/**
- * Custom hook to handle Firebase Auth state persistence
- * Call this once in your App component or root layout
- */
-export const useAuthPersistence = () => {
+export function useAuthPersistence() {
   const { setAuthInitialized, setCurrentMember } = useAuthSlice();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User is signed in, get their member profile
+        console.log('user from auth listener', user.uid);
         try {
           const resultAction = await dispatch(
             getMemberByAuthUidThunk(user.uid),
@@ -35,7 +31,6 @@ export const useAuthPersistence = () => {
           dispatch(setCurrentMember(null));
         }
       } else {
-        // User is signed out
         dispatch(setCurrentMember(null));
         dispatch(setAuthInitialized());
       }
@@ -43,5 +38,5 @@ export const useAuthPersistence = () => {
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [dispatch]);
-};
+  }, [setCurrentMember, setAuthInitialized]);
+}

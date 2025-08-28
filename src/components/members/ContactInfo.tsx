@@ -16,7 +16,7 @@ export default function ContactInfo({ member }: ContactInfoProps) {
         <View className="flex-1">
           <Text variant="caption">Phone</Text>
           <Text color="tertiary" variant="label">
-            {member.phone.join(', ')}
+            {member.primaryPhone}
           </Text>
         </View>
       </View>

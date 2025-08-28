@@ -30,6 +30,7 @@ export default function MembersScreen() {
       <Spacer height={10} />
       <TextInput
         inputType="search"
+        onChange={(value) => setSearchTerm(String(value))}
         placeholder="Search members, roles, bands, or departments..."
       />
 
@@ -56,10 +57,10 @@ export default function MembersScreen() {
 
       <FlatList
         data={filteredMembers}
-        keyExtractor={(member) => member.id}
+        keyExtractor={(member) => member.memberId}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => router.push(`/members/${item.id}`)}
+            onPress={() => router.push(`/members/${item.memberId}`)}
             activeOpacity={0.7}
           >
             <MemberCard member={item} />

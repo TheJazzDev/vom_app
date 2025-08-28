@@ -1,4 +1,12 @@
-import { Card, RHFTextInput, Spacer, Text, View } from '@/src/components';
+import {
+  AnimatedLoadingButton,
+  Card,
+  ErrorToast,
+  RHFTextInput,
+  Spacer,
+  Text,
+  View,
+} from '@/src/components';
 import { loginSchema } from '@/src/constants';
 import { dispatch, loginThunk, useAuthSlice } from '@/src/store';
 import { isEmail } from '@/src/utils';
@@ -15,7 +23,7 @@ import {
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { error, isSigningIn, clearError } = useAuthSlice();
+  const { error, isLoggingIn, clearError } = useAuthSlice();
 
   const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
@@ -61,7 +69,7 @@ export default function LoginScreen() {
         );
 
         if (loginThunk.fulfilled.match(result)) {
-          router.push('/profile')
+          router.push('/profile');
           console.log('Email sign in successful');
           // Navigation handled by auth state management
         }
@@ -112,12 +120,7 @@ export default function LoginScreen() {
           />
         </View>
 
-        {/* Error Messages */}
-        {error && (
-          <View className="mb-4 p-3 bg-red-50 rounded-lg">
-            <Text className="text-red-600 text-center text-sm">{error}</Text>
-          </View>
-        )}
+        <ErrorToast error={error} />
 
         {/* Forgot Password Link */}
         <TouchableOpacity onPress={handleForgotPassword} className="mb-6">
@@ -126,22 +129,19 @@ export default function LoginScreen() {
           </Text>
         </TouchableOpacity>
 
-        {/* Sign In Button */}
-        <TouchableOpacity
-          disabled={isSigningIn}
+        {/* Login In Button */}
+        <AnimatedLoadingButton
+          isLoading={isLoggingIn}
+          disabled={isLoggingIn}
+          loadingText="Please wait..."
           onPress={handleSubmit(onSubmit)}
-          className={`py-4 rounded-lg mb-6 ${
-            isSigningIn ? 'bg-gray-400' : 'bg-blue-500'
-          }`}
         >
-          <Text className="text-white text-center font-semibold text-lg">
-            {isSigningIn ? 'Signing In...' : 'Sign In'}
-          </Text>
-        </TouchableOpacity>
+          Log In
+        </AnimatedLoadingButton>
 
         {/* Sign Up Link */}
         <View className="flex-row items-center justify-center mb-8">
-          <Text className="text-gray-600">Don't have an account? </Text>
+          <Text className="text-gray-600">Don&apos;t have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/auth/register')}>
             <RNText className="text-blue-500 font-medium">
               Create Account
@@ -154,8 +154,9 @@ export default function LoginScreen() {
           <Text className="text-gray-700 text-sm text-center">
             <Text className="font-semibold">Need help? </Text>
             You can sign in with either your email address or phone number. For
-            phone login, we'll send you a verification code. If you're a member
-            and haven't created an account yet, use "Create Account" above.
+            phone login, we&apos;ll send you a verification code. If you&apos;re
+            a member and haven&apos;t created an account yet, use &quot;Create
+            Account&quot; above.
           </Text>
         </Card>
       </View>

@@ -1,6 +1,8 @@
 import { auth, db } from '@/src/config/firebase';
+import { generateMemberId } from '@/src/utils';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
+import { sendPhoneVerificationCode } from './sendPhoneVerificationCode';
 
 export async function createGuestAccount(
   data: RegistrationProps,
@@ -18,10 +20,12 @@ export async function createGuestAccount(
       displayName: `${data.firstName} ${data.lastName}`,
     });
 
-    const newMemberId = `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const memberId = generateMemberId();
+    const authUid = userCredential.user.uid;
 
     const newMember: MemberProfile = {
-      id: newMemberId,
+      authUid,
+      memberId,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.emailOrPhone,
@@ -33,7 +37,8 @@ export async function createGuestAccount(
       rank: 1,
       avatar: '',
       address: '',
-      joinDate: new Date().toISOString(),
+      joinDate: '',
+      createdAt: new Date().toISOString(),
       status: 'active',
       verified: true,
       gender: '',
@@ -47,7 +52,7 @@ export async function createGuestAccount(
       phoneVerified: false,
     };
 
-    await setDoc(doc(db, 'members', newMemberId), newMember);
+    await setDoc(doc(db, 'members', memberId), newMember);
 
     return {
       member: newMember,
@@ -56,41 +61,10 @@ export async function createGuestAccount(
       requiresPhoneVerification: false,
     };
   } else {
-    // Phone registration - don't create Firebase account yet
-    // Firebase phone auth will happen during phone verification
-    const newMemberId = `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    const newMember: MemberProfile = {
-      id: newMemberId,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: '', // No email for phone-only users
-      title: '',
-      primaryPhone: data.emailOrPhone,
-      // Don't include secondaryPhone if it's undefined
-      band: [],
-      position: [],
-      rank: 1,
-      avatar: '',
-      address: '',
-      joinDate: new Date().toISOString(),
-      status: 'active',
-      verified: true,
-      gender: '',
-      dob: '',
-      memberSince: new Date().getFullYear().toString(),
-      department: '',
-      hasPassword: false, // No password for phone-only auth
-      accountType: 'guest',
-      authType: 'phone',
-      emailVerified: false,
-      phoneVerified: false, // Will be verified next
-    };
-
-    await setDoc(doc(db, 'members', newMemberId), newMember);
+    await sendPhoneVerificationCode(data.emailOrPhone);
 
     return {
-      member: newMember,
+      member: null,
       isExistingMember: false,
       requiresPhoneVerification: true,
       requiresEmailVerification: false,

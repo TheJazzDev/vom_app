@@ -28,6 +28,8 @@ export type RHFTextInputProps<TFieldValues extends FieldValues> =
     placeholder?: string;
     validationMessage?: string;
     showValidationMessage?: boolean;
+    autoCapitalize?: string;
+    autoCorrect?: boolean;
   };
 
 export function RHFTextInput<TFieldValues extends FieldValues>({
@@ -45,6 +47,8 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
   placeholder,
   validationMessage,
   showValidationMessage = true,
+  autoCapitalize,
+  autoCorrect,
   ...rest
 }: RHFTextInputProps<TFieldValues>) {
   const theme = useTheme();
@@ -52,7 +56,6 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
   const [isFocused, setIsFocused] = React.useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
-  // Animation
   const labelAnim = useRef(new Animated.Value(0)).current;
 
   const animateLabel = (value: string | undefined, isFocused: boolean) => {
@@ -134,10 +137,12 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
 
               <TextInput
                 {...rest}
+                autoCapitalize={autoCapitalize}
+                autoCorrect={autoCorrect}
                 secureTextEntry={shouldSecureText()}
                 value={value}
                 onChangeText={(text) => {
-                  onChange(text);
+                  onChange(inputType === 'email' ? text.toLowerCase() : text);
                 }}
                 onFocus={(e) => {
                   setIsFocused(true);
@@ -148,7 +153,6 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
                   onBlur();
                   rest.onBlur?.(e);
                 }}
-                // placeholder={label && isFocused ? placeholder : ''}
                 editable={!disabled}
                 style={{
                   flex: 1,
@@ -184,8 +188,6 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
             {error?.message && showValidationMessage && (
               <Text className="text-red-500 text-sm px-1">{error.message}</Text>
             )}
-
-
           </View>
         );
       }}

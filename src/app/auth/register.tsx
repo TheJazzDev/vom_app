@@ -1,6 +1,7 @@
 import {
   AnimatedLoadingButton,
   Card,
+  ErrorToast,
   ProgressIndicator,
   Text,
   View,
@@ -107,16 +108,12 @@ export default function RegistrationScreen() {
 
         <Card variant="outlined" className="mb-8">
           <Text className="text-gray-700 text-sm text-center">
-            We'll check if you're already a member and set up your account
-            accordingly. New users will be created as guest accounts.
+            We&apos;ll check if you&apos;re already a member and set up your
+            account accordingly. New users will be created as guest accounts.
           </Text>
         </Card>
 
-        {error && (
-          <View className="mb-4 p-3 bg-red-50 rounded-lg">
-            <Text className="text-red-600 text-center text-sm">{error}</Text>
-          </View>
-        )}
+        <ErrorToast error={error} />
 
         {/* Submit Button */}
         <AnimatedLoadingButton

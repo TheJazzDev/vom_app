@@ -34,9 +34,7 @@ export const getPasswordStrengthMessage = (password: string): string => {
   return 'Password looks good!';
 };
 
-export const getAuthType = (
-  input: string,
-): 'email' | 'phone' | 'unknown' => {
+export const getAuthType = (input: string): 'email' | 'phone' | 'unknown' => {
   const trimmed = input.trim();
 
   if (trimmed.includes('@')) return 'email';

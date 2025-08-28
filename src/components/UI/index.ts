@@ -7,6 +7,19 @@ import { Text } from './Text';
 import { Divider } from './Divider';
 import { TextInput } from './TextInput';
 import { View } from './View';
-import {RHFTextInput} from './RHFTextInput'
+import { RHFTextInput } from './RHFTextInput';
+import { ErrorToast } from './ErrorToast';
 
-export { Badge, Button, Card, Countdown, Tab, Text, Divider, TextInput, View, RHFTextInput };
+export {
+  Badge,
+  ErrorToast,
+  Button,
+  Card,
+  Countdown,
+  Tab,
+  Text,
+  Divider,
+  TextInput,
+  View,
+  RHFTextInput,
+};

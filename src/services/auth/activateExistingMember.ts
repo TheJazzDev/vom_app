@@ -16,6 +16,8 @@ export async function activateExistingMember(
       data.password,
     );
 
+    const authUid = userCredential.user.uid;
+
     await updateProfile(userCredential.user, {
       displayName: `${member.firstName} ${member.lastName}`,
     });
@@ -26,14 +28,16 @@ export async function activateExistingMember(
     // Update member document
     const updatedMember: MemberProfile = {
       ...member,
+      authUid,
       email: data.emailOrPhone,
       hasPassword: true,
-      verified: false, // Will be true after email verification
-      emailVerified: false, // Will be true after email verification
+      verified: false,
+      emailVerified: false,
       authType: 'email',
     };
 
-    await updateDoc(doc(db, 'members', member.id), {
+    await updateDoc(doc(db, 'members', member.memberId), {
+      authUid,
       email: data.emailOrPhone,
       hasPassword: true,
       verified: false,
@@ -49,22 +53,18 @@ export async function activateExistingMember(
     };
   } else {
     // CASE 2: Existing member with phone registration
-    // Don't create Firebase account yet - just update member record
     // Firebase phone auth will happen during phone verification step
-
     const updatedMember: MemberProfile = {
       ...member,
-      // Keep existing email (empty if they don't have one)
       primaryPhone: member.primaryPhone || data.emailOrPhone,
-      verified: true,
-      phoneVerified: false, // Will be verified in next step
+      verified: false,
+      phoneVerified: false,
       authType: 'phone',
-      // Note: hasPassword stays false for phone-only auth
     };
 
-    await updateDoc(doc(db, 'members', member.id), {
+    await updateDoc(doc(db, 'members', member.memberId), {
       primaryPhone: member.primaryPhone || data.emailOrPhone,
-      verified: true,
+      verified: false,
       phoneVerified: false,
       authType: 'phone',
     });

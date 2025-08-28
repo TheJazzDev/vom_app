@@ -121,7 +121,7 @@ export const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [targetDate]);
 
   // Get width based on scenario type
   const getWidthForType = (type: string) => {

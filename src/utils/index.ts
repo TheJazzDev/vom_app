@@ -1,8 +1,16 @@
-export * from './validations'
-
 import { capitalizeFirstLetter } from './capitalizeFirstLetter';
 import { formatDate } from './formatDate';
-import { truncateText } from './truncateText';
+import { generateMemberId } from './generateMemberId';
 import { isEmail } from './isEmail';
+import { truncateText } from './truncateText';
 
-export { isEmail, capitalizeFirstLetter, formatDate, truncateText };
+export * from './firebaseErrorHandler';
+export * from './validations';
+
+export {
+  capitalizeFirstLetter,
+  formatDate,
+  generateMemberId,
+  isEmail,
+  truncateText,
+};

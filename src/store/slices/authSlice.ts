@@ -2,48 +2,34 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import {
-  findMemberThunk,
+  getMemberByAuthUidThunk,
   loginThunk,
+  logoutThunk,
   registerThunk,
+  resetPasswordThunk,
   sendEmailVerificationThunk,
+  sendPhoneVerificationThunk,
+  updateProfileThunk,
   verifyEmailThunk,
 } from '../thunks/auth';
-
-interface AuthState {
-  currentMember: MemberProfile | null;
-  isAuthenticated: boolean;
-  foundMember: MemberProfile | null;
-  pendingPhoneVerification: boolean;
-  pendingEmailVerification: boolean;
-  registrationResult: RegistrationResult | null;
-  phoneVerificationId: string | null;
-  phoneNumber: string | null;
-  isWaitingForSMS: boolean;
-  isFindingMember: boolean;
-  isRegistering: boolean;
-  isSigningIn: boolean;
-  isSendingEmailCode: boolean;
-  isVerifyingEmail: boolean;
-  error: string | null;
-  successMessage: string | null;
-  isInitialized: boolean;
-}
 
 const initialState: AuthState = {
   currentMember: null,
   isAuthenticated: false,
-  foundMember: null,
-  pendingPhoneVerification: false,
-  pendingEmailVerification: false,
   registrationResult: null,
+  foundMember: null,
   phoneVerificationId: null,
   phoneNumber: null,
   isWaitingForSMS: false,
-  isFindingMember: false,
+  isLoading: false,
   isRegistering: false,
-  isSigningIn: false,
-  isSendingEmailCode: false,
   isVerifyingEmail: false,
+  isSendingEmailCode: false,
+  isLoggingIn: false,
+  isSigningOut: false,
+  isResettingPassword: false,
+  isUpdatingProfile: false,
+  isSendingPhoneCode: false,
   error: null,
   successMessage: null,
   isInitialized: false,
@@ -62,83 +48,107 @@ const authSlice = createSlice({
     clearFoundMember: (state) => {
       state.foundMember = null;
     },
-    clearRegistrationResult: (state) => {
-      state.registrationResult = null;
-      state.pendingPhoneVerification = false;
-      state.pendingEmailVerification = false;
-    },
     setAuthInitialized: (state) => {
       state.isInitialized = true;
     },
+    // For handling Firebase Auth state changes
     setCurrentMember: (state, action: PayloadAction<MemberProfile | null>) => {
       state.currentMember = action.payload;
       state.isAuthenticated = !!action.payload;
     },
-    setPhoneVerificationData: (
-      state,
-      action: PayloadAction<{
-        phoneVerificationId: string;
-        phoneNumber: string;
-      }>,
-    ) => {
-      state.phoneVerificationId = action.payload.phoneVerificationId;
-      state.phoneNumber = action.payload.phoneNumber;
-      state.isWaitingForSMS = true;
-    },
-    clearPhoneVerificationData: (state) => {
-      state.phoneVerificationId = null;
-      state.phoneNumber = null;
-      state.isWaitingForSMS = false;
-    },
-    completePendingRegistration: (state) => {
-      if (state.registrationResult) {
-        state.currentMember = state.registrationResult.member;
-        state.isAuthenticated = true;
-        state.pendingPhoneVerification = false;
-        state.pendingEmailVerification = false;
-        state.registrationResult = null;
-      }
-    },
-    logout: () => {
-      return initialState;
-    },
   },
   extraReducers: (builder) => {
-    // Find Member
+    // Register
     builder
-      .addCase(findMemberThunk.pending, (state) => {
-        state.isFindingMember = true;
+      .addCase(registerThunk.pending, (state) => {
+        state.isRegistering = true;
         state.error = null;
-        state.foundMember = null;
       })
-      .addCase(findMemberThunk.fulfilled, (state, action) => {
-        state.isFindingMember = false;
-        state.foundMember = action.payload;
+      .addCase(registerThunk.fulfilled, (state, action) => {
+        state.isRegistering = false;
+        state.currentMember = action.payload.member;
+        state.isAuthenticated = true;
+        state.successMessage = 'Registration successful! Welcome!';
       })
-      .addCase(findMemberThunk.rejected, (state, action) => {
-        state.isFindingMember = false;
+      .addCase(registerThunk.rejected, (state, action) => {
+        state.isRegistering = false;
         state.error = action.payload as string;
-        state.foundMember = null;
       });
 
-    // Login
+    // Send Email Verification
+    builder
+      .addCase(sendEmailVerificationThunk.pending, (state) => {
+        state.isSendingEmailCode = true;
+        state.error = null;
+      })
+      .addCase(sendEmailVerificationThunk.fulfilled, (state) => {
+        state.isSendingEmailCode = false;
+        state.successMessage = 'Verification code sent to your email!';
+      })
+      .addCase(sendEmailVerificationThunk.rejected, (state, action) => {
+        state.isSendingEmailCode = false;
+        state.error = action.payload as string;
+      });
+
+    // Verify Email
+    builder
+      .addCase(verifyEmailThunk.pending, (state) => {
+        state.isVerifyingEmail = true;
+        state.error = null;
+      })
+      .addCase(verifyEmailThunk.fulfilled, (state, action) => {
+        state.isVerifyingEmail = false;
+        if (state.registrationResult) {
+          state.currentMember = {
+            ...state.registrationResult.member,
+            emailVerified: true,
+            verified: true,
+          } as MemberProfile;
+          state.isAuthenticated = true;
+          state.registrationResult = null;
+        }
+        state.successMessage = 'Email verified successfully!';
+      })
+      .addCase(verifyEmailThunk.rejected, (state, action) => {
+        state.isVerifyingEmail = false;
+        state.error = action.payload as string;
+      });
+
+    // Send Phone Code
+    builder
+      .addCase(sendPhoneVerificationThunk.pending, (state) => {
+        state.isSendingPhoneCode = true;
+        state.error = null;
+      })
+      .addCase(sendPhoneVerificationThunk.fulfilled, (state, action) => {
+        state.isSendingPhoneCode = false;
+        state.phoneVerificationId = action.payload.verificationId;
+        state.phoneNumber = action.payload.phoneNumber;
+        state.isWaitingForSMS = true;
+        state.successMessage = 'Verification code sent to your phone!';
+      })
+      .addCase(sendPhoneVerificationThunk.rejected, (state, action) => {
+        state.isSendingPhoneCode = false;
+        state.error = action.payload as string;
+      });
+
+    // Sign In (updated to handle phone auth)
     builder
       .addCase(loginThunk.pending, (state) => {
-        state.isSigningIn = true;
+        state.isLoggingIn = true;
         state.error = null;
-        state.successMessage = null;
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
-        state.isSigningIn = false;
+        state.isLoggingIn = false;
         state.currentMember = action.payload;
         state.isAuthenticated = true;
         state.phoneVerificationId = null;
         state.phoneNumber = null;
         state.isWaitingForSMS = false;
-        state.error = null;
+        state.successMessage = 'Signed in successfully!';
       })
       .addCase(loginThunk.rejected, (state, action) => {
-        state.isSigningIn = false;
+        state.isLoggingIn = false;
         const errorMessage = action.payload as string;
 
         if (errorMessage === 'VERIFICATION_CODE_SENT') {
@@ -150,72 +160,71 @@ const authSlice = createSlice({
         }
       });
 
-    // Register
+    // Log Out
     builder
-      .addCase(registerThunk.pending, (state) => {
-        state.isRegistering = true;
+      .addCase(logoutThunk.pending, (state) => {
+        state.isSigningOut = true;
         state.error = null;
-        state.successMessage = null;
       })
-      .addCase(registerThunk.fulfilled, (state, action) => {
-        state.isRegistering = false;
-        state.registrationResult = action.payload;
+      .addCase(logoutThunk.fulfilled, (state) => {
+        state.isSigningOut = false;
+        state.currentMember = null;
+        state.isAuthenticated = false;
         state.foundMember = null;
-
-        if (action.payload.requiresPhoneVerification) {
-          state.pendingPhoneVerification = true;
-        }
-
-        if (action.payload.requiresEmailVerification) {
-          state.pendingEmailVerification = true;
-        }
+        state.successMessage = 'Signed out successfully!';
       })
-      .addCase(registerThunk.rejected, (state, action) => {
-        state.isRegistering = false;
+      .addCase(logoutThunk.rejected, (state, action) => {
+        state.isSigningOut = false;
         state.error = action.payload as string;
       });
 
-    // Send Email Verification Code
+    // Get Member by Auth UID
     builder
-      .addCase(sendEmailVerificationThunk.pending, (state) => {
-        state.isSendingEmailCode = true;
+      .addCase(getMemberByAuthUidThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMemberByAuthUidThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentMember = action.payload;
+        state.isAuthenticated = !!action.payload;
+        state.isInitialized = true;
+      })
+      .addCase(getMemberByAuthUidThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+        state.isInitialized = true;
+      });
+
+    // Reset Password
+    builder
+      .addCase(resetPasswordThunk.pending, (state) => {
+        state.isResettingPassword = true;
         state.error = null;
-        state.successMessage = null;
       })
-      .addCase(sendEmailVerificationThunk.fulfilled, (state) => {
-        state.isSendingEmailCode = false;
-        state.successMessage = 'Verification code sent to your email!';
+      .addCase(resetPasswordThunk.fulfilled, (state, action) => {
+        state.isResettingPassword = false;
+        // state.successMessage = action.payload;
       })
-      .addCase(sendEmailVerificationThunk.rejected, (state, action) => {
-        state.isSendingEmailCode = false;
+      .addCase(resetPasswordThunk.rejected, (state, action) => {
+        state.isResettingPassword = false;
         state.error = action.payload as string;
       });
 
-    // Verify Email Code
+    // Update Profile
     builder
-      .addCase(verifyEmailThunk.pending, (state) => {
-        state.isVerifyingEmail = true;
+      .addCase(updateProfileThunk.pending, (state) => {
+        state.isUpdatingProfile = true;
         state.error = null;
-        state.successMessage = null;
       })
-      .addCase(verifyEmailThunk.fulfilled, (state, action) => {
-        state.isVerifyingEmail = false;
-        state.pendingEmailVerification = false;
-        state.successMessage = 'Email verified successfully!';
-
-        // Complete authentication if we have a registration result
-        if (state.registrationResult) {
-          state.currentMember = {
-            ...state.registrationResult.member,
-            emailVerified: true,
-            verified: true,
-          };
-          state.isAuthenticated = true;
-          state.registrationResult = null;
+      .addCase(updateProfileThunk.fulfilled, (state, action) => {
+        state.isUpdatingProfile = false;
+        if (state.currentMember) {
+          state.currentMember = { ...state.currentMember, ...action.payload };
         }
+        state.successMessage = 'Profile updated successfully!';
       })
-      .addCase(verifyEmailThunk.rejected, (state, action) => {
-        state.isVerifyingEmail = false;
+      .addCase(updateProfileThunk.rejected, (state, action) => {
+        state.isUpdatingProfile = false;
         state.error = action.payload as string;
       });
   },
