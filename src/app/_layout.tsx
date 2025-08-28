@@ -12,6 +12,8 @@ import './global.css';
 export default function RootLayout() {
   const theme = useTheme();
   const router = useRouter();
+  // const pathname = usePathname();
+  // const navigation = useNavigation();
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -19,6 +21,40 @@ export default function RootLayout() {
   });
 
   if (!loaded) return null;
+
+  // Function to determine if we should show drawer toggle instead of back button
+  // const shouldShowDrawerToggle = () => {
+  //   const tabPaths = ['/', '/programme', '/members', '/profile'];
+  //   return tabPaths.includes(pathname);
+  // };
+
+  // const getLeftHeaderComponent = (canGoBack?: boolean) => {
+  //   if (shouldShowDrawerToggle()) {
+  //     return (
+  //       <TouchableOpacity
+  //         style={{ marginLeft: 12 }}
+  //         onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+  //       >
+  //         <IconSymbol
+  //           name="line.horizontal.3"
+  //           size={24}
+  //           color={theme.muted}
+  //         />
+  //       </TouchableOpacity>
+  //     );
+  //   }
+
+  //   if (canGoBack) {
+  //     return (
+  //       <TouchableOpacity
+  //         onPress={() => router.back()}
+  //         style={{ marginLeft: 12 }}
+  //       >
+  //         <IconSymbol size={24} name="chevron.left" color={theme.muted} />
+  //       </TouchableOpacity>
+  //     );
+  //   }
+  // };
 
   return (
     <Providers>
@@ -40,6 +76,7 @@ export default function RootLayout() {
           headerStyle: {
             backgroundColor: theme.background,
           },
+          // headerLeft: ({ canGoBack }) => getLeftHeaderComponent(canGoBack),
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {

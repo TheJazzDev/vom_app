@@ -1,10 +1,4 @@
-import {
-  MemberCard,
-  Spacer,
-  Tab,
-  ThemedTextInput,
-  View,
-} from '@/src/components';
+import { MemberCard, Spacer, Tab, TextInput, View } from '@/src/components';
 import { mockMembers } from '@/src/constants/members';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
@@ -13,7 +7,7 @@ import { FlatList, Platform, TouchableOpacity } from 'react-native';
 
 export default function MembersScreen() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [gender, setGender] = useState<Gender>('all');
+  const [gender, setGender] = useState<Gender | 'all'>('all');
 
   const router = useRouter();
   const tabBarHeight = useBottomTabBarHeight();
@@ -22,11 +16,11 @@ export default function MembersScreen() {
     const matchesSearch =
       member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.roles.some((role) =>
+      member.position.some((role: string) =>
         role.toLowerCase().includes(searchTerm.toLowerCase()),
       );
 
-    const matchesGender = gender === 'all' || member.gender === gender;
+    const matchesGender = member.gender === gender || 'all';
 
     return matchesSearch && matchesGender;
   });
@@ -34,12 +28,12 @@ export default function MembersScreen() {
   return (
     <View gradient paddingHorizontal={10}>
       <Spacer height={10} />
-      <ThemedTextInput
+      <TextInput
         inputType="search"
         placeholder="Search members, roles, bands, or departments..."
       />
 
-      <Tab<Gender>
+      <Tab<Gender | 'all'>
         value={gender}
         onChange={setGender}
         variant="pills"

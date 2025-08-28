@@ -25,7 +25,9 @@ export type RHFTextInputProps<TFieldValues extends FieldValues> =
     disabled?: boolean;
     label?: string;
     required?: boolean;
-    placeholder: string;
+    placeholder?: string;
+    validationMessage?: string;
+    showValidationMessage?: boolean;
   };
 
 export function RHFTextInput<TFieldValues extends FieldValues>({
@@ -41,6 +43,8 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
   label,
   required = false,
   placeholder,
+  validationMessage,
+  showValidationMessage = true,
   ...rest
 }: RHFTextInputProps<TFieldValues>) {
   const theme = useTheme();
@@ -101,14 +105,14 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
         }, [value, isFocused]);
 
         return (
-          <View className={`mb-4 ${containerClassName}`}>
+          <View className={`mb-1 ${containerClassName}`}>
             <View
               className={`flex-row items-center min-h-[54px] px-4 rounded-lg relative border ${
                 error
                   ? 'border-red-500'
                   : isFocused
-                    ? 'border-blue-500'
-                    : 'border-gray-300'
+                    ? 'border-blue-400'
+                    : 'border-border dark:border-dark-border'
               }`}
             >
               {label && (
@@ -144,7 +148,7 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
                   onBlur();
                   rest.onBlur?.(e);
                 }}
-                placeholder={label && isFocused ? placeholder : ''}
+                // placeholder={label && isFocused ? placeholder : ''}
                 editable={!disabled}
                 style={{
                   flex: 1,
@@ -175,9 +179,13 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
                 </TouchableOpacity>
               )}
             </View>
-            {error?.message && (
-              <Text className="text-red-500 text-sm">{error.message}</Text>
+
+            {/* Show form error first, then custom validation message */}
+            {error?.message && showValidationMessage && (
+              <Text className="text-red-500 text-sm px-1">{error.message}</Text>
             )}
+
+
           </View>
         );
       }}

@@ -43,23 +43,18 @@ const getVariantStyles = (
 
   switch (variant) {
     case 'primary':
-      // Strong brand color - most prominent
       return 'bg-brand border-brand active:bg-primary dark:bg-dark-primary dark:border-dark-primary dark:active:bg-dark-secondary';
 
     case 'secondary':
-      // Light background with brand text - less prominent than primary
       return 'bg-card border-border active:bg-background dark:bg-dark-card dark:border-dark-border dark:active:bg-dark-background';
 
     case 'tertiary':
-      // Subtle tertiary color
       return 'bg-tertiary border-tertiary active:bg-muted dark:bg-dark-tertiary dark:border-dark-tertiary dark:active:bg-dark-muted';
 
     case 'outline':
-      // Transparent with border
       return 'bg-transparent border-border-secondary active:bg-surface dark:border-dark-border-secondary dark:active:bg-dark-surface';
 
     case 'ghost':
-      // No border, minimal styling
       return 'bg-transparent border-transparent active:bg-surface dark:active:bg-dark-surface';
 
     case 'destructive':
@@ -124,25 +119,25 @@ const getTextColor = (
 
   switch (variant) {
     case 'primary':
-      return 'inverse'; // White text for dark brand background
+      return 'inverse';
 
     case 'secondary':
-      return 'brand'; // Brand color text on light background
+      return 'brand';
 
     case 'tertiary':
-      return 'inverse'; // White text for tertiary background
+      return 'inverse';
 
     case 'outline':
-      return 'secondary'; // Uses secondary color for text
+      return 'secondary';
 
     case 'ghost':
-      return 'body'; // Uses body color for subtle appearance
+      return 'body';
 
     case 'destructive':
     case 'success':
     case 'warning':
     case 'info':
-      return 'inverse'; // White text for colored backgrounds
+      return 'inverse';
 
     default:
       return 'inverse';
@@ -181,7 +176,7 @@ const getSpinnerColor = (
   const isDisabledOrLoading = disabled || loading;
 
   if (isDisabledOrLoading) {
-    return '#778DA9'; // tertiary color for disabled state
+    return '#778DA9';
   }
 
   switch (variant) {
@@ -191,16 +186,16 @@ const getSpinnerColor = (
     case 'success':
     case 'warning':
     case 'info':
-      return '#FFFFFF'; // White spinner for colored backgrounds
+      return '#FFFFFF';
 
     case 'secondary':
-      return '#0D1B2A'; // Brand color for secondary variant
+      return '#0D1B2A';
 
     case 'outline':
-      return '#415A77'; // secondary color
+      return '#415A77';
 
     case 'ghost':
-      return '#1B263B'; // body color
+      return '#1B263B';
 
     default:
       return '#FFFFFF';

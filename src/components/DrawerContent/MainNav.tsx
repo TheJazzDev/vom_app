@@ -39,7 +39,7 @@ const MainNav = () => {
         <DrawerItem
           label="Testimonies"
           iconName="quote.bubble.fill"
-          route="/testimonies"
+          route="/ministry/testimonies"
         />
         <DrawerItem
           label="Notifications"

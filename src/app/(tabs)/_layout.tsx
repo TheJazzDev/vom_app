@@ -3,12 +3,13 @@ import React from 'react';
 
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
-import { useTheme } from '@/src/hooks';
+import { useAuthPersistence, useTheme } from '@/src/hooks';
 import { Feather } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { Platform, TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
+  useAuthPersistence()
   const theme = useTheme();
   const router = useRouter();
   const navigation = useNavigation();

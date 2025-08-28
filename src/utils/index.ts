@@ -1,5 +1,8 @@
+export * from './validations'
+
 import { capitalizeFirstLetter } from './capitalizeFirstLetter';
 import { formatDate } from './formatDate';
 import { truncateText } from './truncateText';
+import { isEmail } from './isEmail';
 
-export { capitalizeFirstLetter, formatDate, truncateText };
+export { isEmail, capitalizeFirstLetter, formatDate, truncateText };
