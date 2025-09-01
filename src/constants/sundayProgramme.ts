@@ -1,4 +1,5 @@
 export const sundayProgramme: SundayProgramme = {
+  type: 'sunday',
   date: '17th August 2025',
   theme: 'More Than conquerors',
   topic: 'Living in Victory',

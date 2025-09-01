@@ -32,7 +32,6 @@ export default function ChurchDashboard() {
 
       <Text className="mb-5">Stay connected with church activities.</Text>
 
-      {/* Quick Actions */}
       <View className="flex-row justify-between mb-5">
         {[
           { label: 'View Service' },

@@ -1,12 +1,9 @@
-import { View, Text } from 'react-native';
+
 import React from 'react';
+import { ComingSoon, comingSoonConfigs } from '@/src/components/ComingSoon';
 
 const Events = () => {
-  return (
-    <View>
-      <Text>Events</Text>
-    </View>
-  );
+  return <ComingSoon config={comingSoonConfigs.events} />;
 };
 
 export default Events;

@@ -26,7 +26,7 @@ const initialState: AuthState = {
   isVerifyingEmail: false,
   isSendingEmailCode: false,
   isLoggingIn: false,
-  isSigningOut: false,
+  isLoggingOut: false,
   isResettingPassword: false,
   isUpdatingProfile: false,
   isSendingPhoneCode: false,
@@ -132,7 +132,7 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       });
 
-    // Sign In (updated to handle phone auth)
+    // Log In (updated to handle phone auth)
     builder
       .addCase(loginThunk.pending, (state) => {
         state.isLoggingIn = true;
@@ -163,18 +163,18 @@ const authSlice = createSlice({
     // Log Out
     builder
       .addCase(logoutThunk.pending, (state) => {
-        state.isSigningOut = true;
+        state.isLoggingOut = true;
         state.error = null;
       })
       .addCase(logoutThunk.fulfilled, (state) => {
-        state.isSigningOut = false;
+        state.isLoggingOut = false;
         state.currentMember = null;
         state.isAuthenticated = false;
         state.foundMember = null;
         state.successMessage = 'Signed out successfully!';
       })
       .addCase(logoutThunk.rejected, (state, action) => {
-        state.isSigningOut = false;
+        state.isLoggingOut = false;
         state.error = action.payload as string;
       });
 

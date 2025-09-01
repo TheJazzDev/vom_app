@@ -27,11 +27,11 @@ const GuestProfile = () => {
       </Text>
       <View className="mb-4">
         {features.map((feature, index) => (
-          <View key={index} className="flex-row items-start mb-1">
+          <View key={index} className="flex-row items-start mb-0.5">
             <Text color="body" className="mr-2">
               •
             </Text>
-            <Text color="body" className="flex-1">
+            <Text color="body" className="flex-1 text-sm">
               {feature}
             </Text>
           </View>
@@ -52,7 +52,7 @@ const GuestProfile = () => {
       </Button>
       <Button
         onPress={() => router.push('/auth/register')}
-        variant="outline"
+        variant="secondary"
         textVariant="h5"
         fullWidth
       >
@@ -80,16 +80,16 @@ const GuestProfile = () => {
     </>
   );
 
-  const renderInfoFooter = () => (
-    <Card variant="outlined" className="mt-4">
-      <Text variant="paragraph" className="text-center">
-        <Text className="font-medium">Core members:</Text> Sign in with your
-        phone number to verify and set a password.{'\n\n'}
-        <Text className="font-medium">New visitors:</Text> Create an account to
-        receive notifications and participate in our community.
-      </Text>
-    </Card>
-  );
+  // const renderInfoFooter = () => (
+  //   <Card variant="outlined" className="mt-4">
+  //     <Text variant="paragraph" className="text-center">
+  //       <Text className="font-medium">Core members:</Text> Sign in with your
+  //       phone number to verify and set a password.{'\n\n'}
+  //       <Text className="font-medium">New visitors:</Text> Create an account to
+  //       receive notifications and participate in our community.
+  //     </Text>
+  //   </Card>
+  // );
 
   return (
     <View gradient scrollable>
@@ -100,8 +100,6 @@ const GuestProfile = () => {
         {renderFeatureList(GUEST_FEATURES, 'As a guest, you can:')}
         {renderFeatureList(ACCOUNT_FEATURES, 'With an account, you can:')}
       </Card>
-
-      {renderInfoFooter()}
     </View>
   );
 };

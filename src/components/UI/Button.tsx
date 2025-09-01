@@ -119,7 +119,7 @@ const getTextColor = (
 
   switch (variant) {
     case 'primary':
-      return 'inverse';
+      return 'neutral';
 
     case 'secondary':
       return 'brand';

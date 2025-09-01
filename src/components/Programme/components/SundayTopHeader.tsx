@@ -2,7 +2,7 @@ import { Text, View } from '../../UI';
 import { InfoRow } from '../components/InfoRow';
 
 // Option 1: Card-style with Border and Background
-export function TopSectionCardStyle({ data }: { data: SundayProgramme }) {
+export function TopSectionCardStyle({ data }: { data: any }) {
   return (
     <View
       className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 my-2"
@@ -37,7 +37,7 @@ export function TopSectionCardStyle({ data }: { data: SundayProgramme }) {
 }
 
 // Option 2: Two-Column Layout
-export function TopSectionTwoColumn({ data }: { data: SundayProgramme }) {
+export function TopSectionTwoColumn({ data }: { data: any }) {
   return (
     <View className="my-2" id="top-section">
       <Text
@@ -62,16 +62,16 @@ export function TopSectionTwoColumn({ data }: { data: SundayProgramme }) {
 }
 
 // Option 3: Hierarchical with Visual Separation
-export function TopSectionHierarchical({ data }: { data: SundayProgramme }) {
+export function TopSectionHierarchical({ data }: { data: any }) {
   return (
     <View className="mt-2 mb-5" id="top-section">
       <View className="text-center mb-4">
         <Text
           variant="h4"
           color="heading"
-          className="text-center tracking-[0.2em] mb-1"
+          className="text-center tracking-[0.2em] mb-1 uppercase"
         >
-          SUNDAY SERVICE PROGRAMME
+          {data.type} SERVICE PROGRAMME
         </Text>
         <View className="w-20 h-1 bg-blue-500 mx-auto mt-2"></View>
       </View>
@@ -92,7 +92,7 @@ export function TopSectionHierarchical({ data }: { data: SundayProgramme }) {
 }
 
 // Option 4: Compact Grid Layout
-export function TopSectionCompactGrid({ data }: { data: SundayProgramme }) {
+export function TopSectionCompactGrid({ data }: { data: any }) {
   return (
     <View
       className="border border-gray-300 rounded-lg p-3 my-2"
@@ -129,31 +129,22 @@ export function TopSectionCompactGrid({ data }: { data: SundayProgramme }) {
 }
 
 // Option 5: Modern Card with Shadow
-export function TopSectionModernCard({ data }: { data: SundayProgramme }) {
+export function TopSectionModernCard({ data }: { data: any }) {
   return (
     <View
-      className="bg-white rounded-xl shadow-lg p-4 mx-2 my-3"
+      className="bg-white/80 dark:bg-black/20 rounded-xl shadow-lg p-4 mb-6"
       id="top-section"
     >
-      <View className="text-center mb-4">
-        <Text
-          variant="h4"
-          color="heading"
-          className="tracking-widest font-bold"
-        >
-          SUNDAY SERVICE
-        </Text>
-        <Text
-          variant="h4"
-          color="heading"
-          className="tracking-widest font-bold -mt-1"
-        >
-          PROGRAMME
-        </Text>
-        <Text variant="body2" className="text-gray-500 mt-1">
-          {data.date}
-        </Text>
-      </View>
+      <Text
+        variant="h4"
+        color="heading"
+        className="tracking-widest font-bold uppercase text-center"
+      >
+        {data.type} SERVICE PROGRAMME
+      </Text>
+      <Text variant="body2" className="text-gray-500 mt-1 mb-3 text-center">
+        {data.date}
+      </Text>
 
       <View className="gap-3">
         <View className="flex-row items-start">
@@ -191,7 +182,7 @@ export function TopSectionModernCard({ data }: { data: SundayProgramme }) {
 }
 
 // Option 6: Minimalist with Typography Focus
-export function TopSectionMinimalist({ data }: { data: SundayProgramme }) {
+export function TopSectionMinimalist({ data }: { data: any }) {
   return (
     <View className="my-4 px-2" id="top-section">
       <Text
@@ -244,7 +235,7 @@ export function TopSectionMinimalist({ data }: { data: SundayProgramme }) {
 }
 
 // Option 7: Original Design (your current one)
-export function TopSectionOriginal({ data }: { data: SundayProgramme }) {
+export function TopSectionOriginal({ data }: { data: any }) {
   return (
     <View className="my-2 gap-1" id="top-section">
       <Text

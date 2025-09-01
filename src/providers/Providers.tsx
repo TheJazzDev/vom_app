@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Text, View } from '../components';
 import { persistor, store } from '../store/store';
+import { AuthProvider } from './AuthProvider';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -26,12 +27,18 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<Loading />} persistor={persistor}>
+      <PersistGate
+        loading={<Loading />}
+        persistor={persistor}
+        onBeforeLift={() => {
+          console.log('PersistGate: About to lift app');
+        }}
+      >
         <GestureHandlerRootView>
           <ThemeProvider
             value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
           >
-            {children}
+            <AuthProvider>{children}</AuthProvider>
           </ThemeProvider>
         </GestureHandlerRootView>
       </PersistGate>

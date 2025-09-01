@@ -1,4 +1,4 @@
-import { Bands } from '@/src/enum/bands';
+import { Bands } from '@/src/enum';
 
 export const getBandColor = (
   band: string,

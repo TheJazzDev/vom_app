@@ -13,7 +13,7 @@
 // } from 'react-native';
 // import { authService } from '../services/authService';
 // import { RecaptchaVerifier } from 'firebase/auth';
-// import { auth } from '@/src/config/firebase';
+// import { auth } from '@/src/config/firebase_web_sdk';
 
 // export default function GuestSignUpScreen() {
 //   const router = useRouter();

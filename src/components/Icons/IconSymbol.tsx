@@ -67,6 +67,7 @@ const MAPPING: IconMapping = {
   'rectangle.portrait.and.arrow.right.fill': 'log-out',
   'info.circle': 'information',
   'arrow.backward': 'arrow-back',
+  'checkmark': 'checkmark',
   // 'phone.fill': 'phone-landscape',
 } satisfies IconMapping;
 

@@ -1,7 +1,7 @@
 import { FieldValue } from 'firebase/firestore';
 
 declare global {
-  type Gender = 'Male' | 'Female';
+  type Gender = 'male' | 'female';
   type Role = 'member' | 'guest' | 'admin';
   type AuthType = 'email' | 'phone';
 
@@ -53,7 +53,7 @@ declare global {
     gender: string;
     dob: string;
     memberSince: string;
-    department: string;
+    department: string[];
     hasPassword?: boolean;
     accountType: 'member' | 'guest' | 'admin';
     authType: AuthType;
@@ -80,7 +80,7 @@ declare global {
     isVerifyingEmail: boolean;
     isSendingEmailCode: boolean;
     isLoggingIn: boolean;
-    isSigningOut: boolean;
+    isLoggingOut: boolean;
     isResettingPassword: boolean;
     isUpdatingProfile: boolean;
     isSendingPhoneCode: boolean;

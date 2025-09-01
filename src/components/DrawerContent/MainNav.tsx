@@ -9,7 +9,7 @@ const MainNav = () => {
         Main Menu
       </Text>
 
-      <ScrollView contentContainerStyle={{ paddingRight: 12 }}>
+      <ScrollView contentContainerStyle={{ paddingRight: 12 }} showsVerticalScrollIndicator={true}>
         <DrawerItem label="Home" iconName="house.fill" route="/" />
         <DrawerItem
           label="Programmes"
@@ -22,14 +22,24 @@ const MainNav = () => {
           route="/members"
         />
         <DrawerItem
+          label="All Bands"
+          iconName="person.3.sequence.fill"
+          route="/bands"
+        />
+        <DrawerItem
           label="Bible Study"
           iconName="book.fill"
-          route="/bible-study"
+          route="/ministry/bible-study"
+        />
+        <DrawerItem
+          label="Recent Sermons"
+          iconName="hands.sparkles.fill"
+          route="/ministry/recent-sermons"
         />
         <DrawerItem
           label="Prayer Requests"
           iconName="hands.sparkles.fill"
-          route="/prayer-requests"
+          route="/ministry/prayer-request"
         />
         <DrawerItem
           label="Church Events"

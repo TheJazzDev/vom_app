@@ -3,8 +3,10 @@ import { Divider, Text, View } from '../UI';
 import DrawerItem from './DrawerItem';
 import MainNav from './MainNav';
 import UserProfile from './UserProfile';
+import { useAuthSlice } from '@/src/store';
 
 export const DrawerContent = (props: any) => {
+  const {currentMember} = useAuthSlice()
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
       <View className="flex-col flex-1 px-2 pt-4">

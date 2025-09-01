@@ -9,6 +9,8 @@ import { TextInput } from './TextInput';
 import { View } from './View';
 import { RHFTextInput } from './RHFTextInput';
 import { ErrorToast } from './ErrorToast';
+import LoadingScreen from './LoadingScreen'
+import SearchInput from './SearchInput'
 
 export {
   Badge,
@@ -21,5 +23,7 @@ export {
   Divider,
   TextInput,
   View,
+  SearchInput,
   RHFTextInput,
+  LoadingScreen,
 };

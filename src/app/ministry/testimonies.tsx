@@ -1,12 +1,8 @@
-import { View, Text } from 'react-native';
+import { ComingSoon, comingSoonConfigs } from '@/src/components/ComingSoon';
 import React from 'react';
 
 const Testimonies = () => {
-  return (
-    <View>
-      <Text>Testimonies</Text>
-    </View>
-  );
+  return <ComingSoon config={comingSoonConfigs.testimonies} />;
 };
 
 export default Testimonies;

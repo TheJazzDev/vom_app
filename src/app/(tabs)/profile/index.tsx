@@ -5,7 +5,6 @@ import GuestProfile from './_components/Guest';
 
 const ProfileScreen = () => {
   const { currentMember, isAuthenticated } = useAuthSlice();
-  console.log({ isAuthenticated, currentMember });
 
   // More explicit authentication check
   return isAuthenticated && currentMember ? (

@@ -1,25 +1,20 @@
 import {
+  ProgrammeList,
+  ProgrammeTemplateRenderer,
   Spacer,
-  SundayServiceTemplate,
   Tab,
-  UpcomimgCard,
   View,
 } from '@/src/components';
-import { sundayProgramme } from '@/src/constants';
-import { upcomingPrograms } from '@/src/constants/upcoming';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useProgrammeLogic } from '@/src/hooks';
+import { getPastPrograms, getUpcomingPrograms } from '@/src/utils';
 import React, { useState } from 'react';
-import { FlatList, Platform } from 'react-native';
 
 export default function Programme() {
   const [section, setSection] = useState<ServiceSections>('Current');
+  const { currentProgramme } = useProgrammeLogic();
 
-  const tabBarHeight = useBottomTabBarHeight();
-
-  const upcoming = upcomingPrograms.filter(
-    (program) => program.status === 'upcoming',
-  );
-  const past = upcomingPrograms.filter((program) => program.status === 'past');
+  const upcoming = getUpcomingPrograms();
+  const past = getPastPrograms();
 
   return (
     <View gradient>
@@ -35,36 +30,12 @@ export default function Programme() {
       />
       <Spacer height={10} />
       {section === 'Current' && (
-        <SundayServiceTemplate data={sundayProgramme} />
+        <ProgrammeTemplateRenderer programme={currentProgramme} />
       )}
-      <View>
-        {section === 'Upcoming' && (
-          <FlatList
-            data={upcoming}
-            keyExtractor={(program) => program.id}
-            renderItem={({ item }) => <UpcomimgCard programmes={item} />}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={Platform.OS === 'web'}
-            contentContainerStyle={{
-              paddingHorizontal: 10,
-              paddingBottom: tabBarHeight + 24,
-            }}
-          />
-        )}
-        {section === 'Past' && (
-          <FlatList
-            data={past}
-            keyExtractor={(program) => program.id}
-            renderItem={({ item }) => <UpcomimgCard programmes={item} />}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={Platform.OS === 'web'}
-            contentContainerStyle={{
-              paddingHorizontal: 10,
-              paddingBottom: tabBarHeight + 24,
-            }}
-          />
-        )}
-      </View>
+
+      {section === 'Upcoming' && <ProgrammeList data={upcoming} />}
+
+      {section === 'Past' && <ProgrammeList data={past} />}
     </View>
   );
 }

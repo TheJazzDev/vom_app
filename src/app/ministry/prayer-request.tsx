@@ -1,13 +1,7 @@
-import { Text, View } from '@/src/components';
+import { ComingSoon, comingSoonConfigs } from '@/src/components/ComingSoon';
 
 const PrayerRequestScreen = () => {
-  return (
-    <View gradient scrollable>
-      <Text variant="h4" className="text-center">
-        Prayer Request
-      </Text>
-    </View>
-  );
+  return <ComingSoon config={comingSoonConfigs.prayerRequest} />;
 };
 
 export default PrayerRequestScreen;

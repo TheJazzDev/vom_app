@@ -18,7 +18,7 @@ export default function MembersDetails() {
   const theme = useTheme();
   const { id } = useLocalSearchParams();
 
-  const selectedMember = mockMembers.find((member) => member.id === id);
+  const selectedMember = mockMembers.find((member) => member.memberId === id);
 
   if (!selectedMember) {
     return;
@@ -28,7 +28,7 @@ export default function MembersDetails() {
     <View scrollable gradient>
       <Spacer height={20} />
       <Image
-        source={{ uri: selectedMember.image }}
+        source={{ uri: selectedMember.avatar }}
         className="w-32 h-32 rounded-md mx-auto"
       />
       <Text variant="h3" className="text-center my-4">
@@ -43,7 +43,7 @@ export default function MembersDetails() {
           <Text variant="h5">Roles</Text>
         </View>
         <View className="flex-row gap-2 mt-2 flex-wrap">
-          {selectedMember.roles.map((role: string) => (
+          {selectedMember.position.map((role: string) => (
             <Badge key={role} size="sm" variant="outline">
               {role}
             </Badge>
@@ -80,13 +80,14 @@ export default function MembersDetails() {
           textVariant="h6"
           className="w-[49%]"
           icon={
-            <IconSymbol name="phone.fill" size={16} color={theme.heading} />
+            <IconSymbol name="phone.fill" size={16} color={theme.natural} />
           }
         >
           Hello
         </Button>
         <Button
           textVariant="h6"
+          // style={{}}
           className="w-[49%]"
           variant="outline"
           icon={

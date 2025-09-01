@@ -1,4 +1,3 @@
-// import { onAuthStateChanged } from 'firebase/auth';
 import {
   collection,
   disableNetwork,
@@ -7,17 +6,6 @@ import {
 } from 'firebase/firestore';
 // import { useEffect } from 'react';
 import { db } from './firebase';
-
-// Auth state automatically persists
-// useEffect(() => {
-//   const unsubscribe = onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//       // User is signed in and state is automatically restored
-//       console.log('User restored from persistence:', user.email);
-//     }
-//   });
-//   return unsubscribe;
-// }, []);
 
 // Firestore automatically caches data
 export const fetchData = async () => {

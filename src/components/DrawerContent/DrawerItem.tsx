@@ -1,4 +1,5 @@
 import { useTheme } from '@/src/hooks';
+import { dispatch, logoutThunk } from '@/src/store';
 import { usePathname, useRouter } from 'expo-router';
 import { Platform, Pressable, Text } from 'react-native';
 import { IconSymbol } from '../Icons';
@@ -17,7 +18,9 @@ const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
 
   return (
     <Pressable
-      onPress={() => router.push(route)}
+      onPress={() => {
+        route === '/logout' ? dispatch(logoutThunk()) : router.push(route);
+      }}
       android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
       className={`flex-row items-center py-3 px-4 rounded-lg ${
         focused ? 'bg-primary ' : ''
@@ -30,14 +33,20 @@ const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
     >
       <IconSymbol
         name={iconName}
-        color={focused ? theme.natural : theme.muted}
+        color={
+          focused ? theme.natural : route === '/logout' ? 'red' : theme.muted
+        }
         size={Platform.OS === 'ios' ? 20 : 18}
       />
       <Text
         style={{
           marginLeft: 16,
           fontWeight: 600,
-          color: focused ? theme.natural : theme.muted,
+          color: focused
+            ? theme.natural
+            : route === '/logout'
+              ? 'red'
+              : theme.muted,
         }}
       >
         {label}

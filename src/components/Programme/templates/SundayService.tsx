@@ -14,14 +14,6 @@ function formatList(arr: number[]) {
 }
 
 export function SundayServiceTemplate({ data }: { data: SundayProgramme }) {
-  if (!data) {
-    return (
-      <Text variant="h6" className="text-center mt-10 italic">
-        No ongoing programms. Check upcoming programmes
-      </Text>
-    );
-  }
-
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
       {/* Header */}
@@ -202,10 +194,11 @@ export function SundayServiceTemplate({ data }: { data: SundayProgramme }) {
         <InfoRow label="24.  Recessional Hymn" value={data.hynms.recessional} />
       </Section>
 
-      <Divider type="horizontal" height={2} className="mb-3" />
+      <Divider type="horizontal" height={2} className="mb-6" />
       <Text variant="h2" className="text-center mb-4">
         AYO NI O
       </Text>
+      <Spacer height={60} />
     </ScrollView>
   );
 }

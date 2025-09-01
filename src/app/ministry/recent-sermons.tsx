@@ -1,13 +1,7 @@
-import { Text, View } from '@/src/components';
+import { ComingSoon, comingSoonConfigs } from '@/src/components/ComingSoon';
 
 const RecentSermonsScreen = () => {
-  return (
-    <View gradient scrollable>
-      <Text variant="h4" className="text-center">
-        Recent Sermons
-      </Text>
-    </View>
-  );
+  return <ComingSoon config={comingSoonConfigs.recentSermons} />;
 };
 
 export default RecentSermonsScreen;

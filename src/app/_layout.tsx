@@ -1,5 +1,5 @@
-import Providers from '@/src/context/Providers';
 import { useTheme } from '@/src/hooks';
+import Providers from '@/src/providers/Providers';
 import { useFonts } from 'expo-font';
 import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
@@ -80,7 +80,7 @@ export default function RootLayout() {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                router.push('/notification');
+                router.push('/notifications');
               }}
               style={{ marginRight: 12 }}
             >
@@ -94,6 +94,27 @@ export default function RootLayout() {
           options={{
             headerShown: false,
             title: 'Home',
+          }}
+        />
+        <Drawer.Screen
+          name="(others)"
+          options={{
+            headerShown: false,
+            title: 'Others',
+          }}
+        />
+        <Drawer.Screen
+          name="auth"
+          options={{
+            headerShown: false,
+            title: 'Authentication',
+          }}
+        />
+        <Drawer.Screen
+          name="ministry"
+          options={{
+            headerShown: false,
+            title: 'Ministry',
           }}
         />
       </Drawer>

@@ -17,7 +17,7 @@ export type TextInputProps = RNTextInputProps & {
   rightIcon?: IconSymbolName;
   onRightIconPress?: () => void;
   variant?: 'default' | 'outlined' | 'filled';
-  inputType?: 'text' | 'email' | 'password' | 'search' | 'textarea';
+  inputType?: 'text' | 'email' | 'password' | 'textarea';
   containerClassName?: string;
   inputClassName?: string;
   labelClassName?: string;

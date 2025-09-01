@@ -1,12 +1,8 @@
-import { View, Text } from 'react-native';
+import { ComingSoon, comingSoonConfigs } from '@/src/components/ComingSoon';
 import React from 'react';
 
 const BibleStudy = () => {
-  return (
-    <View>
-      <Text>BibleStudy</Text>
-    </View>
-  );
+  return <ComingSoon config={comingSoonConfigs.bibleStudy} />;
 };
 
 export default BibleStudy;

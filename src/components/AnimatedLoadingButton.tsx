@@ -166,7 +166,6 @@ export default function AnimatedLoadingButton({
         {isLoading && (
           <View className="flex-row items-center">
             <LoadingSpinner />
-            {LoadingDots()}
           </View>
         )}
 

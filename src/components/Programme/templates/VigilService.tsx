@@ -1,0 +1,104 @@
+import { ScrollView } from 'react-native';
+import Spacer from '../../Spacer';
+import { Divider, Text, View } from '../../UI';
+import { InfoRow } from '../components/InfoRow';
+import { OfficiatingCard } from '../components/OfficiatingCard';
+import { Section } from '../components/Section';
+import { TopSectionHierarchical } from '../components/SundayTopHeader';
+
+function formatList(arr: number[]) {
+  if (!arr || arr.length === 0) return '';
+  if (arr.length === 1) return arr[0];
+  return arr.slice(0, -1).join(', ') + ' & ' + arr[arr.length - 1];
+}
+
+export function VigilServiceTemplate({ data }: { data: VigilProgramme }) {
+  return (
+    <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
+      {/* Header */}
+      <TopSectionHierarchical data={data} />
+
+      {/* Officiating Section */}
+      <View className="flex-row justify-between flex-wrap">
+        <OfficiatingCard
+          className="w-[49%]"
+          label="Worship Leader"
+          value={data.officiating.worshipLeader}
+        />
+        <OfficiatingCard
+          className="w-[49%]"
+          label="Preacher"
+          value={data.officiating.preacher}
+        />
+        <OfficiatingCard
+          className="w-[49%]"
+          label="Prayer Ministration"
+          value={data.officiating.prayerMinistration}
+        />
+      </View>
+
+      <Spacer height={6} />
+
+      <Section title="C.  OPENING">
+        <InfoRow label="1.  Opening Hynm" value={data.hynms.opening} />
+        <InfoRow
+          label="5.  Opening Prayer"
+          value={`PSALMS ${formatList(data.openingPrayer)}`}
+        />
+        <View className="flex-row gap-4 ml-8">
+          <Text variant="h6">Prayer for:</Text>
+          <View>
+            <Text variant="h6">(a){'   '}Repentance & Forgiveness of Sins</Text>
+            <Text variant="h6">(b){'   '}Sanctification</Text>
+            <Text variant="h6">(c){'   '}Descent of the Heavenly Hosts</Text>
+            <Text variant="h6">(d){'   '}The Lord&apos;s Prayer</Text>
+            <Text variant="overline" className="ml-9 italic">
+              Seal - The Worshhip Leader
+            </Text>
+          </View>
+        </View>
+      </Section>
+
+      <Section title="D.  APPRECIATION, THANKSGIVING & TESTIMONIES">
+        <InfoRow
+          label="1.  Thanksgiving hynm"
+          value={data.hynms.thanksgiving}
+        />
+        <InfoRow label="7.  Praise & Worship" value="Choir" />
+
+        <Text variant="h6">9. Thanksgiving / Testimonies / Vow</Text>
+        <Text variant="h6">10. Collection of Thanksgiving Offering</Text>
+      </Section>
+
+      <Section title="E.  THE WORD / APOSTLES' CREED">
+        <InfoRow name label="11.  Leson" value={data.officiating.lesson} />
+        <InfoRow label="12.  Gloria" value="Choir to lead the Congregation" />
+        <InfoRow label="13.  Apostless Creed" value="Church Minister" />
+      </Section>
+
+      <Section title="G.  ANNOUNCEMENT / FIRST TIMER">
+        <InfoRow label="15.  Announcement" value="Church Secetary" />
+        <InfoRow label="16.  Welcoming First Timer" value="Church Secetary" />
+      </Section>
+
+      <Section title="H.  SERMON / PRAYER MINISTRATION">
+        <InfoRow label="18.  Hymn for Sermon" value={data.hynms.sermon} />
+        <InfoRow label="19.  Sermonist" value={data.officiating.preacher} />
+        <InfoRow
+          label="20.  Prayer Ministration/Offering"
+          value={data.officiating.prayerMinistration}
+        />
+      </Section>
+
+      <Section title="I.  CLOSING">
+        <InfoRow label="21.  Closing Prayer" value="Worship Leader" />
+        <InfoRow label="23.  Grace" value="Leader-In-Charge" />
+      </Section>
+
+      <Divider type="horizontal" height={2} className="mb-3" />
+      <Text variant="h2" className="text-center mb-4">
+        AYO NI O
+      </Text>
+    </ScrollView>
+  );
+}

@@ -1,49 +1,81 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { persistReducer, persistStore } from 'redux-persist';
+import {
+  createTransform,
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
+import authReducer from './slices/authSlice';
+import churchReducer from './slices/churchSlice';
+import eventsReducer from './slices/eventsSlice';
+import memberReducer from './slices/memberSlice';
 
-// Import your slice reducers
-import authSlice from './slices/authSlice';
-import churchSlice from './slices/churchSlice';
-import eventsSlice from './slices/eventsSlice';
-import memberSlice from './slices/memberSlice';
-import ExpoSecureStoreAdapter from './storage';
+// Auth persistence config
+const authTransform = createTransform(
+  (inboundState: any) => {
+    const {
+      error,
+      successMessage,
+      isFindingMember,
+      isRegistering,
+      isSigningIn,
+      isSendingEmailCode,
+      isVerifyingEmail,
+      isWaitingForSMS,
+      phoneVerificationId,
+      ...persistedState
+    } = inboundState;
+    return persistedState;
+  },
+  (outboundState: any) => ({
+    ...outboundState,
+    error: null,
+    successMessage: null,
+    isFindingMember: false,
+    isRegistering: false,
+    isSigningIn: false,
+    isSendingEmailCode: false,
+    isVerifyingEmail: false,
+    isWaitingForSMS: false,
+    phoneVerificationId: null,
+  }),
+  { whitelist: ['auth'] },
+);
 
-// Persist configuration
-const persistConfig = {
-  key: 'root',
-  storage: ExpoSecureStoreAdapter,
-  whitelist: ['auth', 'user'],
-  blacklist: ['events'],
+const authPersistConfig = {
+  key: 'auth',
+  storage: AsyncStorage,
+  transforms: [authTransform],
 };
 
-// Combine all reducers
+// Persist only the auth slice
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
 const rootReducer = combineReducers({
-  auth: authSlice,
-  member: memberSlice,
-  church: churchSlice,
-  events: eventsSlice,
+  auth: persistedAuthReducer,
+  member: memberReducer,
+  church: churchReducer,
+  events: eventsReducer,
 });
 
-// Create persisted reducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// Configure store
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-  devTools: __DEV__, // Enable Redux DevTools in development
 });
 
-// Create persistor
 export const persistor = persistStore(store);
 
-// Export types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
