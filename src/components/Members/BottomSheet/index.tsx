@@ -80,11 +80,7 @@ const MemberBottomSheet: React.FC<MemberBottomSheetProps> = ({
         Math.abs(gestureState.dx) < Math.abs(gestureState.dy);
 
       // Only take control if scrolling is at the top and not currently animating
-      return (
-        isVertical &&
-        gestureState.dy > 0 &&
-        !isAnimatingRef.current
-      );
+      return isVertical && gestureState.dy > 0 && !isAnimatingRef.current;
     },
     onPanResponderMove: (_, gestureState) => {
       if (!isAnimatingRef.current) {

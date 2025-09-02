@@ -10,7 +10,7 @@ type ContactInfoProps = {
 
 export default function ContactInfo({ member }: ContactInfoProps) {
   return (
-    <Card variant='outlined' className="mt-2">
+    <Card variant="outlined" className="mt-2">
       <View className="flex-row items-center gap-2 px-4 py-2 border-b border-border-primary dark:border-border-dark-primary">
         <IconSymbol name="phone" size={16} color="green" />
         <View className="flex-1">

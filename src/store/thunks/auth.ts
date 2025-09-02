@@ -42,9 +42,9 @@ export const loginThunk = createAsyncThunk(
 // Get member by Auth UID thunk
 export const getMemberByAuthUidThunk = createAsyncThunk(
   'auth/getMemberByAuthUid',
-  async (authUid: string, { rejectWithValue }) => {
+  async (uid: string, { rejectWithValue }) => {
     try {
-      const member = await getMemberByAuthUid(authUid);
+      const member = await getMemberByAuthUid(uid);
       return member;
     } catch (error: any) {
       return rejectWithValue(error.message);

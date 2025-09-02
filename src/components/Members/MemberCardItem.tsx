@@ -1,7 +1,7 @@
-import { Badge, Card, Text, View } from '@/src/components';
-import { IconSymbol } from '@/src/components/Icons/IconSymbol';
+import { Badge, Card, Text, View } from '../UI';
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
+import { IconSymbol } from '../Icons';
 
 interface MemberCardItemProps {
   member: MemberProfile;

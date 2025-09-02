@@ -2,12 +2,12 @@ import { db } from '@/src/config/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 export const getMemberByAuthUid = async (
-  authUid: string,
+  uid: string,
 ): Promise<MemberProfile | null> => {
   try {
     const membersRef = collection(db, 'members');
 
-    const authUidQuery = query(membersRef, where('authUid', '==', authUid));
+    const authUidQuery = query(membersRef, where('uid', '==', uid));
     const authUidSnapshot = await getDocs(authUidQuery);
 
     if (authUidSnapshot.empty) {

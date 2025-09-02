@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { LoadingScreen } from '../components';
 import { useFirebasePersistence } from '../hooks/useFirebasePersistence';

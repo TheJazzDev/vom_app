@@ -10,8 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jazzdev.vom",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "com.jazzdev.vom"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,8 +18,7 @@
         "backgroundColor": "#0D0D2B"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.jazzdev.vom",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.jazzdev.vom"
     },
     "web": {
       "bundler": "metro",

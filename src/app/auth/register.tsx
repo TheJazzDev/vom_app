@@ -6,13 +6,9 @@ import {
   Text,
   View,
 } from '@/src/components';
-import {
-  NameField,
-  PasswordField,
-  RegTypeField,
-} from '@/src/components/forms/registration/fields';
-import { useRegistrationProgress } from '@/src/components/forms/registration/useRegistrationProgress';
+import { NameField, PasswordField, RegTypeField } from '@/src/components/Forms';
 import { registrationSchema } from '@/src/constants';
+import { useRegistrationProgress } from '@/src/hooks/forms';
 import { dispatch, registerThunk, useAuthSlice } from '@/src/store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'expo-router';
@@ -25,7 +21,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 
 export default function RegistrationScreen() {
   const router = useRouter();
@@ -65,16 +60,16 @@ export default function RegistrationScreen() {
   };
 
   return (
-    <KeyboardAwareScrollView
-      enableOnAndroid={true}
-      keyboardShouldPersistTaps="handled"
-      extraScrollHeight={260}
-    >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1"
+    <View gradient style={{ paddingHorizontal: 16 }}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        keyboardShouldPersistTaps="handled"
+        extraScrollHeight={220}
       >
-        <View gradient scrollable>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          className="flex-1"
+        >
           {/* Header */}
           <View className="items-center py-4 mb-6">
             <Text variant="h3">Join Our Community</Text>
@@ -138,8 +133,8 @@ export default function RegistrationScreen() {
               <RNText className="text-blue-500 font-medium">Sign In</RNText>
             </TouchableOpacity>
           </View>
-        </View>
-      </KeyboardAvoidingView>
-    </KeyboardAwareScrollView>
+        </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
+    </View>
   );
 }

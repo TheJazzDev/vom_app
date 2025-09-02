@@ -15,7 +15,7 @@ export const ErrorToast: React.FC<ErrorToastProps> = ({
   onClearError,
   duration = 5000,
 }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const { clearError } = useAuthSlice();
   const [displayError, setDisplayError] = useState<string | null>(error);
 

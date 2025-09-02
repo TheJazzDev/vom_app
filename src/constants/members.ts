@@ -6,7 +6,7 @@ export enum ContactType {
 export const mockMembers: MemberProfile[] = [
   {
     memberId: '11',
-    authUid: '11 asdcaswd',
+    uid: '11 asdcaswd',
     avatar:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     firstName: 'Emmanuel',
@@ -35,7 +35,7 @@ export const mockMembers: MemberProfile[] = [
   },
   {
     memberId: '12',
-    authUid: '12 asdcaswd',
+    uid: '12 asdcaswd',
     avatar:
       'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face',
     firstName: 'Blessing',
@@ -63,7 +63,7 @@ export const mockMembers: MemberProfile[] = [
   },
   {
     memberId: '13',
-    authUid: '13 asdcaswd',
+    uid: '13 asdcaswd',
     avatar:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     firstName: 'Daniel',
@@ -92,7 +92,7 @@ export const mockMembers: MemberProfile[] = [
   },
   {
     memberId: '14',
-    authUid: '14 asdcaswd',
+    uid: '14 asdcaswd',
     avatar:
       'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=150&h=150&fit=crop&crop=face',
     firstName: 'Mercy',
@@ -120,7 +120,7 @@ export const mockMembers: MemberProfile[] = [
   },
   {
     memberId: '15',
-    authUid: '15 asdcaswd',
+    uid: '15 asdcaswd',
     avatar:
       'https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face',
     firstName: 'Joseph',

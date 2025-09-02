@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ComingSoon, comingSoonConfigs } from '@/src/components/ComingSoon';
 

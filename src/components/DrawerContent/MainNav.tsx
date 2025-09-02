@@ -9,7 +9,10 @@ const MainNav = () => {
         Main Menu
       </Text>
 
-      <ScrollView contentContainerStyle={{ paddingRight: 12 }} showsVerticalScrollIndicator={true}>
+      <ScrollView
+        contentContainerStyle={{ paddingRight: 12 }}
+        showsVerticalScrollIndicator={true}
+      >
         <DrawerItem label="Home" iconName="house.fill" route="/" />
         <DrawerItem
           label="Programmes"

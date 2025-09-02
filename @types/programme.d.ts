@@ -11,7 +11,7 @@ declare global {
   }
 
   interface SundayProgramme {
-    type: string
+    type: string;
     date: string;
     theme: string;
     topic: string;
@@ -46,15 +46,15 @@ declare global {
   }
 
   interface ShiloProgramme {
-    type: string
+    type: string;
     date: string;
     theme: string;
     topic: string;
     lesson: string;
     openingPrayer: number[];
     officiating: {
-      revivalist: string
-      preparatoryPrayer: string
+      revivalist: string;
+      preparatoryPrayer: string;
       lesson: string;
       preacher: string;
       worshipLeader: string;
@@ -64,12 +64,12 @@ declare global {
       opening: string;
       sermon: string;
       prayer: string;
-      thanksgiving: string
+      thanksgiving: string;
     };
   }
 
   interface VigilProgramme {
-    type: string
+    type: string;
     date: string;
     theme: string;
     topic: string;
@@ -85,7 +85,7 @@ declare global {
       opening: string;
       sermon: string;
       prayer: string;
-      thanksgiving: string
+      thanksgiving: string;
     };
   }
 }

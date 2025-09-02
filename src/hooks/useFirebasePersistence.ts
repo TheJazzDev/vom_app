@@ -13,24 +13,34 @@ export function useFirebasePersistence() {
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       const timeSinceStart = Date.now() - appStartTime.current;
-      console.log('🔥 Firebase auth state changed:', !!firebaseUser, `(${timeSinceStart}ms since start)`);
+      console.log(
+        '🔥 Firebase auth state changed:',
+        !!firebaseUser,
+        `(${timeSinceStart}ms since start)`,
+      );
 
       try {
         if (firebaseUser) {
           // Firebase user exists
-          if (currentMember && currentMember.authUid === firebaseUser.uid) {
-            console.log('✅ Firebase confirms persisted Redux user:', currentMember.firstName);
+          if (currentMember && currentMember.uid === firebaseUser.uid) {
+            console.log(
+              '✅ Firebase confirms persisted Redux user:',
+              currentMember.firstName,
+            );
             return;
           }
 
           // User exists in Firebase but not in Redux - fetch from DB
           console.log('🌐 Fetching member data from database');
           const resultAction = await dispatch(
-            getMemberByAuthUidThunk(firebaseUser.uid)
+            getMemberByAuthUidThunk(firebaseUser.uid),
           );
 
           if (getMemberByAuthUidThunk.fulfilled.match(resultAction)) {
-            console.log('✅ Member data loaded from DB:', resultAction.payload?.firstName);
+            console.log(
+              '✅ Member data loaded from DB:',
+              resultAction.payload?.firstName,
+            );
           } else {
             console.warn('❌ No member found in DB');
             dispatch(setCurrentMember(null));
@@ -39,10 +49,15 @@ export function useFirebasePersistence() {
           // No Firebase user
           if (timeSinceStart < 10000 && currentMember) {
             // Within protection window - keep persisted user
-            console.log(`🔄 Firebase not ready (${timeSinceStart}ms), keeping persisted user:`, currentMember.firstName);
+            console.log(
+              `🔄 Firebase not ready (${timeSinceStart}ms), keeping persisted user:`,
+              currentMember.firstName,
+            );
           } else if (timeSinceStart >= 10000 && currentMember) {
             // Protection window expired - might be real logout
-            console.log('⏰ Firebase initialization timeout, might be real logout');
+            console.log(
+              '⏰ Firebase initialization timeout, might be real logout',
+            );
             dispatch(setCurrentMember(null));
           } else {
             // No persisted user anyway

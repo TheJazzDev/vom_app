@@ -6,7 +6,7 @@ export async function activateExistingMember(
   member: MemberProfile,
   data: RegistrationProps,
   isEmailRegistration: boolean,
-): Promise<RegistrationResult> {
+): Promise<MemberRegistrationResult> {
   if (isEmailRegistration) {
     // CASE 1: Existing member with email registration
     // Create Firebase account but don't authenticate yet - requires email verification
@@ -16,7 +16,7 @@ export async function activateExistingMember(
       data.password,
     );
 
-    const authUid = userCredential.user.uid;
+    const uid = userCredential.user.uid;
 
     await updateProfile(userCredential.user, {
       displayName: `${member.firstName} ${member.lastName}`,
@@ -28,7 +28,7 @@ export async function activateExistingMember(
     // Update member document
     const updatedMember: MemberProfile = {
       ...member,
-      authUid,
+      uid,
       email: data.emailOrPhone,
       hasPassword: true,
       verified: false,
@@ -37,7 +37,7 @@ export async function activateExistingMember(
     };
 
     await updateDoc(doc(db, 'members', member.memberId), {
-      authUid,
+      uid,
       email: data.emailOrPhone,
       hasPassword: true,
       verified: false,

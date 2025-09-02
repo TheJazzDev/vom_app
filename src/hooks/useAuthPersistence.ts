@@ -22,7 +22,7 @@ export function useAuthPersistence() {
           const now = Date.now();
           const shouldFetchFromDB =
             !currentMember ||
-            currentMember.authUid !== user.uid ||
+            currentMember.uid !== user.uid ||
             !isAuthenticated ||
             now - lastFetchTime.current > CACHE_DURATION;
 
@@ -68,6 +68,7 @@ export function useAuthPersistence() {
     currentMember,
     isAuthenticated,
     isInitialized,
+    CACHE_DURATION,
   ]);
 }
 
@@ -79,7 +80,7 @@ export function useRefreshMemberData() {
     if (currentMember) {
       console.log('Manually refreshing member data...');
       const resultAction = await dispatch(
-        getMemberByAuthUidThunk(currentMember.authUid),
+        getMemberByAuthUidThunk(currentMember.uid),
       );
 
       if (getMemberByAuthUidThunk.fulfilled.match(resultAction)) {

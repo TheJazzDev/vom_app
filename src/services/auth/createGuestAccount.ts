@@ -7,7 +7,7 @@ import { sendPhoneVerificationCode } from './sendPhoneVerificationCode';
 export async function createGuestAccount(
   data: RegistrationProps,
   isEmailRegistration: boolean,
-): Promise<RegistrationResult> {
+): Promise<GuestRegistrationResult> {
   if (isEmailRegistration) {
     // Email registration - create Firebase email/password account
     const userCredential = await createUserWithEmailAndPassword(
@@ -20,21 +20,19 @@ export async function createGuestAccount(
       displayName: `${data.firstName} ${data.lastName}`,
     });
 
-    const memberId = generateMemberId();
-    const authUid = userCredential.user.uid;
+    const guestId = generateMemberId();
+    const uid = userCredential.user.uid;
 
-    const newMember: MemberProfile = {
-      authUid,
-      memberId,
+    const newGuest: GuestProfile = {
+      uid,
+      guestId,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.emailOrPhone,
       title: '',
       primaryPhone: '',
       secondaryPhone: '',
-      band: [],
       position: [],
-      rank: 1,
       avatar: '',
       address: '',
       joinDate: '',
@@ -43,8 +41,7 @@ export async function createGuestAccount(
       verified: true,
       gender: '',
       dob: '',
-      memberSince: new Date().getFullYear().toString(),
-      department: '',
+      department: [],
       hasPassword: true,
       accountType: 'guest',
       authType: 'email',
@@ -52,10 +49,10 @@ export async function createGuestAccount(
       phoneVerified: false,
     };
 
-    await setDoc(doc(db, 'members', memberId), newMember);
+    await setDoc(doc(db, 'guests', guestId), newGuest);
 
     return {
-      member: newMember,
+      guest: newGuest,
       isExistingMember: false,
       requiresEmailVerification: true,
       requiresPhoneVerification: false,
@@ -64,7 +61,7 @@ export async function createGuestAccount(
     await sendPhoneVerificationCode(data.emailOrPhone);
 
     return {
-      member: null,
+      guest: null,
       isExistingMember: false,
       requiresPhoneVerification: true,
       requiresEmailVerification: false,

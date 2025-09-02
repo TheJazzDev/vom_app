@@ -1,7 +1,6 @@
-import { Text, View } from '@/src/components';
-import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { View } from '../UI';
 
 interface MemberListItemProps {
   member: MemberProfile;

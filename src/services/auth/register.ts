@@ -5,7 +5,7 @@ import { findMemberSafely } from './findMemberSafely';
 
 export const register = async (
   data: RegistrationProps,
-): Promise<RegistrationResult> => {
+): Promise<MemberRegistrationResult | GuestRegistrationResult> => {
   try {
     const isEmailRegistration = isEmail(data.emailOrPhone);
 

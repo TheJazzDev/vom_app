@@ -8,10 +8,12 @@ import { Text, View } from '../UI';
 const UserProfile = () => {
   const router = useRouter();
 
-  const { currentMember } = useAuthSlice();
+  const { currentMember, isAuthenticated } = useAuthSlice();
 
   return (
-    <TouchableOpacity onPress={() => router.push('/auth/login')}>
+    <TouchableOpacity
+      onPress={() => router.push(isAuthenticated ? '/profile' : '/auth/login')}
+    >
       <View className="flex-row items-center">
         <View className="w-16 h-16 bg-primary/20 dark:bg-primary/20 rounded-full items-center justify-center mr-3">
           {currentMember?.avatar ? (

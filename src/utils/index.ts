@@ -7,8 +7,8 @@ import { truncateText } from './truncateText';
 
 export * from './firebaseErrorHandler';
 export * from './validations';
-export * from './programme'
-export * from './global'
+export * from './programme';
+export * from './global';
 
 export {
   capitalizeFirstLetter,

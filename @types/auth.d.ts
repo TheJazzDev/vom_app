@@ -1,5 +1,3 @@
-import { FieldValue } from 'firebase/firestore';
-
 declare global {
   type Gender = 'male' | 'female';
   type Role = 'member' | 'guest' | 'admin';
@@ -12,8 +10,15 @@ declare global {
     password: string;
   }
 
-  export interface RegistrationResult {
+  export interface MemberRegistrationResult {
     member: MemberProfile | null;
+    isExistingMember: boolean;
+    requiresPhoneVerification: boolean;
+    requiresEmailVerification: boolean;
+  }
+
+  export interface GuestRegistrationResult {
+    guest: GuestProfile | null;
     isExistingMember: boolean;
     requiresPhoneVerification: boolean;
     requiresEmailVerification: boolean;
@@ -34,17 +39,14 @@ declare global {
     verificationCode?: string;
   };
 
-  interface MemberProfile {
-    memberId: string;
-    authUid: string;
+  interface CommonUserDetails {
+    uid: string;
     avatar: string;
     firstName: string;
     lastName: string;
     email: string;
     title: string;
-    band: string[];
     position: string[];
-    rank: number;
     address: string;
     joinDate: string;
     createdAt: string;
@@ -52,7 +54,6 @@ declare global {
     verified: boolean;
     gender: string;
     dob: string;
-    memberSince: string;
     department: string[];
     hasPassword?: boolean;
     accountType: 'member' | 'guest' | 'admin';
@@ -63,11 +64,20 @@ declare global {
     phoneVerified: boolean;
   }
 
+  interface MemberProfile extends CommonUserDetails {
+    memberId: string;
+    band: string[];
+    memberSince: string;
+  }
+  interface GuestProfile extends CommonUserDetails {
+    guestId: string;
+  }
+
   interface AuthState {
     // Current user data
     currentMember: MemberProfile | null;
     isAuthenticated: boolean;
-    registrationResult: RegistrationResult | null;
+    registrationResult: MemberRegistrationResult | null;
     // Found member during registration flow
     foundMember: MemberProfile | null;
     // Phone authentication

@@ -67,11 +67,9 @@ const BankAccountCard: React.FC<BankAccountCardProps> = ({
 }) => {
   const copyToClipboard = (text: string, label: string) => {
     // In a real app, you'd use @react-native-clipboard/clipboard
-    Alert.alert(
-      'Account Details',
-      `${label}: ${text}\n\nCopied!`,
-      [{ text: 'OK' }],
-    );
+    Alert.alert('Account Details', `${label}: ${text}\n\nCopied!`, [
+      { text: 'OK' },
+    ]);
   };
 
   return (

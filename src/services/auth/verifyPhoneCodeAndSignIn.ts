@@ -18,13 +18,13 @@ export const verifyPhoneCodeAndSignIn = async (
 
     let memberProfile = await getMemberByAuthUid(user.uid);
     const memberId = generateMemberId();
-    const authUid = user.uid;
+    const uid = user.uid;
 
     if (!memberProfile) {
       // 🚀 New user - create profile
       memberProfile = {
         memberId,
-        authUid,
+        uid,
         firstName: '',
         lastName: '',
         email: user.email ?? '',

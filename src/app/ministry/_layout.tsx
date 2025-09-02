@@ -59,7 +59,6 @@ export default function AuthLayout() {
           title: 'Testimonies',
         }}
       />
-     
     </Stack>
   );
 }

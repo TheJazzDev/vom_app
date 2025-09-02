@@ -1,4 +1,10 @@
-import { Badge, BandBadge, ContactInfo, IconSymbol, Text } from '@/src/components';
+import {
+  Badge,
+  BandBadge,
+  ContactInfo,
+  IconSymbol,
+  Text,
+} from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import { Ionicons } from '@expo/vector-icons';
 import BottomSheet, {

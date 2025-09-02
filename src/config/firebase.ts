@@ -26,7 +26,9 @@ const auth = getAuth(app);
 if (Platform.OS !== 'web') {
   // Firebase Web SDK in React Native will use memory persistence
   // We'll rely on Redux persistence instead
-  console.log('Using Firebase Web SDK in React Native - relying on Redux persistence');
+  console.log(
+    'Using Firebase Web SDK in React Native - relying on Redux persistence',
+  );
 }
 
 export const initializePhoneAuth = (): RecaptchaVerifier | null => {

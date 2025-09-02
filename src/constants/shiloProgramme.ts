@@ -6,7 +6,7 @@ export const shiloProgramme: ShiloProgramme = {
   lesson: 'Romans 8:23-39',
   openingPrayer: [51, 100, 24],
   officiating: {
-    preparatoryPrayer : 'Bro Festus Kayode',
+    preparatoryPrayer: 'Bro Festus Kayode',
     revivalist: 'Prophet Taiwo Babarinde',
     lesson: 'Sis Osewunmi Adeolu',
     preacher: 'Prophet Kehinde Ogunleti',
