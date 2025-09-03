@@ -25,6 +25,34 @@ export const loginSchema = yup.object().shape({
   password: yup.string().required('Password is required'),
 });
 
+export const memberSearchSchema = yup.object().shape({
+  emailOrPhone: yup
+    .string()
+    .required('Email or phone number is required')
+    .test(
+      'email-or-phone',
+      'Please enter a valid email or phone number',
+      (value) => {
+        if (!value) return false;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(value)) return true;
+        const phoneRegex = /^[+]?[\d\s()-]{10,}$/;
+        return phoneRegex.test(value);
+      },
+    ),
+});
+
+export const passwordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 6 characters'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .required('Confirm password is required'),
+});
+
 // Schema for phone verification screen (just verification code)
 export const phoneVerificationSchema = yup.object().shape({
   verificationCode: yup
@@ -60,7 +88,7 @@ export const registrationSchema = yup.object().shape({
   password: yup
     .string()
     .required('Password is required')
-    .min(8, 'Password must be at least 8 characters')
+    .min(6, 'Password must be at least 8 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
       'Password must contain uppercase, lowercase, and number',

@@ -47,7 +47,7 @@ export const ProgrammeTemplateRenderer: React.FC<
               Programme Error
             </Text>
             <Text className="text-center text-gray-600 dark:text-gray-400">
-              Unknown programme type: "{programmeType}"
+              Unknown programme type: &quot;{programmeType}&quot;
             </Text>
             <Text className="text-center text-sm text-gray-500 dark:text-gray-500 mt-2">
               Please contact support if this issue persists

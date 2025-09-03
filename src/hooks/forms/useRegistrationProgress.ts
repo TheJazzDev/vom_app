@@ -3,7 +3,7 @@ import {
   isValidEmail,
   isValidPassword,
   isValidPhoneNumber,
-} from '@/src/utils';
+} from '@/src/utils/registration';
 import { useMemo } from 'react';
 
 export interface ProgressStep {

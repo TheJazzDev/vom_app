@@ -7,41 +7,43 @@ import { Text, View } from '../UI';
 
 const UserProfile = () => {
   const router = useRouter();
-
-  const { currentMember, isAuthenticated } = useAuthSlice();
+  const { currentUser, isAuthenticated } = useAuthSlice();
 
   return (
     <TouchableOpacity
-      onPress={() => router.push(isAuthenticated ? '/profile' : '/auth/login')}
+      onPress={() => router.push(isAuthenticated ? '/profile' : '/auth')}
     >
       <View className="flex-row items-center">
         <View className="w-16 h-16 bg-primary/20 dark:bg-primary/20 rounded-full items-center justify-center mr-3">
-          {currentMember?.avatar ? (
+          {currentUser?.avatar ? (
             <Image
-              source={{ uri: currentMember.avatar }}
+              source={{ uri: currentUser.avatar }}
               className="w-16 h-16 rounded-full"
             />
-          ) : currentMember?.firstName ? (
+          ) : currentUser?.firstName ? (
             <Text variant="h3">
-              {getUserInitials(currentMember.firstName, currentMember.lastName)}
+              {getUserInitials(currentUser.firstName, currentUser.lastName)}
             </Text>
           ) : (
             <IconSymbol name="person" size={20} color="#0084ff" />
           )}
         </View>
         <View className="flex-1">
-          {currentMember ? (
-            <Text variant="h5">{currentMember?.firstName}</Text>
+          {currentUser ? (
+            <Text variant="h5">{currentUser?.firstName}</Text>
           ) : (
             <Text variant="h5">Log In</Text>
           )}
-          {currentMember && (
-            <Text className="text-blue-100 text-sm">
-              Member since {currentMember?.memberSince}
-            </Text>
+          {currentUser && (
+            <>
+              <Text className="text-blue-100 text-sm">
+                Member since {currentUser?.memberSince}
+              </Text>
+              <Text className="text-gray-600 text-xs underline">
+                View Profile
+              </Text>
+            </>
           )}
-
-          {/* <Text className="text-gray-600 text-xs underline">View Profile</Text> */}
         </View>
       </View>
     </TouchableOpacity>

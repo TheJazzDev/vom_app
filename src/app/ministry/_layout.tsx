@@ -1,63 +1,31 @@
-import { IconSymbol } from '@/src/components';
-import { useTheme } from '@/src/hooks';
-import { Stack, useRouter } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
+// ministry/_layout.tsx
+import { Stack } from 'expo-router';
 
-export default function AuthLayout() {
-  const theme = useTheme();
-  const router = useRouter();
-
+export default function MinistryLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.background,
-        },
-        headerTintColor: theme.heading,
-        headerTitleAlign: 'center',
-        headerShadowVisible: false,
-
-        headerLeft: () => (
-          <TouchableOpacity
-            onPress={() => {
-              if (router.canGoBack()) {
-                router.back();
-              } else {
-                router.push('/(tabs)');
-              }
-            }}
-            style={{ marginRight: 12 }}
-          >
-            <TouchableOpacity onPress={() => router.back()}>
-              <IconSymbol size={20} name="arrow.backward" color={theme.muted} />
-            </TouchableOpacity>
-          </TouchableOpacity>
-        ),
-      }}
-    >
+    <Stack>
       <Stack.Screen
-        name="bible-study"
+        name="index"
         options={{
-          title: 'Bible Study',
+          title: "Ministry",
+          headerShown: false // Let drawer handle this
         }}
       />
       <Stack.Screen
-        name="prayer-request"
-        options={{
-          title: 'Prayer Request',
-        }}
+        name="bible-study"
+        options={{ title: "Bible Study" }}
       />
       <Stack.Screen
         name="recent-sermons"
-        options={{
-          title: 'Recent Sermons',
-        }}
+        options={{ title: "Recent Sermons" }}
+      />
+      <Stack.Screen
+        name="prayer-request"
+        options={{ title: "Prayer Requests" }}
       />
       <Stack.Screen
         name="testimonies"
-        options={{
-          title: 'Testimonies',
-        }}
+        options={{ title: "Testimonies" }}
       />
     </Stack>
   );

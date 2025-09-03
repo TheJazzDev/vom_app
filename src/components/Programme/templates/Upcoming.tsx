@@ -16,7 +16,7 @@ const UpcomimgCard: React.FC<UpcomingCardProps> = ({ programmes }) => {
   const router = useRouter();
 
   return (
-    <Card variant="default" className="p-4 mb-3">
+    <Card variant="outlined" className="p-4 mb-3">
       <View className="flex-row items-start justify-between mb-4">
         <View>
           <Text variant="h4" color="heading">

@@ -1,4 +1,4 @@
-import AnimatedLoadingButton from './AnimatedLoadingButton';
+import AnimatedLoadingButton from './Buttons/AnimatedLoadingButton';
 import { BandBadge } from './BandBadge';
 import { Collapsible } from './Collapsible';
 import EnglishWatchWord from './Devotionals/English';
@@ -12,10 +12,11 @@ import ProgressIndicator from './ProgressIndicator';
 import Spacer from './Spacer';
 
 export * from './Icons';
-export * from './Members';
+export * from './Directory';
 export * from './Programme';
 export * from './UI';
-export * from './Forms'
+export * from './Forms';
+export * from './Ministry'
 
 export {
   AnimatedLoadingButton,

@@ -16,13 +16,17 @@ const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
   const pathname = usePathname();
   const focused = pathname === route;
 
+  const onPress = () => {
+    return route === '/logout'
+      ? dispatch(logoutThunk())
+      : router.replace(route);
+  };
+
   return (
     <Pressable
-      onPress={() => {
-        route === '/logout' ? dispatch(logoutThunk()) : router.push(route);
-      }}
+      onPress={onPress}
       android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-      className={`flex-row items-center py-3 px-4 rounded-lg ${
+      className={`flex-row items-center py-4 px-4 rounded-lg ${
         focused ? 'bg-primary ' : ''
       }`}
       style={({ pressed }) => [
@@ -36,10 +40,11 @@ const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
         color={
           focused ? theme.natural : route === '/logout' ? 'red' : theme.muted
         }
-        size={Platform.OS === 'ios' ? 20 : 18}
+        size={Platform.OS === 'ios' ? 24 : 20}
       />
       <Text
         style={{
+          fontSize: 14,
           marginLeft: 16,
           fontWeight: 600,
           color: focused

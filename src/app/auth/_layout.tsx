@@ -1,64 +1,39 @@
-import { IconSymbol } from '@/src/components';
 import { useTheme } from '@/src/hooks';
-import { Stack, useRouter } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
+import { Stack } from 'expo-router';
 
 export default function AuthLayout() {
   const theme = useTheme();
-  const router = useRouter();
 
   return (
     <Stack
       screenOptions={{
+        headerShown: false,
         headerStyle: {
           backgroundColor: theme.background,
         },
         headerTintColor: theme.heading,
         headerTitleAlign: 'center',
         headerShadowVisible: false,
-        // headerLeft: ({ canGoBack }) => {
-        //   if (canGoBack) {
-        //     return (
-        //       <TouchableOpacity onPress={() => router.back()}>
-        //         <IconSymbol
-        //           size={16}
-        //           name="chevron.left"
-        //           color={theme.heading}
-        //         />
-        //       </TouchableOpacity>
-        //     );
-        //   }
-        //   return null;
-        // },
-
-        headerLeft: () => (
-          <TouchableOpacity
-            onPress={() => {
-              if (router.canGoBack()) {
-                router.back();
-              } else {
-                router.push('/(tabs)');
-              }
-            }}
-            style={{ marginRight: 12 }}
-          >
-            <TouchableOpacity onPress={() => router.back()}>
-              <IconSymbol size={20} name="arrow.backward" color={theme.muted} />
-            </TouchableOpacity>
-          </TouchableOpacity>
-        ),
       }}
     >
       <Stack.Screen
-        name="login"
+        name="index"
         options={{
           title: 'Sign In',
+          headerShown: false,
         }}
       />
       <Stack.Screen
-        name="register"
+        name="signup"
         options={{
           title: 'Create Account',
+        }}
+      />
+      <Stack.Screen
+        name="activate-member-account"
+        options={{
+          title: 'Create Account',
+          headerShown: false,
         }}
       />
       <Stack.Screen

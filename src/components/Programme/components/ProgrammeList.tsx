@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, Platform } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import UpcomimgCard from '../templates/Upcoming';
 
 interface ProgrammeListProps {
@@ -8,8 +7,6 @@ interface ProgrammeListProps {
 }
 
 export const ProgrammeList: React.FC<ProgrammeListProps> = ({ data }) => {
-  const tabBarHeight = useBottomTabBarHeight();
-
   return (
     <FlatList
       data={data}
@@ -19,7 +16,7 @@ export const ProgrammeList: React.FC<ProgrammeListProps> = ({ data }) => {
       showsHorizontalScrollIndicator={Platform.OS === 'web'}
       contentContainerStyle={{
         paddingHorizontal: 10,
-        paddingBottom: tabBarHeight + 24,
+        paddingBottom: 24,
       }}
     />
   );

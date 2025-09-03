@@ -2,29 +2,35 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import {
+  activateMemberAccountThunk,
+  createGuestAccountThunk,
+  findMemberForActivationThunk,
   getMemberByAuthUidThunk,
   loginThunk,
   logoutThunk,
-  registerThunk,
   resetPasswordThunk,
-  sendEmailVerificationThunk,
+  sendEmailVerificationLinkThunk,
+  // sendEmailVerificationThunk,
   sendPhoneVerificationThunk,
   updateProfileThunk,
-  verifyEmailThunk,
 } from '../thunks/auth';
 
 const initialState: AuthState = {
-  currentMember: null,
+  currentUser: null,
   isAuthenticated: false,
-  registrationResult: null,
+  // activationResult: null,
+  guestRegistrationResult: null,
   foundMember: null,
   phoneVerificationId: null,
   phoneNumber: null,
   isWaitingForSMS: false,
   isLoading: false,
-  isRegistering: false,
+  isfindingMemberForActivation: false,
+  isActivatingMemberAccount: false,
+  isCreatingGuestAccount: false,
   isVerifyingEmail: false,
-  isSendingEmailCode: false,
+  // isSendingEmailCode: false,
+  isSendingEmailVerificationLink: false,
   isLoggingIn: false,
   isLoggingOut: false,
   isResettingPassword: false,
@@ -48,71 +54,140 @@ const authSlice = createSlice({
     clearFoundMember: (state) => {
       state.foundMember = null;
     },
+    // clearActivationResult: (state) => {
+    //   state.activationResult = null;
+    // },
+    clearGuestRegistrationResult: (state) => {
+      state.guestRegistrationResult = null;
+    },
     setAuthInitialized: (state) => {
       state.isInitialized = true;
     },
-    // For handling Firebase Auth state changes
-    setCurrentMember: (state, action: PayloadAction<MemberProfile | null>) => {
-      state.currentMember = action.payload;
+    setCurrentUser: (
+      state,
+      action: PayloadAction<MemberProfile | GuestProfile | null>,
+    ) => {
+      state.currentUser = action.payload;
       state.isAuthenticated = !!action.payload;
     },
   },
   extraReducers: (builder) => {
-    // Register
     builder
-      .addCase(registerThunk.pending, (state) => {
-        state.isRegistering = true;
+      .addCase(findMemberForActivationThunk.pending, (state) => {
+        state.isfindingMemberForActivation = true;
+        state.error = null;
+        state.foundMember = null;
+      })
+      .addCase(findMemberForActivationThunk.fulfilled, (state, action) => {
+        state.isfindingMemberForActivation = false;
+        state.foundMember = action.payload;
+        if (action.payload) {
+          state.successMessage = 'Member profile found!';
+        } else {
+          state.error =
+            'No member found with this email or phone. Please contact admin or try a different auth method.';
+        }
+      })
+      .addCase(findMemberForActivationThunk.rejected, (state, action) => {
+        state.isfindingMemberForActivation = false;
+        state.error = action.payload as string;
+        state.foundMember = null;
+      });
+
+    // Activate Member
+    builder
+      .addCase(activateMemberAccountThunk.pending, (state) => {
+        state.isActivatingMemberAccount = true;
         state.error = null;
       })
-      .addCase(registerThunk.fulfilled, (state, action) => {
-        state.isRegistering = false;
-        state.currentMember = action.payload.member;
-        state.isAuthenticated = true;
-        state.successMessage = 'Registration successful! Welcome!';
+      .addCase(activateMemberAccountThunk.fulfilled, (state, action) => {
+        state.isActivatingMemberAccount = false;
+        // state.activationResult = action.payload;
+        state.foundMember = null;
       })
-      .addCase(registerThunk.rejected, (state, action) => {
-        state.isRegistering = false;
+      .addCase(activateMemberAccountThunk.rejected, (state, action) => {
+        state.isActivatingMemberAccount = false;
+        state.error = action.payload as string;
+      });
+
+    // Create Guest Account
+    builder
+      .addCase(createGuestAccountThunk.pending, (state) => {
+        state.isCreatingGuestAccount = true;
+        state.error = null;
+      })
+      .addCase(createGuestAccountThunk.fulfilled, (state, action) => {
+        state.isCreatingGuestAccount = false;
+        state.guestRegistrationResult = action.payload;
+      })
+      .addCase(createGuestAccountThunk.rejected, (state, action) => {
+        state.isCreatingGuestAccount = false;
         state.error = action.payload as string;
       });
 
     // Send Email Verification
     builder
-      .addCase(sendEmailVerificationThunk.pending, (state) => {
-        state.isSendingEmailCode = true;
+      .addCase(sendEmailVerificationLinkThunk.pending, (state) => {
+        state.isSendingEmailVerificationLink = true;
         state.error = null;
       })
-      .addCase(sendEmailVerificationThunk.fulfilled, (state) => {
-        state.isSendingEmailCode = false;
-        state.successMessage = 'Verification code sent to your email!';
+      .addCase(sendEmailVerificationLinkThunk.fulfilled, (state) => {
+        state.isSendingEmailVerificationLink = false;
+        state.successMessage = 'Verification link sent to your email!';
       })
-      .addCase(sendEmailVerificationThunk.rejected, (state, action) => {
-        state.isSendingEmailCode = false;
+      .addCase(sendEmailVerificationLinkThunk.rejected, (state, action) => {
+        state.isSendingEmailVerificationLink = false;
         state.error = action.payload as string;
       });
+    // builder
+    //   .addCase(sendEmailVerificationThunk.pending, (state) => {
+    //     state.isSendingEmailCode = true;
+    //     state.error = null;
+    //   })
+    //   .addCase(sendEmailVerificationThunk.fulfilled, (state) => {
+    //     state.isSendingEmailCode = false;
+    //     state.successMessage = 'Verification code sent to your email!';
+    //   })
+    //   .addCase(sendEmailVerificationThunk.rejected, (state, action) => {
+    //     state.isSendingEmailCode = false;
+    //     state.error = action.payload as string;
+    //   });
 
     // Verify Email
-    builder
-      .addCase(verifyEmailThunk.pending, (state) => {
-        state.isVerifyingEmail = true;
-        state.error = null;
-      })
-      .addCase(verifyEmailThunk.fulfilled, (state, action) => {
-        state.isVerifyingEmail = false;
-        if (state.registrationResult) {
-          state.currentMember = {
-            ...state.registrationResult.member,
-            emailVerified: true,
-            verified: true,
-          } as MemberProfile;
-          state.isAuthenticated = true;
-          state.registrationResult = null;
-        }
-        state.successMessage = 'Email verified successfully!';
-      })
-      .addCase(verifyEmailThunk.rejected, (state, action) => {
-        state.isVerifyingEmail = false;
-        state.error = action.payload as string;
-      });
+    // builder
+    //   .addCase(verifyEmailThunk.pending, (state) => {
+    //     state.isVerifyingEmail = true;
+    //     state.error = null;
+    //   })
+    //   .addCase(verifyEmailThunk.fulfilled, (state, action) => {
+    //     state.isVerifyingEmail = false;
+
+    //     if (state.activationResult) {
+    //       // Member activation completed
+    //       state.currentUser = {
+    //         ...state.activationResult.member,
+    //         emailVerified: true,
+    //         verified: true,
+    //       } as MemberProfile;
+    //       state.isAuthenticated = true;
+    //       state.activationResult = null;
+    //     } else if (state.guestRegistrationResult) {
+    //       // Guest registration completed
+    //       state.currentUser = {
+    //         ...state.guestRegistrationResult.guest,
+    //         emailVerified: true,
+    //         verified: true,
+    //       } as GuestProfile;
+    //       state.isAuthenticated = true;
+    //       state.guestRegistrationResult = null;
+    //     }
+
+    //     state.successMessage = 'Email verified successfully!';
+    //   })
+    //   .addCase(verifyEmailThunk.rejected, (state, action) => {
+    //     state.isVerifyingEmail = false;
+    //     state.error = action.payload as string;
+    //   });
 
     // Send Phone Code
     builder
@@ -132,7 +207,7 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       });
 
-    // Log In (updated to handle phone auth)
+    // Login
     builder
       .addCase(loginThunk.pending, (state) => {
         state.isLoggingIn = true;
@@ -140,7 +215,7 @@ const authSlice = createSlice({
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.isLoggingIn = false;
-        state.currentMember = action.payload;
+        state.currentUser = action.payload;
         state.isAuthenticated = true;
         state.phoneVerificationId = null;
         state.phoneNumber = null;
@@ -151,8 +226,7 @@ const authSlice = createSlice({
         state.isLoggingIn = false;
         const errorMessage = action.payload as string;
 
-        if (errorMessage === 'VERIFICATION_CODE_SENT') {
-          // Special case: phone verification code was sent
+        if (errorMessage === 'SMS_CODE_SENT') {
           state.isWaitingForSMS = true;
           state.successMessage = 'Verification code sent to your phone!';
         } else {
@@ -160,7 +234,7 @@ const authSlice = createSlice({
         }
       });
 
-    // Log Out
+    // Logout
     builder
       .addCase(logoutThunk.pending, (state) => {
         state.isLoggingOut = true;
@@ -168,9 +242,11 @@ const authSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.isLoggingOut = false;
-        state.currentMember = null;
+        state.currentUser = null;
         state.isAuthenticated = false;
         state.foundMember = null;
+        // state.activationResult = null;
+        state.guestRegistrationResult = null;
         state.successMessage = 'Signed out successfully!';
       })
       .addCase(logoutThunk.rejected, (state, action) => {
@@ -185,7 +261,7 @@ const authSlice = createSlice({
       })
       .addCase(getMemberByAuthUidThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentMember = action.payload;
+        state.currentUser = action.payload;
         state.isAuthenticated = !!action.payload;
         state.isInitialized = true;
       })
@@ -203,7 +279,7 @@ const authSlice = createSlice({
       })
       .addCase(resetPasswordThunk.fulfilled, (state, action) => {
         state.isResettingPassword = false;
-        // state.successMessage = action.payload;
+        state.successMessage = 'Password reset email sent!';
       })
       .addCase(resetPasswordThunk.rejected, (state, action) => {
         state.isResettingPassword = false;
@@ -218,8 +294,11 @@ const authSlice = createSlice({
       })
       .addCase(updateProfileThunk.fulfilled, (state, action) => {
         state.isUpdatingProfile = false;
-        if (state.currentMember) {
-          state.currentMember = { ...state.currentMember, ...action.payload };
+        if (state.currentUser) {
+          state.currentUser = {
+            ...state.currentUser,
+            ...action.payload,
+          } as UserProfile;
         }
         state.successMessage = 'Profile updated successfully!';
       })
@@ -230,12 +309,27 @@ const authSlice = createSlice({
   },
 });
 
-// Custom hook for using auth slice
 export function useAuthSlice() {
   const state = useSelector(({ auth }: RootState) => auth);
 
+  const { currentUser, ...rest } = state;
+
+  const getGuestId = (user: UserProfile | null): string | null => {
+    if (!user || user.accountType !== 'guest') return null;
+    return user.guestId;
+  };
+  const getMemberId = (user: UserProfile | null): string | null => {
+    if (!user || user.accountType !== 'member') return null;
+    return user.memberId;
+  };
+
   return {
-    ...state,
+    currentUser,
+    guestId: getGuestId(currentUser),
+    memberId: getMemberId(currentUser),
+    isMember: currentUser?.accountType === 'member',
+    isGuest: currentUser?.accountType === 'guest',
+    ...rest,
     ...authSlice.actions,
   };
 }

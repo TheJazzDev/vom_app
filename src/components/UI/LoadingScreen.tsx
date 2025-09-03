@@ -6,7 +6,11 @@ const LoadingScreen = () => {
   const theme = useTheme();
 
   return (
-    <View gradient scrollable className="h-screen flex-col items-center justify-center">
+    <View
+      gradient
+      scrollable
+      className="h-screen flex-col items-center justify-center"
+    >
       <ActivityIndicator size="large" color={theme.text} />
     </View>
   );

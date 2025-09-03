@@ -1,13 +1,14 @@
 import { auth, db } from '@/src/config/firebase';
-import { generateMemberId } from '@/src/utils';
+import { generateMemberId, isEmail } from '@/src/utils';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { sendPhoneVerificationCode } from './sendPhoneVerificationCode';
 
 export async function createGuestAccount(
   data: RegistrationProps,
-  isEmailRegistration: boolean,
 ): Promise<GuestRegistrationResult> {
+  const isEmailRegistration = isEmail(data.emailOrPhone);
+
   if (isEmailRegistration) {
     // Email registration - create Firebase email/password account
     const userCredential = await createUserWithEmailAndPassword(
@@ -19,6 +20,8 @@ export async function createGuestAccount(
     await updateProfile(userCredential.user, {
       displayName: `${data.firstName} ${data.lastName}`,
     });
+
+    await auth.signOut();
 
     const guestId = generateMemberId();
     const uid = userCredential.user.uid;
@@ -36,6 +39,8 @@ export async function createGuestAccount(
       avatar: '',
       address: '',
       joinDate: '',
+      band: [],
+      memberSince: '',
       createdAt: new Date().toISOString(),
       status: 'active',
       verified: true,

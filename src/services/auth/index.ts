@@ -1,27 +1,33 @@
-import { findMemberSafely } from './findMemberSafely';
+import { activateMemberAccount } from './activateMemberAccount';
+import { createGuestAccount } from './createGuestAccount';
+import { findMemberForActivation } from './findMemberForActivation';
 import { getMemberByAuthUid } from './getMemberByAuthUid';
 import { login } from './login';
 import { logout } from './logout';
-import { register } from './register';
 import { resetPasswordWithPhone } from './resetPassWordWithPhone';
-import { sendEmailVerificationCode } from './sendEmailVerificationCode';
+// import { sendEmailVerificationCode } from './sendEmailVerificationCode';
+import { sendEmailVerificationLink } from './sendEmailVerificationLink';
 import { sendForgotPasswordCode } from './sendForgotPasswordCode';
 import { sendPhoneVerificationCode } from './sendPhoneVerificationCode';
-import { updateMemberProfile } from './updateMemberProfile';
+import { updateProfile } from './updateProfile';
 import { verifyEmailCode } from './verifyEmailCode';
 import { verifyPhoneCodeAndSignIn } from './verifyPhoneCodeAndSignIn';
+import { getMemberByEmail } from './getMemberByEmail';
 
 export {
-  findMemberSafely,
+  activateMemberAccount,
+  getMemberByEmail,
+  createGuestAccount,
+  findMemberForActivation,
   getMemberByAuthUid,
   login,
   logout,
-  register,
   resetPasswordWithPhone,
-  sendEmailVerificationCode,
+  sendEmailVerificationLink,
+  // sendEmailVerificationCode,
   sendForgotPasswordCode,
   sendPhoneVerificationCode,
-  updateMemberProfile,
+  updateProfile,
   verifyEmailCode,
   verifyPhoneCodeAndSignIn,
 };

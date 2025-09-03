@@ -117,6 +117,10 @@ export const handleFirebaseError = (
   }
 
   // Custom validation errors (from our app)
+  if (error.message === 'EMAIL_NOT_VERIFIED') {
+    return new Error('Email is not verified, please verify your email');
+  }
+
   if (error.message === 'Password is required for email login') {
     return new Error('Password is required for email login');
   }
@@ -133,11 +137,6 @@ export const handleFirebaseError = (
 
   if (error.message === 'Member profile not found') {
     return new Error('User profile not found. Please contact support');
-  }
-
-  // Registration specific errors
-  if (error.message === 'Account already exists. Please sign in instead.') {
-    return new Error('You already have an account. Please sign in instead');
   }
 
   // Password reset errors
@@ -172,6 +171,10 @@ export const handleLoginError = (
 
 export const handleRegistrationError = (error: any): Error => {
   return handleFirebaseError(error, { operation: 'register' });
+};
+
+export const handleVerifyEmailError = (error: any): Error => {
+  return handleFirebaseError(error, { operation: 'verify-email' });
 };
 
 export const handlePhoneVerificationError = (error: any): Error => {

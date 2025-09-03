@@ -4,6 +4,7 @@
     "": {
       "name": "vom_app",
       "dependencies": {
+        "@emailjs/react-native": "^5.1.0",
         "@expo/vector-icons": "^14.1.0",
         "@gorhom/bottom-sheet": "^5",
         "@hookform/resolvers": "^5.2.1",
@@ -257,6 +258,10 @@
     "@babel/types": ["@babel/types@7.28.2", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.27.1" } }, "sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ=="],
 
     "@egjs/hammerjs": ["@egjs/hammerjs@2.0.17", "", { "dependencies": { "@types/hammerjs": "^2.0.36" } }, "sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A=="],
+
+    "@emailjs/browser": ["@emailjs/browser@4.4.1", "", {}, "sha512-DGSlP9sPvyFba3to2A50kDtZ+pXVp/0rhmqs2LmbMS3I5J8FSOgLwzY2Xb4qfKlOVHh29EAutLYwe5yuEZmEFg=="],
+
+    "@emailjs/react-native": ["@emailjs/react-native@5.1.0", "", { "dependencies": { "@emailjs/browser": "^4.4.1", "@react-native-async-storage/async-storage": "^2.2.0" }, "peerDependencies": { "react-native": ">=0.60 <1.0" } }, "sha512-21kboKT2pESqF7Ap2dYDChFTeoyMOAtov1HIAiG2yEu2cljmk6B2vYdRvX6RtH8MekMCo4EqCP8gqd5kmOSzZA=="],
 
     "@emnapi/core": ["@emnapi/core@1.4.5", "", { "dependencies": { "@emnapi/wasi-threads": "1.0.4", "tslib": "^2.4.0" } }, "sha512-XsLw1dEOpkSX/WucdqUhPWP7hDxSvZiY+fsUC14h+FtQ2Ifni4znbBt8punRX+Uj2JG/uDb8nEHVKvrVlvdZ5Q=="],
 

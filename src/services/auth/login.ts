@@ -16,23 +16,26 @@ export const login = async (
         throw new Error('Password is required for email login');
       }
 
-      // Direct Firebase Auth sign in with email/password
-      await signInWithEmailAndPassword(auth, data.emailOrPhone, data.password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.emailOrPhone,
+        data.password,
+      );
 
-      // Get member profile by email
-      const memberProfile = await getMemberByEmail(data.emailOrPhone);
+      await userCredential.user.reload();
 
-      return memberProfile;
+      if (userCredential.user.emailVerified) {
+        const memberProfile = await getMemberByEmail(data.emailOrPhone);
+
+        return memberProfile;
+      } else {
+        throw new Error('Email is not verified, please verify your email');
+      }
     } else {
-      // PHONE LOGIN FLOW
       if (data.verificationCode) {
-        // Step 2: Verify SMS code and complete login
         return await verifyPhoneCodeAndSignIn(data.verificationCode);
       } else {
-        // Step 1: Send SMS verification code
         await sendPhoneVerificationCode(data.emailOrPhone);
-
-        // Return special indication that SMS was sent
         throw new Error('SMS_CODE_SENT');
       }
     }

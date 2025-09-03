@@ -58,9 +58,9 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
 
   const labelAnim = useRef(new Animated.Value(0)).current;
 
-  const animateLabel = (value: string | undefined, isFocused: boolean) => {
+  const animateLabel = (value: string | undefined, focused: boolean) => {
     Animated.timing(labelAnim, {
-      toValue: isFocused || value ? 1 : 0,
+      toValue: focused || value ? 1 : 0,
       duration: 200,
       useNativeDriver: false,
     }).start();
@@ -70,11 +70,6 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
     if (inputType === 'password') {
       setIsPasswordVisible((prev) => !prev);
     }
-  };
-
-  // Determine if text should be secure
-  const shouldSecureText = () => {
-    return inputType === 'password' && !isPasswordVisible;
   };
 
   // Floating label style
@@ -90,8 +85,8 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
       outputRange: [14, 12],
     }),
     paddingHorizontal: 4,
-    backgroundColor: isFocused ? theme.background : 'transparent',
-    color: isFocused ? theme.muted : theme.muted,
+    backgroundColor: theme.background,
+    color: theme.muted,
   };
 
   return (
@@ -102,9 +97,10 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => {
-        // Update animation based on focus and value
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
           animateLabel(value, isFocused);
+          // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [value, isFocused]);
 
         return (
@@ -139,11 +135,11 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
                 {...rest}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={autoCorrect}
-                secureTextEntry={shouldSecureText()}
+                secureTextEntry={inputType === 'password' && !isPasswordVisible}
                 value={value}
-                onChangeText={(text) => {
-                  onChange(inputType === 'email' ? text.toLowerCase() : text);
-                }}
+                onChangeText={(text) =>
+                  onChange(inputType === 'email' ? text.toLowerCase() : text)
+                }
                 onFocus={(e) => {
                   setIsFocused(true);
                   rest.onFocus?.(e);
@@ -167,24 +163,15 @@ export function RHFTextInput<TFieldValues extends FieldValues>({
                   className="ml-2 p-2"
                   onPress={handleRightIconPress}
                 >
-                  {isPasswordVisible ? (
-                    <IconSymbol
-                      size={iconSize}
-                      color={theme.muted}
-                      name="eye.slash"
-                    />
-                  ) : (
-                    <IconSymbol
-                      size={iconSize}
-                      color={theme.muted}
-                      name="eye"
-                    />
-                  )}
+                  <IconSymbol
+                    size={iconSize}
+                    color={theme.muted}
+                    name={isPasswordVisible ? 'eye.slash' : 'eye'}
+                  />
                 </TouchableOpacity>
               )}
             </View>
 
-            {/* Show form error first, then custom validation message */}
             {error?.message && showValidationMessage && (
               <Text className="text-red-500 text-sm px-1">{error.message}</Text>
             )}

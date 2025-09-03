@@ -3,6 +3,7 @@ import { Divider, Text, View } from '../UI';
 import DrawerItem from './DrawerItem';
 import MainNav from './MainNav';
 import UserProfile from './UserProfile';
+import { ROUTES } from '@/src/constants';
 
 export const DrawerContent = (props: any) => {
   return (
@@ -12,22 +13,25 @@ export const DrawerContent = (props: any) => {
         <Divider spacing={12} />
         <MainNav />
         <Divider spacing={12} />
+
         <View>
           <Text variant="overline" className="font-semibold tracking-wide py-2">
-            Church Info
+            Quick Access
           </Text>
           <DrawerItem
             label="About Our Church"
             iconName="info.bubble.fill"
-            route="/about"
+            route={ROUTES.ABOUT}
           />
           <DrawerItem
             label="Contact Us"
             iconName="phone.fill"
-            route="/contact"
+            route={ROUTES.CONTACT}
           />
         </View>
+
         <Divider spacing={12} />
+
         <View>
           <Text variant="overline" className="font-semibold tracking-wide py-2">
             Settings & Logout

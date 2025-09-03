@@ -6,7 +6,7 @@ import {
   validateContactInfo,
   validateName,
   validatePassword,
-} from './validation';
+} from '@/src/utils/registration';
 
 interface ContactFieldProps {
   control: Control<RegistrationProps>;

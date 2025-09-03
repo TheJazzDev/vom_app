@@ -1,5 +1,6 @@
 import { db } from '@/src/config/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+
 export const getMemberByEmail = async (
   email: string,
 ): Promise<MemberProfile> => {
@@ -9,6 +10,7 @@ export const getMemberByEmail = async (
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
+      console.log('Error was thrown from getMemberByEmail');
       throw new Error('Member profile not found!');
     }
 

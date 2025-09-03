@@ -1,5 +1,5 @@
-import { View, Text, Animated, Dimensions, useColorScheme } from 'react-native';
 import React, { useEffect, useRef } from 'react';
+import { Animated, Dimensions, Text, useColorScheme, View } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -207,7 +207,16 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ config }) => {
       floatingAnimation2.stop();
       floatingAnimation3.stop();
     };
-  }, []);
+  }, [
+    fadeAnim,
+    float1,
+    float2,
+    float3,
+    pulseAnim,
+    rotateAnim,
+    scaleAnim,
+    slideAnim,
+  ]);
 
   const spin = rotateAnim.interpolate({
     inputRange: [0, 1],
@@ -220,7 +229,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ config }) => {
   const subtitleColor = isDark ? '#B8B8B8' : '#4a5568';
   const descriptionColor = isDark ? '#888888' : '#718096';
   const scriptureColor = isDark ? '#666666' : '#a0aec0';
-  const scriptureRefColor = isDark ? '#555555' : '#cbd5e0';
+  // const scriptureRefColor = isDark ? '#555555' : '#cbd5e0';
 
   return (
     <View
@@ -465,7 +474,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({ config }) => {
               paddingHorizontal: 20,
             }}
           >
-            "{config.scriptureText}"
+            &quot;{config.scriptureText}&quot;
           </Text>
           {config.scriptureReference && (
             <Text
@@ -510,10 +519,10 @@ const LoadingDot = ({ delay = 0, color = '#FFD700' }) => {
     return () => animation.stop();
   }, [animatedValue, delay]);
 
-  const opacity = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.3, 1],
-  });
+  // const opacity = animatedValue.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [0.3, 1],
+  // });
 
   const scale = animatedValue.interpolate({
     inputRange: [0, 1],
@@ -533,6 +542,5 @@ const LoadingDot = ({ delay = 0, color = '#FFD700' }) => {
     />
   );
 };
-
 
 export { ComingSoon, comingSoonConfigs };

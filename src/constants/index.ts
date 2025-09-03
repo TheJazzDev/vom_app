@@ -4,5 +4,7 @@ import { shiloProgramme } from './shiloProgramme';
 import { vigilProgramme } from './vigilProgramme';
 import { mockMembers } from './members';
 export * from './schema';
+export * from './routes';
+export * from './ministry'
 
 export { Colors, sundayProgramme, mockMembers, shiloProgramme, vigilProgramme };

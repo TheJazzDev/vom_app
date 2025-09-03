@@ -4,7 +4,7 @@ import {
   vigilProgramme,
 } from '@/src/constants';
 import { getProgrammeTimes } from '@/src/utils';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const mockDataFromDB = [
   sundayProgramme,
@@ -48,7 +48,7 @@ export const useProgrammeLogic = () => {
     return currentTime >= timeRange.start && currentTime <= timeRange.end;
   };
 
-  const findCurrentProgramme = ():
+  const findCurrentProgramme = useCallback(():
     | SundayProgramme
     | ShiloProgramme
     | VigilProgramme
@@ -57,7 +57,7 @@ export const useProgrammeLogic = () => {
       isCurrentlyOngoing(programme),
     );
     return currentProg || null;
-  };
+  }, []);
 
   useEffect(() => {
     const updateCurrentProgramme = () => {
@@ -69,7 +69,7 @@ export const useProgrammeLogic = () => {
     const interval = setInterval(updateCurrentProgramme, 60000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [findCurrentProgramme]);
 
   return { currentProgramme };
 };

@@ -31,7 +31,7 @@ export type SearchInputProps = Omit<RNTextInputProps, 'secureTextEntry'> & {
   debounceMs?: number;
 };
 
-export function SearchInput({
+function SearchInput({
   rightIcon,
   iconSize = 20,
   onRightIconPress,

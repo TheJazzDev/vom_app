@@ -1,3 +1,4 @@
+import { ROUTES } from '@/src/constants';
 import { ScrollView } from 'react-native';
 import { Text, View } from '../UI';
 import DrawerItem from './DrawerItem';
@@ -13,51 +14,26 @@ const MainNav = () => {
         contentContainerStyle={{ paddingRight: 12 }}
         showsVerticalScrollIndicator={true}
       >
-        <DrawerItem label="Home" iconName="house.fill" route="/" />
+        <DrawerItem label="Home" iconName="house.fill" route={ROUTES.HOME} />
         <DrawerItem
           label="Programmes"
           iconName="calendar.circle.fill"
-          route="/programme"
+          route={ROUTES.PROGRAMME}
         />
         <DrawerItem
-          label="Members Directory"
+          label="Directory"
           iconName="person.3.sequence.fill"
-          route="/members"
+          route={ROUTES.DIRECTORY}
         />
         <DrawerItem
-          label="All Bands"
-          iconName="person.3.sequence.fill"
-          route="/bands"
+          label="Ministry"
+          iconName="cross.fill"
+          route={ROUTES.MINISTRY}
         />
         <DrawerItem
-          label="Bible Study"
-          iconName="book.fill"
-          route="/ministry/bible-study"
-        />
-        <DrawerItem
-          label="Recent Sermons"
-          iconName="hands.sparkles.fill"
-          route="/ministry/recent-sermons"
-        />
-        <DrawerItem
-          label="Prayer Requests"
-          iconName="hands.sparkles.fill"
-          route="/ministry/prayer-request"
-        />
-        <DrawerItem
-          label="Church Events"
-          iconName="megaphone.fill"
-          route="/events"
-        />
-        <DrawerItem
-          label="Testimonies"
-          iconName="quote.bubble.fill"
-          route="/ministry/testimonies"
-        />
-        <DrawerItem
-          label="Notifications"
-          iconName="bell.fill"
-          route="/notification"
+          label="Church Info"
+          iconName="info.circle.fill"
+          route={ROUTES.INFO}
         />
       </ScrollView>
     </View>

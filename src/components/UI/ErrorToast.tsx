@@ -33,7 +33,7 @@ export const ErrorToast: React.FC<ErrorToastProps> = ({
 
       return () => clearTimeout(timer);
     }
-  }, [displayError, onClearError, duration, pathname]);
+  }, [displayError, onClearError, duration, pathname, clearError]);
 
   if (!displayError) return null;
 

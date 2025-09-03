@@ -13,7 +13,7 @@ export const verifyEmailCode = async (
 ): Promise<boolean> => {
   try {
     const verificationDoc = await getDocs(
-      query(collection(db, 'emailVerifications'), where('email', '==', email)),
+      query(collection(db, 'email-verifications'), where('email', '==', email)),
     );
 
     if (verificationDoc.empty) {

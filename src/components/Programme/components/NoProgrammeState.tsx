@@ -40,8 +40,8 @@ const NoProgrammeState = () => {
           variant="body"
           className="text-center italic mt-3 mb-2 text-gray-700 dark:text-gray-300"
         >
-          "But those who hope in the Lord will renew their strength. They will
-          soar on wings like eagles."
+          &quot;But those who hope in the Lord will renew their strength. They
+          will soar on wings like eagles.&quot;
         </Text>
         <Text variant="caption" className="text-gray-500 dark:text-gray-400">
           Isaiah 40:31

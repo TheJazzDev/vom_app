@@ -11,6 +11,7 @@ export const getMemberByAuthUid = async (
     const authUidSnapshot = await getDocs(authUidQuery);
 
     if (authUidSnapshot.empty) {
+      console.log('Error was thrown from getMemberByAuthUid');
       throw new Error('Member profile not found');
     }
 

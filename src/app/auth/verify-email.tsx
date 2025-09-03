@@ -1,12 +1,13 @@
 import { Text, View } from '@/src/components';
 import {
   dispatch,
-  sendEmailVerificationThunk,
+  sendEmailVerificationLinkThunk,
+  // sendEmailVerificationThunk,
   useAuthSlice,
   verifyEmailThunk,
 } from '@/src/store';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -18,9 +19,10 @@ import {
 export default function EmailVerificationScreen() {
   const router = useRouter();
   const {
-    registrationResult,
+    guestRegistrationResult,
     isVerifyingEmail,
-    isSendingEmailCode,
+    // isSendingEmailCode,
+    isSendingEmailVerificationLink,
     isAuthenticated,
     error,
     clearError,
@@ -29,7 +31,8 @@ export default function EmailVerificationScreen() {
   const [verificationCode, setVerificationCode] = useState('');
   const [countdown, setCountdown] = useState(0);
 
-  const userEmail = registrationResult?.member?.email || '';
+  const email = guestRegistrationResult?.guest?.email!;
+  // const firstName = guestRegistrationResult?.guest?.firstName!;
 
   // Navigate to profile when authenticated
   useEffect(() => {
@@ -46,8 +49,8 @@ export default function EmailVerificationScreen() {
     }
   }, [countdown]);
 
-  const handleSendCode = async () => {
-    if (!userEmail) {
+  const handleSendCode = useCallback(async () => {
+    if (!email) {
       Alert.alert('Error', 'No email address found');
       return;
     }
@@ -55,19 +58,20 @@ export default function EmailVerificationScreen() {
     dispatch(clearError());
 
     try {
-      await dispatch(sendEmailVerificationThunk(userEmail));
+      // await dispatch(sendEmailVerificationThunk({ email, firstName }));
+      await dispatch(sendEmailVerificationLinkThunk());
       setCountdown(60);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [clearError, email]);
 
   // Send initial verification code when screen loads
   useEffect(() => {
-    if (userEmail && countdown === 0) {
+    if (email && countdown === 0) {
       handleSendCode();
     }
-  }, [userEmail, countdown]);
+  }, [email, countdown, handleSendCode]);
 
   const handleVerifyCode = async () => {
     dispatch(clearError());
@@ -75,7 +79,7 @@ export default function EmailVerificationScreen() {
     try {
       const result = await dispatch(
         verifyEmailThunk({
-          email: userEmail,
+          email: email,
           code: verificationCode.trim(),
         }),
       );
@@ -105,7 +109,7 @@ export default function EmailVerificationScreen() {
             We&apos;ve sent a 6-digit verification code to:
           </Text>
           <Text className="text-center mt-2 font-semibold text-blue-600">
-            {userEmail}
+            {email}
           </Text>
           <Text className="text-center mt-2 text-gray-600 max-w-[90%] text-sm">
             Enter the code below to complete your registration
@@ -153,7 +157,7 @@ export default function EmailVerificationScreen() {
 
         {/* Resend Code */}
         <TouchableOpacity
-          disabled={isSendingEmailCode || countdown > 0}
+          disabled={isSendingEmailVerificationLink || countdown > 0}
           onPress={handleSendCode}
           className="py-3 mb-6"
         >
@@ -164,7 +168,7 @@ export default function EmailVerificationScreen() {
           >
             {countdown > 0
               ? `Resend code in ${countdown}s`
-              : isSendingEmailCode
+              : isSendingEmailVerificationLink
                 ? 'Sending code...'
                 : 'Resend verification code'}
           </Text>

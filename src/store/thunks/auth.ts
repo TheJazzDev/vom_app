@@ -1,24 +1,59 @@
 import {
+  activateMemberAccount,
+  createGuestAccount,
+  findMemberForActivation,
   getMemberByAuthUid,
+  getMemberByEmail,
   login,
   logout,
-  register,
   resetPasswordWithPhone,
-  sendEmailVerificationCode,
+  // sendEmailVerificationCode,
+  sendEmailVerificationLink,
   sendForgotPasswordCode,
   sendPhoneVerificationCode,
-  updateMemberProfile,
+  updateProfile,
   verifyEmailCode,
   verifyPhoneCodeAndSignIn,
 } from '@/src/services/auth';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Register thunk (main registration)
-export const registerThunk = createAsyncThunk(
-  'auth/register',
+export const createGuestAccountThunk = createAsyncThunk(
+  'auth/createGuestAccount',
   async (data: RegistrationProps, { rejectWithValue }) => {
     try {
-      const result = await register(data);
+      const result = await createGuestAccount(data);
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const findMemberForActivationThunk = createAsyncThunk(
+  'auth/findMemberForActivation',
+  async (emailOrPhone: string, { rejectWithValue }) => {
+    try {
+      const member = await findMemberForActivation(emailOrPhone);
+      return member;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const activateMemberAccountThunk = createAsyncThunk(
+  'auth/activateMemberAccount',
+  async (
+    data: {
+      member: MemberProfile;
+      emailOrPhone: string;
+      password?: string;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const result = await activateMemberAccount(data);
       return result;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -57,8 +92,8 @@ export const getMemberByEmailThunk = createAsyncThunk(
   'auth/getMemberByEmail',
   async (email: string, { rejectWithValue }) => {
     try {
-      // const member = await getMemberByEmail(email);
-      // return member;
+      const member = await getMemberByEmail(email);
+      return member;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -66,17 +101,36 @@ export const getMemberByEmailThunk = createAsyncThunk(
 );
 
 // Send email verification code thunk
-export const sendEmailVerificationThunk = createAsyncThunk(
-  'auth/sendEmailVerification',
-  async (email: string, { rejectWithValue }) => {
-    try {
-      await sendEmailVerificationCode(email);
-      return { email };
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  },
-);
+export const sendEmailVerificationLinkThunk = createAsyncThunk<
+  { success: boolean },
+  void,
+  { rejectValue: string }
+>('auth/sendEmailVerificationLink', async (_, { rejectWithValue }) => {
+  try {
+    await sendEmailVerificationLink();
+    return { success: true };
+  } catch (error: any) {
+    return rejectWithValue(
+      error.message ?? 'Failed to send email verification link',
+    );
+  }
+});
+
+// // Send email verification code thunk
+// export const sendEmailVerificationThunk = createAsyncThunk(
+//   'auth/sendEmailVerification',
+//   async (
+//     { email, firstName }: { email: string; firstName: string },
+//     { rejectWithValue },
+//   ) => {
+//     try {
+//       await sendEmailVerificationCode({ email, firstName });
+//       return { email };
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   },
+// );
 
 // Verify email code thunk
 export const verifyEmailThunk = createAsyncThunk(
@@ -169,12 +223,20 @@ export const resetPasswordThunk = createAsyncThunk(
 export const updateProfileThunk = createAsyncThunk(
   'auth/updateProfile',
   async (
-    data: { memberId: string; updates: Partial<MemberProfile> },
+    data: {
+      userId: string;
+      updates: Partial<MemberProfile | GuestProfile>;
+      userType: 'member' | 'guest';
+    },
     { rejectWithValue },
   ) => {
     try {
-      await updateMemberProfile(data.memberId, data.updates);
-      return data.updates;
+      const result = await updateProfile(
+        data.userId,
+        data.updates,
+        data.userType,
+      );
+      return result;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
