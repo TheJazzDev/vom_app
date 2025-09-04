@@ -16,7 +16,7 @@ export * from './Directory';
 export * from './Programme';
 export * from './UI';
 export * from './Forms';
-export * from './Ministry'
+export * from './Ministry';
 
 export {
   AnimatedLoadingButton,

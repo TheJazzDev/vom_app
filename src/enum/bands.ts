@@ -1,15 +1,13 @@
 export enum Bands {
   Default = '',
   Choir = 'Choir',
-  LoveDevine = 'Love Devine',
+  LoveDevine = 'Love Divine',
   Daniel = 'Daniel',
-  YouthFellowship = 'Youth Fellowship',
   Deborah = 'Deborah',
   QueenEsther = 'Queen Esther',
   GoodWomen = 'Good Women',
   Warden = 'Warden',
   JohnBeloved = 'John Beloved',
-  ChildrenMinistry = 'Children Ministry',
   Faith = 'Faith',
   HolyMary = 'Holy Mary',
 }

@@ -5,7 +5,7 @@ declare global {
     route: RouteValues;
     icon: IconSymbolName;
     count: string;
-    gradient: GradientColor
+    gradient: GradientColor;
   };
 }
 

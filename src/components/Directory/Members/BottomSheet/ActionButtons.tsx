@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { IconSymbol } from '../../Icons';
+import { IconSymbol } from '../../../Icons';
 
 const ActionButtons = () => {
   return (

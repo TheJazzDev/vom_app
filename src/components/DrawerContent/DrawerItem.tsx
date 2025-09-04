@@ -1,61 +1,77 @@
+import { ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
+import { useProtectedNavigation } from '@/src/hooks/useProtectedNavigation';
 import { dispatch, logoutThunk } from '@/src/store';
-import { usePathname, useRouter } from 'expo-router';
-import { Platform, Pressable, Text } from 'react-native';
+import { usePathname } from 'expo-router';
+import { Platform, Pressable } from 'react-native';
 import { IconSymbol } from '../Icons';
+import { Text, View } from '../UI';
 
 type DrawerItemProps = {
   label: string;
-  route: any;
+  route: string;
   iconName: any;
+  badge?: string;
 };
 
-const DrawerItem = ({ label, route, iconName }: DrawerItemProps) => {
+const DrawerItem = ({ label, route, iconName, badge }: DrawerItemProps) => {
   const theme = useTheme();
-  const router = useRouter();
   const pathname = usePathname();
+  const { navigateTo, canAccess } = useProtectedNavigation();
   const focused = pathname === route;
 
   const onPress = () => {
-    return route === '/logout'
-      ? dispatch(logoutThunk())
-      : router.replace(route);
+    if (route === '/logout') {
+      dispatch(logoutThunk());
+      navigateTo(ROUTES.HOME);
+    } else {
+      navigateTo(route);
+    }
   };
+
+  const showLock = !canAccess(route);
 
   return (
     <Pressable
       onPress={onPress}
       android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-      className={`flex-row items-center py-4 px-4 rounded-lg ${
-        focused ? 'bg-primary ' : ''
+      className={`flex-row items-center py-3 px-4 mb-1 rounded-lg ${
+        focused ? 'bg-primary' : ''
       }`}
       style={({ pressed }) => [
         {
           backgroundColor: pressed ? theme.secondary : 'transparent',
+          opacity: showLock ? 0.7 : 1,
         },
       ]}
     >
-      <IconSymbol
-        name={iconName}
-        color={
-          focused ? theme.natural : route === '/logout' ? 'red' : theme.muted
-        }
-        size={Platform.OS === 'ios' ? 24 : 20}
-      />
-      <Text
-        style={{
-          fontSize: 14,
-          marginLeft: 16,
-          fontWeight: 600,
-          color: focused
-            ? theme.natural
-            : route === '/logout'
-              ? 'red'
-              : theme.muted,
-        }}
-      >
-        {label}
-      </Text>
+      <View className="flex-row items-center flex-1">
+        <IconSymbol
+          name={iconName}
+          color={focused ? theme.natural : theme.muted}
+          size={Platform.OS === 'ios' ? 20 : 18}
+        />
+        <Text
+          style={{
+            marginLeft: 16,
+            fontWeight: 600,
+            color: focused ? theme.natural : theme.muted,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+
+      <View className="flex-row items-center">
+        {badge && (
+          <View className="bg-red-500 rounded-full px-2 py-1 mr-2">
+            <Text variant="caption" className="text-white font-bold">
+              {badge}
+            </Text>
+          </View>
+        )}
+        {showLock && <IconSymbol name="lock" size={16} color={theme.muted} />}
+      </View>
     </Pressable>
   );
 };

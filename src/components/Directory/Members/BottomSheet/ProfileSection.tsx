@@ -1,4 +1,4 @@
-import { Text, View } from '../../UI';
+import { Text, View } from '../../../UI';
 import React from 'react';
 import { Image } from 'react-native';
 

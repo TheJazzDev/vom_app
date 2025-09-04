@@ -170,7 +170,7 @@ export default function LoginScreen() {
 
           <Button
             onPress={() => router.push('/auth/find-member')}
-            variant="secondary"
+            variant="outline"
             textVariant="h5"
             fullWidth
           >
@@ -184,14 +184,6 @@ export default function LoginScreen() {
             fullWidth
           >
             Create New Account
-          </Button>
-          <Button
-            onPress={() => router.push('/onboarding')}
-            variant="outline"
-            textVariant="h5"
-            fullWidth
-          >
-            onbor
           </Button>
         </View>
 

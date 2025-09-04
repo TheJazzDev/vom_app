@@ -3,6 +3,7 @@ import { handleLoginError, isEmail } from '@/src/utils';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { getMemberByEmail } from './getMemberByEmail';
 import { sendPhoneVerificationCode } from './sendPhoneVerificationCode';
+import { updateVerificationStatus } from './updateVerificationStatus';
 import { verifyPhoneCodeAndSignIn } from './verifyPhoneCodeAndSignIn';
 
 export const login = async (
@@ -26,6 +27,14 @@ export const login = async (
 
       if (userCredential.user.emailVerified) {
         const memberProfile = await getMemberByEmail(data.emailOrPhone);
+
+        if (!memberProfile.emailVerified || !memberProfile.verified) {
+          await updateVerificationStatus(memberProfile.memberId);
+
+          // Refetch updated profile
+          const updatedProfile = await getMemberByEmail(data.emailOrPhone);
+          return updatedProfile;
+        }
 
         return memberProfile;
       } else {

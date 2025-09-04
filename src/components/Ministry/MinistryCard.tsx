@@ -2,9 +2,6 @@ import { useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import { Platform, Pressable, Text, View } from 'react-native';
 import { IconSymbol } from '../Icons';
-import { IconSymbolName } from '../Icons/IconSymbol';
-
-
 
 export const MinistryCard = ({
   title,
@@ -23,7 +20,7 @@ export const MinistryCard = ({
     <Pressable
       onPress={handlePress}
       android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-      className="bg-card rounded-lg p-4 border border-border mb-2"
+      className="bg-card dark:bg-dark-card rounded-lg p-4 border border-border dark:border-dark-border mb-2"
       style={({ pressed }) => [
         {
           backgroundColor:

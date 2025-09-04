@@ -1,4 +1,3 @@
-// config/firebase.ts - Using Firebase Web SDK with Expo
 import { initializeApp } from 'firebase/app';
 import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';

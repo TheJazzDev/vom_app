@@ -1,10 +1,10 @@
 import { Colors } from './Colors';
-import { sundayProgramme } from './sundayProgramme';
-import { shiloProgramme } from './shiloProgramme';
-import { vigilProgramme } from './vigilProgramme';
 import { mockMembers } from './members';
+export * from './churchInfo';
+export * from './ministry';
+export { onboardingSlides } from './onboardingData';
+export * from './programme';
+export * from './routes/routes';
 export * from './schema';
-export * from './routes';
-export * from './ministry'
 
-export { Colors, sundayProgramme, mockMembers, shiloProgramme, vigilProgramme };
+export { Colors, mockMembers };

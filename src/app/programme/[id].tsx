@@ -1,5 +1,5 @@
 import { Text, View } from '@/src/components';
-import { upcomingPrograms } from '@/src/constants/upcoming';
+import { upcomingPrograms } from '@/src/constants/programme/upcoming';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 

@@ -15,7 +15,6 @@ export const ProgrammeList: React.FC<ProgrammeListProps> = ({ data }) => {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={Platform.OS === 'web'}
       contentContainerStyle={{
-        paddingHorizontal: 10,
         paddingBottom: 24,
       }}
     />

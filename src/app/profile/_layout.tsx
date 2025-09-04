@@ -1,47 +1,28 @@
+import { ProtectedRoute } from '@/src/components/RouteProtection/ProtectedRoute';
 import { Stack } from 'expo-router';
 
 export default function ProfileLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        animation: 'slide_from_right',
-      }}
+    <ProtectedRoute
+      requireAuth={true}
+      fallbackRoute="/auth/login"
+      // showUnauthorized={true}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Profile',
+      <Stack
+        screenOptions={{
           headerShown: false,
         }}
-      />
-      {/* <Stack.Screen
-        name="guest"
-        options={{
-          title: 'Guest Profile',
-          headerBackTitle: 'Back',
-          headerShown: true,
-          presentation: 'card',
-        }}
-      />
-      <Stack.Screen
-        name="authenticated"
-        options={{
-          title: 'My Profile',
-          headerBackTitle: 'Back',
-          headerShown: true,
-          presentation: 'card',
-        }}
-      /> */}
-      {/* <Stack.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          headerBackTitle: 'Profile',
-          headerShown: true,
-          presentation: 'modal',
-        }}
-      /> */}
-    </Stack>
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="edit"
+          options={{ headerShown: true, title: 'Edit Profile' }}
+        />
+        <Stack.Screen
+          name="settings"
+          options={{ headerShown: true, title: 'Settings' }}
+        />
+      </Stack>
+    </ProtectedRoute>
   );
 }

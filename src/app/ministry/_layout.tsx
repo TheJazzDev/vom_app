@@ -7,26 +7,20 @@ export default function MinistryLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Ministry",
-          headerShown: false // Let drawer handle this
+          title: 'Ministry',
+          headerShown: false, // Let drawer handle this
         }}
       />
-      <Stack.Screen
-        name="bible-study"
-        options={{ title: "Bible Study" }}
-      />
+      <Stack.Screen name="bible-study" options={{ title: 'Bible Study' }} />
       <Stack.Screen
         name="recent-sermons"
-        options={{ title: "Recent Sermons" }}
+        options={{ title: 'Recent Sermons' }}
       />
       <Stack.Screen
         name="prayer-request"
-        options={{ title: "Prayer Requests" }}
+        options={{ title: 'Prayer Requests' }}
       />
-      <Stack.Screen
-        name="testimonies"
-        options={{ title: "Testimonies" }}
-      />
+      <Stack.Screen name="testimonies" options={{ title: 'Testimonies' }} />
     </Stack>
   );
 }

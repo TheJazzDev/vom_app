@@ -318,7 +318,7 @@ const ContactUs = () => {
             'Send us your questions, prayer requests,',
             'or any other inquiries via email.',
           ]}
-          action={() => sendEmail('info@csmcsurulere.org')}
+          action={() => sendEmail('csmcvalleyofmercy@gmail.com')}
           actionText="Send Email"
         />
 

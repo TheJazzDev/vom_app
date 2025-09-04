@@ -1,4 +1,4 @@
-import { upcomingPrograms } from '@/src/constants/upcoming';
+import { upcomingPrograms } from '@/src/constants/programme/upcoming';
 
 export const getUpcomingPrograms = () =>
   upcomingPrograms.filter((program) => program.status === 'upcoming');

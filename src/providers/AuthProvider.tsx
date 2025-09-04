@@ -25,7 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [currentUser, isAuthenticated]);
 
   if (!isAppReady) {
-    return <LoadingScreen />;
+    return <LoadingScreen text="!isAppReady" />;
   }
 
   return <>{children}</>;

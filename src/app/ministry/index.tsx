@@ -3,7 +3,7 @@ import { Text } from '@/src/components/UI';
 import { MINISTRY_OPTIONS } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ImageBackground, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 export default function MinistryIndex() {
   const theme = useTheme();
@@ -14,28 +14,28 @@ export default function MinistryIndex() {
       style={{ backgroundColor: theme.background }}
     >
       {/* Hero Section */}
-      <View className="relative h-48 mb-6">
-        <ImageBackground
-          source={{
-            uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop',
+      <View className="relative mb-6">
+        <LinearGradient
+          colors={['#6B46C1', '#1E40AF']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
           }}
-          className="flex-1 justify-end"
-          imageStyle={{ opacity: 0.7 }}
-        >
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.8)']}
-            className="absolute inset-0"
-          />
-          <View className="p-6 relative z-10">
-            <Text variant="h1" className="text-white font-bold mb-2">
-              Ministry
-            </Text>
-            <Text variant="body" className="text-white/90 leading-6">
-              Grow spiritually through our various ministry programs and connect
-              with God's family
-            </Text>
-          </View>
-        </ImageBackground>
+        />
+        <View className="p-4 relative z-10">
+          <Text variant="h1" className="text-white font-bold mb-2">
+            Ministry
+          </Text>
+          <Text variant="body" className="text-white/90 leading-6">
+            Grow spiritually through our various ministry programs and connect
+            with God&apos;s family
+          </Text>
+        </View>
       </View>
 
       {/* Ministry Options */}
@@ -68,8 +68,8 @@ export default function MinistryIndex() {
             className="leading-6"
             style={{ color: theme.muted }}
           >
-            Join us in building God's kingdom through fellowship, worship, and
-            service. Every member has a role to play in our church family.
+            Join us in building God&apos;s kingdom through fellowship, worship,
+            and service. Every member has a role to play in our church family.
           </Text>
         </View>
       </View>

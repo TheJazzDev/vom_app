@@ -1,4 +1,4 @@
-import { ROUTES } from './routes';
+import { ROUTES } from './routes/routes';
 
 export const DIRECTORY_CATEGORIES: DirectoryProps[] = [
   {

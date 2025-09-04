@@ -30,10 +30,14 @@
       [
         "expo-splash-screen",
         {
+          "backgroundColor": "#E5F2FF",
           "image": "./src/assets/images/VOM_Light_512x512.png",
-          "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#0D0D2B"
+          "dark": {
+            "backgroundColor": "#0D0D2B",
+            "image": "./src/assets/images/VOM_Dark_512x512.png"
+          },
+          "imageWidth": 200
         }
       ],
       "expo-secure-store"

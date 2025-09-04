@@ -1,3 +1,4 @@
 import { Bands } from './bands';
+import { Ministry } from './ministry';
 
-export { Bands };
+export { Bands, Ministry };

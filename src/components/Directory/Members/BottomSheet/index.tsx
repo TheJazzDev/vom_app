@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { BandBadge, Spacer } from '../../';
-import { Badge, Divider, Text, View } from '../../UI';
+import { Badge, BandBadge, Divider, Spacer, Text, View } from '../../../';
 import ActionButtons from './ActionButtons';
 import ContactSection from './ContactSection';
 import MemberDetails from './MemberDetails';

@@ -1,4 +1,4 @@
-import { IconSymbol, Text } from '../..';
+import { IconSymbol, Text } from '../../..';
 import React from 'react';
 import { View } from 'react-native';
 

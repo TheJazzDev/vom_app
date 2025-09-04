@@ -16,7 +16,6 @@ export default function Devotionals() {
 
   return (
     <View
-      className="mb-3"
       onLayout={(event) => {
         const { width } = event.nativeEvent.layout;
         setParentWidth(width);

@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.jazzdev.vom_app'
+    namespace 'com.jazzdev.vom'
     defaultConfig {
-        applicationId 'com.jazzdev.vom_app'
+        applicationId 'com.jazzdev.vom'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

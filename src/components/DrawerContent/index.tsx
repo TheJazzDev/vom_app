@@ -1,9 +1,9 @@
+import { ROUTES } from '@/src/constants';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Divider, Text, View } from '../UI';
 import DrawerItem from './DrawerItem';
 import MainNav from './MainNav';
 import UserProfile from './UserProfile';
-import { ROUTES } from '@/src/constants';
 
 export const DrawerContent = (props: any) => {
   return (
@@ -39,7 +39,7 @@ export const DrawerContent = (props: any) => {
           <DrawerItem
             label="Settings"
             iconName="gearshape.fill"
-            route="/settings"
+            route={ROUTES.SETTINGS}
           />
           <DrawerItem
             label="Logout"

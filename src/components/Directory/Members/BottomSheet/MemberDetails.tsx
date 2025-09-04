@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Text, View } from '../../UI';
+import { Card, Text, View } from '../../../UI';
 
 interface MemberSectionProps {
   member: MemberProfile;

@@ -1,6 +1,6 @@
-import { CategoryCard } from './CategoryCard';
+import { DirectoryCategoryCard } from './DirectoryCategoryCard';
 import MemberBottomSheet from './Members/BottomSheet';
 import { default as ContactInfo } from './Members/ContactInfo';
 import MemberCard from './Members/MemberCard';
 
-export { CategoryCard, ContactInfo, MemberBottomSheet, MemberCard };
+export { DirectoryCategoryCard, ContactInfo, MemberBottomSheet, MemberCard };
