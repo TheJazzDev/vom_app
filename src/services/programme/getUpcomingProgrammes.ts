@@ -1,0 +1,17 @@
+import { programmesRef } from '@/src/config';
+import { getDocs, orderBy, query, where } from 'firebase/firestore';
+
+export const getUpcomingProgrammes = async (): Promise<AllProgrammes[]> => {
+  const now = new Date().toISOString();
+  const q = query(
+    programmesRef,
+    where('date', '>', now),
+    orderBy('date', 'asc'),
+  );
+
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as AllProgrammes[];
+};
