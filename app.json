@@ -48,7 +48,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/VOM_Light_1024x1024.png",
+          "image": "./src/assets/images/VOM_Light_1024x1024.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#E5F2FF",
