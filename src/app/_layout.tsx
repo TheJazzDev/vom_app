@@ -1,4 +1,4 @@
-import { useColorScheme, useTheme } from '@/src/hooks';
+import { useTheme } from '@/src/hooks';
 import Providers from '@/src/providers/Providers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
@@ -19,7 +19,6 @@ const ONBOARDING_KEY = 'onboarding_seen';
 export default function RootLayout() {
   const theme = useTheme();
   const router = useRouter();
-  const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
 
   const [loaded] = useFonts({

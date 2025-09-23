@@ -20,7 +20,6 @@ export function useOnboardingState() {
       setHasCompletedOnboarding(value === 'true');
     } catch (error) {
       console.error('Error checking onboarding status:', error);
-      // Default to false if there's an error
       setHasCompletedOnboarding(false);
     } finally {
       setIsLoading(false);
@@ -31,7 +30,6 @@ export function useOnboardingState() {
     try {
       if (withTransition) {
         setIsTransitioning(true);
-        // Add a small delay for transition animation
         await new Promise((resolve) => setTimeout(resolve, 300));
       }
 
@@ -39,7 +37,6 @@ export function useOnboardingState() {
       setHasCompletedOnboarding(true);
 
       if (withTransition) {
-        // Allow transition to complete
         setTimeout(() => setIsTransitioning(false), 800);
       }
     } catch (error) {

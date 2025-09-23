@@ -1,9 +1,7 @@
 import {
-  getAuthType,
   getPasswordStrengthMessage,
   isValidEmail,
   isValidPassword,
-  isValidPhoneNumber,
 } from './helper';
 
 export interface ValidationResult {
@@ -12,41 +10,31 @@ export interface ValidationResult {
   type: 'success' | 'error' | 'info';
 }
 
-export const validateContactInfo = (value: string): ValidationResult => {
+export const validateEmail = (value: string): ValidationResult => {
   if (!value || !value.trim()) {
     return {
       isValid: false,
-      message: 'Enter an email address or phone number with country code',
+      message: 'Enter an email address',
       type: 'info',
     };
   }
 
   const trimmedValue = value.trim();
-  const contactType = getAuthType(trimmedValue);
 
-  if (contactType === 'email') {
+  if (isValidEmail(trimmedValue)) {
     const isValid = isValidEmail(trimmedValue);
     return {
       isValid,
       message: isValid
-        ? '✓ Valid email address'
+        ? '✓ We can accept this email!'
         : '✗ Please enter a valid email address',
-      type: isValid ? 'success' : 'error',
-    };
-  } else if (contactType === 'phone') {
-    const isValid = isValidPhoneNumber(trimmedValue);
-    return {
-      isValid,
-      message: isValid
-        ? '✓ Valid phone number'
-        : '✗ Please enter a valid phone number (e.g., +234801234567)',
       type: isValid ? 'success' : 'error',
     };
   }
 
   return {
     isValid: false,
-    message: 'Enter an email address or phone number with country code',
+    message: 'Enter an email address in a valid format',
     type: 'info',
   };
 };
@@ -66,7 +54,7 @@ export const validateName = (
   const isValid = value.length >= 2;
   return {
     isValid,
-    message: isValid ? '' : `✗ ${fieldName} must be at least 2 characters`,
+    message: isValid ? `✓ ${fieldName} is cool!` : `✗ ${fieldName} must be at least 2 characters`,
     type: isValid ? 'success' : 'error',
   };
 };

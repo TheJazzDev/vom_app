@@ -1,10 +1,6 @@
-import {
-  getAuthType,
-  isValidEmail,
-  isValidPassword,
-  isValidPhoneNumber,
-} from '@/src/utils/registration';
+import { isValidEmail, isValidPassword } from '@/src/utils/registration';
 import { useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 
 export interface ProgressStep {
   label: string;
@@ -13,54 +9,38 @@ export interface ProgressStep {
   active: boolean;
 }
 
-export const useRegistrationProgress = (formValues: RegistrationProps) => {
+export const useRegistrationProgress = (control: any) => {
+  const watchedValues = useWatch({
+    control,
+    name: ['email', 'firstName', 'lastName', 'password'],
+  });
+
+  const [email = '', firstName = '', lastName = '', password = ''] =
+    watchedValues || [];
+
   const progressSteps = useMemo((): ProgressStep[] => {
-    const emailOrPhone = formValues.emailOrPhone?.trim() || '';
-    const firstName = formValues.firstName?.trim() || '';
-    const lastName = formValues.lastName?.trim() || '';
-    const password = formValues.password || '';
+    const emailIsValid = isValidEmail(email);
 
-    // Step 1: Valid contact info
-    const isContactValid = () => {
-      if (!emailOrPhone) return false;
-      const contactType = getAuthType(emailOrPhone);
-
-      if (contactType === 'email') {
-        return isValidEmail(emailOrPhone);
-      } else if (contactType === 'phone') {
-        return isValidPhoneNumber(emailOrPhone);
-      }
-      return false;
-    };
-
-    // Step 2: Personal details
     const isPersonalDetailsValid =
       firstName.length >= 2 && lastName.length >= 2;
 
-    // Step 3: Strong password
     const isPasswordValid = isValidPassword(password);
 
-    // Step 4: All requirements met
     const isFormComplete =
-      isContactValid() && isPersonalDetailsValid && isPasswordValid;
+      emailIsValid && isPersonalDetailsValid && isPasswordValid;
 
     return [
       {
         label: 'Contact Info',
-        description:
-          getAuthType(emailOrPhone) === 'email'
-            ? 'Valid email address'
-            : getAuthType(emailOrPhone) === 'phone'
-              ? 'Valid phone number'
-              : 'Email or phone number',
-        completed: isContactValid(),
-        active: !isContactValid(),
+        description: 'Valid email address',
+        completed: emailIsValid,
+        active: !emailIsValid,
       },
       {
         label: 'Personal Details',
         description: 'First and last name',
         completed: isPersonalDetailsValid,
-        active: isContactValid() && !isPersonalDetailsValid,
+        active: emailIsValid && !isPersonalDetailsValid,
       },
       {
         label: 'Security',
@@ -75,28 +55,14 @@ export const useRegistrationProgress = (formValues: RegistrationProps) => {
         active: isPasswordValid && !isFormComplete,
       },
     ];
-  }, [formValues]);
+  }, [email, firstName, lastName, password]);
 
   const currentStep = useMemo(() => {
-    const emailOrPhone = formValues.emailOrPhone?.trim() || '';
-    const firstName = formValues.firstName?.trim() || '';
-    const lastName = formValues.lastName?.trim() || '';
-    const password = formValues.password || '';
-
-    // Determine current step based on completion
-    const contactType = getAuthType(emailOrPhone);
-    const isContactValid =
-      contactType === 'email'
-        ? isValidEmail(emailOrPhone)
-        : contactType === 'phone'
-          ? isValidPhoneNumber(emailOrPhone)
-          : false;
-
-    if (!isContactValid) return 0;
+    if (!isValidEmail(email)) return 0;
     if (!(firstName.length >= 2 && lastName.length >= 2)) return 1;
     if (!isValidPassword(password)) return 2;
     return 3;
-  }, [formValues]);
+  }, [email, firstName, lastName, password]);
 
   return {
     progressSteps,

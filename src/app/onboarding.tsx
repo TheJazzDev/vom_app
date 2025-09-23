@@ -9,6 +9,7 @@ import { useOnboardingState } from '@/src/hooks/useOnboardingState';
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { Animated, Dimensions, ScrollView, View } from 'react-native';
+import { ROUTES } from '../constants';
 
 const { width } = Dimensions.get('window');
 
@@ -22,12 +23,10 @@ export default function OnboardingScreen() {
   const currentSlide = onboardingSlides[currentIndex];
 
   const onComplete = async () => {
-    // Complete onboarding with transition
     await completeOnboarding(true);
 
-    // Navigate to home with custom animation
     setTimeout(() => {
-      router.replace('/');
+      router.replace(ROUTES.HOME);
     }, 100);
   };
 

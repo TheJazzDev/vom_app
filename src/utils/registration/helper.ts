@@ -3,14 +3,14 @@ export const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email.trim());
 };
 
-export const isValidPhoneNumber = (phone: string): boolean => {
-  // Remove all spaces, dashes, parentheses
-  const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+// export const isValidPhoneNumber = (phone: string): boolean => {
+//   // Remove all spaces, dashes, parentheses
+//   const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
 
-  // Check if it starts with + and has 10-15 digits
-  const phoneRegex = /^\+[1-9]\d{9,14}$/;
-  return phoneRegex.test(cleanPhone);
-};
+//   // Check if it starts with + and has 10-15 digits
+//   const phoneRegex = /^\+[1-9]\d{9,14}$/;
+//   return phoneRegex.test(cleanPhone);
+// };
 
 export const isValidPassword = (password: string): boolean => {
   if (password.length < 6) return false;
@@ -32,15 +32,6 @@ export const getPasswordStrengthMessage = (password: string): string => {
   if (!hasNumber) return 'Password must contain at least one number';
 
   return 'Password looks good!';
-};
-
-export const getAuthType = (input: string): 'email' | 'phone' | 'unknown' => {
-  const trimmed = input.trim();
-
-  if (trimmed.includes('@')) return 'email';
-  if (trimmed.startsWith('+')) return 'phone';
-
-  return 'unknown';
 };
 
 export const getPasswordStrength = (password: string) => {

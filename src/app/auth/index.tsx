@@ -88,7 +88,7 @@ export default function LoginScreen() {
 
         if (loginThunk.rejected.match(result)) {
           if (result.payload === 'Email is not verified') {
-            navigateTo('/auth/email-verify-success');
+            navigateTo('/auth/email-link-sent');
           }
         }
       }

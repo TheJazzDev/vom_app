@@ -1,4 +1,4 @@
-import { StackWrapper } from '@/src/components/ScreenOptions/StackScreen';
+import { StackWrapper } from '@/src/components/UI/ScreenOptions/StackScreen';
 import { Stack } from 'expo-router';
 
 export default function DirectoryLayout() {
@@ -24,10 +24,9 @@ export default function DirectoryLayout() {
         }}
       />
       <Stack.Screen
-        name="email-verify-success"
+        name="email-link-sent"
         options={{
           headerShown: false,
-          title: 'Verificataion Success',
         }}
       />
       <Stack.Screen

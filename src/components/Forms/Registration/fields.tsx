@@ -1,47 +1,47 @@
-import React from 'react';
-import { Control } from 'react-hook-form';
-import { RHFTextInput, Text, View } from '../../UI';
 import {
   getValidationMessageColor,
-  validateContactInfo,
+  validateEmail,
   validateName,
   validatePassword,
 } from '@/src/utils/registration';
+import React from 'react';
+import { Control, useWatch } from 'react-hook-form';
+import { RHFTextInput, Text, View } from '../../UI';
 
-interface ContactFieldProps {
+interface EmailFieldProps {
   control: Control<RegistrationProps>;
-  value: string;
 }
 
 interface NameFieldProps {
   control: Control<RegistrationProps>;
   name: 'firstName' | 'lastName';
-  value: string;
   label: string;
   placeholder: string;
 }
 
 interface PasswordFieldProps {
   control: Control<RegistrationProps>;
-  value: string;
 }
 
-export const RegTypeField: React.FC<ContactFieldProps> = ({
-  control,
-  value,
-}) => {
-  const validation = validateContactInfo(value);
+export const EmailField: React.FC<EmailFieldProps> = ({ control }) => {
+  const value =
+    useWatch({
+      control,
+      name: 'email',
+    }) || '';
+
+  const validation = validateEmail(value);
   const colorClass = getValidationMessageColor(validation.type);
 
   return (
     <View className="mb-4">
       <RHFTextInput
         control={control}
-        name="emailOrPhone"
+        name="email"
         inputType="text"
-        label="Email or Phone Number"
+        label="Email"
         leftIcon="envelope"
-        placeholder="Enter your email or phone number"
+        placeholder="Enter your email"
         autoCapitalize="none"
         autoCorrect={false}
       />
@@ -57,12 +57,17 @@ export const RegTypeField: React.FC<ContactFieldProps> = ({
 export const NameField: React.FC<NameFieldProps> = ({
   control,
   name,
-  value,
   label,
   placeholder,
 }) => {
+  const value =
+    useWatch({
+      control,
+      name,
+    }) || '';
+
   const validation = validateName(value, label);
-  const shouldShowValidation = value && value.length > 0 && !validation.isValid;
+  const colorClass = getValidationMessageColor(validation.type);
 
   return (
     <View className="mb-4">
@@ -74,8 +79,8 @@ export const NameField: React.FC<NameFieldProps> = ({
         leftIcon="person"
         placeholder={placeholder}
       />
-      {shouldShowValidation && (
-        <Text className="text-xs text-red-500 mb-2 px-1">
+      {value && (
+        <Text className={`text-xs mb-2 px-1 ${colorClass}`}>
           {validation.message}
         </Text>
       )}
@@ -83,10 +88,13 @@ export const NameField: React.FC<NameFieldProps> = ({
   );
 };
 
-export const PasswordField: React.FC<PasswordFieldProps> = ({
-  control,
-  value,
-}) => {
+export const PasswordField: React.FC<PasswordFieldProps> = ({ control }) => {
+  const value =
+    useWatch({
+      control,
+      name: 'password',
+    }) || '';
+
   const validation = validatePassword(value);
   const colorClass = getValidationMessageColor(validation.type);
 

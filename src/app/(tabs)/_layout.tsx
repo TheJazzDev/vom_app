@@ -6,7 +6,7 @@ import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import {
   HeaderLeft,
   HeaderRight,
-} from '@/src/components/ScreenOptions/StackScreen';
+} from '@/src/components/UI/ScreenOptions/StackScreen';
 import { useTheme } from '@/src/hooks';
 import { useAuthSlice } from '@/src/store';
 import { Platform } from 'react-native';

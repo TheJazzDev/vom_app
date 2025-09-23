@@ -12,10 +12,9 @@ export const ROUTES = {
   AUTH: '/auth',
   SIGNUP: '/auth/signup',
   FORGOT_PASSWORD: '/auth/forgot-password',
-  VERIFY_EMAIL: '/auth/verify-email',
   VERIFY_PHONE: '/auth/verify-phone',
   FIND_MEMBER: '/auth/find-member',
-  EMAIL_VERIFY_SUCCESS: '/auth/email-verify-success',
+  EMAIL_LINK_SENT: '/auth/email-link-sent',
   ACTIVATE_ACCOUNT: '/auth/activate-member-account',
   ACTIVATE_SUCCESS: '/auth/activate-member-account-success',
 

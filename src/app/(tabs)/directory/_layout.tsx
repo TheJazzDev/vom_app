@@ -1,4 +1,4 @@
-import { StackWrapper } from '@/src/components/ScreenOptions/StackScreen';
+import { StackWrapper } from '@/src/components/UI/ScreenOptions/StackScreen';
 import { Stack } from 'expo-router';
 
 export default function DirectoryLayout() {

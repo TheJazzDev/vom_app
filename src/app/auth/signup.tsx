@@ -6,8 +6,8 @@ import {
   Text,
   View,
 } from '@/src/components';
-import { NameField, PasswordField, RegTypeField } from '@/src/components/Forms';
-import { registrationSchema } from '@/src/constants';
+import { EmailField, NameField, PasswordField } from '@/src/components/Forms';
+import { registrationSchema, ROUTES } from '@/src/constants';
 import { useRegistrationProgress } from '@/src/hooks/forms';
 import { createGuestAccountThunk, dispatch, useAuthSlice } from '@/src/store';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -36,9 +36,7 @@ export default function RegistrationScreen() {
     },
   });
 
-  const formValues = watch();
-  const { progressSteps, currentStep } = useRegistrationProgress(formValues);
-
+  const { progressSteps, currentStep } = useRegistrationProgress(control);
   const onSubmit = async (data: RegistrationProps) => {
     dispatch(clearError());
 
@@ -46,14 +44,7 @@ export default function RegistrationScreen() {
       const result = await dispatch(createGuestAccountThunk(data));
 
       if (createGuestAccountThunk.fulfilled.match(result)) {
-        router.push('/auth/verify-email');
-
-        // const registrationResult = result.payload;
-        // if (registrationResult.requiresPhoneVerification) {
-        //   router.push('/auth/verify-phone');
-        // } else if (registrationResult.requiresEmailVerification) {
-        //   router.push('/auth/verify-email');
-        // }
+        router.push(ROUTES.EMAIL_LINK_SENT);
       }
     } catch (error: any) {
       console.error('Registration failed:', error);
@@ -88,12 +79,11 @@ export default function RegistrationScreen() {
 
           {/* Registration Form */}
           <View className="mb-4">
-            <RegTypeField control={control} value={formValues.email} />
+            <EmailField control={control} />
 
             <NameField
               control={control}
               name="firstName"
-              value={formValues.firstName}
               label="First Name"
               placeholder="Enter your first name"
             />
@@ -101,12 +91,11 @@ export default function RegistrationScreen() {
             <NameField
               control={control}
               name="lastName"
-              value={formValues.lastName}
               label="Last Name"
               placeholder="Enter your last name"
             />
 
-            <PasswordField control={control} value={formValues.password} />
+            <PasswordField control={control} />
           </View>
 
           <Card variant="outlined" className="mb-8">

@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from '@/src/components';
-import { passwordSchema } from '@/src/constants';
+import { passwordSchema, ROUTES } from '@/src/constants';
 import {
   activateMemberAccountThunk,
   dispatch,
@@ -68,7 +68,7 @@ const Email = ({ handleBackToSearch }: { handleBackToSearch: () => void }) => {
       const result = await dispatch(activateMemberAccountThunk(userData));
 
       if (activateMemberAccountThunk.fulfilled.match(result)) {
-        router.replace('/auth/email-verify-success');
+        router.replace(ROUTES.EMAIL_LINK_SENT);
       } else {
         console.error('Email activation failed:', result);
       }

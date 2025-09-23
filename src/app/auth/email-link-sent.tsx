@@ -6,7 +6,7 @@ import { Animated, Dimensions, Text } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const EmailVerifySuccess = () => {
+const EmailLinkSent = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -175,4 +175,4 @@ const EmailVerifySuccess = () => {
   );
 };
 
-export default EmailVerifySuccess;
+export default EmailLinkSent;

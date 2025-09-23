@@ -6,6 +6,7 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 interface SplashScreenProps {
   onFinish?: () => void;

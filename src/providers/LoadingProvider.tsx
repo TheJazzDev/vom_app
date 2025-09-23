@@ -24,10 +24,6 @@ export const LoadingProvider: React.FC<LoadingProviderProps> = ({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log(
-        '🔥 Auth state changed:',
-        user ? 'authenticated' : 'unauthenticated',
-      );
       setIsAuthReady(true);
     });
 
