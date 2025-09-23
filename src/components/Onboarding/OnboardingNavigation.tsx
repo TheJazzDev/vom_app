@@ -80,7 +80,7 @@ export function NavigationButtons({
 
         {/* Progress Circle */}
         <View className="items-center">
-          <Text className="text-gray-500 dark:text-gray-400 text-sm mb-2">
+          <Text className="text-sm mb-2">
             {currentIndex + 1} of {totalSlides}
           </Text>
           <View
@@ -102,14 +102,14 @@ export function NavigationButtons({
               }}
               className="items-center justify-center"
             >
-              <Text className="text-white font-bold">
+              <Text color='neutral' className="font-bold">
                 {Math.round(((currentIndex + 1) / totalSlides) * 100)}%
               </Text>
             </View>
           </View>
         </View>
 
-        <TouchableOpacity
+        {<TouchableOpacity
           onPress={isLastSlide ? onComplete : onNext}
           style={{
             width: 56,
@@ -129,7 +129,7 @@ export function NavigationButtons({
           ) : (
             <IconSymbol name="chevron.right" size={24} color="white" />
           )}
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
 
       {/* Call to Action */}
@@ -140,7 +140,7 @@ export function NavigationButtons({
             style={{ backgroundColor: accentColor }}
             className="py-4 px-8 rounded-xl items-center"
           >
-            <Text className="text-white font-bold text-lg">Get Started</Text>
+            <Text className="text-white dark:text-white font-bold text-lg">Get Started</Text>
           </TouchableOpacity>
         </View>
       ) : (

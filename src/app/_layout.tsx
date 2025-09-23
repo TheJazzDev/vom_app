@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/hooks';
+import { useColorScheme, useTheme } from '@/src/hooks';
 import Providers from '@/src/providers/Providers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
@@ -7,31 +7,20 @@ import { Drawer } from 'expo-router/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
 import 'react-native-reanimated';
-import { DrawerContent, IconSymbol } from '../components';
-import SplashScreenComponent from '../components/ScreenOptions/SplashScreen';
+import { DrawerContent } from '../components';
 import '../config/firebase';
-import { ROUTES } from '../constants';
 import './global.css';
 
 SplashScreen.preventAutoHideAsync();
 
-// Configuration for splash screen timing
-const SPLASH_CONFIG = {
-  MIN_DISPLAY_TIME: 3000,
-  MAX_DISPLAY_TIME: 10000,
-};
-const ONBOARDING_KEY = 'has_completed_onboarding';
+const ONBOARDING_KEY = 'onboarding_seen';
 
 export default function RootLayout() {
   const theme = useTheme();
   const router = useRouter();
+  const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
-  const [showCustomSplash, setShowCustomSplash] = useState(true);
-  const [shouldNavigateToOnboarding, setShouldNavigateToOnboarding] =
-    useState(false);
-  const [splashStartTime] = useState(Date.now());
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -43,63 +32,30 @@ export default function RootLayout() {
       try {
         if (!loaded) return;
 
-        // Check onboarding status
         const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+
         if (value === null || value === 'false') {
-          setShouldNavigateToOnboarding(true);
-        }
-
-        // Ensure minimum splash duration
-        const elapsedTime = Date.now() - splashStartTime;
-        const remainingTime = Math.max(
-          0,
-          SPLASH_CONFIG.MIN_DISPLAY_TIME - elapsedTime,
-        );
-
-        if (remainingTime > 0) {
-          await new Promise((res) => setTimeout(res, remainingTime));
+          await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+          router.replace('/onboarding');
         }
 
         setAppIsReady(true);
       } catch (e) {
-        console.warn('Error during app initialization:', e);
+        console.warn('Error loading app state:', e);
         setAppIsReady(true);
       } finally {
-        // Hide Expo's splash screen
-        await SplashScreen.hideAsync();
+        if (loaded) {
+          await SplashScreen.hideAsync();
+        }
       }
     }
 
     prepare();
-  }, [loaded, splashStartTime]);
+  }, [loaded, router]);
 
-  useEffect(() => {
-    if (appIsReady && shouldNavigateToOnboarding && !showCustomSplash) {
-      // Small delay to ensure navigation context is ready
-      const timer = setTimeout(() => {
-        router.replace('/onboarding');
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [appIsReady, shouldNavigateToOnboarding, showCustomSplash, router]);
-
-  const handleSplashFinish = () => {
-    setShowCustomSplash(false);
-  };
-
-  // Show custom splash screen
-  if (showCustomSplash || !appIsReady) {
-    return (
-      <SplashScreenComponent
-        onFinish={handleSplashFinish}
-        duration={SPLASH_CONFIG.MIN_DISPLAY_TIME}
-      />
-    );
+  if (!appIsReady) {
+    return null;
   }
-
-  // if (!appIsReady) {
-  //   return null;
-  // }
 
   return (
     <Providers>
@@ -122,26 +78,10 @@ export default function RootLayout() {
           headerStyle: {
             backgroundColor: theme.background,
           },
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => router.push(ROUTES.NOTIFICATIONS)}
-              style={{ marginRight: 11 }}
-            >
-              <IconSymbol size={24} name="bell.fill" color={theme.muted} />
-            </TouchableOpacity>
-          ),
         }}
       >
-        <Drawer.Screen
-          name="(tabs)"
-          options={{ title: 'VOM', headerShown: false }}
-        />
+        <Drawer.Screen name="(tabs)" options={{ headerShown: false }} />
         <Drawer.Screen name="auth" options={{ headerShown: false }} />
-        <Drawer.Screen name="profile" options={{ title: 'Profile' }} />
-        <Drawer.Screen name="info" options={{ headerShown: false }} />
-        <Drawer.Screen name="about" options={{ title: 'About Us' }} />
-        <Drawer.Screen name="contact" options={{ title: 'Contact Us' }} />
-        <Drawer.Screen name="settings" options={{ title: 'Settings' }} />
         <Drawer.Screen name="onboarding" options={{ headerShown: false }} />
       </Drawer>
     </Providers>

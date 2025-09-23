@@ -19,7 +19,7 @@ export default function Dashboard() {
   return (
     <ScrollView style={{ backgroundColor: theme.background }}>
       <LinearGradient
-        colors={[theme.primary, theme.secondary || theme.primary]}
+        colors={[theme.primary, theme.brand]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{ padding: 20, height: 100 }}

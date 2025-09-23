@@ -16,7 +16,7 @@ export function SlideContent({ slide }: SlideContentProps) {
           width: 160,
           height: 160,
           borderRadius: 80,
-          backgroundColor: 'white',
+          backgroundColor: '#E5F2FF',
           marginBottom: 48,
           shadowColor: slide.accentColor,
           shadowOffset: { width: 0, height: 10 },

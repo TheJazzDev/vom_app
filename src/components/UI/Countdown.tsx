@@ -62,35 +62,6 @@ function getAccurateDateDifference(now: Date, target: Date) {
   return { years, months, days, hours, minutes, seconds, isPast };
 }
 
-// Default service end times
-// const SERVICE_END_TIMES = {
-//   sunday: { hour: 14, minute: 0 }, // 2:00 PM
-//   shiloh: { hour: 13, minute: 30 }, // 1:30 PM
-//   vigil: { hour: 5, minute: 0 }, // 5:00 AM (next day)
-// };
-
-// function getServiceEndTime(programmeDate: Date, programmeType: string): Date {
-//   const endTime = new Date(programmeDate);
-//   const serviceEnd =
-//     SERVICE_END_TIMES[
-//       programmeType.toLowerCase() as keyof typeof SERVICE_END_TIMES
-//     ];
-
-//   if (serviceEnd) {
-//     endTime.setHours(serviceEnd.hour, serviceEnd.minute, 0, 0);
-
-//     // For vigil services, if end time is early morning, it's next day
-//     if (programmeType.toLowerCase() === 'vigil' && serviceEnd.hour < 12) {
-//       endTime.setDate(endTime.getDate() + 1);
-//     }
-//   } else {
-//     // Default to 2 hours after programme start
-//     endTime.setHours(endTime.getHours() + 2);
-//   }
-
-//   return endTime;
-// }
-
 export const Countdown: React.FC<CountdownProps> = ({
   targetDate,
   compact = false,
@@ -107,6 +78,10 @@ export const Countdown: React.FC<CountdownProps> = ({
 
   useEffect(() => {
     const date = new Date(targetDate);
+    if (isNaN(date.getTime())) {
+      console.error('Invalid targetDate passed to Countdown');
+      return;
+    }
 
     // Calculate initial state immediately to avoid flash
     const calculateTime = () => {
@@ -174,12 +149,15 @@ export const Countdown: React.FC<CountdownProps> = ({
       return { text: display.trim(), type: displayType, isInitialized: true };
     };
 
-    // Set initial state immediately
+    // Initial call
     setTimeLeft(calculateTime());
+
+    // Choose interval granularity (seconds or minutes)
+    const intervalMs = date.getTime() - Date.now() > 3600 * 1000 ? 60000 : 1000;
 
     const interval = setInterval(() => {
       setTimeLeft(calculateTime());
-    }, 1000);
+    }, intervalMs);
 
     return () => clearInterval(interval);
   }, [targetDate]);

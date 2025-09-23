@@ -28,6 +28,7 @@ export type CardProps = ViewProps & {
   interactive?: boolean;
   fullWidth?: boolean;
   className?: string;
+  borderRadius?: number; // Add explicit borderRadius prop
 };
 
 // Helper function to get text color for gradient cards
@@ -37,6 +38,28 @@ export const getCardTextColor = (
   if (!variant) return undefined;
   const variantConfig = cardVariants[variant];
   return 'textColor' in variantConfig ? variantConfig.textColor : undefined;
+};
+
+// Helper function to extract border radius from className
+const getBorderRadiusFromClassName = (className: string): number | undefined => {
+  // Check for common border radius classes
+  if (className.includes('rounded-none')) return 0;
+  if (className.includes('rounded-full')) return 9999;
+  if (className.includes('rounded-3xl')) return 24;
+  if (className.includes('rounded-2xl')) return 16;
+  if (className.includes('rounded-xl')) return 12;
+  if (className.includes('rounded-lg')) return 8;
+  if (className.includes('rounded-md')) return 6;
+  if (className.includes('rounded-sm')) return 4;
+  if (className.includes('rounded')) return 4;
+
+  // Check for specific corner radius (these won't affect the container but we'll return default)
+  if (className.includes('rounded-t-') || className.includes('rounded-b-') ||
+      className.includes('rounded-l-') || className.includes('rounded-r-')) {
+    return 12; // Return default since we can't easily extract specific corner values
+  }
+
+  return undefined;
 };
 
 const cardVariants = {
@@ -115,16 +138,6 @@ const cardVariants = {
       light: ['#60A5FA', '#3B82F6', '#2563EB'],
     },
   },
-  // 'gradient-sunset': {
-  //   className: 'p-4 mb-2 rounded-xl',
-  //   gradient: true,
-  //   textColor: '#FFFFFF',
-  //   gradientColors: {
-  //     light: ['#f59e0b', '#dc2626', '#7c2d12'],
-  //     dark: ['#f59e0b', '#dc2626', '#7c2d12'],
-  //     // dark: ['#fbbf24', '#f87171', '#dc2626'],
-  //   },
-  // },
   'gradient-ocean': {
     className: 'p-4 mb-2 rounded-xl',
     gradient: true,
@@ -132,7 +145,6 @@ const cardVariants = {
     gradientColors: {
       light: ['#0ea5e9', '#2563EB', '#1e40af'],
       dark: ['#0ea5e9', '#2563EB', '#1e40af'],
-      // dark: ['#38bdf8', '#60A5FA', '#3B82F6'],
     },
   },
   'gradient-forest': {
@@ -142,18 +154,8 @@ const cardVariants = {
     gradientColors: {
       light: ['#16a34a', '#15803d', '#166534'],
       dark: ['#16a34a', '#15803d', '#166534'],
-      // dark: ['#22c55e', '#16a34a', '#15803d'],
     },
   },
-  // 'gradient-royal': {
-  //   className: 'p-4 mb-2 rounded-xl',
-  //   gradient: true,
-  //   textColor: '#FFFFFF',
-  //   gradientColors: {
-  //     light: ['#7c3aed', '#5b21b6', '#3730a3'],
-  //     dark: ['#a855f7', '#8b5cf6', '#7c3aed'],
-  //   },
-  // },
   'gradient-soft': {
     className: 'p-4 mb-2 rounded-xl',
     gradient: true,
@@ -173,6 +175,7 @@ export function Card({
   interactive = false,
   fullWidth = false,
   className = '',
+  borderRadius,
   children,
   ...otherProps
 }: CardProps) {
@@ -187,6 +190,16 @@ export function Card({
   ]
     .filter(Boolean)
     .join(' ');
+
+  // Determine border radius priority: explicit prop > className > default
+  const getEffectiveBorderRadius = (): number => {
+    if (borderRadius !== undefined) return borderRadius;
+
+    const classNameRadius = getBorderRadiusFromClassName(className);
+    if (classNameRadius !== undefined) return classNameRadius;
+
+    return 12; // Default fallback
+  };
 
   const getShadowStyle = () => {
     const shouldShowShadow =
@@ -214,6 +227,8 @@ export function Card({
         ? variantConfig.gradientColors.light
         : variantConfig.gradientColors.dark;
 
+      const effectiveBorderRadius = getEffectiveBorderRadius();
+
       return (
         <LinearGradient
           colors={gradientColors as GradientColor}
@@ -221,7 +236,7 @@ export function Card({
           end={{ x: 1, y: 1 }}
           style={[
             {
-              borderRadius: 12, // rounded-xl equivalent
+              borderRadius: effectiveBorderRadius,
               padding: 16, // p-4 equivalent
               marginBottom: 8, // mb-2 equivalent
             },

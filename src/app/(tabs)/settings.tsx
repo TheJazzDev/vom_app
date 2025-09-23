@@ -299,14 +299,7 @@ export default function Settings() {
           Appearance
         </Text>
 
-        <Card
-          variant="outlined"
-          className="p-0 mb-2"
-          style={{
-            backgroundColor: theme.card,
-            borderColor: theme.border,
-          }}
-        >
+        <Card variant="outlined" className="p-0 mb-2">
           <ThemeOption
             theme={theme}
             label="Automatic"
@@ -314,7 +307,7 @@ export default function Settings() {
             onPress={() => handleThemeChange('automatic')}
             icon="circle.lefthalf.fill"
           />
-          <Divider colorVariant="muted" height={1} />
+          <Divider height={1} />
           <ThemeOption
             theme={theme}
             label="Light"
@@ -322,7 +315,7 @@ export default function Settings() {
             onPress={() => handleThemeChange('light')}
             icon="sun.max.fill"
           />
-          <Divider colorVariant="muted" height={1} />
+          <Divider height={1} />
           <ThemeOption
             theme={theme}
             label="Dark"
@@ -345,14 +338,7 @@ export default function Settings() {
           Notifications
         </Text>
 
-        <Card
-          variant="outlined"
-          className="p-0 mb-6"
-          style={{
-            backgroundColor: theme.card,
-            borderColor: theme.border,
-          }}
-        >
+        <Card variant="outlined" className="p-0 mb-6">
           {notificationOptions.map((option, index) => (
             <View key={option.id}>
               <SettingItem
@@ -360,9 +346,7 @@ export default function Settings() {
                 theme={theme}
                 onToggle={handleNotificationToggle}
               />
-              {index < notificationOptions.length - 1 && (
-                <Divider colorVariant="muted" height={1} />
-              )}
+              {index < notificationOptions.length - 1 && <Divider height={1} />}
             </View>
           ))}
         </Card>
@@ -376,20 +360,11 @@ export default function Settings() {
           Account
         </Text>
 
-        <Card
-          variant="outlined"
-          className="p-0 mb-6"
-          style={{
-            backgroundColor: theme.card,
-            borderColor: theme.border,
-          }}
-        >
+        <Card variant="outlined" className="p-0 mb-6">
           {accountOptions.map((option, index) => (
             <View key={option.id}>
               <SettingItem option={option} theme={theme} />
-              {index < accountOptions.length - 1 && (
-                <Divider colorVariant="muted" height={1} />
-              )}
+              {index < accountOptions.length - 1 && <Divider height={1} />}
             </View>
           ))}
         </Card>

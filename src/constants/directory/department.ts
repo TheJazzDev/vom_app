@@ -118,4 +118,18 @@ export const DEPARTMENTS_CONFIG = [
     icon: 'sparkles',
     meetingDay: 'Saturdays 8:00 AM',
   },
+  {
+    id: 'secretariat',
+    name: 'Secretariat',
+    description:
+      'Handles administrative, documentation, and correspondence tasks for the church',
+    memberCount: 3,
+    ageRange: '40+ years',
+    head: '',
+    assistant: '',
+    secretary: '',
+    gradient: ['#3B82F6', '#2563EB'],
+    icon: 'sparkles',
+    meetingDay: 'Saturdays 8:00 AM',
+  },
 ];

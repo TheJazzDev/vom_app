@@ -203,7 +203,7 @@ export function ShiloServiceTemplate({ data }: { data: ShilohProgramme }) {
             <ShilohActivity
               number="2"
               title="Opening Hymn"
-              value={data.hynms.opening}
+              value={data.hymns.opening}
               sectionColor="blue"
             />
             <ShilohActivity
@@ -227,7 +227,7 @@ export function ShiloServiceTemplate({ data }: { data: ShilohProgramme }) {
             <ShilohActivity
               number="4"
               title="Thanksgiving Hymn"
-              value={data.hynms.thanksgiving}
+              value={data.hymns.thanksgiving}
               sectionColor="green"
             />
             <ShilohActivity
@@ -278,7 +278,7 @@ export function ShiloServiceTemplate({ data }: { data: ShilohProgramme }) {
             <ShilohActivity
               number="10"
               title="Hymn for Prayer"
-              value={data.hynms.prayer}
+              value={data.hymns.prayer}
               sectionColor="indigo"
             />
             <ShilohActivity
@@ -314,7 +314,7 @@ export function ShiloServiceTemplate({ data }: { data: ShilohProgramme }) {
             <ShilohActivity
               number="14"
               title="Hymn for Sermon"
-              value={data.hynms.sermon}
+              value={data.hymns.sermon}
               sectionColor="amber"
             />
             <ShilohActivity
@@ -339,7 +339,7 @@ export function ShiloServiceTemplate({ data }: { data: ShilohProgramme }) {
               <ShilohActivity
                 number="16"
                 title="Hymn for Revival"
-                value={data.hynms.sermon}
+                value={data.hymns.sermon}
                 sectionColor="orange"
               />
               <ShilohActivity

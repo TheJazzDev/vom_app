@@ -15,6 +15,7 @@ export const ROUTES = {
   VERIFY_EMAIL: '/auth/verify-email',
   VERIFY_PHONE: '/auth/verify-phone',
   FIND_MEMBER: '/auth/find-member',
+  EMAIL_VERIFY_SUCCESS: '/auth/email-verify-success',
   ACTIVATE_ACCOUNT: '/auth/activate-member-account',
   ACTIVATE_SUCCESS: '/auth/activate-member-account-success',
 

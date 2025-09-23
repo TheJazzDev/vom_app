@@ -35,7 +35,7 @@ export default function LoginScreen() {
   const { navigateTo } = useProtectedNavigation();
   const { error, isLoggingIn, clearError } = useAuthSlice();
 
-  const { control, watch, handleSubmit } = useForm<LoginFormData>({
+  const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema) as Resolver<LoginFormData>,
     defaultValues: {
       emailOrPhone: '',
@@ -43,8 +43,8 @@ export default function LoginScreen() {
     },
   });
 
-  const emailOrPhone = watch('emailOrPhone');
-  const showPassword = isEmail(emailOrPhone);
+  // const emailOrPhone = watch('emailOrPhone');
+  // const showPassword = isEmail(emailOrPhone);
 
   const onSubmit = async (data: LoginFormData) => {
     dispatch(clearError());
@@ -84,6 +84,12 @@ export default function LoginScreen() {
           // const memberId = result.payload.id;
           // registerForPushNotificationsAsync(memberId).catch(console.error);
           navigateTo(ROUTES.HOME, true);
+        }
+
+        if (loginThunk.rejected.match(result)) {
+          if (result.payload === 'Email is not verified') {
+            navigateTo('/auth/email-verify-success');
+          }
         }
       }
     } catch (error: any) {
@@ -137,20 +143,17 @@ export default function LoginScreen() {
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          {showPassword && (
-            <>
-              <Spacer height={16} />
-              <RHFTextInput
-                control={control}
-                name="password"
-                inputType="password"
-                label="Password"
-                leftIcon="lock"
-                rightIcon="eye"
-                placeholder="Enter your password"
-              />
-            </>
-          )}
+          <Spacer height={16} />
+          <RHFTextInput
+            control={control}
+            name="password"
+            inputType="password"
+            label="Password"
+            leftIcon="lock"
+            rightIcon="eye"
+            placeholder="Enter your password"
+          />
+          {/* {showPassword && <></>} */}
         </View>
 
         <ErrorToast error={error} onClearError={clearError} />

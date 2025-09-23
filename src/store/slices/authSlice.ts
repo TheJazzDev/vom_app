@@ -185,7 +185,6 @@ const authSlice = createSlice({
         state.currentUser = null;
         state.isAuthenticated = false;
         state.foundMember = null;
-        // state.activationResult = null;
         state.guestRegistrationResult = null;
         state.successMessage = 'Signed out successfully!';
       })

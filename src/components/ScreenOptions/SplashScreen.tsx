@@ -3,7 +3,6 @@ import {
   Animated,
   Dimensions,
   Image,
-  StatusBar,
   StyleSheet,
   useColorScheme,
 } from 'react-native';
@@ -29,8 +28,8 @@ export default function SplashScreenComponent({
 
   // Logo source based on theme
   const logoSource = isDark
-    ? require('@/src/assets/images/VOM_Dark_512x512.png')
-    : require('@/src/assets/images/VOM_Light_512x512.png');
+    ? require('@/src/assets/images/logo-line-dark.svg')
+    : require('@/src/assets/images/logo-line-light.svg');
 
   // Background color based on theme
   const backgroundColor = isDark ? '#0D0D2B' : '#E5F2FF';
@@ -84,12 +83,7 @@ export default function SplashScreenComponent({
         { backgroundColor, opacity: backgroundOpacity },
       ]}
     >
-      <StatusBar
-        barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundColor}
-        translucent={false}
-      />
-
+      <StatusBar style="auto" />
       <Animated.View
         style={[
           styles.logoContainer,
@@ -100,21 +94,6 @@ export default function SplashScreenComponent({
         ]}
       >
         <Image source={logoSource} style={styles.logo} resizeMode="contain" />
-      </Animated.View>
-
-      {/* Optional: Add a subtle pulsing effect */}
-      <Animated.View style={styles.pulseContainer}>
-        <Animated.View
-          style={[
-            styles.pulse,
-            {
-              opacity: logoOpacity,
-              backgroundColor: isDark
-                ? 'rgba(255,255,255,0.1)'
-                : 'rgba(0,0,0,0.1)',
-            },
-          ]}
-        />
       </Animated.View>
     </Animated.View>
   );
@@ -139,16 +118,5 @@ const styles = StyleSheet.create({
   logo: {
     width: Math.min(width * 0.6, 300),
     height: Math.min(width * 0.6, 300),
-  },
-  pulseContainer: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pulse: {
-    width: Math.min(width * 0.8, 400),
-    height: Math.min(width * 0.8, 400),
-    borderRadius: Math.min(width * 0.4, 200),
-    opacity: 0,
   },
 });

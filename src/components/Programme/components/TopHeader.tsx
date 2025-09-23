@@ -92,7 +92,7 @@ export function TopSectionHierarchical({ data }: { data: any }) {
 export function TopSectionCompactGrid({ data }: { data: any }) {
   return (
     <View
-      className="border border-gray-300 rounded-lg p-3 my-2"
+      className="border border-border dark:border-dark-border rounded-lg p-2 my-2"
       id="top-section"
     >
       <Text
@@ -103,25 +103,24 @@ export function TopSectionCompactGrid({ data }: { data: any }) {
         {data.type} SERVICE PROGRAMME
       </Text>
       <View className="flex-col gap-2">
-        <View className="bg-gray-100 p-2 rounded">
+        <View className="bg-gray-100 dark:bg-gray-700 p-2 rounded">
           <InfoRow
             className="text-center"
             label="Date"
             value={formatDate(data.date)}
           />
         </View>
-        <View className="flex-row gap-2">
-          <View className="flex-1 bg-blue-100 p-2 rounded">
-            <Text className="text-xs font-semibold text-gray-600">THEME</Text>
-            <Text variant="h6">{data.theme}</Text>
-          </View>
-          <View className="flex-1 bg-green-100 p-2 rounded">
-            <Text className="text-xs font-semibold text-gray-600">TOPIC</Text>
-            <Text variant="body">{data.topic}</Text>
-          </View>
+        <View className="flex-1 bg-blue-100 dark:bg-blue-900 p-2 rounded">
+          <Text className="text-xs font-semibold">THEME</Text>
+          <Text variant="h6">{data.theme}</Text>
         </View>
-        <View className="bg-purple-100 p-2 rounded">
-          <Text className="text-xs font-semibold text-gray-600">LESSON</Text>
+        <View className="flex-1 bg-green-100 dark:bg-green-900 p-2 rounded">
+          <Text className="text-xs font-semibold">TOPIC</Text>
+          <Text variant="body">{data.topic}</Text>
+        </View>
+
+        <View className="bg-purple-100 dark:bg-purple-900 p-2 rounded">
+          <Text className="text-xs font-semibold">LESSON</Text>
           <Text variant="body">{data.lesson}</Text>
         </View>
       </View>

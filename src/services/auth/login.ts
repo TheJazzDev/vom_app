@@ -36,7 +36,7 @@ export const login = async (
 
         return memberProfile;
       } else {
-        throw new Error('Email is not verified, please verify your email');
+        throw new Error('Email is not verified');
       }
     } else {
       // if (data.verificationCode) {

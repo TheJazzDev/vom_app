@@ -8,10 +8,12 @@ import {
   HeaderRight,
 } from '@/src/components/ScreenOptions/StackScreen';
 import { useTheme } from '@/src/hooks';
+import { useAuthSlice } from '@/src/store';
 import { Platform } from 'react-native';
 
 export default function TabLayout() {
   const theme = useTheme();
+  const { isAuthenticated } = useAuthSlice();
 
   return (
     <Tabs
@@ -19,7 +21,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
         headerTitleAlign: 'center',
-        headerTintColor: theme.heading,
+        headerTintColor: theme.brand,
         tabBarActiveTintColor: theme.body,
         tabBarInactiveTintColor: theme.muted,
         headerStyle: {
@@ -36,10 +38,11 @@ export default function TabLayout() {
           borderColor: theme.border,
         },
         headerLeft: () => <HeaderLeft margin={0} />,
-        headerRight: () => <HeaderRight />,
-      }}>
+        headerRight: () => isAuthenticated && <HeaderRight />,
+      }}
+    >
       <Tabs.Screen
-        name='index'
+        name="index"
         options={{
           title: 'Home',
           headerShown: true,
@@ -54,9 +57,8 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name='programme'
+        name="programme"
         options={{
-          title: 'Programme',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={22}
@@ -70,9 +72,8 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name='directory'
+        name="directory"
         options={{
-          title: 'Directory',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={Platform.OS === 'ios' ? 32 : 22}
@@ -84,9 +85,8 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name='ministry'
+        name="ministry"
         options={{
-          title: 'Ministry',
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={22}
@@ -97,13 +97,54 @@ export default function TabLayout() {
         }}
       />
 
-      {/* <Tabs.Screen
-        name="ministry"
+      <Tabs.Screen
+        name="profile"
         options={{
-          title: 'Ministry',
-          tabBarButton: () => null,
+          href: null,
+          headerShown: false,
         }}
-      /> */}
+      />
+
+      <Tabs.Screen
+        name="info"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
+
+      <Tabs.Screen
+        name="about"
+        options={{
+          title: 'About Us',
+          href: null,
+          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name="contact"
+        options={{
+          title: 'Contact Us',
+          href: null,
+          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          href: null,
+          headerShown: true,
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          title: 'Notifications',
+          href: null,
+          headerShown: true,
+        }}
+      />
     </Tabs>
   );
 }

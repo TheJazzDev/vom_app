@@ -1,8 +1,8 @@
-import { Button } from '@/src/components';
+import { Button, View } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useRouter } from 'expo-router';
 import React, { useRef } from 'react';
-import { Animated, Dimensions, Text, View } from 'react-native';
+import { Animated, Dimensions, Text } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -83,7 +83,7 @@ const EmailVerifySuccess = () => {
   }, [fadeAnim, float1, float2, pulseAnim, slideAnim]);
 
   return (
-    <View className="flex-1 bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+    <View gradient className="flex-1 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
       {/* Floating Background Elements */}
       <Animated.View
         style={{
@@ -155,7 +155,7 @@ const EmailVerifySuccess = () => {
         </View>
 
         {/* Help Text */}
-        <View className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 w-full max-w-sm">
+        <View className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 w-full mb-6">
           <Text className="text-sm text-gray-500 dark:text-gray-400 text-center">
             Didn&apos;t receive the email? Check your spam folder or contact
             support.

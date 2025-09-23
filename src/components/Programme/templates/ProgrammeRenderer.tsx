@@ -1,7 +1,6 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
 import { IconSymbol } from '../../Icons';
-import { Card, Text } from '../../UI';
+import { Card, Text, View } from '../../UI';
 import NoProgrammeState from '../components/NoProgrammeState';
 import { ShiloServiceTemplate } from './ShiloService';
 import { SundayServiceTemplate } from './SundayService';
@@ -27,10 +26,7 @@ export const ProgrammeTemplateRenderer = ({
       return <VigilServiceTemplate data={programme as VigilProgramme} />;
     default:
       return (
-        <ScrollView
-          className="flex-1 bg-gray-50 dark:bg-gray-900"
-          contentContainerStyle={{ flexGrow: 1 }}
-        >
+        <View gradient scrollable>
           <View className="flex-1 justify-center items-center p-6">
             <Card className="p-6 w-full max-w-sm">
               <View className="items-center">
@@ -66,7 +62,7 @@ export const ProgrammeTemplateRenderer = ({
               </View>
             </Card>
           </View>
-        </ScrollView>
+        </View>
       );
   }
 };

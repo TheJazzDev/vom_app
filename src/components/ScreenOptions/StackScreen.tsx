@@ -1,6 +1,7 @@
 import { View } from '@/src/components';
 import { ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
+import { useAuthSlice } from '@/src/store';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerToggleButton } from '@react-navigation/drawer';
 import { Stack, usePathname, useRouter } from 'expo-router';
@@ -42,6 +43,7 @@ export const StackWrapper = ({
 }) => {
   const theme = useTheme();
   const pathname = usePathname();
+  const { isAuthenticated } = useAuthSlice();
 
   const isParentIndex = [
     '/programme',
@@ -57,23 +59,24 @@ export const StackWrapper = ({
     //   edges={[]}
     //   style={{ flex: 1, backgroundColor: theme.background, padding: 0 }}
     // >
-      <Stack
-        screenOptions={{
-          // headerTitle: isParentIndex ? 'VOM' : undefined ,
-          // headerTitle: 'VOM',
-          // headerBackTitle: 'Back',
-          headerTitleAlign: 'center',
-          headerTintColor: theme.muted,
-          headerTitleStyle: { color: theme.brand },
-          headerLeft: isParentIndex ? () => <HeaderLeft /> : undefined,
-          headerRight: () => (headerRight ? <HeaderRight /> : null),
-          headerStyle: {
-            backgroundColor: theme.background,
-          },
-        }}
-      >
-        {children}
-      </Stack>
+    <Stack
+      screenOptions={{
+        // headerTitle: isParentIndex ? 'VOM' : undefined ,
+        // headerTitle: 'VOM',
+        // headerBackTitle: 'Back',
+        headerTitleAlign: 'center',
+        headerTintColor: theme.muted,
+        headerTitleStyle: { color: theme.brand },
+        headerLeft: isParentIndex ? () => <HeaderLeft /> : undefined,
+        headerRight: () =>
+          headerRight && isAuthenticated ? <HeaderRight /> : null,
+        headerStyle: {
+          backgroundColor: theme.background,
+        },
+      }}
+    >
+      {children}
+    </Stack>
     // </SafeAreaView>
   );
 };

@@ -5,87 +5,19 @@ import { formatDate } from '@/src/utils';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
 import { IconSymbol } from '../Icons';
-import { Button, Card, Text, View } from '../UI';
+import { Button, Card, Countdown, Text, View } from '../UI';
 
 const NextService = () => {
   const theme = useTheme();
   const router = useRouter();
   const { isUpcomingProgrammesLoading } = useProgrammeSlice();
   const { currentProgramme, nextProgramme } = useProgrammeLogic();
-  const [timeUntilService, setTimeUntilService] = useState('');
 
   // Show current programme if active, otherwise show next programme
   const displayProgramme = currentProgramme || nextProgramme;
   const isCurrentService = !!currentProgramme;
 
-  // Calculate time until next service (only if no current service)
-  useEffect(() => {
-    if (!displayProgramme?.date) return;
-
-    const updateCountdown = () => {
-      const now = new Date();
-      const programmeDate = new Date(displayProgramme.date);
-
-      // Get service config to calculate actual start time
-      const config =
-        SERVICE_CONFIG[
-          displayProgramme.type.toLowerCase() as keyof typeof SERVICE_CONFIG
-        ];
-      if (!config) return;
-
-      const startTime = new Date(programmeDate);
-      startTime.setHours(config.startHour, config.startMinute, 0, 0);
-
-      if (isCurrentService) {
-        // For current service, show time remaining
-        const endTime = new Date(startTime);
-        endTime.setHours(endTime.getHours() + Math.floor(config.durationHours));
-        endTime.setMinutes(
-          endTime.getMinutes() + (config.durationHours % 1) * 60,
-        );
-
-        const diff = endTime.getTime() - now.getTime();
-        if (diff <= 0) {
-          setTimeUntilService('Service ended');
-          return;
-        }
-
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        setTimeUntilService(`${hours}h ${minutes}m remaining`);
-      } else {
-        // For next service, show time until start
-        const diff = startTime.getTime() - now.getTime();
-
-        if (diff <= 0) {
-          setTimeUntilService('Starting now');
-          return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-        if (days > 0) {
-          setTimeUntilService(`${days}d ${hours}h ${minutes}m`);
-        } else if (hours > 0) {
-          setTimeUntilService(`${hours}h ${minutes}m`);
-        } else {
-          setTimeUntilService(`${minutes} minutes`);
-        }
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 60000);
-    return () => clearInterval(interval);
-  }, [displayProgramme?.date, displayProgramme?.type, isCurrentService]);
-
-  // Get the actual service start time for display
   const getServiceTime = () => {
     if (!displayProgramme?.date) return '';
 
@@ -95,7 +27,7 @@ const NextService = () => {
       ];
     if (!config) return '';
 
-    const startTime = new Date();
+    const startTime = new Date(displayProgramme.date);
     startTime.setHours(config.startHour, config.startMinute, 0, 0);
 
     return startTime.toLocaleTimeString('en-US', {
@@ -105,13 +37,38 @@ const NextService = () => {
     });
   };
 
+  const getCountdownTarget = () => {
+    if (isCurrentService && displayProgramme?.date) {
+      // For current service, countdown to end time
+      const programmeDate = new Date(displayProgramme.date);
+      const config =
+        SERVICE_CONFIG[
+          displayProgramme.type.toLowerCase() as keyof typeof SERVICE_CONFIG
+        ];
+
+      if (config) {
+        const endTime = new Date(programmeDate);
+        endTime.setHours(
+          endTime.getHours() + Math.floor(config.durationHours),
+          endTime.getMinutes() + (config.durationHours % 1) * 60,
+          0,
+          0,
+        );
+        return endTime.toISOString();
+      }
+    } else if (!isCurrentService && displayProgramme?.date) {
+      return displayProgramme.date;
+    }
+    return '';
+  };
+
   const handleViewProgramme = () => {
     if (!displayProgramme) return;
 
     if (isCurrentService) {
       router.push('/programme/current');
     } else {
-      router.push(`/programme/${displayProgramme.id}`);
+      router.push(`/programme/upcoming`);
     }
   };
 
@@ -277,18 +234,14 @@ const NextService = () => {
           </View>
 
           <View className="items-end">
-            <Text variant="caption" style={{ color: theme.muted }}>
+            <Text
+              variant="caption"
+              style={{ color: theme.muted }}
+              className="mb-1"
+            >
               {isCurrentService ? 'Time remaining' : 'Time until service'}
             </Text>
-            <Text
-              variant="h4"
-              className="font-bold"
-              style={{
-                color: isCurrentService ? theme.success : theme.primary,
-              }}
-            >
-              {timeUntilService}
-            </Text>
+            <Countdown targetDate={getCountdownTarget()} />
           </View>
         </View>
 
@@ -340,7 +293,7 @@ const NextService = () => {
           variant={isCurrentService ? 'success' : 'primary'}
           onPress={handleViewProgramme}
         >
-          <Text variant="button" className="text-white font-semibold">
+          <Text variant="button" color="neutral" className="font-semibold">
             {isCurrentService
               ? 'Join Live Service'
               : 'View Full Order of Service'}

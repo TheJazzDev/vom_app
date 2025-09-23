@@ -204,6 +204,12 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     description: 'Email verification - guests only',
   },
   {
+    path: ROUTES.VERIFY_EMAIL,
+    access: 'unprotected',
+    fallbackRoute: ROUTES.HOME,
+    description: 'Email verification success - guests only',
+  },
+  {
     path: ROUTES.VERIFY_PHONE,
     access: 'unprotected',
     fallbackRoute: ROUTES.HOME,

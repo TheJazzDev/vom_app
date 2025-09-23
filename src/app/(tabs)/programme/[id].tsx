@@ -1,12 +1,12 @@
 import { ProgrammeTemplateRenderer } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons';
-import { Button, Card, Text } from '@/src/components/UI';
+import { Button, Card, Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import { dispatch, useProgrammeSlice } from '@/src/store';
 import { fetchProgrammeById } from '@/src/store/thunks/programme';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 const ProgrammeDetails = () => {
   const theme = useTheme();
@@ -47,11 +47,8 @@ const ProgrammeDetails = () => {
   // Error State
   if (programmeByIdError) {
     return (
-      <ScrollView
-        className="flex-1 bg-gray-50 dark:bg-gray-900"
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <View className="flex-1 justify-center items-center p-6">
+      <View gradient scrollable>
+        <View className="flex-1 justify-center items-center">
           <Card className="p-6 w-full max-w-sm">
             <View className="items-center">
               <View className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full items-center justify-center mb-4">
@@ -105,18 +102,15 @@ const ProgrammeDetails = () => {
             </View>
           </Card>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 
   // No Programme Found State
   if (!programmeById) {
     return (
-      <ScrollView
-        className="flex-1 bg-gray-50 dark:bg-gray-900"
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <View className="flex-1 justify-center items-center p-6">
+      <View gradient scrollable>
+        <View className="flex-1 justify-center items-center">
           <Card className="p-6 w-full max-w-sm">
             <View className="items-center">
               <View className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full items-center justify-center mb-4">
@@ -147,7 +141,7 @@ const ProgrammeDetails = () => {
             </View>
           </Card>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 

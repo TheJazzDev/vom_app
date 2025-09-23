@@ -19,22 +19,22 @@ const VigilOfficiatingGrid = ({
   const officiatingRoles = [
     {
       label: 'Worship Leader',
-      value: data.worshipLeader,
+      value: data?.worshipLeader,
       color: 'bg-slate-50 dark:bg-slate-800',
     },
     {
       label: 'Preacher',
-      value: data.preacher,
+      value: data?.preacher,
       color: 'bg-slate-50 dark:bg-slate-800',
     },
     {
       label: 'Prayer Ministration',
-      value: data.prayerMinistration,
+      value: data?.prayerMinistration,
       color: 'bg-slate-50 dark:bg-slate-800',
     },
     {
       label: 'Lesson Leader',
-      value: data.lesson,
+      value: data?.lesson,
       color: 'bg-slate-50 dark:bg-slate-800',
     },
   ];
@@ -155,31 +155,31 @@ export function VigilServiceTemplate({ data }: { data: VigilProgramme }) {
   ];
 
   return (
-    <View gradient scrollable>
+    <View gradient scrollable paddingHorizontal={8}>
+      <Spacer height={8} />
+      <TopSectionCompactGrid data={data} />
+      <Spacer height={16} />
+
       <View className="px-2">
-        <Spacer height={8} />
-        <TopSectionCompactGrid data={data} />
-        <Spacer height={16} />
         <View className="mb-6">
           <Text variant="h4" color="heading" className="mb-3 text-center">
             Officiating
           </Text>
-          <VigilOfficiatingGrid data={data.officiating} />
+          <VigilOfficiatingGrid data={data?.officiating} />
         </View>
-
         {/* Opening Section - Blue Theme */}
         <Section title="A. Opening">
           <View className="space-y-3">
             <VigilActivity
               number="1"
               title="Opening Hymn"
-              value={data.hynms.opening}
+              value={data?.hymns?.opening}
               sectionColor="blue"
             />
             <VigilActivity
               number="2"
               title="Opening Prayer"
-              value={`Psalms ${formatPsalmList(data.openingPrayer)}`}
+              value={`Psalms ${formatPsalmList(data?.openingPrayer)}`}
               sectionColor="blue"
             />
 
@@ -197,7 +197,7 @@ export function VigilServiceTemplate({ data }: { data: VigilProgramme }) {
             <VigilActivity
               number="3"
               title="Thanksgiving Hymn"
-              value={data.hynms.thanksgiving}
+              value={data?.hymns?.thanksgiving}
               sectionColor="green"
             />
             <VigilActivity
@@ -230,7 +230,7 @@ export function VigilServiceTemplate({ data }: { data: VigilProgramme }) {
             <VigilActivity
               number="7"
               title="Lesson"
-              value={data.officiating.lesson}
+              value={data?.officiating.lesson}
               sectionColor="purple"
             />
             <VigilActivity
@@ -301,19 +301,19 @@ export function VigilServiceTemplate({ data }: { data: VigilProgramme }) {
             <VigilActivity
               number="15"
               title="Hymn for Sermon"
-              value={data.hynms.sermon}
+              value={data?.hymns?.sermon}
               sectionColor="amber"
             />
             <VigilActivity
               number="16"
               title="Sermonist"
-              value={data.officiating.preacher}
+              value={data?.officiating.preacher}
               sectionColor="amber"
             />
             <VigilActivity
               number="17"
               title="Prayer Ministration/Offering"
-              value={data.officiating.prayerMinistration}
+              value={data?.officiating.prayerMinistration}
               sectionColor="amber"
             />
           </View>
@@ -325,7 +325,7 @@ export function VigilServiceTemplate({ data }: { data: VigilProgramme }) {
             <VigilActivity
               number="18"
               title="Prayer Hymn"
-              value={data.hynms.prayer}
+              value={data?.hymns?.prayer}
               sectionColor="purple"
             />
             <Text

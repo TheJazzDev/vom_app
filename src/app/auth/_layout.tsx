@@ -1,51 +1,43 @@
 import { StackWrapper } from '@/src/components/ScreenOptions/StackScreen';
-import { useStackOptions } from '@/src/hooks/useStackOptions';
 import { Stack } from 'expo-router';
 
 export default function DirectoryLayout() {
-  const { stackScreenOptions } = useStackOptions();
-
   return (
     <StackWrapper headerRight={false}>
-      <Stack.Screen name='index' options={stackScreenOptions} />
+      <Stack.Screen name="index" options={{ title: 'Sign In' }} />
       <Stack.Screen
-        name='signup'
+        name="signup"
         options={{
           title: 'Sign Up',
         }}
       />
       <Stack.Screen
-        name='activate-member-account'
-        options={{
-          title: 'Activate Account',
-        }}
-      />
-      <Stack.Screen
-        name='find-member'
+        name="find-member"
         options={{
           title: 'Find Account',
         }}
       />
       <Stack.Screen
-        name='verify-email'
+        name="activate-member-account/index"
         options={{
-          title: 'Verify Email',
+          title: 'Activate Account',
         }}
       />
       <Stack.Screen
-        name='email-verify-success'
+        name="email-verify-success"
         options={{
+          headerShown: false,
           title: 'Verificataion Success',
         }}
       />
       <Stack.Screen
-        name='verify-phone'
+        name="verify-phone"
         options={{
           title: 'Verify Phone',
         }}
       />
       <Stack.Screen
-        name='forgot-password'
+        name="forgot-password"
         options={{
           title: 'Reset Password',
         }}

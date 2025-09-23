@@ -1,6 +1,6 @@
 import { ROUTES } from '../routes/routes';
 
-export const DIRECTORY_CATEGORIES: DirectoryProps[] = [
+export const DIRECTORY_CATEGORIES = [
   {
     title: 'Members',
     description: 'Connect with fellow church members',
@@ -10,7 +10,7 @@ export const DIRECTORY_CATEGORIES: DirectoryProps[] = [
   },
   {
     title: 'Bands',
-    description: 'Musical groups and choirs',
+    description: 'Stay in touch with your band members',
     route: ROUTES.BANDS,
     icon: 'music.note.list',
     gradient: ['#8B5CF6', '#5B21B6'],
