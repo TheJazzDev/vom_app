@@ -192,6 +192,9 @@ const MAPPING: IconMapping = {
   'goforward.15': 'play-forward-outline',
   'gobackward.15': 'play-back-outline',
   'x.circle': 'close-outline',
+  'line.2.horizontal.decrease.circle': 'swap-horizontal-outline',
+  'line.3.horizontal.decrease.circle': 'ellipsis-horizontal-circle-outline',
+  'ellipsis.circle': 'ellipsis-vertical-circle'
 } satisfies IconMapping;
 
 export function IconSymbol({

@@ -14,13 +14,13 @@ export default function DirectoryBands() {
 
   return (
     <View gradient className="flex-1">
-      <View className="px-4 pt-4 pb-3">
-        <Text variant="h2" className=" mb-2">
+      <View className="px-4 py-3">
+        <Text variant="body" className="text-center font-semibold">
           Church Bands {''}
           {isFetchingBands ? `(0)` : `(${allBands.length - 1})`}
         </Text>
-        <Text variant="body">
-          Our various bands serving God with their unique purposes and callings
+        <Text variant="body" className="text-center">
+          Our various bands serving God with their unique purposes and callings.
         </Text>
       </View>
 

@@ -1,53 +1,73 @@
 import { useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
-import { Platform, Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { IconSymbol } from '../Icons';
+import { Text } from '../UI';
 
-export const MinistryCard = ({
-  title,
-  description,
-  route,
-  icon,
-}: MinistryCardProps) => {
+export const MinistryCard = ({ ministry }: { ministry: MinistryCardProps }) => {
   const theme = useTheme();
   const router = useRouter();
 
-  const handlePress = () => {
-    router.push(route as any);
-  };
-
   return (
     <Pressable
-      onPress={handlePress}
-      android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-      className="bg-card dark:bg-dark-card rounded-lg p-4 border border-border dark:border-dark-border mb-2"
-      style={({ pressed }) => [
-        {
-          backgroundColor:
-            pressed && Platform.OS === 'ios'
-              ? theme.secondary
-              : theme.background,
-        },
-      ]}
+      onPress={() => router.push(ministry.route as any)}
+      className="mb-3 rounded-2xl overflow-hidden border"
+      style={{
+        backgroundColor: `${ministry.gradient[0]}08`,
+        borderWidth: 1,
+        borderColor: `${ministry.gradient[0]}20`,
+      }}
     >
-      <View className="flex-row items-center space-x-4">
-        <View className="bg-primary/10 p-3 rounded-full mr-4">
-          <IconSymbol name={icon} size={24} color={theme.primary} />
-        </View>
+      <View className="flex-row">
+        {/* Colored Side Accent */}
+        <View
+          className="w-1.5"
+          style={{ backgroundColor: ministry.gradient[0] }}
+        />
 
-        <View className="flex-1">
-          <Text
-            className="text-lg font-semibold mb-1"
-            style={{ color: theme.heading }}
-          >
-            {title}
-          </Text>
-          <Text className="text-sm leading-5" style={{ color: theme.muted }}>
-            {description}
-          </Text>
-        </View>
+        <View className="flex-1 p-4 flex-row items-center justify-between">
+          <View className="flex-row items-center gap-3 flex-1">
+            <View
+              className="w-12 h-12 rounded-2xl items-center justify-center"
+              style={{ backgroundColor: `${ministry.gradient[0]}15` }}
+            >
+              <IconSymbol
+                name={ministry.icon}
+                size={22}
+                color={ministry.gradient[0]}
+              />
+            </View>
 
-        <IconSymbol name="chevron.right" size={16} color={theme.muted} />
+            <View className="flex-1">
+              <Text
+                variant="h4"
+                className="font-bold mb-1"
+                style={{ color: theme.heading }}
+              >
+                {ministry.title}
+              </Text>
+              <Text variant="caption" style={{ color: theme.muted }}>
+                {ministry.description}
+              </Text>
+            </View>
+          </View>
+
+          <View className="items-end gap-2">
+            <View
+              className="px-2 py-1 rounded-full"
+              style={{ backgroundColor: `${ministry.gradient[0]}15` }}
+            >
+              {/* <Text
+                    variant="caption"
+                    className="font-semibold"
+                    style={{ color: ministry.gradient[0] }}
+                  >
+                    {ministry.badge}
+                  </Text> */}
+            </View>
+            <IconSymbol name="chevron.right" size={18} color={theme.muted} />
+          </View>
+        </View>
       </View>
     </Pressable>
   );

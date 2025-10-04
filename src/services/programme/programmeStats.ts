@@ -1,14 +1,6 @@
 import { programmesRef } from '@/src/config';
 import { getDocs } from 'firebase/firestore';
 
-export interface ProgrammeStats {
-  total: number;
-  upcoming: number;
-  past: number;
-  drafts: number;
-  thisMonth: number;
-}
-
 // Get programme statistics - single query approach
 export const getProgrammeStats = async (): Promise<ProgrammeStats> => {
   try {
@@ -35,6 +27,7 @@ export const getProgrammeStats = async (): Promise<ProgrammeStats> => {
     let upcoming = 0;
     let past = 0;
     let drafts = 0;
+    let thisWeek = 0;
     let thisMonth = 0;
 
     snapshot.docs.forEach((doc) => {
@@ -63,6 +56,7 @@ export const getProgrammeStats = async (): Promise<ProgrammeStats> => {
       upcoming,
       past,
       drafts,
+      thisWeek,
       thisMonth,
     };
   } catch (error) {

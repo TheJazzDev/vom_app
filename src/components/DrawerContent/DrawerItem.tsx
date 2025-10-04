@@ -13,8 +13,6 @@ type DrawerItemProps = {
   badge?: string;
 };
 
-// const TAB_ROUTES: string[] = ['/', '/programme', '/directory', '/ministry'];
-
 const DrawerItem = ({
   props,
   label,
@@ -30,19 +28,11 @@ const DrawerItem = ({
   const showLock = !canAccess(route);
   const focused = pathname === route;
 
-  // const handlePress = () => {
-  //   if (TAB_ROUTES.includes(route)) {
-  //     router.push(route as Href);
-  //   } else if (props?.navigation) {
-  //     props.navigation.navigate(stripLeadingSlash(route));
-  //   }
-  // };
-
   return (
     <Pressable
       onPress={() => router.push(route as Href)}
       android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-      className={`flex-row items-center py-3 px-4 mb-1 rounded-lg ${
+      className={`flex-row items-center py-4 px-4 mb-1 rounded-lg ${
         focused ? 'bg-primary' : ''
       }`}
       style={({ pressed }) => [

@@ -6,6 +6,7 @@ export const getUpcomingProgrammes = async (): Promise<AllProgrammes[]> => {
   const q = query(
     programmesRef,
     where('date', '>', now),
+    where('status', '==', 'published'),
     orderBy('date', 'asc'),
   );
 

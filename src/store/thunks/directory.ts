@@ -4,6 +4,11 @@ import {
   getBandWithMembers,
 } from '@/src/services/directory/bands';
 import { getAllChildren } from '@/src/services/directory/children';
+import {
+  getAllDepartments,
+  getDepartmentById,
+  getDepartmentWithMembers,
+} from '@/src/services/directory/departments';
 import { getDirectoryStats } from '@/src/services/directory/directory';
 import { getAllMembers } from '@/src/services/directory/members';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -57,5 +62,29 @@ export const fetchAllChildrenThunk = createAsyncThunk<ChildrenProfile[]>(
   async () => {
     const members = await getAllChildren();
     return members;
+  },
+);
+
+export const fetchAllDepartmentsThunk = createAsyncThunk<Department[]>(
+  'directory/fetchAllDepartments',
+  async () => {
+    const departments = await getAllDepartments();
+    return departments;
+  },
+);
+
+export const fetchDepartmentWithMembersThunk = createAsyncThunk(
+  'directory/fetchDepartmentWithMembersThunk',
+  async (departmentId: DepartmentKeys) => {
+    const department = await getDepartmentWithMembers(departmentId);
+    return department;
+  },
+);
+
+export const fetchDepartmentByIdThunk = createAsyncThunk(
+  'directory/fetchDepartmentByIdThunk',
+  async (departmentId: DepartmentKeys) => {
+    const department = await getDepartmentById(departmentId);
+    return department;
   },
 );

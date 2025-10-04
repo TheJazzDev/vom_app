@@ -1,7 +1,7 @@
 import { ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
 import { truncateText } from '@/src/utils';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
 import { IconSymbol } from '../Icons';
@@ -9,10 +9,10 @@ import { Badge, Card, Text, View } from '../UI';
 
 const Announcement = () => {
   const theme = useTheme();
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
-    <Card variant="outlined" className="mb-6">
+    <Card variant="outlined" className="mb-4">
       <View className="flex-row items-center justify-between mb-4">
         <View className="flex-row items-center">
           <View
@@ -33,7 +33,7 @@ const Announcement = () => {
       </View>
 
       <Pressable
-        onPress={() => router.push('/info/announcements/1' as any)}
+        // onPress={() => router.push('/info/announcements/1' as any)}
         style={{
           backgroundColor: theme.card,
           borderWidth: 1,
@@ -62,7 +62,7 @@ const Announcement = () => {
       </Pressable>
 
       <Pressable
-        onPress={() => router.push('/info/announcements/2' as any)}
+        // onPress={() => router.push('/info/announcements/2' as any)}
         style={{
           backgroundColor: theme.card,
           borderWidth: 1,

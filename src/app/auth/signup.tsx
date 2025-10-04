@@ -26,7 +26,7 @@ export default function RegistrationScreen() {
   const router = useRouter();
   const { error, isCreatingGuestAccount, clearError } = useAuthSlice();
 
-  const { control, handleSubmit, watch } = useForm<RegistrationProps>({
+  const { control, handleSubmit } = useForm<RegistrationProps>({
     resolver: yupResolver(registrationSchema),
     defaultValues: {
       firstName: '',

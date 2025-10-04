@@ -28,15 +28,14 @@ export function HelloWave() {
 
   return (
     <Animated.View style={animatedStyle}>
-      <Text style={styles.text}>👋</Text>
+      <Text style={styles.text}>👋🏽</Text>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 28,
+    fontSize: 12,
     lineHeight: 32,
-    marginTop: -6,
   },
 });

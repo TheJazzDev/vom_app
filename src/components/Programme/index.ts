@@ -6,6 +6,7 @@ import { Section } from './components/Section';
 import { ProgrammeTemplateRenderer } from './templates/ProgrammeRenderer';
 import { SundayServiceTemplate } from './templates/SundayService';
 import { VigilServiceTemplate } from './templates/VigilService';
+export * from './utils/quickStats'
 
 export {
   InfoRow,

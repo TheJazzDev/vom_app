@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { ReactNode } from 'react';
 import {
+  RefreshControl,
   View as RNView,
   ScrollView,
   useColorScheme,
@@ -17,12 +18,16 @@ export type ViewProps = RNViewProps & {
   children?: ReactNode;
   // ScrollView props
   scrollable?: boolean;
-  scrollViewProps?: Omit<ScrollViewProps, 'children'>;
+  scrollViewProps?: Omit<ScrollViewProps, 'children' | 'refreshControl'>;
   contentContainerStyle?: ScrollViewProps['contentContainerStyle'];
   showsVerticalScrollIndicator?: boolean;
   showsHorizontalScrollIndicator?: boolean;
-  refreshControl?: any;
   paddingHorizontal?: number;
+  // Refresh props
+  refreshing?: boolean;
+  onRefresh?: () => void | Promise<void>;
+  refreshColors?: string[];
+  refreshTintColor?: string;
 };
 
 export function View({
@@ -40,7 +45,11 @@ export function View({
   showsVerticalScrollIndicator = false,
   showsHorizontalScrollIndicator = false,
   paddingHorizontal,
-  refreshControl,
+  // Refresh props
+  refreshing = false,
+  onRefresh,
+  refreshColors,
+  refreshTintColor,
   ...containerProps
 }: ViewProps) {
   const mode = useColorScheme();
@@ -63,6 +72,21 @@ export function View({
       ? ['#0D0D2B', '#0D1B2A', '#1B263B']
       : ['#F5F9FC', '#E0E9F2', '#C5D4E3'];
 
+  // Default refresh colors based on theme
+  const defaultRefreshColors = mode === 'dark' ? ['#ffffff'] : ['#000000'];
+  const defaultRefreshTintColor = mode === 'dark' ? '#ffffff' : '#000000';
+
+  // Create refresh control if onRefresh is provided and scrollable is true
+  const refreshControl =
+    scrollable && onRefresh ? (
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        colors={refreshColors || defaultRefreshColors}
+        tintColor={refreshTintColor || defaultRefreshTintColor}
+      />
+    ) : undefined;
+
   if (gradient) {
     const gradientProps = {
       colors: gradientColors ?? defaultGradient,
@@ -80,7 +104,7 @@ export function View({
             showsVerticalScrollIndicator={showsVerticalScrollIndicator}
             showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
             contentContainerStyle={scrollContentStyle}
-            {...(refreshControl ? { refreshControl } : {})}
+            refreshControl={refreshControl}
           >
             {children}
           </ScrollView>
@@ -106,7 +130,7 @@ export function View({
           showsVerticalScrollIndicator={showsVerticalScrollIndicator}
           showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
           contentContainerStyle={scrollContentStyle}
-          {...(refreshControl ? { refreshControl } : {})}
+          refreshControl={refreshControl}
         >
           {children}
         </ScrollView>

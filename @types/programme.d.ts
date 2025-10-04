@@ -1,4 +1,13 @@
 declare global {
+  interface ProgrammeStats {
+    total: number;
+    upcoming: number;
+    past: number;
+    drafts: number;
+    thisWeek: number
+    thisMonth: number;
+  }
+
   type ServiceSections = 'Current' | 'Upcoming' | 'Past';
 
   // 🎯 Shared fields across all programmes

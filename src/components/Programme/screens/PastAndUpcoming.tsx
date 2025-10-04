@@ -3,11 +3,7 @@ import { ProgrammeFilters } from '@/src/components/Programme/components/Programm
 import { useTheme } from '@/src/hooks';
 import { dispatch } from '@/src/store';
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Keyboard,
-  RefreshControl,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 interface PastAndUpcomingScreenProps {
   programmes: any[];
@@ -110,24 +106,16 @@ export const PastAndUpcomingScreen: React.FC<PastAndUpcomingScreenProps> = ({
     dispatch(() => refreshAction());
   }, [refreshAction]);
 
-  const refreshControl = showRefreshControl ? (
-    <RefreshControl
-      refreshing={isLoading}
-      onRefresh={handleRefresh}
-      tintColor={theme.primary}
-    />
-  ) : undefined;
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View gradient style={{ flex: 1 }} refreshControl={refreshControl}>
+      <View gradient style={{ flex: 1 }}>
         {/* Header */}
         <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          <Text variant="h4" color="heading" className="mb-1">
+          {/* <Text variant="h4" color="heading" className="mb-1">
             {title} ({filteredProgrammes.length || 0})
-          </Text>
+          </Text> */}
           <Text variant="body" color="muted" className="mb-4">
-            {subtitle}
+            {subtitle} ({filteredProgrammes.length || 0})
           </Text>
 
           <ProgrammeFilters

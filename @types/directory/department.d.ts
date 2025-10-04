@@ -1,7 +1,8 @@
+import { IconSymbolName } from '@/src/components/Icons/IconSymbol';
 import { DepartmentEnum } from '@/src/enum/detartment';
 
 declare global {
-  export type DepartmentRole = 'Head' | 'Assistant' | 'Secretary' | 'Member';
+  export type DepartmentRole = 'Head' | 'Assistant' | 'Secretary' | 'Treasurer' | 'Member';
 
   type DepartmentKeys =
     | INTERPRETATIO
@@ -30,7 +31,7 @@ declare global {
     name: string;
     displayName: string;
     description: string;
-    icon1: string;
+    icon1: IconSymbolName;
     icon2: string;
     gradient: GradientColor;
     meetingDay: string;
@@ -57,6 +58,8 @@ declare global {
   }
 
   export type DepartmentConfigRecord = Record<string, DepartmentConfigEntry>;
+
+  type DepartmentWithMembers = Department & { members: UserProfile[] };
 }
 
 export {};

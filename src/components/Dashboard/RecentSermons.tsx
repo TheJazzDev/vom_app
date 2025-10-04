@@ -11,7 +11,7 @@ const RecentSermons = () => {
   const router = useRouter();
 
   return (
-    <Card variant="outlined" className="mb-6">
+    <Card variant="outlined" className="mb-4">
       <View className="flex-row items-center justify-between mb-4">
         <View className="flex-row items-center">
           <View

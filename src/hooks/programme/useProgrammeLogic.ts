@@ -20,14 +20,14 @@ function isCurrentlyActive(programme: AllProgrammes): boolean {
 
   if (!config) return false;
 
-  // Set the actual start time based on programme date + start hour/minute
+  // Create start time by using the programme date and adding the service start time
   const startTime = new Date(programmeDate);
-  startTime.setHours(config.startHour, config.startMinute, 0, 0);
+  startTime.setUTCHours(config.startHour, config.startMinute, 0, 0);
 
   // Calculate end time
   const endTime = new Date(startTime);
-  endTime.setHours(endTime.getHours() + Math.floor(config.durationHours));
-  endTime.setMinutes(endTime.getMinutes() + (config.durationHours % 1) * 60);
+  const totalMinutes = config.durationHours * 60;
+  endTime.setTime(endTime.getTime() + totalMinutes * 60 * 1000);
 
   // Check if current time is between start and end
   return now >= startTime && now <= endTime;
@@ -36,7 +36,8 @@ function isCurrentlyActive(programme: AllProgrammes): boolean {
 function getCurrentProgramme(
   programmes: AllProgrammes[],
 ): AllProgrammes | null {
-  return programmes.find(isCurrentlyActive) || null;
+  const currentActive = programmes.find(isCurrentlyActive);
+  return currentActive || null;
 }
 
 function getNextProgramme(programmes: AllProgrammes[]): AllProgrammes | null {
@@ -56,12 +57,29 @@ function getNextProgramme(programmes: AllProgrammes[]): AllProgrammes | null {
         ];
       if (!config) return false;
 
+      // Create start time using UTC to match your stored dates
       const startTime = new Date(programmeDate);
-      startTime.setHours(config.startHour, config.startMinute, 0, 0);
+      startTime.setUTCHours(config.startHour, config.startMinute, 0, 0);
 
-      return startTime > now;
+      const isFuture = startTime > now;
+
+      return isFuture;
     })
-    .sort((a, b) => new Date(a!.date).getTime() - new Date(b!.date).getTime());
+    .sort((a, b) => {
+      const dateA = new Date(a!.date);
+      const dateB = new Date(b!.date);
+      const configA =
+        SERVICE_CONFIG[a!.type.toLowerCase() as keyof typeof SERVICE_CONFIG];
+      const configB =
+        SERVICE_CONFIG[b!.type.toLowerCase() as keyof typeof SERVICE_CONFIG];
+
+      if (configA && configB) {
+        dateA.setUTCHours(configA.startHour, configA.startMinute, 0, 0);
+        dateB.setUTCHours(configB.startHour, configB.startMinute, 0, 0);
+      }
+
+      return dateA.getTime() - dateB.getTime();
+    });
 
   return futureProgrammes[0] || null;
 }

@@ -1,4 +1,3 @@
-// import { Crown, FileText, Shield, User } from 'lucide-react-native';
 import { ColorSchemeName } from 'react-native';
 
 export const getBandRoleDetails = (role: BandRole, mode: ColorSchemeName) => {
@@ -11,7 +10,7 @@ export const getBandRoleDetails = (role: BandRole, mode: ColorSchemeName) => {
         icon: 'crown',
         color: isDark ? '#facc15' : '#f59e0b',
         bgColor: isDark ? '#422006' : '#fef3c7',
-        label: 'Captain / Choir Master',
+        label: role,
       };
 
     case 'Vice Captain':
@@ -20,7 +19,7 @@ export const getBandRoleDetails = (role: BandRole, mode: ColorSchemeName) => {
         icon: 'shield',
         color: isDark ? '#a78bfa' : '#8b5cf6',
         bgColor: isDark ? '#2e1065' : '#f3e8ff',
-        label: 'Vice Captain',
+        label: role,
       };
 
     case 'Secretary':

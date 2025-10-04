@@ -4,8 +4,11 @@ import { RootState } from '../store';
 import {
   fetchAllBandsThunk,
   fetchAllChildrenThunk,
+  fetchAllDepartmentsThunk,
   fetchAllMembersThunk,
   fetchBandWithMembersThunk,
+  fetchDepartmentByIdThunk,
+  fetchDepartmentWithMembersThunk,
   fetchDirectoryStatsThunk,
 } from '../thunks/directory';
 
@@ -18,14 +21,23 @@ const initialState: DirectoryState = {
     childrenCount: 0,
   },
   allMembers: [],
-  allBands: [],
   allChildren: [],
+
+  allBands: [],
   bandWithMembers: null,
+  isFetchingBands: false,
   isFetchingBandWithMembers: false,
+
   isFetchingDirectoryStats: false,
   isFetchingMembers: false,
-  isFetchingBands: false,
   isFetchingChildren: false,
+
+  allDepartments: [],
+  departmentWithMembers: null,
+  isFetchingAllDepartment: false,
+  // isFetchingDepartmentById: false,
+  isFetchingDepartmentWithMembers: false,
+
   error: null,
 };
 
@@ -105,6 +117,46 @@ const directorySlice = createSlice({
         state.isFetchingChildren = false;
         state.error = action.error.message || 'Failed to load Children';
       });
+    builder
+      .addCase(fetchDepartmentWithMembersThunk.pending, (state) => {
+        state.isFetchingDepartmentWithMembers = true;
+        state.error = null;
+      })
+      .addCase(fetchDepartmentWithMembersThunk.fulfilled, (state, action) => {
+        state.isFetchingDepartmentWithMembers = false;
+        state.departmentWithMembers = action.payload;
+      })
+      .addCase(fetchDepartmentWithMembersThunk.rejected, (state, action) => {
+        state.isFetchingDepartmentWithMembers = false;
+        state.error =
+          action.error.message || 'Failed to load Department members';
+      });
+    builder
+      .addCase(fetchAllDepartmentsThunk.pending, (state) => {
+        state.isFetchingAllDepartment = true;
+        state.error = null;
+      })
+      .addCase(fetchAllDepartmentsThunk.fulfilled, (state, action) => {
+        state.isFetchingAllDepartment = false;
+        state.allDepartments = action.payload;
+      })
+      .addCase(fetchAllDepartmentsThunk.rejected, (state, action) => {
+        state.isFetchingAllDepartment = false;
+        state.error = action.error.message || 'Failed to load all departments';
+      });
+    // builder
+    //   .addCase(fetchDepartmentByIdThunk.pending, (state) => {
+    //     state.isFetchingAllDepartment = true;
+    //     state.error = null;
+    //   })
+    //   .addCase(fetchDepartmentByIdThunk.fulfilled, (state, action) => {
+    //     state.isFetchingAllDepartment = false;
+    //     state.allDepartments = action.payload;
+    //   })
+    //   .addCase(fetchDepartmentByIdThunk.rejected, (state, action) => {
+    //     state.isFetchingAllDepartment = false;
+    //     state.error = action.error.message || 'Failed to load all departments';
+    //   });
   },
 });
 

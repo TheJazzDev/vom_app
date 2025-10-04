@@ -2,6 +2,7 @@ import { ROUTES } from '@/src/constants';
 import { dispatch, logoutThunk, useAuthSlice } from '@/src/store';
 import { getUserInitials, stripLeadingSlash } from '@/src/utils';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
+import { useRouter } from 'expo-router';
 import {
   Image,
   Platform,
@@ -9,11 +10,12 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { IconSymbol } from '../Icons';
 import { Divider, Text, View } from '../UI';
 import DrawerItem from './DrawerItem';
-import { IconSymbol } from '../Icons';
 
 export const DrawerContent = (props: any) => {
+  const router = useRouter();
   const { currentUser, isAuthenticated } = useAuthSlice();
 
   const handleLogout = async () => {
@@ -26,11 +28,9 @@ export const DrawerContent = (props: any) => {
       <View className="flex-col flex-1 px-2 pt-4">
         <TouchableOpacity
           onPress={() =>
-            props.navigation.navigate(
-              isAuthenticated
-                ? stripLeadingSlash(ROUTES.PROFILE)
-                : stripLeadingSlash(ROUTES.AUTH),
-            )
+            isAuthenticated
+              ? router.push(ROUTES.PROFILE)
+              : props.navigation.navigate(stripLeadingSlash(ROUTES.AUTH))
           }
         >
           <View className="flex-row items-center">
@@ -50,7 +50,7 @@ export const DrawerContent = (props: any) => {
             </View>
             <View className="flex-1">
               {currentUser ? (
-                <Text variant="h5">{currentUser?.firstName}</Text>
+                <Text variant="h5">{currentUser?.title} {currentUser?.firstName}</Text>
               ) : (
                 <Text variant="h5">Log In</Text>
               )}
@@ -59,9 +59,9 @@ export const DrawerContent = (props: any) => {
                   <Text className="text-blue-100 text-sm">
                     Join Date {currentUser?.joinDate}
                   </Text>
-                  <Text className="text-gray-600 text-xs underline">
+                  {/* <Text className="text-gray-600 text-xs underline">
                     View Profile
-                  </Text>
+                  </Text> */}
                 </>
               )}
             </View>

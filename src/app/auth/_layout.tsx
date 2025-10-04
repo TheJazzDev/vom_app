@@ -1,9 +1,25 @@
-import { StackWrapper } from '@/src/components/UI/ScreenOptions/StackScreen';
+import { useTheme } from '@/src/hooks';
 import { Stack } from 'expo-router';
 
 export default function DirectoryLayout() {
+  const theme = useTheme();
+
   return (
-    <StackWrapper headerRight={false}>
+    <Stack
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTintColor: theme.brand,
+        headerTitleStyle: {
+          fontSize: 14,
+        },
+        headerBackTitleStyle: {
+          fontSize: 14,
+        },
+        headerStyle: {
+          backgroundColor: theme.background,
+        },
+      }}
+    >
       <Stack.Screen name="index" options={{ title: 'Sign In' }} />
       <Stack.Screen
         name="signup"
@@ -41,6 +57,6 @@ export default function DirectoryLayout() {
           title: 'Reset Password',
         }}
       />
-    </StackWrapper>
+    </Stack>
   );
 }

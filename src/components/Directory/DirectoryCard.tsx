@@ -14,17 +14,13 @@ export const DirectoryCategoryCard = ({
   const hasAccess = canAccess(category.route);
 
   const handlePress = () => {
-    if (!hasAccess) {
-      navigateTo(category.route);
-      return;
-    }
     navigateTo(category.route);
   };
 
   return (
     <Pressable
       onPress={handlePress}
-      className="mb-4"
+      className="mb-3"
       android_ripple={{ color: 'rgba(255,255,255,0.1)' }}
     >
       <LinearGradient
@@ -47,8 +43,16 @@ export const DirectoryCategoryCard = ({
 
         <View style={{ position: 'relative', zIndex: 10 }}>
           <View className="flex-row justify-between items-start mb-3">
-            <View className="bg-white/20 p-3 rounded-full">
-              <IconSymbol name={category.icon} size={24} color="white" />
+            <View className="flex-row gap-2 items-center">
+              <View className="bg-white/20 p-3 rounded-full">
+                <IconSymbol name={category.icon} size={24} color="white" />
+              </View>
+              <Text
+                variant="h3"
+                className="text-white dark:text-white/90 font-bold"
+              >
+                {category.title}
+              </Text>
             </View>
 
             {!hasAccess && (
@@ -66,12 +70,6 @@ export const DirectoryCategoryCard = ({
             )}
           </View>
 
-          <Text
-            variant="h3"
-            className="text-white dark:text-white/90 font-bold mb-2"
-          >
-            {category.title}
-          </Text>
           <Text
             variant="body"
             className="text-white/90 dark:text-white/80 leading-5 mb-4"

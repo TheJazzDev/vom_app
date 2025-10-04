@@ -7,6 +7,7 @@ import { DrawerToggleButton } from '@react-navigation/drawer';
 import { Stack, usePathname, useRouter } from 'expo-router';
 import { ReactNode } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { ProfileHeader } from '../../Dashboard/Navigations/ProfileHeader';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
@@ -27,7 +28,7 @@ export const HeaderRight = () => {
   return (
     <TouchableOpacity
       onPress={() => router.push(ROUTES.NOTIFICATIONS)}
-      style={{ marginRight: 12 }}
+      style={{ marginRight: 0 }}
     >
       <Ionicons size={24} name="notifications" color={theme.muted} />
     </TouchableOpacity>
@@ -67,9 +68,13 @@ export const StackWrapper = ({
         headerTitleAlign: 'center',
         headerTintColor: theme.muted,
         headerTitleStyle: { color: theme.brand },
-        headerLeft: isParentIndex ? () => <HeaderLeft /> : undefined,
-        headerRight: () =>
-          headerRight && isAuthenticated ? <HeaderRight /> : null,
+        // headerLeft: isParentIndex ? () => <HeaderLeft /> : undefined,
+        headerRight: () => (
+          <>
+            <ProfileHeader />
+            <HeaderRight />
+          </>
+        ),
         headerStyle: {
           backgroundColor: theme.background,
         },

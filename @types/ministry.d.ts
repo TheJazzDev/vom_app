@@ -4,6 +4,8 @@ declare global {
     description: string;
     route: string;
     icon: IconSymbolName;
+    gradient: GradientColor
+
   };
 }
 

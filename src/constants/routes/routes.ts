@@ -1,11 +1,8 @@
 export const ROUTES = {
   // Main drawer routes
   HOME: '/',
-  ONBOARDING: '/onboarding',
-  SETTINGS: '/settings',
   NOTIFICATIONS: '/notifications',
-  ABOUT: '/about',
-  CONTACT: '/contact',
+  ONBOARDING: '/onboarding',
   NOT_FOUND: '/+not-found',
 
   // Auth
@@ -45,11 +42,14 @@ export const ROUTES = {
   TESTIMONIES: '/ministry/testimonies',
 
   // Info
-  INFO: '/info',
-  EVENTS: '/info/events',
-  ANNOUNCEMENT: '/info/announcement',
-  WEEKLY_ACTIVITIES: '/info/weekly-activities',
-  MONTHLY_ACTIVITIES: '/info/monthly-activities',
+  MORE: '/more',
+  SETTINGS: '/more/settings',
+  ABOUT: '/more/about',
+  CONTACT: '/more/contact',
+  EVENTS: '/more/events',
+  ANNOUNCEMENT: '/more/announcement',
+  WEEKLY_ACTIVITIES: '/more/weekly-activities',
+  MONTHLY_ACTIVITIES: '/more/monthly-activities',
 } as const;
 
 export type RouteKeys = keyof typeof ROUTES;

@@ -33,7 +33,11 @@ const BandCard = ({ band }: { band: Band }) => {
         colors={band?.gradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={{ padding: 20, position: 'relative' }}
+        style={{
+          paddingHorizontal: 16,
+          paddingVertical: 10,
+          position: 'relative',
+        }}
       >
         {/* Background Icon */}
         <View
@@ -79,51 +83,75 @@ const BandCard = ({ band }: { band: Band }) => {
           <View>
             <Text
               variant="caption"
-              className="text-white/80 dark:text-white font-semibold mb-2"
+              className="text-white/80 dark:text-white font-semibold mb-2 text-center"
             >
               LEADERSHIP
             </Text>
-            <View className="flex-row items-center gap-4">
-              {/* Captain */}
-              <View className="flex-row items-center">
-                {/* <Image
-                  source={{ uri: '' }}
-                  className="w-6 h-6 rounded-full mr-2"
-                /> */}
-                <View>
-                  <Text
-                    variant="caption"
-                    className="text-white/60 dark:text-white/80"
-                  >
-                    Captain
-                  </Text>
-                  <Text
-                    variant="caption"
-                    className="text-white/60 dark:text-white font-semibold"
-                  >
-                    TBD
-                  </Text>
-                </View>
+            <View className="flex-row items-center mx-auto gap-2">
+              {/* <UserAvatar
+                avatar={band?.leadership?.avatar}
+                firstName="Asdf"
+                lastName="sadf"
+                variant="extralSmall"
+              /> */}
+              <View>
+                <Text
+                  variant="caption"
+                  className="text-white/60 dark:text-white font-semibold text-center"
+                >
+                  {band.leadership.captain || 'N/A'}
+                </Text>
+                <Text
+                  variant="caption"
+                  className="text-white/60 dark:text-white/80 text-center"
+                >
+                  Captain
+                </Text>
               </View>
+            </View>
 
-              {/* Vice Captain */}
+            <View className="flex-row items-center justify-between">
               <View className="flex-row items-center">
-                {/* <Image
-                  source={{ uri: '' }}
-                  className="w-6 h-6 rounded-full mr-2"
-                /> */}
+                {/* <UserAvatar
+                avatar={band?.leadership?.avatar}
+                firstName="Asdf"
+                lastName="sadf"
+                variant="extralSmall"
+              /> */}
                 <View>
                   <Text
                     variant="caption"
-                    className="text-white/60 dark:text-white/80"
+                    className="text-white/60 dark:text-white font-semibold text-center"
+                  >
+                    {band.leadership.viceCaptain || 'N/A'}
+                  </Text>
+                  <Text
+                    variant="caption"
+                    className="text-white/60 dark:text-white/80 text-center"
                   >
                     Vice Captain
                   </Text>
+                </View>
+              </View>
+              <View className="flex-row items-center">
+                {/* <UserAvatar
+                avatar={band?.leadership?.avatar}
+                firstName="Asdf"
+                lastName="sadf"
+                variant="extralSmall"
+              /> */}
+                <View>
                   <Text
                     variant="caption"
-                    className="text-white/60 dark:text-white font-semibold"
+                    className="text-white/60 dark:text-white font-semibold text-center"
                   >
-                    TBD
+                    {band.leadership.secretary || 'N/A'}
+                  </Text>
+                  <Text
+                    variant="caption"
+                    className="text-white/60 dark:text-white/80 text-center"
+                  >
+                    Secretary
                   </Text>
                 </View>
               </View>

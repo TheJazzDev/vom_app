@@ -1,4 +1,4 @@
-import { MemberCard } from '@/src/components';
+import { MemberCard, Spacer } from '@/src/components';
 import { MemberCardSkeleton } from '@/src/components/Directory/Members/Card/Skeleton';
 import MemberModal from '@/src/components/Directory/Members/Modal/MemberModal';
 import { SearchInput, Text, View } from '@/src/components/UI';
@@ -65,9 +65,10 @@ export default function MembersScreen() {
 
   return (
     <View gradient>
-      <Text variant="h2" color="body" className="font-bold px-4 pt-4 pb-2">
+      <Spacer height={10} />
+      {/* <Text variant="h2" color="body" className="font-bold px-4 pt-4 pb-2">
         Members Directory
-      </Text>
+      </Text> */}
 
       <SearchInput
         value={searchQuery}

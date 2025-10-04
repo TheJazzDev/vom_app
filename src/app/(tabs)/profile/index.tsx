@@ -1,13 +1,13 @@
 import { BandBadge } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons';
 import { IconSymbolName } from '@/src/components/Icons/IconSymbol';
-import { Text } from '@/src/components/UI';
+import { Badge, Card, Text } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import { useAuthSlice } from '@/src/store';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { Image, Pressable, ScrollView, View } from 'react-native';
+import { Alert, Image, Pressable, ScrollView, View } from 'react-native';
 
 export default function ProfileIndex() {
   const theme = useTheme();
@@ -62,7 +62,7 @@ export default function ProfileIndex() {
 
   const OptionCard = ({ option }: { option: any }) => (
     <Pressable
-      onPress={() => router.push(option.route as any)}
+      onPress={() => Alert.alert(`${option.title} is not available yet.`)}
       style={{
         backgroundColor: theme.card,
         borderWidth: 1,
@@ -110,7 +110,7 @@ export default function ProfileIndex() {
         <LinearGradient
           colors={[theme.primary, theme.secondary || theme.primary]}
           style={{
-            height: 160,
+            height: 110,
             justifyContent: 'flex-end',
             padding: 24,
           }}
@@ -202,34 +202,25 @@ export default function ProfileIndex() {
       </View>
 
       {/* Quick Stats */}
-      <View className="px-4 -mt-6 relative z-10 mb-6">
-        <View
-          className="rounded-xl p-4 shadow-sm"
-          style={{
-            backgroundColor: theme.card,
-            borderWidth: 1,
-            borderColor: theme.border,
-          }}
-        >
-          <View className="flex-row justify-between">
-            {quickStats.map((stat, index) => (
-              <View key={index} className="flex-1 items-center">
-                <IconSymbol name={stat.icon} size={20} color={theme.primary} />
-                <Text
-                  variant="h6"
-                  className={`font-bold mt-2 ${stat.label === 'Status' ? 'capitalize' : ''}`}
-                  style={{ color: theme.heading }}
-                >
-                  {stat.value}
-                </Text>
-                <Text variant="caption" style={{ color: theme.muted }}>
-                  {stat.label}
-                </Text>
-              </View>
-            ))}
-          </View>
+      <Card variant="outlined" className="px-4 mt-4 relative z-10 mb-6 mx-4">
+        <View className="flex-row justify-between">
+          {quickStats.map((stat, index) => (
+            <View key={index} className="flex-1 items-center">
+              <IconSymbol name={stat.icon} size={20} color={theme.primary} />
+              <Text
+                variant="h6"
+                className={`font-bold mt-2 ${stat.label === 'Status' ? 'capitalize' : ''}`}
+                style={{ color: theme.heading }}
+              >
+                {stat.value}
+              </Text>
+              <Text variant="caption" style={{ color: theme.muted }}>
+                {stat.label}
+              </Text>
+            </View>
+          ))}
         </View>
-      </View>
+      </Card>
 
       {/* Contact Information */}
       <View className="px-4 mb-6">
@@ -240,14 +231,7 @@ export default function ProfileIndex() {
         >
           Contact Information
         </Text>
-        <View
-          className="rounded-xl p-4"
-          style={{
-            backgroundColor: theme.card,
-            borderWidth: 1,
-            borderColor: theme.border,
-          }}
-        >
+        <Card variant="gradient-soft" className="rounded-xl p-4">
           {currentUser?.email && (
             <View className="flex-row items-center mb-3">
               <IconSymbol
@@ -308,7 +292,7 @@ export default function ProfileIndex() {
               </Text>
             </View>
           )}
-        </View>
+        </Card>
       </View>
 
       {/* Personal Information */}
@@ -320,14 +304,7 @@ export default function ProfileIndex() {
         >
           Personal Information
         </Text>
-        <View
-          className="rounded-xl p-4"
-          style={{
-            backgroundColor: theme.card,
-            borderWidth: 1,
-            borderColor: theme.border,
-          }}
-        >
+        <Card variant="gradient-soft" className="rounded-xl p-4">
           <View className="flex-row justify-between mb-3">
             <Text variant="body" style={{ color: theme.muted }}>
               Date of Birth
@@ -348,11 +325,13 @@ export default function ProfileIndex() {
               {currentUser?.gender || 'Not specified'}
             </Text>
           </View>
-        </View>
+        </Card>
       </View>
 
       {/* BandData & Position Information */}
-      {(currentUser?.band?.length || currentUser?.position?.length) && (
+      {(currentUser?.band?.length ||
+        currentUser?.position?.length ||
+        currentUser?.department?.length) && (
         <View className="px-4 mb-6">
           <Text
             variant="h5"
@@ -361,8 +340,9 @@ export default function ProfileIndex() {
           >
             Church Involvement
           </Text>
-          <View
-            className="rounded-xl p-4"
+          <Card
+            variant="gradient-soft"
+            className="rounded-xl p-4 "
             style={{
               backgroundColor: theme.card,
               borderWidth: 1,
@@ -370,36 +350,23 @@ export default function ProfileIndex() {
             }}
           >
             {currentUser?.position && currentUser.position.length > 0 && (
-              <View className="mb-2">
+              <View className="mb-4">
                 <Text
                   variant="body"
                   className="mb-2 font-semibold"
                   style={{ color: theme.muted }}
                 >
-                  Positions
+                  Positions:
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
                   {currentUser.position.map((pos, index) => (
-                    <View
-                      key={index}
-                      className="px-3 py-1 rounded-full"
-                      style={{ backgroundColor: '#3B82F615' }}
-                    >
-                      <Text
-                        variant="caption"
-                        className="font-medium"
-                        style={{ color: '#3B82F6' }}
-                      >
-                        {pos}
-                      </Text>
-                    </View>
+                    <Badge key={index}>{pos}</Badge>
                   ))}
                 </View>
               </View>
             )}
-            {/* <Badge>{pos}</Badge> */}
             {currentUser?.band && currentUser.band.length > 0 && (
-              <View>
+              <View className="mb-4">
                 <Text
                   variant="body"
                   className="mb-2 font-semibold"
@@ -408,13 +375,29 @@ export default function ProfileIndex() {
                   Bands
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
-                  {currentUser.band.map((band: BandData, index) => (
-                    <BandBadge key={index} band={band.name} />
+                  {currentUser.bandKeys.map((band: BandKeys, index) => (
+                    <BandBadge key={index} band={band} />
                   ))}
                 </View>
               </View>
             )}
-          </View>
+            {currentUser?.department && currentUser.department.length > 0 && (
+              <View className="mb-4">
+                <Text
+                  variant="body"
+                  className="mb-2 font-semibold"
+                  style={{ color: theme.muted }}
+                >
+                  Departments
+                </Text>
+                <View className="flex-row flex-wrap gap-2">
+                  {currentUser.departmentKeys.map((dept, index) => (
+                    <Badge key={index}>{dept}</Badge>
+                  ))}
+                </View>
+              </View>
+            )}
+          </Card>
         </View>
       )}
 

@@ -25,7 +25,6 @@ const BandDetailsScreen: React.FC = () => {
   const { band } = useLocalSearchParams<{ band: string }>();
   const { bandWithMembers, isFetchingBandWithMembers } = useDirectorySlice();
   const scrollY = new Animated.Value(0);
-  console.log([bandWithMembers]);
 
   useEffect(() => {
     if (band) {
@@ -49,10 +48,11 @@ const BandDetailsScreen: React.FC = () => {
     const members: UserProfile[] = [];
 
     bandWithMembers.members.forEach((member) => {
-      const role =
-        member.bandKeys?.find(
-          (bandKey) => bandKey.bandId === bandWithMembers.id,
-        )?.role || 'Member';
+      const bandData = member.band?.find(
+        (dept) => dept.name === bandWithMembers.id,
+      );
+
+      const role = bandData?.role || 'Member';
 
       if (leadershipRoles.includes(role)) {
         leadership.push(member);
@@ -139,7 +139,7 @@ const BandDetailsScreen: React.FC = () => {
                 color="white"
               />
             </View>
-            <Text variant="h4" className="text-white font-bold">
+            <Text variant="h4" className="text-white dark:text-white font-bold">
               {bandWithMembers.name}
             </Text>
           </View>
@@ -296,80 +296,39 @@ const BandDetailsScreen: React.FC = () => {
             <View>
               {/* Leadership Section */}
               {organizedMembers.leadership.length > 0 && (
-                <View>
-                  <LinearGradient
-                    colors={['#ffeaa7', '#fdcb6e', '#e17055']}
-                    className="p-6"
-                  >
-                    <View className="flex-row items-center">
-                      <View className="w-3 h-8 bg-white/50 rounded-full mr-4" />
-                      <Text
-                        variant="h2"
-                        className="text-white font-black flex-1"
-                      >
-                        Leadership
-                      </Text>
-                      <View className="bg-white/20 backdrop-blur-lg px-4 py-2 rounded-full">
-                        <Text variant="h4" className="text-white font-bold">
-                          {organizedMembers.leadership.length}
-                        </Text>
-                      </View>
-                    </View>
-                  </LinearGradient>
-
-                  {/* Leaders Cards */}
-                  {organizedMembers.leadership.map((member, index) => {
-                    const role =
-                      member.bandKeys?.find(
-                        (bandKey) => bandKey.bandId === bandWithMembers.id,
-                      )?.role || 'Member';
+                <View className="pt-4">
+                  {organizedMembers.leadership.map((member) => {
+                    const bandData = member.band?.find(
+                      (band) => band.name === bandWithMembers.id,
+                    );
 
                     return (
-                      <View
-                        key={member.id}
-                        className="mx-4 my-2"
-                        style={{
-                          transform: [
-                            { translateX: index % 2 === 0 ? -10 : 10 },
-                          ],
-                        }}
-                      >
-                        <LinearGradient
-                          colors={['#fff', '#f8f9fa']}
-                          className="rounded-2xl p-1"
-                        >
-                          <View className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden">
-                            <BandMemberCard
-                              member={member}
-                              onPress={() =>
-                                router.push(
-                                  `/directory/members/${member.id}` as const,
-                                )
-                              }
-                              role={role as BandRole}
-                            />
-                          </View>
-                        </LinearGradient>
-                      </View>
-                    );
-                  })}
-                </View>
-              )}
-
-              {organizedMembers.members.length > 0 && (
-                <View className="py-4 pt-4">
-                  {organizedMembers.members.map((member, index) => (
-                    <View key={member.id}>
                       <BandMemberCard
+                        key={member.id}
                         member={member}
                         onPress={() =>
                           router.push(
                             `/directory/members/${member.id}` as const,
                           )
                         }
-                        role="Member"
+                        role={bandData?.role as BandRole}
                       />
-                    </View>
+                    );
+                  })}
+                </View>
+              )}
+
+              {organizedMembers.members.length > 0 && (
+                <View className="">
+                  {organizedMembers.members.map((member) => (
+                    <BandMemberCard
+                      key={member.id}
+                      member={member}
+                      onPress={() =>
+                        router.push(`/directory/members/${member.id}` as const)
+                      }
+                      role="Member"
+                    />
                   ))}
                 </View>
               )}

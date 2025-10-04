@@ -74,7 +74,7 @@ const NextService = () => {
 
   if (isUpcomingProgrammesLoading) {
     return (
-      <Card variant="ghost" className="mb-6 relative overflow-hidden">
+      <Card variant="ghost" className="relative overflow-hidden">
         <LinearGradient
           colors={[`${theme.primary}10`, 'transparent']}
           start={{ x: 0, y: 0 }}

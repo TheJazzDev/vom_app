@@ -9,7 +9,7 @@ const QuickAccess = () => {
   const router = useRouter();
 
   return (
-    <Card variant="outlined" className="mb-6">
+    <Card variant="outlined">
       <Text variant="h4" color="heading" className="font-bold mb-4">
         Quick Access
       </Text>

@@ -1,6 +1,6 @@
 import { ROUTES } from '../routes/routes';
 
-export const DIRECTORY_CATEGORIES = [
+export const DIRECTORY_CATEGORIES: DirectoryProps[] = [
   {
     title: 'Members',
     description: 'Connect with fellow church members',
@@ -9,18 +9,18 @@ export const DIRECTORY_CATEGORIES = [
     gradient: ['#3B82F6', '#1E40AF'],
   },
   {
-    title: 'Bands',
-    description: 'Stay in touch with your band members',
-    route: ROUTES.BANDS,
-    icon: 'music.note.list',
-    gradient: ['#8B5CF6', '#5B21B6'],
-  },
-  {
     title: 'Children',
     description: 'Our precious little ones',
     route: ROUTES.CHILDREN,
     icon: 'figure.2.and.child.holdinghands',
     gradient: ['#10B981', '#047857'],
+  },
+  {
+    title: 'Bands',
+    description: 'Stay in touch with your band members',
+    route: ROUTES.BANDS,
+    icon: 'music.note.list',
+    gradient: ['#8B5CF6', '#5B21B6'],
   },
   {
     title: 'Departments',

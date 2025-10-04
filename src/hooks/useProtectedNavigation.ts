@@ -40,25 +40,6 @@ export function useProtectedNavigation() {
     return true;
   };
 
-  //   if (isUnprotected(route) && isAuthenticated) {
-  //     const fallback = config?.fallbackRoute || '/';
-  //     if (replace) {
-  //       router.replace(fallback as any);
-  //     } else {
-  //       router.push(fallback as any);
-  //     }
-  //     return false;
-  //   }
-
-  //   // Navigate normally
-  //   if (replace) {
-  //     router.replace(route);
-  //   } else {
-  //     router.push(route);
-  //   }
-  //   return true;
-  // };
-
   const canAccess = (route: string): boolean => {
     if (isProtected(route)) {
       return isAuthenticated;

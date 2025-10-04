@@ -59,9 +59,9 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     description: 'Sermon list - public',
   },
   {
-    path: ROUTES.INFO,
+    path: ROUTES.MORE,
     access: 'public',
-    description: 'Church info overview - public',
+    description: 'Church info overview and settings - public',
   },
   {
     path: ROUTES.ANNOUNCEMENT,
@@ -196,18 +196,6 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     access: 'unprotected',
     fallbackRoute: ROUTES.HOME,
     description: 'Password reset - guests only',
-  },
-  {
-    path: ROUTES.VERIFY_EMAIL,
-    access: 'unprotected',
-    fallbackRoute: ROUTES.HOME,
-    description: 'Email verification - guests only',
-  },
-  {
-    path: ROUTES.VERIFY_EMAIL,
-    access: 'unprotected',
-    fallbackRoute: ROUTES.HOME,
-    description: 'Email verification success - guests only',
   },
   {
     path: ROUTES.VERIFY_PHONE,

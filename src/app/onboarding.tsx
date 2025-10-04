@@ -66,7 +66,6 @@ export default function OnboardingScreen() {
 
   return (
     <View className={`flex-1 ${currentSlide.backgroundColor}`}>
-      {/* Floating Background Elements */}
       <FloatingBackground accentColor={currentSlide.accentColor} />
 
       {/* Slides */}
@@ -86,7 +85,6 @@ export default function OnboardingScreen() {
         ))}
       </ScrollView>
 
-      {/* Bottom Navigation */}
       <View className="pb-12 px-8">
         <PageIndicators
           slides={onboardingSlides}

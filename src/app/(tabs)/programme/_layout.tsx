@@ -1,14 +1,37 @@
-import { StackWrapper } from '@/src/components/UI/ScreenOptions/StackScreen';
+import { useTheme } from '@/src/hooks';
 import { Stack } from 'expo-router';
 
 export default function ProgrammeLayout() {
+  const theme = useTheme();
+
   return (
-    <StackWrapper>
-      <Stack.Screen name="index" options={{ title: 'Programme' }} />
-      <Stack.Screen name="current" options={{ title: 'Current Programme' }} />
-      <Stack.Screen name="upcoming" options={{ title: 'Upcoming Programme' }} />
-      <Stack.Screen name="past" options={{ title: 'Past Programme' }} />
+    <Stack
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerTintColor: theme.brand,
+        headerBackTitle: 'Back',
+        headerTitleStyle: {
+          fontSize: 14,
+        },
+        headerBackTitleStyle: {
+          fontSize: 14,
+        },
+        headerStyle: {
+          backgroundColor: theme.background,
+        },
+      }}
+    >
+      <Stack.Screen
+        name="index"
+        options={{ title: 'Programme', headerShown: false }}
+      />
+      <Stack.Screen name="current" options={{ title: '' }} />
+      <Stack.Screen
+        name="upcoming"
+        options={{ title: 'Upcoming Programmes' }}
+      />
+      <Stack.Screen name="past" options={{ title: 'Past Programmes' }} />
       <Stack.Screen name="[id]" options={{ title: 'Programme Details' }} />
-    </StackWrapper>
+    </Stack>
   );
 }

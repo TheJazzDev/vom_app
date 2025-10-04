@@ -15,7 +15,6 @@ interface BandMemberCardProps {
 const BandMemberCard = ({ member, onPress, role }: BandMemberCardProps) => {
   const mode = useColorScheme();
   const roleDetails = getBandRoleDetails(role, mode);
-  // const RoleIcon = roleDetails.icon;
 
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>

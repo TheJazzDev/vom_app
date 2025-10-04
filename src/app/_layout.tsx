@@ -2,13 +2,11 @@ import { useTheme } from '@/src/hooks';
 import Providers from '@/src/providers/Providers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
-import { useRouter } from 'expo-router';
-import { Drawer } from 'expo-router/drawer';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
-import { DrawerContent } from '../components';
 import '../config/firebase';
 import './global.css';
 
@@ -59,30 +57,20 @@ export default function RootLayout() {
   return (
     <Providers>
       <StatusBar style="auto" />
-      <Drawer
-        drawerContent={(props) => <DrawerContent {...props} />}
+      <Stack
         screenOptions={{
-          drawerType: 'front',
+          headerShown: false,
           headerTitleAlign: 'center',
-          headerTintColor: theme.muted,
-          headerTitleStyle: { color: theme.brand },
-          drawerStyle: {
-            width: '78%',
-            borderRightWidth: 1,
-            borderTopRightRadius: 20,
-            borderBottomRightRadius: 20,
-            borderRightColor: theme.border,
-            backgroundColor: theme.background,
-          },
+          headerTintColor: theme.brand,
           headerStyle: {
             backgroundColor: theme.background,
           },
         }}
       >
-        <Drawer.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Drawer.Screen name="auth" options={{ headerShown: false }} />
-        <Drawer.Screen name="onboarding" options={{ headerShown: false }} />
-      </Drawer>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+      </Stack>
     </Providers>
   );
 }
