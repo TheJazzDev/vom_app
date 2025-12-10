@@ -1,31 +1,21 @@
 import { useTheme } from '@/src/hooks';
+import { getStackScreenOptions, HIDE_HEADER } from '@/src/utils/navigation.config';
 import { Stack } from 'expo-router';
 
-export default function MinistryLayout() {
+export default function MoreLayout() {
   const theme = useTheme();
 
   return (
-    <Stack
-      screenOptions={{
-        headerTitleAlign: 'center',
-        headerTintColor: theme.brand,
-        headerTitleStyle: {
-          fontSize: 14,
-        },
-        headerBackTitleStyle: {
-          fontSize: 14,
-        },
-        headerStyle: {
-          backgroundColor: theme.background,
-        },
-      }}
-    >
+    <Stack screenOptions={getStackScreenOptions(theme)}>
       <Stack.Screen
         name="index"
-        options={{ title: 'More', headerShown: false }}
+        options={{ title: 'More', ...HIDE_HEADER }}
       />
       <Stack.Screen name="announcement" options={{ title: 'Announcements' }} />
       <Stack.Screen name="events" options={{ title: 'Events' }} />
+      <Stack.Screen name="birthdays" options={{ title: 'Birthdays' }} />
+      <Stack.Screen name="about" options={{ title: 'About Us' }} />
+      <Stack.Screen name="contact" options={{ title: 'Contact' }} />
       <Stack.Screen
         name="monthly-activities"
         options={{ title: 'Monthly Activities' }}

@@ -11,6 +11,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist';
+import announcementReducer from './slices/announcementSlice';
 import authReducer from './slices/authSlice';
 import directoryReducer from './slices/directorySlice';
 import programmeReduder from './slices/programmeSlice';
@@ -60,6 +61,7 @@ const rootReducer = combineReducers({
   auth: persistedAuthReducer,
   directory: directoryReducer,
   programme: programmeReduder,
+  announcements: announcementReducer,
 });
 
 export const store = configureStore({

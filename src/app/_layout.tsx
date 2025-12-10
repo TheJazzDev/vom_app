@@ -5,7 +5,7 @@ import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'react-native-reanimated';
 import '../config/firebase';
 import './global.css';
@@ -17,60 +17,59 @@ const ONBOARDING_KEY = 'onboarding_seen';
 export default function RootLayout() {
   const theme = useTheme();
   const router = useRouter();
+  const hasCheckedOnboarding = useRef(false);
   const [appIsReady, setAppIsReady] = useState(false);
 
-  const [loaded] = useFonts({
+  const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     SplineSans: require('../assets/fonts/SplineSans-Regular.ttf'),
   });
 
-  useEffect(() => {
+   useEffect(() => {
     async function prepare() {
       try {
-        if (!loaded) return;
+        // wait for fonts
+        if (!loaded && !error) return;
 
-        const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+        if (error) console.warn('[RootLayout] Font error', error);
 
-        if (value === null || value === 'false') {
-          await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
-          router.replace('/onboarding');
+        if (!hasCheckedOnboarding.current) {
+          const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+          if (value === null || value === 'false') {
+            router.replace('/onboarding'); // navigate once
+          }
+          hasCheckedOnboarding.current = true;
         }
-
-        setAppIsReady(true);
       } catch (e) {
-        console.warn('Error loading app state:', e);
-        setAppIsReady(true);
+        console.warn('[RootLayout] Error:', e);
       } finally {
-        if (loaded) {
-          await SplashScreen.hideAsync();
-        }
+        setAppIsReady(true);
+        await SplashScreen.hideAsync();
       }
     }
 
     prepare();
-  }, [loaded, router]);
-
-  if (!appIsReady) {
-    return null;
-  }
+  }, [loaded, error, router]);
 
   return (
     <Providers>
       <StatusBar style="auto" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          headerTitleAlign: 'center',
-          headerTintColor: theme.brand,
-          headerStyle: {
-            backgroundColor: theme.background,
-          },
-        }}
-      >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="auth" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-      </Stack>
+      {appIsReady ? (
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            headerTitleAlign: 'center',
+            headerTintColor: theme.brand,
+            headerStyle: {
+              backgroundColor: theme.background,
+            },
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+        </Stack>
+      ) : null}
     </Providers>
   );
 }

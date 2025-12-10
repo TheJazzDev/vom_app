@@ -5,8 +5,8 @@ import { DIRECTORY_CATEGORIES } from '@/src/constants/directory';
 import { useTheme } from '@/src/hooks';
 import { dispatch, useDirectorySlice } from '@/src/store';
 import { fetchDirectoryStatsThunk } from '@/src/store/thunks/directory';
-import { useEffect } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Platform, RefreshControl } from 'react-native';
 
 interface StatCardProps {
   count?: number;
@@ -62,15 +62,27 @@ const StatCard: React.FC<StatCardProps> = ({
 export default function DirectoryIndex() {
   const { directoryStats, isFetchingDirectoryStats } = useDirectorySlice();
   const theme = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     dispatch(fetchDirectoryStatsThunk());
   }, []);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await dispatch(fetchDirectoryStatsThunk());
+    } catch (error) {
+      console.error('Error refreshing directory stats:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
   return (
     <View gradient className="flex-1">
       {/* Enhanced Header Section */}
-      <View className="px-4 pt-4 pb-5">
+      <View className={`px-4 pb-5 ${Platform.OS === 'ios' ? 'pt-3' : 'pt-6'}`}>
         {/* Title Row with Action Button */}
         <View className="flex-row items-center justify-between mb-3">
           <View className="flex-1">
@@ -112,13 +124,11 @@ export default function DirectoryIndex() {
           <StatCard
             count={directoryStats?.bandsCount}
             label="Bands"
-            variant="secondary"
             isLoading={isFetchingDirectoryStats}
           />
           <StatCard
             count={directoryStats?.departmentsCount}
             label="Depts"
-            variant="secondary"
             isLoading={isFetchingDirectoryStats}
           />
         </View>
@@ -154,6 +164,14 @@ export default function DirectoryIndex() {
         }}
         showsVerticalScrollIndicator={false}
         className="flex-1"
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
       />
     </View>
   );

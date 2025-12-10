@@ -1,29 +1,15 @@
 import { useTheme } from '@/src/hooks';
+import { getStackScreenOptions, HIDE_HEADER } from '@/src/utils/navigation.config';
 import { Stack } from 'expo-router';
 
 export default function DirectoryLayout() {
   const theme = useTheme();
 
   return (
-    <Stack
-      screenOptions={{
-        headerBackTitle: 'Back',
-        headerTitleAlign: 'center',
-        headerTintColor: theme.brand,
-        headerTitleStyle: {
-          fontSize: 14,
-        },
-        headerBackTitleStyle: {
-          fontSize: 14,
-        },
-        headerStyle: {
-          backgroundColor: theme.background,
-        },
-      }}
-    >
+    <Stack screenOptions={getStackScreenOptions(theme)}>
       <Stack.Screen
         name="index"
-        options={{ title: 'Directory', headerShown: false }}
+        options={{ title: 'Directory', ...HIDE_HEADER }}
       />
       <Stack.Screen name="members/index" options={{ title: 'Members' }} />
       <Stack.Screen name="children/index" options={{ title: 'Children' }} />

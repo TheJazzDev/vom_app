@@ -4,8 +4,14 @@ import { Text } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { FlatList, Pressable, ScrollView, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  View,
+} from 'react-native';
 
 // Weekly activities data
 const WEEKLY_ACTIVITIES = {
@@ -207,6 +213,19 @@ export default function WeeklyActivities() {
   const theme = useTheme();
   const router = useRouter();
   const [selectedDay, setSelectedDay] = useState('sunday');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      // Simulate API call - replace with actual API call when available
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Error refreshing weekly activities:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
 
   const getCurrentDay = () => {
     const today = new Date().getDay();
@@ -426,6 +445,14 @@ export default function WeeklyActivities() {
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
       >
         <Text
           variant="h3"

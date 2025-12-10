@@ -5,16 +5,28 @@ import { useTheme } from '@/src/hooks';
 import { dispatch, useDirectorySlice } from '@/src/store';
 import { fetchAllDepartmentsThunk } from '@/src/store/thunks/directory';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 
 export default function DirectoryDepartments() {
   const theme = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   const { allDepartments, isFetchingAllDepartment } = useDirectorySlice();
 
   useEffect(() => {
     dispatch(fetchAllDepartmentsThunk());
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await dispatch(fetchAllDepartmentsThunk());
+    } catch (error) {
+      console.error('Error refreshing departments:', error);
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
   return (
@@ -72,6 +84,14 @@ export default function DirectoryDepartments() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
         numColumns={1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
         ListEmptyComponent={
           isFetchingAllDepartment ? (
             <View className="flex-1 items-center justify-center">

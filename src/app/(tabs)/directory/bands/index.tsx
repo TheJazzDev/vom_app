@@ -1,15 +1,29 @@
 import BandCategoryCard from '@/src/components/Directory/Bands/BandCard';
 import { Text, View } from '@/src/components/UI';
+import { useTheme } from '@/src/hooks';
 import { dispatch, useDirectorySlice } from '@/src/store';
 import { fetchAllBandsThunk } from '@/src/store/thunks/directory';
-import { useEffect } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 
 export default function DirectoryBands() {
+  const [refreshing, setRefreshing] = useState(false);
   const { allBands, isFetchingBands } = useDirectorySlice();
+  const theme = useTheme();
 
   useEffect(() => {
     dispatch(fetchAllBandsThunk());
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await dispatch(fetchAllBandsThunk());
+    } catch (error) {
+      console.error('Error refreshing bands:', error);
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
   return (
@@ -34,6 +48,14 @@ export default function DirectoryBands() {
           flexGrow: 1,
         }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
         ListEmptyComponent={
           isFetchingBands ? (
             <View className="flex-1 items-center justify-center">

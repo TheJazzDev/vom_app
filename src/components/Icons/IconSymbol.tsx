@@ -108,6 +108,7 @@ const MAPPING: IconMapping = {
   'trophy.fill': 'trophy',
   'shield.fill': 'shield',
   'person.fill.questionmark.ar': 'person-remove',
+  'heart.circle.fill': 'heart-circle',
 
   // People and community icons
   'person.2': 'people-outline',

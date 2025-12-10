@@ -1,8 +1,8 @@
 import { Card, Divider, IconSymbol, Text, View } from '@/src/components';
-import { useTheme } from '@/src/hooks';
+import { useTheme, useThemeMode } from '@/src/hooks';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Alert, Appearance, Pressable, Switch } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Pressable, Switch } from 'react-native';
 
 type ThemeMode = 'automatic' | 'light' | 'dark';
 
@@ -105,7 +105,7 @@ const SettingItem = ({
 export default function Settings() {
   const theme = useTheme();
   const router = useRouter();
-  const [themeMode, setThemeMode] = useState<ThemeMode>('automatic');
+  const { themeMode, setThemeMode } = useThemeMode();
   const [notificationSettings, setNotificationSettings] = useState({
     pushNotifications: true,
     emailNotifications: false,
@@ -115,28 +115,8 @@ export default function Settings() {
     announcements: true,
   });
 
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      // Handle system theme changes if needed
-    });
-
-    return () => subscription?.remove();
-  }, []);
-
   const handleThemeChange = (newTheme: ThemeMode) => {
     setThemeMode(newTheme);
-
-    switch (newTheme) {
-      case 'automatic':
-        Appearance.setColorScheme(null);
-        break;
-      case 'light':
-        Appearance.setColorScheme('light');
-        break;
-      case 'dark':
-        Appearance.setColorScheme('dark');
-        break;
-    }
   };
 
   const handleNotificationToggle = (settingId: string, value: boolean) => {

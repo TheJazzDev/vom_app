@@ -2,21 +2,35 @@ import { MemberCard, Spacer } from '@/src/components';
 import { MemberCardSkeleton } from '@/src/components/Directory/Members/Card/Skeleton';
 import MemberModal from '@/src/components/Directory/Members/Modal/MemberModal';
 import { SearchInput, Text, View } from '@/src/components/UI';
+import { useTheme } from '@/src/hooks';
 import { dispatch, useDirectorySlice } from '@/src/store';
 import { fetchAllMembersThunk } from '@/src/store/thunks/directory';
 import { filterAndGroupMembers, getTitleDisplayName } from '@/src/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SectionList } from 'react-native';
+import { RefreshControl, SectionList } from 'react-native';
 
 export default function MembersScreen() {
   const [visible, setVisible] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [memberId, setMemberId] = useState<string>('');
+  const [refreshing, setRefreshing] = useState(false);
 
   const { allMembers, isFetchingMembers } = useDirectorySlice();
+  const theme = useTheme();
 
   useEffect(() => {
     dispatch(fetchAllMembersThunk());
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await dispatch(fetchAllMembersThunk());
+    } catch (error) {
+      console.error('Error refreshing members:', error);
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
   const groupedMembers = useMemo(
@@ -112,6 +126,14 @@ export default function MembersScreen() {
           )
         }
         stickySectionHeadersEnabled={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
       />
 
       <MemberModal

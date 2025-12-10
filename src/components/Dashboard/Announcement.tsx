@@ -1,15 +1,38 @@
 import { ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
+import { useAnnouncementSlice } from '@/src/store/slices';
 import { truncateText } from '@/src/utils';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import { IconSymbol } from '../Icons';
 import { Badge, Card, Text, View } from '../UI';
 
 const Announcement = () => {
   const theme = useTheme();
-  // const router = useRouter();
+  const router = useRouter();
+
+  const { announcements, isAnnouncementsLoading, announcementsError } =
+    useAnnouncementSlice();
+
+  const latestAnnouncements = announcements.slice(0, 2);
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return '#EF4444';
+      case 'medium':
+        return '#F59E0B';
+      case 'low':
+        return '#10B981';
+      default:
+        return theme.muted;
+    }
+  };
+
+  const getPriorityLabel = (priority: string) => {
+    return priority.charAt(0).toUpperCase() + priority.slice(1);
+  };
 
   return (
     <Card variant="outlined" className="mb-4">
@@ -32,62 +55,74 @@ const Announcement = () => {
         </Link>
       </View>
 
-      <Pressable
-        // onPress={() => router.push('/info/announcements/1' as any)}
-        style={{
-          backgroundColor: theme.card,
-          borderWidth: 1,
-          borderColor: theme.border,
-          borderRadius: 12,
-          padding: 16,
-          marginBottom: 12,
-          borderLeftWidth: 4,
-          borderLeftColor: '#EF4444',
-        }}
-      >
-        <View className="flex-row items-start justify-between">
-          <View className="flex-1 mr-3">
-            <Text color="heading" className="font-semibold mb-2">
-              Church Revival: 7 Days of Glory
-            </Text>
-            <Text variant="body" style={{ color: theme.muted }}>
-              {truncateText(
-                'Join us for a powerful 7-day revival program starting March 15th. Special guest minister...',
-                80,
-              )}
-            </Text>
-          </View>
-          <Badge>High</Badge>
+      {announcementsError ? (
+        <View className="items-center justify-center py-8">
+          <IconSymbol
+            name="exclamationmark.triangle"
+            size={32}
+            color="#EF4444"
+          />
+          <Text
+            variant="body"
+            className="mt-2 text-center"
+            style={{ color: '#EF4444' }}
+          >
+            Failed to load announcements
+          </Text>
+          <Text
+            variant="caption"
+            className="mt-1 text-center"
+            style={{ color: theme.muted }}
+          >
+            {announcementsError}
+          </Text>
         </View>
-      </Pressable>
-
-      <Pressable
-        // onPress={() => router.push('/info/announcements/2' as any)}
-        style={{
-          backgroundColor: theme.card,
-          borderWidth: 1,
-          borderColor: theme.border,
-          borderRadius: 12,
-          padding: 16,
-          borderLeftWidth: 4,
-          borderLeftColor: '#F59E0B',
-        }}
-      >
-        <View className="flex-row items-start justify-between">
-          <View className="flex-1 mr-3">
-            <Text color="heading" className="font-semibold mb-2">
-              Youth Camp Registration Open
-            </Text>
-            <Text variant="body" style={{ color: theme.muted }}>
-              {truncateText(
-                'Annual youth camp "Ignite 2024" registration is now open. Early bird discount...',
-                80,
-              )}
-            </Text>
-          </View>
-          <Badge>Medium</Badge>
+      ) : isAnnouncementsLoading && announcements.length === 0 ? (
+        <View className="items-center justify-center py-8">
+          <ActivityIndicator size="small" color={theme.primary} />
+          <Text variant="caption" className="mt-2" style={{ color: theme.muted }}>
+            Loading announcements...
+          </Text>
         </View>
-      </Pressable>
+      ) : latestAnnouncements.length === 0 ? (
+        <View className="items-center justify-center py-8">
+          <IconSymbol name="megaphone" size={32} color={theme.muted} />
+          <Text variant="body" className="mt-2" style={{ color: theme.muted }}>
+            No announcements yet
+          </Text>
+        </View>
+      ) : (
+        latestAnnouncements.map((announcement) => (
+          <Pressable
+            key={announcement.id}
+            onPress={() =>
+              router.push(`/info/announcements/${announcement.id}` as any)
+            }
+            style={{
+              backgroundColor: theme.card,
+              borderWidth: 1,
+              borderColor: theme.border,
+              borderRadius: 12,
+              padding: 16,
+              marginBottom: 12,
+              borderLeftWidth: 4,
+              borderLeftColor: getPriorityColor(announcement.priority),
+            }}
+          >
+            <View className="flex-row items-start justify-between">
+              <View className="flex-1 mr-3">
+                <Text color="heading" className="font-semibold mb-2">
+                  {announcement.title}
+                </Text>
+                <Text variant="body" style={{ color: theme.muted }}>
+                  {truncateText(announcement.content, 80)}
+                </Text>
+              </View>
+              <Badge>{getPriorityLabel(announcement.priority)}</Badge>
+            </View>
+          </Pressable>
+        ))
+      )}
     </Card>
   );
 };

@@ -1,4 +1,4 @@
-import * as SplashScreen from 'expo-splash-screen';
+import { NavigationGuard } from '@/src/components/RouteProtection/NavigationGuard';
 import { ReactNode } from 'react';
 import { useColorScheme, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { useTheme } from '../hooks';
 import { persistor, store } from '../store/store';
 import { LoadingProvider } from './LoadingProvider';
+import { ThemeProvider } from './ThemeProvider';
 import { UnauthorizedModalProvider } from './UnauthorizedModalProvider';
 
 type ProvidersProps = {
@@ -24,26 +25,21 @@ const PersistGateLoading = () => {
 const Providers: React.FC<ProvidersProps> = ({ children }) => {
   const theme = useTheme();
 
-  const handleBeforeLift = async () => {
-    await SplashScreen.hideAsync();
-  };
-
   return (
     <Provider store={store}>
-      <PersistGate
-        persistor={persistor}
-        loading={<PersistGateLoading />}
-        onBeforeLift={handleBeforeLift}
-      >
-        <LoadingProvider>
-          <UnauthorizedModalProvider>
-            <GestureHandlerRootView
-              style={{ flex: 1, backgroundColor: theme.background }}
-            >
-              {children}
-            </GestureHandlerRootView>
-          </UnauthorizedModalProvider>
-        </LoadingProvider>
+      <PersistGate persistor={persistor} loading={<PersistGateLoading />}>
+        <NavigationGuard />
+        <ThemeProvider>
+          <LoadingProvider>
+            <UnauthorizedModalProvider>
+              <GestureHandlerRootView
+                style={{ flex: 1, backgroundColor: theme.background }}
+              >
+                {children}
+              </GestureHandlerRootView>
+            </UnauthorizedModalProvider>
+          </LoadingProvider>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );

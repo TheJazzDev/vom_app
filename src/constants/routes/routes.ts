@@ -50,6 +50,7 @@ export const ROUTES = {
   ANNOUNCEMENT: '/more/announcement',
   WEEKLY_ACTIVITIES: '/more/weekly-activities',
   MONTHLY_ACTIVITIES: '/more/monthly-activities',
+  BIRTHDAYS: '/more/birthdays',
 } as const;
 
 export type RouteKeys = keyof typeof ROUTES;

@@ -5,8 +5,8 @@ import { Text } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { FlatList, Pressable, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 
 // Mock events data
 const CHURCH_EVENTS = [
@@ -131,6 +131,19 @@ export default function InfoEvents() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('upcoming');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      // Simulate API call - replace with actual API call when available
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Error refreshing events:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
 
   const filteredEvents = CHURCH_EVENTS.filter((event) => {
     const matchesCategory =
@@ -482,6 +495,14 @@ export default function InfoEvents() {
         renderItem={({ item }) => <EventCard event={item} />}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
         ListEmptyComponent={
           <View className="items-center py-12">
             <IconSymbol

@@ -6,30 +6,31 @@ import { useTheme } from '@/src/hooks';
 import { useAuthSlice } from '@/src/store';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
-import { Alert, Image, Pressable, ScrollView, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  View,
+} from 'react-native';
 
 export default function ProfileIndex() {
   const theme = useTheme();
-  const router = useRouter();
   const { currentUser } = useAuthSlice();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const profileOptions = [
-    {
-      title: 'Edit Profile',
-      description: 'Update your personal information',
-      route: '/profile/edit',
-      icon: 'person.crop.circle.fill',
-      color: '#3B82F6',
-    },
-    {
-      title: 'Profile Settings',
-      description: 'Manage your account preferences',
-      route: '/profile/settings',
-      icon: 'gearshape.fill',
-      color: '#10B981',
-    },
-  ];
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      // TODO: Fetch updated user data when API is available
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Error refreshing profile:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
 
   // const getStatusColor = (status: string | undefined) => {
   //   return status === 'active' ? '#10B981' : '#F59E0B';
@@ -60,62 +61,34 @@ export default function ProfileIndex() {
     },
   ];
 
-  const OptionCard = ({ option }: { option: any }) => (
-    <Pressable
-      onPress={() => Alert.alert(`${option.title} is not available yet.`)}
-      style={{
-        backgroundColor: theme.card,
-        borderWidth: 1,
-        borderColor: theme.border,
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        marginBottom: 12,
-      }}
-      android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-    >
-      <View className="flex-row items-center">
-        <View
-          className="p-3 rounded-full mr-4"
-          style={{ backgroundColor: `${option.color}15` }}
-        >
-          <IconSymbol name={option.icon} size={20} color={option.color} />
-        </View>
-        <View className="flex-1">
-          <Text
-            variant="h6"
-            className="font-semibold mb-1"
-            style={{ color: theme.heading }}
-          >
-            {option.title}
-          </Text>
-          <Text variant="subtitle2" style={{ color: theme.muted }}>
-            {option.description}
-          </Text>
-        </View>
-        <IconSymbol name="chevron.right" size={16} color={theme.muted} />
-      </View>
-    </Pressable>
-  );
-
   const verificationStatus = getVerificationStatus();
 
   return (
     <ScrollView
       className="flex-1"
       style={{ backgroundColor: theme.background }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          tintColor={theme.primary}
+          colors={[theme.primary]}
+        />
+      }
     >
-      {/* Profile Header */}
+      {/* Enhanced Profile Header */}
       <View className="relative">
         <LinearGradient
           colors={[theme.primary, theme.secondary || theme.primary]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
           style={{
-            height: 110,
-            justifyContent: 'flex-end',
-            padding: 24,
+            paddingTop: 24,
+            paddingBottom: 80,
+            paddingHorizontal: 24,
           }}
         >
-          {/* Background Pattern */}
+          {/* Background Pattern - Enhanced */}
           <View
             style={{
               position: 'absolute',
@@ -123,23 +96,27 @@ export default function ProfileIndex() {
               left: 0,
               right: 0,
               bottom: 0,
-              opacity: 0.1,
+              opacity: 0.08,
             }}
           >
-            <View style={{ position: 'absolute', top: 40, right: 40 }}>
-              <IconSymbol name="person.3.fill" size={80} color="white" />
+            <View style={{ position: 'absolute', top: 20, right: 30 }}>
+              <IconSymbol name="person.3.fill" size={100} color="white" />
             </View>
-            <View style={{ position: 'absolute', bottom: 40, left: 40 }}>
-              <IconSymbol name="heart.fill" size={60} color="white" />
+            <View style={{ position: 'absolute', bottom: 30, left: 30 }}>
+              <IconSymbol name="heart.fill" size={80} color="white" />
+            </View>
+            <View style={{ position: 'absolute', top: 80, left: 60 }}>
+              <IconSymbol name="star.fill" size={40} color="white" />
             </View>
           </View>
 
+          {/* Verification Badge - Improved */}
           <View
-            className="rounded-xl px-2 py-1 w-fit absolute top-3 right-3"
+            className="rounded-full px-4 py-2 self-start mb-4"
             style={{
-              backgroundColor: `${verificationStatus.color}10`,
-              borderWidth: 1,
-              borderColor: `${verificationStatus.color}30`,
+              backgroundColor: `${verificationStatus.color}20`,
+              borderWidth: 1.5,
+              borderColor: verificationStatus.color,
             }}
           >
             <View className="flex-row items-center">
@@ -149,12 +126,12 @@ export default function ProfileIndex() {
                     ? 'checkmark.seal.fill'
                     : 'exclamationmark.triangle.fill'
                 }
-                size={20}
+                size={18}
                 color={verificationStatus.color}
               />
               <Text
-                variant="h6"
-                className="ml-3 font-semibold"
+                variant="caption"
+                className="ml-2 font-bold"
                 style={{ color: verificationStatus.color }}
               >
                 {verificationStatus.text}
@@ -162,10 +139,21 @@ export default function ProfileIndex() {
             </View>
           </View>
 
-          {/* Profile Info */}
-          <View className="flex-row items-center relative z-10">
-            <View className="relative mr-4">
-              <View className="w-20 h-20 rounded-full border-4 border-white overflow-hidden">
+          {/* Profile Info - Centered */}
+          <View className="items-center relative z-10">
+            <View className="relative mb-4">
+              <View
+                className="w-28 h-28 rounded-full overflow-hidden"
+                style={{
+                  borderWidth: 5,
+                  borderColor: 'rgba(255,255,255,0.3)',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 8,
+                }}
+              >
                 {currentUser?.avatar ? (
                   <Image
                     source={{ uri: currentUser.avatar }}
@@ -174,9 +162,9 @@ export default function ProfileIndex() {
                 ) : (
                   <View
                     className="w-full h-full items-center justify-center"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                    style={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
                   >
-                    <Text variant="h2" className="text-white font-bold">
+                    <Text variant="h1" className="text-white font-bold">
                       {currentUser?.firstName &&
                         getUserInitials(
                           currentUser.firstName,
@@ -186,16 +174,39 @@ export default function ProfileIndex() {
                   </View>
                 )}
               </View>
+              {/* Online/Verified Indicator */}
+              {currentUser?.verified && (
+                <View
+                  className="absolute bottom-1 right-1 w-8 h-8 rounded-full items-center justify-center"
+                  style={{
+                    backgroundColor: '#10B981',
+                    borderWidth: 3,
+                    borderColor: 'white',
+                  }}
+                >
+                  <IconSymbol name="checkmark" size={16} color="white" />
+                </View>
+              )}
             </View>
 
-            <View className="flex-1">
-              <Text variant="h3" className="text-white font-bold">
+            <View className="items-center">
+              <Text
+                variant="h2"
+                className="text-white font-bold text-center mb-1"
+              >
                 {currentUser?.title} {currentUser?.firstName}{' '}
                 {currentUser?.lastName}
               </Text>
-              <Text variant="body" className="text-white/90 dark:text-white/80">
-                {currentUser?.email || 'No email provided'}
-              </Text>
+              <View className="flex-row items-center mb-2">
+                <IconSymbol
+                  name="envelope.fill"
+                  size={14}
+                  color="rgba(255,255,255,0.8)"
+                />
+                <Text variant="body" className="text-white/80 ml-2">
+                  {currentUser?.email || 'No email provided'}
+                </Text>
+              </View>
             </View>
           </View>
         </LinearGradient>
@@ -401,19 +412,6 @@ export default function ProfileIndex() {
         </View>
       )}
 
-      {/* Profile Actions */}
-      <View className="px-4 mb-6">
-        <Text
-          variant="h5"
-          className="font-semibold mb-2"
-          style={{ color: theme.heading }}
-        >
-          Profile Management
-        </Text>
-        {profileOptions.map((option, index) => (
-          <OptionCard key={option.route} option={option} />
-        ))}
-      </View>
     </ScrollView>
   );
 }

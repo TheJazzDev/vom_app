@@ -1,20 +1,25 @@
-import { Tabs, usePathname } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useTheme } from '@/src/hooks';
 import { Platform } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const theme = useTheme();
-  const pathname = usePathname()
-  const addSafe = ['/', '/programme', '/directory', '/ministry', '/more', '/notifications']
 
+  // Disable custom tab transitions on iOS to prevent blank screens
+  // Expo Router's built-in animations handle this better
+  // useTabTransition();
+
+  // Always apply top safe area for consistent layout
+  // Nested stack headers will automatically overlap this without double-padding
+  const edges = Platform.OS === 'ios' ? ['top'] : ['top'];
   return (
     <SafeAreaView
-      edges={addSafe.includes(pathname) ? ['top'] : []}
+      edges={edges as Edges}
       className="flex-1"
       style={{ backgroundColor: theme.background }}
     >
@@ -38,6 +43,16 @@ export default function TabLayout() {
             shadowOpacity: 0,
             borderColor: theme.border,
           },
+          // iOS-optimized: Use shift animation for smoother transitions
+          // animation: Platform.OS === 'ios' ? 'shift' : 'fade',
+          // Keep tabs mounted to prevent blank screens during transitions
+          lazy: false,
+          // Don't freeze content when blurred to prevent render issues
+          freezeOnBlur: false,
+          // Keep screens mounted for smooth transitions
+          // unmountOnBlur: false,
+          // Optimize animation duration for iOS
+          // animationDuration: Platform.OS === 'ios' ? 200 : 150,
         }}
       >
         <Tabs.Screen

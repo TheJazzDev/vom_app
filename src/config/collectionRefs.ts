@@ -7,3 +7,4 @@ export const membersRef = collection(firestore, 'members');
 export const childrenRef = collection(firestore, 'children');
 export const programmesRef = collection(firestore, 'programmes');
 export const departmentsRef = collection(firestore, 'departments');
+export const announcementsRef = collection(firestore, 'announcements');

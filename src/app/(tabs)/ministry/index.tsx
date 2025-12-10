@@ -1,19 +1,41 @@
 import { MinistryCard } from '@/src/components';
-import { Text } from '@/src/components/UI';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
+import { Text } from '@/src/components/UI';
 import { MINISTRY_OPTIONS } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, View, Pressable } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Pressable, RefreshControl, ScrollView, View } from 'react-native';
 
 export default function MinistryIndex() {
   const theme = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      // Simulate API call - replace with actual API call when available
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Error refreshing ministry:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
 
   return (
     <ScrollView
       className="flex-1"
       style={{ backgroundColor: theme.background }}
       showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          tintColor={theme.primary}
+          colors={[theme.primary]}
+        />
+      }
     >
       {/* Enhanced Hero Section */}
       <LinearGradient
@@ -21,8 +43,7 @@ export default function MinistryIndex() {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{
-          paddingTop: 32,
-          paddingBottom: 32,
+          paddingVertical: 20,
           paddingHorizontal: 16,
           borderBottomLeftRadius: 24,
           borderBottomRightRadius: 24,
@@ -39,75 +60,45 @@ export default function MinistryIndex() {
           <View className="flex-1">
             <View className="flex-row items-center gap-2 mb-2">
               <View className="w-10 h-10 rounded-full bg-white/20 items-center justify-center">
-                <IconSymbol
-                  name="book.fill"
-                  size={22}
-                  color="white"
-                />
+                <IconSymbol name="book.fill" size={22} color="white" />
               </View>
               <Text
                 variant="h1"
-                className="text-white font-bold"
+                className="text-white dark:text-white font-bold"
               >
                 Ministry
               </Text>
             </View>
             <Text
               variant="body"
-              className="text-white/90 leading-6 pr-2"
+              className="text-white/90 dark:text-white/90 leading-6 pr-2"
             >
-              Grow spiritually through our programs and connect with God's family
+              Grow spiritually through our programs and connect with God&apos;s
+              family
             </Text>
           </View>
 
           {/* Optional: Menu Button */}
-          <Pressable
-            className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2"
-          >
-            <IconSymbol
-              name="ellipsis.circle"
-              size={22}
-              color="white"
-            />
+          <Pressable className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2">
+            <IconSymbol name="ellipsis.circle" size={22} color="white" />
           </Pressable>
         </View>
-
-        {/* Feature Highlights */}
-        {/* <View className="flex-row gap-2 mt-4">
-          <View className="flex-1 bg-white/20 rounded-2xl px-4 py-3 border border-white/10">
-            <View className="flex-row items-center gap-2 mb-1">
-              <IconSymbol name="book.closed.fill" size={18} color="white" />
-              <Text variant="h4" className="text-white font-bold">
-                Bible Study
-              </Text>
-            </View>
-            <Text variant="caption" className="text-white/80">
-              Weekly sessions
-            </Text>
-          </View>
-
-          <View className="flex-1 bg-white/20 rounded-2xl px-4 py-3 border border-white/10">
-            <View className="flex-row items-center gap-2 mb-1">
-              <IconSymbol name="hands.sparkles.fill" size={18} color="white" />
-              <Text variant="h4" className="text-white font-bold">
-                Prayer
-              </Text>
-            </View>
-            <Text variant="caption" className="text-white/80">
-              Join us daily
-            </Text>
-          </View>
-        </View> */}
 
         {/* Scripture Highlight */}
         <View className="mt-4 bg-white/10 rounded-2xl px-4 py-3 border border-white/10 backdrop-blur-sm">
           <View className="flex-row items-start gap-2">
             <IconSymbol name="quote.opening" size={16} color="white" />
             <View className="flex-1">
-              <Text variant="caption" className="text-white/90 italic leading-5 mb-1">
-                "Therefore go and make disciples of all nations..."
+              <Text
+                variant="caption"
+                className="text-white/90 dark:text-white/90 italic leading-5 mb-1"
+              >
+                &ldquo;Therefore go and make disciples of all nations...&rdquo;
               </Text>
-              <Text variant="caption" className="text-white/70 font-semibold">
+              <Text
+                variant="caption"
+                className="text-white/70 dark:text-white/70 font-semibold"
+              >
                 Matthew 28:19
               </Text>
             </View>
@@ -127,10 +118,7 @@ export default function MinistryIndex() {
             >
               Explore Our Ministry
             </Text>
-            <Text
-              variant="caption"
-              style={{ color: theme.muted }}
-            >
+            <Text variant="caption" style={{ color: theme.muted }}>
               {MINISTRY_OPTIONS.length} ways to get involved
             </Text>
           </View>
@@ -145,13 +133,13 @@ export default function MinistryIndex() {
 
         {/* Enhanced Call to Action */}
         <View
-          className="mt-8 rounded-2xl p-6 border"
+          className="mt-8 rounded-2xl p-4 border"
           style={{
             backgroundColor: `${theme.brand}08`,
             borderColor: `${theme.brand}20`,
           }}
         >
-          <View className="flex-row items-start gap-3 mb-3">
+          <View className="flex-row items-start gap-3">
             <View
               className="w-12 h-12 rounded-full items-center justify-center"
               style={{ backgroundColor: `${theme.brand}15` }}
@@ -175,7 +163,9 @@ export default function MinistryIndex() {
                 className="leading-6"
                 style={{ color: theme.muted }}
               >
-                Join us in building God's kingdom through fellowship, worship, and service. Every member has a role to play in our church family.
+                Join us in building God&apos;s kingdom through fellowship,
+                worship, and service. Every member has a role to play in our
+                church family.
               </Text>
             </View>
           </View>
@@ -187,7 +177,10 @@ export default function MinistryIndex() {
               style={{ backgroundColor: theme.brand }}
             >
               <IconSymbol name="plus.circle.fill" size={18} color="white" />
-              <Text variant="body" className="text-white font-semibold">
+              <Text
+                variant="body"
+                className="text-white dark:text-white font-semibold"
+              >
                 Join Now
               </Text>
             </Pressable>

@@ -6,6 +6,7 @@ import { getMemberByEmail } from './getMemberByEmail';
 import { login } from './login';
 import { logout } from './logout';
 import { sendEmailVerificationLink } from './sendEmailVerificationLink';
+import { updateUserProfile } from './updateUserProfile';
 import { verifyPhoneCodeAndSignIn } from './verifyPhoneCodeAndSignIn';
 
 export {
@@ -17,5 +18,6 @@ export {
   login,
   logout,
   sendEmailVerificationLink,
+  updateUserProfile,
   verifyPhoneCodeAndSignIn,
 };

@@ -1,33 +1,52 @@
 import { quickStats } from '@/src/components';
+import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { ProgrammeCard } from '@/src/components/Programme/components/ProgrammeCard';
 import { programmeOptions } from '@/src/components/Programme/constants/programmeOptions';
 import { Text, View } from '@/src/components/UI';
-import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { useTheme } from '@/src/hooks';
 import { dispatch, useProgrammeSlice } from '@/src/store';
 import { fetchProgrammeStats } from '@/src/store/thunks/programme';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable } from 'react-native';
 
 export default function ProgrammeIndex() {
   const theme = useTheme();
   const { stats, isStatsLoading } = useProgrammeSlice();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProgrammeStats());
   }, []);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await dispatch(fetchProgrammeStats());
+    } catch (error) {
+      console.error('Error refreshing programme stats:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
   return (
-    <View scrollable gradient paddingHorizontal={0}>
+    <View
+      scrollable
+      gradient
+      paddingHorizontal={0}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      refreshTintColor={theme.primary}
+      refreshColors={[theme.primary]}
+    >
       {/* Enhanced Gradient Header */}
       <LinearGradient
         colors={['#3B82F6', '#2563EB', '#6366F1']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{
-          paddingTop: 32,
-          paddingBottom: 32,
+          paddingVertical: 20,
           paddingHorizontal: 16,
           borderBottomLeftRadius: 24,
           borderBottomRightRadius: 24,
@@ -43,31 +62,26 @@ export default function ProgrammeIndex() {
           <View className="flex-1">
             <View className="flex-row items-center gap-2 mb-2">
               <View className="w-10 h-10 rounded-full bg-white/20 items-center justify-center">
-                <IconSymbol
-                  name="calendar"
-                  size={22}
-                  color="white"
-                />
+                <IconSymbol name="calendar" size={22} color="white" />
               </View>
               <Text
                 variant="h1"
-                className="text-white font-bold"
+                className="text-white dark:text-white font-bold"
               >
                 Programmes
               </Text>
             </View>
             <Text
               variant="body"
-              className="text-white/90 leading-6 pr-2"
+              className="text-white/90 dark:text-white/90 leading-6 pr-2"
             >
-              Stay connected with all church activities, services, and special events
+              Stay connected with all church activities, services, and special
+              events
             </Text>
           </View>
 
           {/* Optional: Calendar/Filter Button */}
-          <Pressable
-            className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2"
-          >
+          <Pressable className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2">
             <IconSymbol
               name="line.3.horizontal.decrease.circle"
               size={22}
@@ -101,34 +115,18 @@ export default function ProgrammeIndex() {
                 >
                   <Text
                     variant="h3"
-                    className="text-white font-bold mb-1"
+                    className="text-white dark:text-white font-bold mb-1"
                   >
                     {stat.value}
                   </Text>
                   <Text
                     variant="caption"
-                    className="text-white/90 font-medium"
+                    className="text-white/90 dark:text-white/90 font-medium"
                   >
                     {stat.label}
                   </Text>
                 </View>
               ))}
-        </View>
-
-        {/* Optional: Quick Action Chips */}
-        <View className="flex-row gap-2 mt-4">
-          <Pressable className="bg-white/15 rounded-full px-4 py-2 flex-row items-center gap-1.5 border border-white/10">
-            <IconSymbol name="calendar.badge.plus" size={16} color="white" />
-            <Text variant="caption" className="text-white font-semibold">
-              This Week
-            </Text>
-          </Pressable>
-          <Pressable className="bg-white/15 rounded-full px-4 py-2 flex-row items-center gap-1.5 border border-white/10">
-            <IconSymbol name="star.fill" size={16} color="white" />
-            <Text variant="caption" className="text-white font-semibold">
-              Featured
-            </Text>
-          </Pressable>
         </View>
       </LinearGradient>
 
@@ -142,10 +140,7 @@ export default function ProgrammeIndex() {
           >
             All Programmes
           </Text>
-          <Text
-            variant="caption"
-            className="text-gray-500 dark:text-gray-400"
-          >
+          <Text variant="caption" className="text-gray-500 dark:text-gray-400">
             {programmeOptions.length} Categories
           </Text>
         </View>

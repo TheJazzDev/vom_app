@@ -9,14 +9,16 @@ import {
   View,
 } from '@/src/components';
 import { loginSchema, ROUTES } from '@/src/constants';
+import { useBackHandler } from '@/src/hooks';
 import { useProtectedNavigation } from '@/src/hooks/useProtectedNavigation';
 import { dispatch, loginThunk, useAuthSlice } from '@/src/store';
 import { isEmail } from '@/src/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
 import {
   Alert,
+  BackHandler,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
@@ -42,6 +44,14 @@ export default function LoginScreen() {
       password: '',
     },
   });
+
+  // Handle Android back button - navigate to home on back press
+  const handleBackPress = useCallback(() => {
+    navigateTo(ROUTES.HOME, true);
+    return true; // Prevent default back behavior
+  }, [navigateTo]);
+
+  useBackHandler(handleBackPress);
 
   // const emailOrPhone = watch('emailOrPhone');
   // const showPassword = isEmail(emailOrPhone);

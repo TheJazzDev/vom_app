@@ -5,10 +5,11 @@ import {
   SlideContent,
 } from '@/src/components/Onboarding';
 import { onboardingSlides } from '@/src/constants/onboardingData';
+import { useBackHandler } from '@/src/hooks/useBackHandler';
 import { useOnboardingState } from '@/src/hooks/useOnboardingState';
 import { useRouter } from 'expo-router';
-import React, { useRef, useState } from 'react';
-import { Animated, Dimensions, ScrollView, View } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { Alert, Animated, Dimensions, ScrollView, View } from 'react-native';
 import { ROUTES } from '../constants';
 
 const { width } = Dimensions.get('window');
@@ -53,6 +54,34 @@ export default function OnboardingScreen() {
       });
     }
   };
+
+  // Handle Android back button - prevents accidental exit during onboarding
+  const handleBackPress = useCallback(() => {
+    if (currentIndex > 0) {
+      // If not on first slide, go to previous slide
+      goToPrevious();
+      return true; // Prevent default back behavior
+    } else {
+      // On first slide, show confirmation dialog
+      Alert.alert(
+        'Exit Onboarding?',
+        'Are you sure you want to exit? You can complete this later.',
+        [
+          { text: 'Stay', style: 'cancel' },
+          {
+            text: 'Exit',
+            style: 'destructive',
+            onPress: () => {
+              router.replace(ROUTES.HOME);
+            },
+          },
+        ],
+      );
+      return true; // Prevent default back behavior
+    }
+  }, [currentIndex, goToPrevious]);
+
+  useBackHandler(handleBackPress);
 
   const onScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { x: scrollX } } }],

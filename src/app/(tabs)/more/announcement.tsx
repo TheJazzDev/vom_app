@@ -1,75 +1,13 @@
-// (info)/announcements.tsx
 import { IconSymbol } from '@/src/components/Icons';
 import { Text } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
+import { useAnnouncementSlice } from '@/src/store/slices';
+import { dispatch } from '@/src/store/store';
+import { fetchAnnouncementStats, fetchAnnouncements } from '@/src/store/thunks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { FlatList, Pressable, View } from 'react-native';
-
-// Mock announcements data
-const ANNOUNCEMENTS = [
-  {
-    id: '1',
-    title: 'Church Revival: 7 Days of Glory',
-    content:
-      'Join us for a powerful 7-day revival program starting March 15th. Special guest minister Pastor James Adebayo will be ministering. Services start at 6:00 PM daily.',
-    type: 'event',
-    priority: 'high',
-    date: '2024-03-10',
-    author: 'Pastor David Johnson',
-    readTime: '2 min read',
-    tags: ['Revival', 'Special Program'],
-  },
-  {
-    id: '2',
-    title: 'New Member Orientation',
-    content:
-      'Welcome to all new members! Join us for orientation class this Saturday at 10:00 AM in the Fellowship Hall. Learn about church values, mission, and how to get involved.',
-    type: 'info',
-    priority: 'medium',
-    date: '2024-03-08',
-    author: 'Sister Grace Williams',
-    readTime: '3 min read',
-    tags: ['New Members', 'Orientation'],
-  },
-  {
-    id: '3',
-    title: 'Easter Celebration Preparation',
-    content:
-      'Easter is approaching! We need volunteers for decoration, ushering, and choir. Please contact your department heads. Rehearsals start next week.',
-    type: 'volunteer',
-    priority: 'medium',
-    date: '2024-03-05',
-    author: 'Programme Department',
-    readTime: '1 min read',
-    tags: ['Easter', 'Volunteers', 'Preparation'],
-  },
-  {
-    id: '4',
-    title: 'Church Building Fund Update',
-    content:
-      'Praise God! We have raised ₦50 million towards our new sanctuary. Target is ₦100 million. Continue to support with your sacrificial giving.',
-    type: 'financial',
-    priority: 'low',
-    date: '2024-03-03',
-    author: 'Treasury Department',
-    readTime: '2 min read',
-    tags: ['Building Fund', 'Financial'],
-  },
-  {
-    id: '5',
-    title: 'Youth Camp Registration Open',
-    content:
-      'Annual youth camp "Ignite 2024" registration is now open. Dates: July 15-20. Early bird registration until March 31st. See youth leaders for forms.',
-    type: 'registration',
-    priority: 'high',
-    date: '2024-03-01',
-    author: 'Youth Ministry',
-    readTime: '2 min read',
-    tags: ['Youth', 'Camp', 'Registration'],
-  },
-];
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 
 const ANNOUNCEMENT_TYPES = [
   { key: 'all', label: 'All', color: '#6B7280' },
@@ -83,9 +21,41 @@ const ANNOUNCEMENT_TYPES = [
 export default function InfoAnnouncements() {
   const theme = useTheme();
   const router = useRouter();
-  const [selectedType, setSelectedType] = useState('all');
+  const [selectedType, setSelectedType] = useState<'all' | AnnouncementType>(
+    'all',
+  );
 
-  const filteredAnnouncements = ANNOUNCEMENTS.filter(
+  const {
+    announcements,
+    isAnnouncementsLoading,
+    stats,
+    announcementsLastFetch,
+  } = useAnnouncementSlice();
+
+  useEffect(() => {
+    const fiveMinutes = 5 * 60 * 1000;
+    const shouldFetch =
+      !announcementsLastFetch ||
+      Date.now() - announcementsLastFetch > fiveMinutes;
+
+    if (shouldFetch && !isAnnouncementsLoading) {
+      dispatch(fetchAnnouncements());
+      dispatch(fetchAnnouncementStats());
+    }
+  }, [announcementsLastFetch, isAnnouncementsLoading]);
+
+  const onRefresh = useCallback(async () => {
+    try {
+      await Promise.all([
+        dispatch(fetchAnnouncements()).unwrap(),
+        dispatch(fetchAnnouncementStats()).unwrap(),
+      ]);
+    } catch (error) {
+      console.error('Error refreshing announcements:', error);
+    }
+  }, []);
+
+  const filteredAnnouncements = announcements.filter(
     (announcement) =>
       selectedType === 'all' || announcement.type === selectedType,
   );
@@ -236,26 +206,26 @@ export default function InfoAnnouncements() {
         </View>
 
         {/* Stats */}
-        <View className="flex-row space-x-3">
-          <View className="bg-white/20 rounded-lg px-3 py-2">
+        <View className="flex-row gap-4">
+          <View className="bg-white/20 rounded-lg px-3 py-2 w-28">
             <Text variant="h4" className="text-white font-bold">
-              {ANNOUNCEMENTS.filter((a) => a.priority === 'high').length}
+              {stats?.highPriority || 0}
             </Text>
             <Text variant="caption" className="text-white/80">
               High Priority
             </Text>
           </View>
-          <View className="bg-white/20 rounded-lg px-3 py-2">
+          <View className="bg-white/20 rounded-lg px-3 py-2 w-28">
             <Text variant="h4" className="text-white font-bold">
-              {ANNOUNCEMENTS.length}
+              {stats?.total || 0}
             </Text>
             <Text variant="caption" className="text-white/80">
               Total
             </Text>
           </View>
-          <View className="bg-white/20 rounded-lg px-3 py-2">
+          <View className="bg-white/20 rounded-lg px-3 py-2 w-28">
             <Text variant="h4" className="text-white font-bold">
-              5
+              {stats?.thisWeek || 0}
             </Text>
             <Text variant="caption" className="text-white/80">
               This Week
@@ -273,7 +243,7 @@ export default function InfoAnnouncements() {
           keyExtractor={(item) => item.key}
           renderItem={({ item }) => (
             <Pressable
-              onPress={() => setSelectedType(item.key)}
+              onPress={() => setSelectedType(item.key as AnnouncementType)}
               className="mr-3 px-4 py-2 rounded-full"
               style={{
                 backgroundColor:
@@ -304,6 +274,14 @@ export default function InfoAnnouncements() {
         renderItem={({ item }) => <AnnouncementCard announcement={item} />}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isAnnouncementsLoading}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
         ListEmptyComponent={
           <View className="items-center py-12">
             <IconSymbol name="megaphone" size={48} color={theme.muted} />

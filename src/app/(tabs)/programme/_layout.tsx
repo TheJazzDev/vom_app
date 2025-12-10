@@ -1,29 +1,15 @@
 import { useTheme } from '@/src/hooks';
+import { getStackScreenOptions, HIDE_HEADER } from '@/src/utils/navigation.config';
 import { Stack } from 'expo-router';
 
 export default function ProgrammeLayout() {
   const theme = useTheme();
 
   return (
-    <Stack
-      screenOptions={{
-        headerTitleAlign: 'center',
-        headerTintColor: theme.brand,
-        headerBackTitle: 'Back',
-        headerTitleStyle: {
-          fontSize: 14,
-        },
-        headerBackTitleStyle: {
-          fontSize: 14,
-        },
-        headerStyle: {
-          backgroundColor: theme.background,
-        },
-      }}
-    >
+    <Stack screenOptions={getStackScreenOptions(theme)}>
       <Stack.Screen
         name="index"
-        options={{ title: 'Programme', headerShown: false }}
+        options={{ title: 'Programme', ...HIDE_HEADER }}
       />
       <Stack.Screen name="current" options={{ title: '' }} />
       <Stack.Screen

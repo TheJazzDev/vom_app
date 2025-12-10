@@ -7,6 +7,7 @@ import {
   login,
   logout,
   sendEmailVerificationLink,
+  updateUserProfile,
   verifyPhoneCodeAndSignIn,
 } from '@/src/services/auth';
 import { getMemberById } from '@/src/services/auth/getMemberByEmail';
@@ -147,6 +148,35 @@ export const sendEmailVerificationLinkThunk = createAsyncThunk<
     );
   }
 });
+
+export const updateUserProfileThunk = createAsyncThunk(
+  'auth/updateUserProfile',
+  async (
+    data: { primaryPhone?: string; secondaryPhone?: string; address?: string },
+    { rejectWithValue, dispatch },
+  ) => {
+    try {
+      // Update the profile in the database
+      await updateUserProfile(data);
+
+      // Refetch the updated user data
+      const authUser = await import('@/src/config/firebase').then(
+        (m) => m.auth.currentUser,
+      );
+
+      if (authUser) {
+        const updatedUser = await dispatch(
+          getMemberByAuthUidThunk(authUser.uid),
+        ).unwrap();
+        return updatedUser;
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to update profile');
+    }
+  },
+);
 
 export const logoutThunk = createAsyncThunk(
   'auth/logout',

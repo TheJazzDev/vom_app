@@ -1,7 +1,9 @@
 import { useTheme } from '@/src/hooks';
 import React from 'react';
+import { Platform } from 'react-native';
 import { Text, View } from '..';
 import Announcement from './Announcement';
+import BirthdayCelebrations from './BirthdayCelebrations';
 import Devotionals from './Devotionals';
 import { Notifications } from './Navigations/Notifications';
 import { ProfileHeader } from './Navigations/ProfileHeader';
@@ -20,7 +22,10 @@ export default function Dashboard({ refreshing, onRefresh }: DashboardProps) {
 
   return (
     <View gradient className="flex-1">
-      <View id="header" className="flex-row justify-between p-4">
+      <View
+        id="header"
+        className={`flex-row justify-between p-4 ${Platform.OS === 'ios' ? 'pt-3' : 'pt-6'}`}
+      >
         <ProfileHeader />
         <Notifications />
       </View>
@@ -42,6 +47,7 @@ export default function Dashboard({ refreshing, onRefresh }: DashboardProps) {
         <Devotionals />
         <View style={{ padding: 10, marginTop: -4 }}>
           <NextService />
+          <BirthdayCelebrations />
           <Announcement />
           <RecentSermons />
           <PrayerRequest />
