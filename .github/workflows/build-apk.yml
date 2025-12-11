@@ -1,0 +1,57 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      actions: write
+      id-token: write
+
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup Node
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install bun (optional — your project uses bun)
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+
+      # Install EAS CLI
+      - name: Install EAS CLI
+        run: |
+          npm install -g eas-cli
+
+      # Install project dependencies
+      - name: Install dependencies
+        run: bun install
+
+      # Authenticate EAS (local build does NOT require login)
+      - name: Prepare EAS local build
+        run: |
+          eas local credentials
+
+      # Build APK using your production-apk profile
+      - name: Build APK
+        run: |
+          eas build --platform android --profile production-apk --local --output ./vom.apk
+
+      # Upload APK artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-apk
+          path: ./vom.apk
+          retention-days: 7
