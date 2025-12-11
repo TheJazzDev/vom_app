@@ -1,5 +1,6 @@
 import { programmesRef } from '@/src/config';
 import { getDocs, orderBy, query, where } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export const getUpcomingProgrammes = async (): Promise<AllProgrammes[]> => {
   const now = new Date().toISOString();
@@ -11,8 +12,10 @@ export const getUpcomingProgrammes = async (): Promise<AllProgrammes[]> => {
   );
 
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as AllProgrammes[];
+  return snapshot.docs.map((doc) =>
+    serializeFirestoreData<AllProgrammes>({
+      id: doc.id,
+      ...doc.data(),
+    })
+  );
 };

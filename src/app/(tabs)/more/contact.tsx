@@ -1,61 +1,148 @@
-import { Card, Spacer, Text, View } from '@/src/components';
-import React from 'react';
-import { Alert, Linking, TouchableOpacity } from 'react-native';
+import { IconSymbol } from '@/src/components/Icons';
+import { Text, View } from '@/src/components/UI';
+import { useTheme } from '@/src/hooks';
+import * as Clipboard from 'expo-clipboard';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
+import {
+  Alert,
+  Animated,
+  Linking,
+  Platform,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
-interface ContactCardProps {
+interface ContactMethodProps {
   icon: string;
   title: string;
-  details: string[];
-  action?: () => void;
-  actionText?: string;
+  subtitle: string;
+  value: string;
+  type: 'phone' | 'email' | 'location';
+  gradient: [string, string];
 }
 
-const ContactCard: React.FC<ContactCardProps> = ({
+const ContactMethod: React.FC<ContactMethodProps> = ({
   icon,
   title,
-  details,
-  action,
-  actionText,
-}) => (
-  <View className="bg-white dark:bg-gray-800 rounded-xl p-6 mb-4 shadow-sm">
-    <View className="flex-row items-center mb-4">
-      <View className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full items-center justify-center mr-4">
-        <Text className="text-xl">{icon}</Text>
-      </View>
-      <Text variant="h4" className="font-bold flex-1">
-        {title}
-      </Text>
-    </View>
+  subtitle,
+  value,
+  type,
+  gradient,
+}) => {
+  const theme = useTheme();
+  const [scaleAnim] = useState(new Animated.Value(1));
 
-    {details.map((detail, index) => (
-      <Text
-        key={index}
-        variant="body"
-        className="mb-2 text-gray-600 dark:text-gray-300"
-      >
-        {detail}
-      </Text>
-    ))}
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
 
-    {action && actionText && (
-      <TouchableOpacity
-        onPress={action}
-        className="bg-blue-600 dark:bg-blue-500 rounded-lg py-3 px-4 mt-3"
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 3,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePress = () => {
+    if (type === 'phone') {
+      Linking.openURL(`tel:${value}`).catch(() =>
+        Alert.alert('Error', 'Unable to make phone call'),
+      );
+    } else if (type === 'email') {
+      Linking.openURL(`mailto:${value}`).catch(() =>
+        Alert.alert('Error', 'Unable to open email app'),
+      );
+    } else if (type === 'location') {
+      const encodedAddress = encodeURIComponent(value);
+      Linking.openURL(`https://maps.google.com/?q=${encodedAddress}`).catch(() =>
+        Alert.alert('Error', 'Unable to open maps'),
+      );
+    }
+  };
+
+  return (
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={handlePress}
+    >
+      <Animated.View
+        style={{
+          transform: [{ scale: scaleAnim }],
+          marginBottom: 16,
+        }}
       >
-        <Text className="text-white text-center font-semibold">
-          {actionText}
-        </Text>
-      </TouchableOpacity>
-    )}
-  </View>
-);
+        <LinearGradient
+          colors={gradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            borderRadius: 20,
+            padding: 1,
+          }}
+        >
+          <View
+            className="rounded-[19px] p-5"
+            style={{ backgroundColor: theme.card }}
+          >
+            <View className="flex-row items-center">
+              <LinearGradient
+                colors={gradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 16,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 16,
+                }}
+              >
+                <IconSymbol name={icon as any} size={28} color="white" />
+              </LinearGradient>
+
+              <View className="flex-1">
+                <Text
+                  variant="h5"
+                  className="font-bold mb-1"
+                  style={{ color: theme.heading }}
+                >
+                  {title}
+                </Text>
+                <Text variant="caption" style={{ color: theme.muted }}>
+                  {subtitle}
+                </Text>
+              </View>
+
+              <IconSymbol
+                name="chevron.right"
+                size={20}
+                color={theme.muted}
+              />
+            </View>
+          </View>
+        </LinearGradient>
+      </Animated.View>
+    </Pressable>
+  );
+};
 
 interface BankAccountCardProps {
   title: string;
   bankName: string;
   accountName: string;
   accountNumber: string;
-  description?: string;
+  description: string;
+  icon: string;
+  gradient: [string, string];
 }
 
 const BankAccountCard: React.FC<BankAccountCardProps> = ({
@@ -64,332 +151,351 @@ const BankAccountCard: React.FC<BankAccountCardProps> = ({
   accountName,
   accountNumber,
   description,
+  icon,
+  gradient,
 }) => {
-  const copyToClipboard = (text: string, label: string) => {
-    // In a real app, you'd use @react-native-clipboard/clipboard
-    Alert.alert('Account Details', `${label}: ${text}\n\nCopied!`, [
-      { text: 'OK' },
-    ]);
+  const theme = useTheme();
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = async (text: string, label: string) => {
+    await Clipboard.setStringAsync(text);
+    setCopied(label);
+    setTimeout(() => setCopied(null), 2000);
+
+    if (Platform.OS === 'android') {
+      Alert.alert('Copied!', `${label} copied to clipboard`);
+    }
   };
 
   return (
-    <View className="bg-white dark:bg-gray-800 rounded-xl p-6 mb-4 shadow-sm border-l-4 border-l-green-500">
-      <View className="flex-row items-center mb-3">
-        <View className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full items-center justify-center mr-3">
-          <Text className="text-lg">🏦</Text>
-        </View>
-        <Text
-          variant="h5"
-          className="font-bold text-green-600 dark:text-green-400"
-        >
-          {title}
-        </Text>
-      </View>
-
-      {description && (
-        <Text
-          variant="caption"
-          className="text-gray-500 dark:text-gray-400 mb-4 italic"
-        >
-          {description}
-        </Text>
-      )}
-
-      <View className="space-y-3">
-        <View>
-          <Text
-            variant="caption"
-            className="text-gray-500 dark:text-gray-400 mb-1"
+    <View className="mb-4">
+      <LinearGradient
+        colors={gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          borderRadius: 24,
+          padding: 20,
+        }}
+      >
+        {/* Header */}
+        <View className="flex-row items-center mb-4">
+          <View
+            className="w-12 h-12 rounded-full items-center justify-center mr-3"
+            style={{ backgroundColor: 'rgba(255,255,255,0.3)' }}
           >
-            Bank Name
-          </Text>
+            <IconSymbol name={icon as any} size={24} color="white" />
+          </View>
+          <View className="flex-1">
+            <Text variant="h4" className="text-white font-bold">
+              {title}
+            </Text>
+            <Text variant="caption" className="text-white/80">
+              {description}
+            </Text>
+          </View>
+        </View>
+
+        {/* Account Details */}
+        <View
+          className="rounded-2xl p-4 mb-3"
+          style={{ backgroundColor: 'rgba(255,255,255,0.95)' }}
+        >
+          {/* Bank Name */}
           <TouchableOpacity
             onPress={() => copyToClipboard(bankName, 'Bank Name')}
+            className="mb-3"
           >
-            <Text variant="body" className="font-semibold">
-              {bankName}
+            <Text
+              variant="caption"
+              className="mb-1"
+              style={{ color: theme.muted }}
+            >
+              Bank Name
             </Text>
+            <View className="flex-row items-center justify-between">
+              <Text
+                variant="body"
+                className="font-semibold"
+                style={{ color: theme.heading }}
+              >
+                {bankName}
+              </Text>
+              {copied === 'Bank Name' ? (
+                <IconSymbol name="checkmark.circle.fill" size={18} color="#10B981" />
+              ) : (
+                <IconSymbol name="doc.on.doc" size={16} color={theme.muted} />
+              )}
+            </View>
           </TouchableOpacity>
-        </View>
 
-        <View>
-          <Text
-            variant="caption"
-            className="text-gray-500 dark:text-gray-400 mb-1"
-          >
-            Account Name
-          </Text>
+          {/* Account Name */}
           <TouchableOpacity
             onPress={() => copyToClipboard(accountName, 'Account Name')}
+            className="mb-3"
           >
-            <Text variant="body" className="font-semibold">
-              {accountName}
+            <Text
+              variant="caption"
+              className="mb-1"
+              style={{ color: theme.muted }}
+            >
+              Account Name
             </Text>
+            <View className="flex-row items-center justify-between">
+              <Text
+                variant="body"
+                className="font-semibold flex-1"
+                style={{ color: theme.heading }}
+              >
+                {accountName}
+              </Text>
+              {copied === 'Account Name' ? (
+                <IconSymbol name="checkmark.circle.fill" size={18} color="#10B981" />
+              ) : (
+                <IconSymbol name="doc.on.doc" size={16} color={theme.muted} />
+              )}
+            </View>
           </TouchableOpacity>
-        </View>
 
-        <View>
-          <Text
-            variant="caption"
-            className="text-gray-500 dark:text-gray-400 mb-1"
-          >
-            Account Number
-          </Text>
+          {/* Account Number */}
           <TouchableOpacity
             onPress={() => copyToClipboard(accountNumber, 'Account Number')}
+            className="rounded-xl p-4"
+            style={{ backgroundColor: `${gradient[0]}10` }}
           >
-            <View className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border-2 border-dashed border-gray-300 dark:border-gray-600">
+            <Text
+              variant="caption"
+              className="mb-2 text-center"
+              style={{ color: theme.muted }}
+            >
+              Account Number
+            </Text>
+            <View className="flex-row items-center justify-center">
               <Text
-                variant="h4"
-                className="font-mono font-bold text-center tracking-wider"
+                variant="h3"
+                className="font-bold font-mono tracking-wider mr-2"
+                style={{ color: theme.heading }}
               >
                 {accountNumber}
               </Text>
+              {copied === 'Account Number' ? (
+                <IconSymbol name="checkmark.circle.fill" size={20} color="#10B981" />
+              ) : (
+                <IconSymbol name="doc.on.doc" size={18} color={theme.muted} />
+              )}
             </View>
           </TouchableOpacity>
         </View>
-      </View>
 
-      <View className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600">
-        <Text
-          variant="caption"
-          className="text-center text-gray-500 dark:text-gray-400"
-        >
-          Tap on any detail to copy
+        {/* Tap to copy hint */}
+        <Text variant="caption" className="text-white/70 text-center">
+          Tap any field to copy
         </Text>
-      </View>
+      </LinearGradient>
     </View>
   );
 };
 
-const ContactUs = () => {
+export default function ContactUs() {
+  const theme = useTheme();
+
   const churchAddress =
     '4, Jaf Street, off Powerline, behind NNPC Filling Stage, Lafenwa Itele Road, Ogun State';
 
-  const openMaps = () => {
-    const encodedAddress = encodeURIComponent(churchAddress);
-    const url = `https://maps.google.com/?q=${encodedAddress}`;
-
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          Alert.alert('Error', 'Unable to open maps application');
-        }
-      })
-      .catch(() => {
-        Alert.alert('Error', 'Unable to open maps application');
-      });
-  };
-
-  const makePhoneCall = (phoneNumber: string) => {
-    const url = `tel:${phoneNumber}`;
-
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          Alert.alert('Error', 'Unable to make phone call');
-        }
-      })
-      .catch(() => {
-        Alert.alert('Error', 'Unable to make phone call');
-      });
-  };
-
-  const sendEmail = (email: string) => {
-    const url = `mailto:${email}`;
-
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          Alert.alert('Error', 'Unable to open email application');
-        }
-      })
-      .catch(() => {
-        Alert.alert('Error', 'Unable to open email application');
-      });
-  };
-
   return (
-    <View gradient scrollable>
-      <Spacer height={12} />
-      {/* Header */}
-      <Card variant="gradient-soft" className="py-8 shadow-sm">
-        <View className="items-center">
-          <View className="w-16 h-16 bg-blue-600 rounded-full items-center justify-center mb-4 shadow-lg">
-            <Text className="text-2xl text-white">📞</Text>
-          </View>
-          <Text
-            variant="h2"
-            className="font-bold dark:text-white/90 text-center"
-          >
-            Get In Touch
-          </Text>
-          <Text
-            variant="body"
-            className="text-center mt-2 text-gray-600 dark:text-gray-400"
-          >
-            We&apos;re here to connect with you
-          </Text>
-        </View>
-      </Card>
-
-      <View className="py-8">
-        {/* Church Location */}
-        <ContactCard
-          icon="📍"
-          title="Church Address"
-          details={[
-            '4, Jaf Street, off Powerline, Behind NNPC Filling Station, Lafenwa Itele Road, Ogun State',
-          ]}
-          action={openMaps}
-          actionText="Open in Maps"
-        />
-
-        {/* Prayer & Counseling */}
-        <View className="bg-white dark:bg-gray-800 rounded-xl p-6 mb-4 shadow-sm">
-          <View className="flex-row items-center mb-4">
-            <View className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full items-center justify-center mr-4">
-              <Text className="text-xl">🙏</Text>
-            </View>
-            <Text variant="h4" className="font-bold">
-              Prayer & Counseling
-            </Text>
-          </View>
-
-          <Text
-            variant="body"
-            className="mb-4 text-gray-600 dark:text-gray-300"
-          >
-            Need prayer support or spiritual counseling? Our pastors are
-            available to help.
-          </Text>
-
-          <View>
-            <TouchableOpacity
-              onPress={() => makePhoneCall('08025137520')}
-              className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800"
-            >
-              <View className="flex-row items-center">
-                <Text className="text-lg mr-3">📱</Text>
-                <View className="flex-1">
-                  <Text variant="body" className="font-semibold">
-                    08025137520
-                  </Text>
-                  <Text
-                    variant="caption"
-                    className="text-purple-600 dark:text-purple-400"
-                  >
-                    Tap to call
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-            <Spacer height={20} />
-            <TouchableOpacity
-              onPress={() => makePhoneCall('08161330142')}
-              className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800"
-            >
-              <View className="flex-row items-center">
-                <Text className="text-lg mr-3">📱</Text>
-                <View className="flex-1">
-                  <Text variant="body" className="font-semibold">
-                    08161330142
-                  </Text>
-                  <Text
-                    variant="caption"
-                    className="text-purple-600 dark:text-purple-400"
-                  >
-                    Tap to call
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Email Contact */}
-        <ContactCard
-          icon="📧"
-          title="Email Us"
-          details={[
-            'Send us your questions, prayer requests,',
-            'or any other inquiries via email.',
-          ]}
-          action={() => sendEmail('csmcvalleyofmercy@gmail.com')}
-          actionText="Send Email"
-        />
-
-        {/* Banking Information Section */}
-        <View className="mb-6">
-          <View className="items-center mb-6">
-            <View className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full items-center justify-center mb-3">
-              <Text className="text-xl">💰</Text>
-            </View>
-            <Text variant="h3" className="font-bold text-center">
-              Church Accounts
-            </Text>
-            <Text
-              variant="body"
-              className="text-center mt-2 text-gray-600 dark:text-gray-400"
-            >
-              For donations and church support
-            </Text>
-          </View>
-
-          {/* Main Church Account */}
-          <BankAccountCard
-            title="General Donations"
-            bankName="Zenith Bank"
-            accountName="C&S Movt. Church Valley of Mercy"
-            accountNumber="1229217563"
-            description="For general church offerings, donations, and operational support"
-          />
-
-          {/* Projects & Tithes Account */}
-          <BankAccountCard
-            title="Projects & Tithes"
-            bankName="Zenith Bank"
-            accountName="C&S Movt. Church Valley of Mercy (Project & Tithes)"
-            accountNumber="1310028519"
-            description="For church development projects, building fund, and tithes"
-          />
-        </View>
-
-        {/* Visit Us Message */}
-        <View className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 mb-8">
+    <View className="flex-1" style={{ backgroundColor: theme.background }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      >
+        {/* Hero Header */}
+        <LinearGradient
+          colors={['#6366F1', '#8B5CF6']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            paddingHorizontal: 20,
+            paddingTop: 40,
+            paddingBottom: 60,
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+          }}
+        >
           <View className="items-center">
-            <Text
-              variant="h4"
-              className="font-bold text-blue-600 dark:text-blue-400 mb-3"
+            <View
+              className="w-20 h-20 rounded-full items-center justify-center mb-4"
+              style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
             >
-              Visit Us Today!
+              <IconSymbol name="heart.text.square.fill" size={40} color="white" />
+            </View>
+
+            <Text variant="h1" className="text-white font-bold text-center mb-2">
+              Get In Touch
             </Text>
-            <Text variant="body" className="text-center leading-6 mb-4">
-              You&apos;re always welcome to join our church family. Come as you
-              are and experience God&apos;s love and grace in our community.
+            <Text variant="body" className="text-white/90 text-center max-w-xs">
+              We're here to connect with you. Reach out anytime!
             </Text>
-            <View className="items-center">
+          </View>
+        </LinearGradient>
+
+        <View className="px-5 -mt-8">
+          {/* Contact Methods */}
+          <View className="mb-8">
+            <View className="flex-row items-center mb-4">
+              <View
+                className="h-px flex-1"
+                style={{ backgroundColor: theme.border }}
+              />
               <Text
-                variant="caption"
-                className="italic text-gray-600 dark:text-gray-400"
+                variant="h5"
+                className="font-bold mx-4"
+                style={{ color: theme.heading }}
               >
-                &quot;The Lord bless you and keep you&quot; - Numbers 6:24
+                Contact Methods
+              </Text>
+              <View
+                className="h-px flex-1"
+                style={{ backgroundColor: theme.border }}
+              />
+            </View>
+
+            <ContactMethod
+              icon="phone.fill"
+              title="Call Us - Prayer Line 1"
+              subtitle="Available for prayer & counseling"
+              value="08025137520"
+              type="phone"
+              gradient={['#10B981', '#059669']}
+            />
+
+            <ContactMethod
+              icon="phone.fill"
+              title="Call Us - Prayer Line 2"
+              subtitle="Available for prayer & counseling"
+              value="08161330142"
+              type="phone"
+              gradient={['#8B5CF6', '#7C3AED']}
+            />
+
+            <ContactMethod
+              icon="envelope.fill"
+              title="Email Us"
+              subtitle="Send us your inquiries"
+              value="csmcvalleyofmercy@gmail.com"
+              type="email"
+              gradient={['#3B82F6', '#2563EB']}
+            />
+
+            <ContactMethod
+              icon="location.fill"
+              title="Visit Our Church"
+              subtitle="Open in Google Maps"
+              value={churchAddress}
+              type="location"
+              gradient={['#EF4444', '#DC2626']}
+            />
+          </View>
+
+          {/* Church Accounts */}
+          <View className="mb-6">
+            <View className="items-center mb-6">
+              <View
+                className="w-16 h-16 rounded-full items-center justify-center mb-3"
+                style={{ backgroundColor: `${theme.primary}15` }}
+              >
+                <IconSymbol
+                  name="creditcard.fill"
+                  size={32}
+                  color={theme.primary}
+                />
+              </View>
+              <Text
+                variant="h3"
+                className="font-bold text-center"
+                style={{ color: theme.heading }}
+              >
+                Church Accounts
+              </Text>
+              <Text
+                variant="body"
+                className="text-center mt-2"
+                style={{ color: theme.muted }}
+              >
+                Support God's work through giving
               </Text>
             </View>
+
+            <BankAccountCard
+              title="General Donations"
+              bankName="Zenith Bank"
+              accountName="C&S Movt. Church Valley of Mercy"
+              accountNumber="1229217563"
+              description="Offerings & general support"
+              icon="banknote"
+              gradient={['#10B981', '#059669']}
+            />
+
+            <BankAccountCard
+              title="Projects & Tithes"
+              bankName="Zenith Bank"
+              accountName="C&S Movt. Church Valley of Mercy (Project & Tithes)"
+              accountNumber="1310028519"
+              description="Building fund & tithes"
+              icon="building.2.fill"
+              gradient={['#F59E0B', '#D97706']}
+            />
+          </View>
+
+          {/* Welcome Message */}
+          <View
+            className="rounded-2xl p-6"
+            style={{
+              backgroundColor: theme.card,
+              borderWidth: 1,
+              borderColor: theme.border,
+            }}
+          >
+            <View className="items-center">
+              <View
+                className="w-14 h-14 rounded-full items-center justify-center mb-4"
+                style={{ backgroundColor: `${theme.primary}15` }}
+              >
+                <IconSymbol name="sparkles" size={28} color={theme.primary} />
+              </View>
+
+              <Text
+                variant="h4"
+                className="font-bold mb-3 text-center"
+                style={{ color: theme.heading }}
+              >
+                You're Always Welcome!
+              </Text>
+
+              <Text
+                variant="body"
+                className="text-center leading-6 mb-4"
+                style={{ color: theme.text }}
+              >
+                Come as you are and experience God's love and grace in our
+                community. We can't wait to worship with you!
+              </Text>
+
+              <View
+                className="rounded-xl p-3"
+                style={{ backgroundColor: `${theme.primary}08` }}
+              >
+                <Text
+                  variant="caption"
+                  className="italic text-center"
+                  style={{ color: theme.primary }}
+                >
+                  "The Lord bless you and keep you" - Numbers 6:24
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
-
-        {/* Bottom spacing */}
-        <View className="h-8" />
-      </View>
+      </ScrollView>
     </View>
   );
-};
-
-export default ContactUs;
+}

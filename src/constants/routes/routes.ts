@@ -1,7 +1,6 @@
 export const ROUTES = {
   // Main drawer routes
   HOME: '/',
-  NOTIFICATIONS: '/notifications',
   ONBOARDING: '/onboarding',
   NOT_FOUND: '/+not-found',
 
@@ -44,6 +43,7 @@ export const ROUTES = {
   // Info
   MORE: '/more',
   SETTINGS: '/more/settings',
+  NOTIFICATIONS: '/more/notifications',
   ABOUT: '/more/about',
   CONTACT: '/more/contact',
   EVENTS: '/more/events',

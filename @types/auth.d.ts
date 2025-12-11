@@ -59,6 +59,7 @@ declare global {
     isSendingEmailVerificationLink: boolean;
     isLoggingIn: boolean;
     isLoggingOut: boolean;
+    isUpdatingProfile: boolean;
     // Error states
     error: string | null;
     // Success messages

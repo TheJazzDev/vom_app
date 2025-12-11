@@ -1,5 +1,5 @@
 import { firestore } from '@/src/config';
-import { isEmail, toInternationNigeriaPhone } from '@/src/utils';
+import { isEmail, serializeFirestoreData, toInternationNigeriaPhone } from '@/src/utils';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 export const findMemberForActivation = async (
@@ -13,7 +13,9 @@ export const findMemberForActivation = async (
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const member = querySnapshot.docs[0].data() as UserProfile;
+        const member = serializeFirestoreData<UserProfile>(
+          querySnapshot.docs[0].data() as UserProfile
+        );
 
         if (member && (member.hasPassword || member.phoneVerified)) {
           throw new Error(
@@ -35,7 +37,10 @@ export const findMemberForActivation = async (
 
     if (!primaryPhoneSnapshot.empty) {
       const doc = primaryPhoneSnapshot.docs[0];
-      const member = { ...doc.data(), id: doc.id } as UserProfile;
+      const member = serializeFirestoreData<UserProfile>({
+        ...doc.data(),
+        id: doc.id,
+      });
 
       if (member.hasPassword || member.phoneVerified) {
         throw new Error(
@@ -54,7 +59,10 @@ export const findMemberForActivation = async (
 
     if (!secondaryPhoneSnapshot.empty) {
       const doc = secondaryPhoneSnapshot.docs[0];
-      const member = { ...doc.data(), id: doc.id } as UserProfile;
+      const member = serializeFirestoreData<UserProfile>({
+        ...doc.data(),
+        id: doc.id,
+      });
 
       if (member.hasPassword || member.phoneVerified) {
         throw new Error(

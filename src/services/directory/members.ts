@@ -1,13 +1,16 @@
 import { membersRef } from '@/src/config';
 import { getDocs } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export async function getAllMembers(): Promise<UserProfile[]> {
   const snapshot = await getDocs(membersRef);
 
-  return snapshot.docs.map((doc) => ({
-    ...(doc.data() as UserProfile),
-    uid: doc.id,
-  }));
+  return snapshot.docs.map((doc) =>
+    serializeFirestoreData<UserProfile>({
+      ...(doc.data() as UserProfile),
+      uid: doc.id,
+    })
+  );
 }
 
 // Return all bands and their members

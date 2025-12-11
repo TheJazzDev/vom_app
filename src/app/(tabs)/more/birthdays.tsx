@@ -101,7 +101,7 @@ export default function BirthdaysPage() {
         borderWidth: 1,
         borderColor: member.isToday ? '#8B5CF6' : theme.border,
         borderRadius: 16,
-        padding: 16,
+        padding: 12,
         marginBottom: 12,
         borderLeftWidth: 4,
         borderLeftColor: member.isToday
@@ -115,7 +115,7 @@ export default function BirthdaysPage() {
       <View className="flex-row items-center">
         {/* Date Circle */}
         <View
-          className="w-16 h-16 rounded-full items-center justify-center mr-4"
+          className="w-12 h-12 rounded-full items-center justify-center mr-4"
           style={{
             backgroundColor: member.isToday
               ? '#8B5CF615'
@@ -123,7 +123,7 @@ export default function BirthdaysPage() {
           }}
         >
           <Text
-            variant="h3"
+            variant="h5"
             className="font-bold"
             style={{
               color: member.isToday ? '#8B5CF6' : theme.primary,
@@ -137,7 +137,7 @@ export default function BirthdaysPage() {
         <View className="flex-1">
           <View className="flex-row items-center mb-1">
             <Text
-              variant="h4"
+              variant="h5"
               className="font-bold flex-1"
               style={{ color: theme.heading }}
             >
@@ -264,10 +264,10 @@ export default function BirthdaysPage() {
             <IconSymbol name="birthday.cake" size={24} color="white" />
           </View>
           <View className="flex-1">
-            <Text variant="h2" className="text-white font-bold">
+            <Text variant="h2" className="text-white dark:text-white font-bold">
               {currentMonthName} Birthdays
             </Text>
-            <Text variant="body" className="text-white/90">
+            <Text variant="body" className="text-white/90 dark:text-white/90">
               {monthlyBirthdays.allBirthdays.length} celebration
               {monthlyBirthdays.allBirthdays.length !== 1 ? 's' : ''} this month
             </Text>
@@ -277,26 +277,26 @@ export default function BirthdaysPage() {
         {/* Stats */}
         <View className="flex-row gap-4">
           <View className="bg-white/20 rounded-lg px-3 py-2 flex-1">
-            <Text variant="h4" className="text-white font-bold">
+            <Text variant="h4" className="text-white dark:text-white font-bold">
               {monthlyBirthdays.todayBirthdays.length}
             </Text>
-            <Text variant="caption" className="text-white/80">
+            <Text variant="caption" className="text-white/80 dark:dark:text-white/80">
               Today
             </Text>
           </View>
           <View className="bg-white/20 rounded-lg px-3 py-2 flex-1">
-            <Text variant="h4" className="text-white font-bold">
+            <Text variant="h4" className="text-white dark:text-white font-bold">
               {monthlyBirthdays.upcomingBirthdays.length}
             </Text>
-            <Text variant="caption" className="text-white/80">
+            <Text variant="caption" className="text-white/80 dark:dark:text-white/80">
               Upcoming
             </Text>
           </View>
           <View className="bg-white/20 rounded-lg px-3 py-2 flex-1">
-            <Text variant="h4" className="text-white font-bold">
+            <Text variant="h4" className="text-white dark:text-white font-bold">
               {monthlyBirthdays.pastBirthdays.length}
             </Text>
-            <Text variant="caption" className="text-white/80">
+            <Text variant="caption" className="text-white/80 dark:dark:text-white/80">
               Past
             </Text>
           </View>

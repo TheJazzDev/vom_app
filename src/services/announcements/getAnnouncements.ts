@@ -1,5 +1,6 @@
 import { announcementsRef } from '@/src/config';
 import { getDocs } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export const getAnnouncements = async (): Promise<Announcement[]> => {
   try {
@@ -8,10 +9,12 @@ export const getAnnouncements = async (): Promise<Announcement[]> => {
 
     console.log('Fetched announcements count:', snapshot.size);
 
-    const announcements = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Announcement[];
+    const announcements = snapshot.docs.map((doc) =>
+      serializeFirestoreData<Announcement>({
+        id: doc.id,
+        ...doc.data(),
+      })
+    );
 
     // Filter for published announcements and sort by date in memory
     const publishedAnnouncements = announcements.filter(

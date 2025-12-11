@@ -8,6 +8,7 @@ import { truncateText } from './truncateText';
 export * from './firebaseErrorHandler';
 export * from './global';
 export * from './memberUtils';
+export * from './serializeFirestoreData';
 
 export {
   capitalizeFirstLetter,

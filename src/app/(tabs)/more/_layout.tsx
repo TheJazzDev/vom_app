@@ -12,6 +12,7 @@ export default function MoreLayout() {
         options={{ title: 'More', ...HIDE_HEADER }}
       />
       <Stack.Screen name="announcement" options={{ title: 'Announcements' }} />
+      <Stack.Screen name="notifications" options={{ title: 'Notifications' }} />
       <Stack.Screen name="events" options={{ title: 'Events' }} />
       <Stack.Screen name="birthdays" options={{ title: 'Birthdays' }} />
       <Stack.Screen name="about" options={{ title: 'About Us' }} />

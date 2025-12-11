@@ -3,20 +3,18 @@ import React from 'react';
 
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
-import { useTheme } from '@/src/hooks';
+import { useAndroidNavigationBar, useTheme } from '@/src/hooks';
 import { Platform } from 'react-native';
 import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const theme = useTheme();
+  const { shouldApplyBottomSafeArea } = useAndroidNavigationBar();
 
-  // Disable custom tab transitions on iOS to prevent blank screens
-  // Expo Router's built-in animations handle this better
-  // useTabTransition();
+  // Apply safe area only to bottom (tab bar area)
+  // Top safe area will be handled individually by main tab index pages
+  const edges = shouldApplyBottomSafeArea ? ['bottom'] : [];
 
-  // Always apply top safe area for consistent layout
-  // Nested stack headers will automatically overlap this without double-padding
-  const edges = Platform.OS === 'ios' ? ['top'] : ['top'];
   return (
     <SafeAreaView
       edges={edges as Edges}

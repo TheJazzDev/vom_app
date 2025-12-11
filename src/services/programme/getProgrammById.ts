@@ -1,5 +1,6 @@
 import { programmesRef } from '@/src/config';
 import { doc, getDoc } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export interface ProgrammeStats {
   total: number;
@@ -15,10 +16,10 @@ export const getProgrammeById = async (id: string): Promise<AllProgrammes> => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return {
+      return serializeFirestoreData<AllProgrammes>({
         id: docSnap.id,
         ...docSnap.data(),
-      } as AllProgrammes;
+      });
     } else {
       throw new Error('Programme not found');
     }

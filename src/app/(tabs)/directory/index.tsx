@@ -6,7 +6,13 @@ import { useTheme } from '@/src/hooks';
 import { dispatch, useDirectorySlice } from '@/src/store';
 import { fetchDirectoryStatsThunk } from '@/src/store/thunks/directory';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Platform, RefreshControl } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  RefreshControl,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface StatCardProps {
   count?: number;
@@ -80,99 +86,107 @@ export default function DirectoryIndex() {
   }, []);
 
   return (
-    <View gradient className="flex-1">
-      {/* Enhanced Header Section */}
-      <View className={`px-4 pb-5 ${Platform.OS === 'ios' ? 'pt-3' : 'pt-6'}`}>
-        {/* Title Row with Action Button */}
-        <View className="flex-row items-center justify-between mb-3">
-          <View className="flex-1">
-            <View className="flex-row items-center gap-2 mb-1">
-              <IconSymbol
-                name="person.3.sequence.fill"
-                size={28}
-                color={theme.brand}
-              />
+    <SafeAreaView
+      edges={['top']}
+      className="flex-1"
+      style={{ backgroundColor: theme.background }}
+    >
+      <View gradient className="flex-1">
+        {/* Enhanced Header Section */}
+        <View
+          className={`px-4 pb-5 ${Platform.OS === 'ios' ? 'pt-3' : 'pt-6'}`}
+        >
+          {/* Title Row with Action Button */}
+          <View className="flex-row items-center justify-between mb-3">
+            <View className="flex-1">
+              <View className="flex-row items-center gap-2 mb-1">
+                <IconSymbol
+                  name="person.3.sequence.fill"
+                  size={28}
+                  color={theme.brand}
+                />
+                <Text
+                  variant="h1"
+                  className="font-bold text-gray-900 dark:text-white"
+                >
+                  Directory
+                </Text>
+              </View>
               <Text
-                variant="h1"
-                className="font-bold text-gray-900 dark:text-white"
+                variant="body"
+                className="leading-5 text-gray-600 dark:text-gray-400 pr-2"
               >
-                Directory
+                Connect with our church family and find your place in our
+                community
               </Text>
             </View>
+          </View>
+
+          {/* Stats Cards */}
+          <View className="flex-row gap-2 mt-4">
+            <StatCard
+              count={directoryStats?.membersCount}
+              label="Members"
+              isLoading={isFetchingDirectoryStats}
+            />
+            <StatCard
+              count={directoryStats?.childrenCount}
+              label="Children"
+              isLoading={isFetchingDirectoryStats}
+            />
+            <StatCard
+              count={directoryStats?.bandsCount}
+              label="Bands"
+              isLoading={isFetchingDirectoryStats}
+            />
+            <StatCard
+              count={directoryStats?.departmentsCount}
+              label="Depts"
+              isLoading={isFetchingDirectoryStats}
+            />
+          </View>
+
+          {/* Section Divider with Label */}
+          <View className="flex-row items-center gap-3 mt-6">
+            <View
+              className="flex-1 h-px"
+              style={{ backgroundColor: theme.border }}
+            />
             <Text
-              variant="body"
-              className="leading-5 text-gray-600 dark:text-gray-400 pr-2"
+              variant="caption"
+              className="text-gray-500 dark:text-gray-500 font-semibold uppercase tracking-wider"
             >
-              Connect with our church family and find your place in our
-              community
+              Browse Categories
             </Text>
+            <View
+              className="flex-1 h-px"
+              style={{ backgroundColor: theme.border }}
+            />
           </View>
         </View>
 
-        {/* Stats Cards */}
-        <View className="flex-row gap-2 mt-4">
-          <StatCard
-            count={directoryStats?.membersCount}
-            label="Members"
-            isLoading={isFetchingDirectoryStats}
-          />
-          <StatCard
-            count={directoryStats?.childrenCount}
-            label="Children"
-            isLoading={isFetchingDirectoryStats}
-          />
-          <StatCard
-            count={directoryStats?.bandsCount}
-            label="Bands"
-            isLoading={isFetchingDirectoryStats}
-          />
-          <StatCard
-            count={directoryStats?.departmentsCount}
-            label="Depts"
-            isLoading={isFetchingDirectoryStats}
-          />
-        </View>
-
-        {/* Section Divider with Label */}
-        <View className="flex-row items-center gap-3 mt-6">
-          <View
-            className="flex-1 h-px"
-            style={{ backgroundColor: theme.border }}
-          />
-          <Text
-            variant="caption"
-            className="text-gray-500 dark:text-gray-500 font-semibold uppercase tracking-wider"
-          >
-            Browse Categories
-          </Text>
-          <View
-            className="flex-1 h-px"
-            style={{ backgroundColor: theme.border }}
-          />
-        </View>
+        {/* Categories List */}
+        <FlatList
+          data={DIRECTORY_CATEGORIES}
+          keyExtractor={(item) => item.route}
+          renderItem={({ item }) => <DirectoryCategoryCard category={item} />}
+          contentContainerStyle={{
+            paddingHorizontal: 16,
+            paddingBottom: 20,
+            flexGrow: 1,
+          }}
+          showsVerticalScrollIndicator={false}
+          className="flex-1"
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={theme.primary}
+              colors={[theme.primary]}
+            />
+          }
+        />
       </View>
-
-      {/* Categories List */}
-      <FlatList
-        data={DIRECTORY_CATEGORIES}
-        keyExtractor={(item) => item.route}
-        renderItem={({ item }) => <DirectoryCategoryCard category={item} />}
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingBottom: 20,
-          flexGrow: 1,
-        }}
-        showsVerticalScrollIndicator={false}
-        className="flex-1"
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={theme.primary}
-            colors={[theme.primary]}
-          />
-        }
-      />
-    </View>
+    </SafeAreaView>
   );
 }

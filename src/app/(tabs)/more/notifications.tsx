@@ -258,44 +258,35 @@ export default function NotificationsScreen() {
   return (
     <View className="flex-1" style={{ backgroundColor: theme.background }}>
       {/* Header */}
-      <View className="px-4 pt-4 pb-2">
-        <View className="flex-row items-center justify-between mb-2">
-          <View>
-            <Text
-              variant="h2"
-              className="font-bold"
-              style={{ color: theme.heading }}
-            >
-              Notifications
+      <View className="px-4 pt-1 pb-3">
+        <View className="flex-row items-center justify-between">
+          {unreadCount > 0 && (
+            <Text variant="body" style={{ color: theme.muted }}>
+              {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
             </Text>
-            {unreadCount > 0 && (
-              <Text variant="body" style={{ color: theme.muted }}>
-                {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
-              </Text>
-            )}
-          </View>
+          )}
+
+          <View className="flex-1" />
 
           {notifications.length > 0 && (
-            <View className="flex-row space-x-2">
-              <Pressable
-                onPress={markAllAsRead}
-                className="px-3 py-2 rounded-lg"
-                style={{ backgroundColor: `${theme.primary}10` }}
+            <Pressable
+              onPress={markAllAsRead}
+              className="px-3 py-2 rounded-lg"
+              style={{ backgroundColor: `${theme.primary}10` }}
+            >
+              <Text
+                variant="caption"
+                className="font-semibold"
+                style={{ color: theme.primary }}
               >
-                <Text
-                  variant="caption"
-                  className="font-semibold"
-                  style={{ color: theme.primary }}
-                >
-                  Mark All Read
-                </Text>
-              </Pressable>
-            </View>
+                Mark All Read
+              </Text>
+            </Pressable>
           )}
         </View>
 
         {/* Filter Tabs */}
-        <View className="flex-row space-x-3 mt-4">
+        <View className="flex-row gap-3 mt-2">
           <Pressable
             onPress={() => setFilter('all')}
             className="px-4 py-2 rounded-full"

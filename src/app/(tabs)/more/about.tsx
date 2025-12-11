@@ -1,279 +1,195 @@
-import { Card, Spacer, Text, View } from '@/src/components';
-import React from 'react';
-import Animated, {
-  BounceIn,
-  FadeInDown,
-  FadeInLeft,
-  FadeInRight,
-  FadeInUp,
-} from 'react-native-reanimated';
-
-const AnimatedView = Animated.createAnimatedComponent(View);
-
-interface PillarCardProps {
-  icon: string;
-  title: string;
-  description: string;
-  variant: 'gradient-primary' | 'gradient-forest' | 'gradient-ocean';
-  delay?: number;
-}
-
-const PillarCard: React.FC<PillarCardProps> = ({
-  icon,
-  title,
-  description,
-  variant,
-  delay = 0,
-}) => (
-  <AnimatedView entering={FadeInUp.delay(delay).duration(600)} className="mb-6">
-    <Card
-      variant={variant}
-      className="p-6 rounded-3xl border border-border dark:border-dark-border"
-    >
-      <View className="items-center mb-6">
-        <View className="w-20 h-20 rounded-2xl bg-surface dark:bg-dark-surface items-center justify-center mb-2">
-          <Text className="text-3xl">{icon}</Text>
-        </View>
-        <Text
-          variant="h4"
-          color="neutral"
-          className="text-center font-bold mb-2"
-        >
-          {title}
-        </Text>
-      </View>
-
-      <Text
-        variant="body"
-        color="neutral"
-        className="text-center leading-7 font-medium"
-      >
-        {description}
-      </Text>
-    </Card>
-  </AnimatedView>
-);
-
-const SectionHeader: React.FC<{
-  icon: string;
-  title: string;
-  subtitle?: string;
-  delay?: number;
-}> = ({ icon, title, subtitle, delay = 0 }) => (
-  <AnimatedView
-    entering={FadeInDown.delay(delay).duration(500)}
-    className="items-center mb-8"
-  >
-    <View className="w-16 h-16 bg-surface dark:bg-dark-surface rounded-2xl items-center justify-center mb-4 border border-border dark:border-dark-border">
-      <Text className="text-2xl">{icon}</Text>
-    </View>
-    <Text variant="h2" color="heading" className="font-black mb-2">
-      {title}
-    </Text>
-    {subtitle && (
-      <Text variant="body" color="muted" className="text-center font-medium">
-        {subtitle}
-      </Text>
-    )}
-  </AnimatedView>
-);
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, Animated } from 'react-native';
 
 const AboutUs = () => {
-  const pillars = [
-    {
-      icon: '🙏',
-      title: 'Prayer',
-      description:
-        'Through fervent prayer, we commune with God, seeking His guidance, strength, and blessings in all aspects of our lives and ministry.',
-      variant: 'gradient-primary' as const,
-    },
-    {
-      icon: '📖',
-      title: 'Word of God',
-      description:
-        'The Holy Scripture is our foundation and guide, illuminating our path and transforming our hearts through divine wisdom and truth.',
-      variant: 'gradient-forest' as const,
-    },
-    {
-      icon: '🎵',
-      title: 'Praises',
-      description:
-        "We lift our voices in joyful worship and thanksgiving, celebrating God's goodness and magnifying His holy name through music and song.",
-      variant: 'gradient-ocean' as const,
-    },
-  ];
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(30));
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   return (
-    <View gradient scrollable paddingHorizontal={14}>
-      <Spacer height={16} />
-      <AnimatedView entering={FadeInUp.duration(800)} className="mb-16">
-        <Card variant="gradient-brand" borderRadius={60} className="p-8">
-          <AnimatedView
-            entering={BounceIn.delay(300).duration(1000)}
-            className="items-center mb-8"
-          >
-            <View className="w-32 h-32 bg-surface dark:bg-dark-surface rounded-full justify-center items-center">
-              <Text className="text-6xl">✝️</Text>
-            </View>
-          </AnimatedView>
-
-          <AnimatedView
-            entering={FadeInUp.delay(600).duration(600)}
-            className="items-center mb-8"
-          >
-            <Text
-              variant="h2"
-              color="neutral"
-              className="text-center font-black mb-3 leading-tight"
-            >
-              CHERUBIM & SERAPHIM MOVEMENT CHURCH
-            </Text>
-            <Text variant="h4" color="neutral" className="mb-2">
-              (AYO NI O)
-            </Text>
-            <View className="bg-surface dark:bg-dark-surface rounded-full px-6 py-2 mb-2 border border-border">
-              <Text variant="h5" color="neutral" className="font-semibold">
-                SURULERE DISTRICT
-              </Text>
-            </View>
-            <Text variant="h6" color="neutral" className="font-medium mb-2">
-              Evangelical Revival Ministry
-            </Text>
-            <Text variant="h5" color="neutral" className="font-bold italic">
-              VALLEY OF MERCY
-            </Text>
-          </AnimatedView>
-
-          <AnimatedView
-            entering={FadeInUp.delay(800).duration(600)}
-            className="items-center"
-          >
-            <View className="bg-surface dark:bg-dark-surface px-6 py-3 rounded-full border border-border">
-              <Text variant="body" color="neutral" className="font-bold">
-                ✨ Founded March 2022 ✨
-              </Text>
-            </View>
-          </AnimatedView>
-        </Card>
-      </AnimatedView>
-
-      {/* Mission Section */}
-      <View className="mb-12">
-        <SectionHeader icon="🎯" title="Our Mission" delay={100} />
-
-        <AnimatedView entering={FadeInLeft.delay(300).duration(600)}>
-          <Card
-            variant="elevated"
-            className="bg-card dark:bg-dark-card rounded-3xl p-8 border border-border dark:border-dark-border"
-          >
-            <View className="absolute top-0 left-0 right-0 h-1 bg-brand dark:bg-dark-brand rounded-t-3xl" />
-            <Text
-              variant="h5"
-              color="body"
-              className="text-center leading-8 font-medium"
-            >
-              To spread the Gospel of Jesus Christ through the power of the Holy
-              Spirit, nurturing believers in their spiritual growth while
-              demonstrating God&apos;s love through compassionate service to our
-              community and beyond.
-            </Text>
-          </Card>
-        </AnimatedView>
-      </View>
-
-      {/* Vision Section */}
-      <View className="mb-12">
-        <SectionHeader icon="👁️" title="Our Vision" delay={200} />
-
-        <AnimatedView
-          entering={FadeInRight.delay(400).duration(600)}
-          className="mx-4"
+    <ScrollView className="flex-1 bg-purple-50 dark:bg-gray-900">
+      <View className="px-5 py-12">
+        {/* Hero Section - Church Identity */}
+        <Animated.View
+          className="items-center mb-12"
+          style={{
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }]
+          }}
         >
-          <Card
-            variant="elevated"
-            className="bg-card dark:bg-dark-card rounded-3xl p-8 border border-border dark:border-dark-border"
-          >
-            <View className="absolute top-0 left-0 right-0 h-1 bg-secondary dark:bg-dark-secondary rounded-t-3xl" />
-            <Text
-              variant="h5"
-              color="body"
-              className="text-center leading-8 font-medium"
-            >
-              Our vision is to be a transforming presence across
-              communities—locally, nationally, and globally—where lives are
-              renewed by the Gospel. We aim to raise disciples who are firmly
-              rooted in faith, shaped by Scripture, and equipped to serve and
-              lead with love, bringing lasting spiritual and social
-              transformation to their families, workplaces, and nations.
+          <View className="mb-6">
+            <View className="w-24 h-24 rounded-full bg-purple-600 dark:bg-purple-500 items-center justify-center shadow-2xl">
+              <Text className="text-5xl">✝️</Text>
+            </View>
+          </View>
+
+          <Text className="text-4xl font-black text-gray-800 dark:text-white text-center mb-2">
+            VALLEY OF MERCY
+          </Text>
+          <Text className="text-base font-medium text-gray-600 dark:text-gray-400 text-center mb-4">
+            Cherubim & Seraphim Movement Church (Ayo Ni O)
+          </Text>
+          <View className="bg-white/50 dark:bg-gray-800/50 rounded-full px-5 py-2 border border-gray-200/30 dark:border-gray-700/30">
+            <Text className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+              Est. March 2022 • Surulere District
             </Text>
-          </Card>
-        </AnimatedView>
-      </View>
+          </View>
+        </Animated.View>
 
-      {/* Pillars Section */}
-      <View className="mb-12 mx-4">
-        <SectionHeader
-          icon="🏛️"
-          title="Foundation Pillars"
-          subtitle="Three pillars that hold and guide us"
-          delay={300}
-        />
+        {/* Mission & Vision Cards */}
+        <View className="mb-12">
+          <Animated.View
+            className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-6 border-l-4 border-purple-600 dark:border-purple-500 shadow-lg"
+            style={{ opacity: fadeAnim }}
+          >
+            <View className="flex-row items-center mb-4">
+              <View className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl items-center justify-center mr-3">
+                <Text className="text-2xl">🎯</Text>
+              </View>
+              <Text className="text-2xl font-bold text-gray-800 dark:text-white">
+                Our Mission
+              </Text>
+            </View>
+            <Text className="text-base text-gray-700 dark:text-gray-300 leading-7">
+              Spreading the Gospel through the Holy Spirit's power, nurturing believers in spiritual growth, and demonstrating God's love through compassionate community service.
+            </Text>
+          </Animated.View>
 
-        {pillars.map((pillar, index) => (
-          <PillarCard
-            key={index}
-            icon={pillar.icon}
-            title={pillar.title}
-            description={pillar.description}
-            variant={pillar.variant}
-            delay={500 + index * 200}
-          />
-        ))}
-      </View>
+          <Animated.View
+            className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-l-4 border-pink-600 dark:border-pink-500 shadow-lg"
+            style={{ opacity: fadeAnim }}
+          >
+            <View className="flex-row items-center mb-4">
+              <View className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-xl items-center justify-center mr-3">
+                <Text className="text-2xl">👁️</Text>
+              </View>
+              <Text className="text-2xl font-bold text-gray-800 dark:text-white">
+                Our Vision
+              </Text>
+            </View>
+            <Text className="text-base text-gray-700 dark:text-gray-300 leading-7">
+              A transforming presence locally, nationally, and globally—raising disciples rooted in faith, shaped by Scripture, and equipped to lead with love.
+            </Text>
+          </Animated.View>
+        </View>
 
-      {/* Welcome Message */}
-      <AnimatedView
-        entering={FadeInUp.delay(1100).duration(600)}
-        className="mx-4 mb-8"
-      >
-        <Card
-          variant="gradient-secondary"
-          className="rounded-3xl p-8 border border-border dark:border-dark-border"
+        {/* Foundation Pillars */}
+        <Animated.View className="mb-12" style={{ opacity: fadeAnim }}>
+          <View className="items-center mb-8">
+            <Text className="text-3xl font-black text-gray-800 dark:text-white mb-2">
+              Our Foundation
+            </Text>
+            <Text className="text-base text-gray-600 dark:text-gray-400">
+              Built on these spiritual pillars
+            </Text>
+          </View>
+
+          <View className="space-y-4">
+            <View className="bg-white dark:bg-gray-800 rounded-2xl p-5 flex-row items-center shadow-lg mb-4">
+              <View className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-xl items-center justify-center mr-4">
+                <Text className="text-3xl">🙏</Text>
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-bold text-gray-800 dark:text-white mb-1">
+                  Prayer
+                </Text>
+                <Text className="text-sm text-gray-600 dark:text-gray-400 leading-5">
+                  Communing with God, seeking His guidance and strength
+                </Text>
+              </View>
+            </View>
+
+            <View className="bg-white dark:bg-gray-800 rounded-2xl p-5 flex-row items-center shadow-lg mb-4">
+              <View className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl items-center justify-center mr-4">
+                <Text className="text-3xl">📖</Text>
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-bold text-gray-800 dark:text-white mb-1">
+                  Word of God
+                </Text>
+                <Text className="text-sm text-gray-600 dark:text-gray-400 leading-5">
+                  Scripture as our foundation, illuminating our path
+                </Text>
+              </View>
+            </View>
+
+            <View className="bg-white dark:bg-gray-800 rounded-2xl p-5 flex-row items-center shadow-lg">
+              <View className="w-14 h-14 bg-pink-100 dark:bg-pink-900/30 rounded-xl items-center justify-center mr-4">
+                <Text className="text-3xl">🎵</Text>
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-bold text-gray-800 dark:text-white mb-1">
+                  Praises
+                </Text>
+                <Text className="text-sm text-gray-600 dark:text-gray-400 leading-5">
+                  Joyful worship celebrating God's goodness
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Animated.View>
+
+        {/* Welcome Message */}
+        <Animated.View
+          className="bg-purple-600 dark:bg-purple-700 rounded-3xl p-8 mb-8 shadow-2xl"
+          style={{ opacity: fadeAnim }}
         >
           <View className="items-center mb-6">
-            <Text variant="h3" color="neutral" className="font-black mb-2">
-              Welcome Home 🏠
+            <View className="w-16 h-16 bg-white/90 dark:bg-gray-100/90 rounded-full items-center justify-center mb-4">
+              <Text className="text-3xl">🏠</Text>
+            </View>
+            <Text className="text-3xl font-black text-white mb-3">
+              You Belong Here
             </Text>
-            <View className="w-16 h-px bg-surface dark:bg-dark-surface" />
+            <View className="w-20 h-1 bg-white/50 rounded-full" />
           </View>
 
-          <Text
-            variant="h5"
-            color="neutral"
-            className="text-center leading-8 mb-6 font-medium"
-          >
-            Whether you&apos;re seeking spiritual growth, community fellowship, or
-            simply curious about faith, you&apos;ll find a warm welcome here. Our
-            doors and hearts are open to all who desire to experience God&apos;s love
-            and grace.
+          <Text className="text-base text-white text-center leading-7 mb-6 font-medium">
+            Whether seeking spiritual growth, community fellowship, or simply curious about faith—you'll find a warm welcome. Our doors and hearts are open to all who desire God's love and grace.
           </Text>
 
+          <View className="bg-white/20 rounded-2xl p-4 border border-white/30">
+            <Text className="text-base text-white text-center italic font-semibold">
+              "Come as you are, grow as you journey, serve as you're called"
+            </Text>
+          </View>
+        </Animated.View>
+
+        {/* Ministry Info */}
+        <Animated.View
+          className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-8 shadow-lg"
+          style={{ opacity: fadeAnim }}
+        >
+          <Text className="text-xl font-bold text-gray-800 dark:text-white text-center mb-4">
+            Evangelical Revival Ministry
+          </Text>
           <View className="items-center">
-            <View className="bg-surface dark:bg-dark-surface rounded-2xl px-6 py-4 border border-border dark:border-dark-border">
-              <Text
-                variant="h6"
-                color="heading"
-                className="italic font-semibold text-center"
-              >
-                &quot;Come as you are, grow as you journey, serve as you&apos;re called&quot;
+            <View className="bg-gray-100 dark:bg-gray-700 rounded-xl px-4 py-2 mb-2">
+              <Text className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                Surulere District, Lagos
               </Text>
             </View>
+            <Text className="text-sm text-gray-600 dark:text-gray-400 text-center">
+              Part of the Cherubim & Seraphim Movement Church (Ayo Ni O) family
+            </Text>
           </View>
-        </Card>
-      </AnimatedView>
-
-      <Spacer height={12} />
-    </View>
+        </Animated.View>
+      </View>
+    </ScrollView>
   );
 };
 

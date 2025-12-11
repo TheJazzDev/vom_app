@@ -1,4 +1,3 @@
-// (info)/events.tsx
 import { IconSymbol } from '@/src/components/Icons';
 import { IconSymbolName } from '@/src/components/Icons/IconSymbol';
 import { Text } from '@/src/components/UI';

@@ -6,6 +6,7 @@ import { useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Quick action items configuration
 const QUICK_ACTIONS = [
@@ -178,139 +179,145 @@ export default function MoreIndex() {
   );
 
   return (
-    <ScrollView
+    <SafeAreaView
+      edges={['top']}
       className="flex-1"
       style={{ backgroundColor: theme.background }}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor={theme.primary}
-          colors={[theme.primary]}
-        />
-      }
     >
-      {/* Simple Header */}
-      <View className="px-4 pt-6 pb-3">
-        <Text
-          variant="h1"
-          className="font-bold mb-1"
-          style={{ color: theme.heading }}
-        >
-          More
-        </Text>
-        <Text variant="body" style={{ color: theme.muted }}>
-          Explore church resources and information
-        </Text>
-      </View>
-
-      {/* Compact Quick Actions Grid */}
-      <View className="px-4 mb-6">
-        <Text
-          variant="h6"
-          className="font-semibold mb-3"
-          style={{ color: theme.heading }}
-        >
-          Quick Access
-        </Text>
-        <View className="flex-row gap-2">
-          {QUICK_ACTIONS.map((action) => (
-            <QuickActionCard key={action.route} item={action} />
-          ))}
+      <ScrollView
+        className="flex-1"
+        style={{ backgroundColor: theme.background }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
+          />
+        }
+      >
+        {/* Simple Header */}
+        <View className="px-4 pt-12 pb-3">
+          <Text
+            variant="h1"
+            className="font-bold mb-1"
+            style={{ color: theme.heading }}
+          >
+            More
+          </Text>
+          <Text variant="body" style={{ color: theme.muted }}>
+            Explore church resources and information
+          </Text>
         </View>
-      </View>
 
-      {/* Church Activities Section */}
-      <View className="px-4 mb-6">
-        <View className="flex-row items-center justify-between mb-3">
-          <View>
-            <Text
-              variant="h6"
-              className="font-semibold mb-1"
-              style={{ color: theme.heading }}
-            >
-              Church Activities
-            </Text>
-            <Text variant="caption" style={{ color: theme.muted }}>
-              Stay updated with events and programs
-            </Text>
+        {/* Compact Quick Actions Grid */}
+        <View className="px-4 mb-6">
+          <Text
+            variant="h6"
+            className="font-semibold mb-3"
+            style={{ color: theme.heading }}
+          >
+            Quick Access
+          </Text>
+          <View className="flex-row gap-2">
+            {QUICK_ACTIONS.map((action) => (
+              <QuickActionCard key={action.route} item={action} />
+            ))}
           </View>
         </View>
 
-        {INFO_CATEGORIES.map((category) => (
-          <InfoCategoryCardCompact key={category.route} category={category} />
-        ))}
-      </View>
-
-      {/* Beautiful Birthdays Card */}
-      <View className="px-4 mb-6">
-        <Text
-          variant="h6"
-          className="font-semibold mb-3"
-          style={{ color: theme.heading }}
-        >
-          Celebrations
-        </Text>
-        {ADDITIONAL_ITEMS.map((item) => (
-          <BirthdayCard key={item.route} item={item} />
-        ))}
-      </View>
-
-      {/* Help & Support Card */}
-      <View className="px-4 mb-8">
-        <Card
-          variant="outlined"
-          className="rounded-2xl p-5"
-          style={{
-            borderWidth: 1,
-            borderColor: theme.border,
-            backgroundColor: theme.card,
-          }}
-        >
-          <View className="flex-row items-start">
-            <View
-              className="w-12 h-12 rounded-full items-center justify-center mr-4"
-              style={{ backgroundColor: `${theme.primary}15` }}
-            >
-              <IconSymbol
-                name="questionmark.circle.fill"
-                size={24}
-                color={theme.primary}
-              />
-            </View>
-            <View className="flex-1">
+        {/* Church Activities Section */}
+        <View className="px-4 mb-6">
+          <View className="flex-row items-center justify-between mb-3">
+            <View>
               <Text
                 variant="h6"
                 className="font-semibold mb-1"
                 style={{ color: theme.heading }}
               >
-                Need Help or Prayer?
+                Church Activities
               </Text>
-              <Text
-                variant="body"
-                className="mb-3"
-                style={{ color: theme.muted }}
-              >
-                Our team is here to support you spiritually and practically
+              <Text variant="caption" style={{ color: theme.muted }}>
+                Stay updated with events and programs
               </Text>
-              <Pressable
-                onPress={() => router.push(ROUTES.CONTACT)}
-                className="self-start px-4 py-2 rounded-full"
-                style={{ backgroundColor: `${theme.primary}15` }}
-              >
-                <Text
-                  variant="body"
-                  className="font-semibold"
-                  style={{ color: theme.primary }}
-                >
-                  Get in Touch
-                </Text>
-              </Pressable>
             </View>
           </View>
-        </Card>
-      </View>
-    </ScrollView>
+
+          {INFO_CATEGORIES.map((category) => (
+            <InfoCategoryCardCompact key={category.route} category={category} />
+          ))}
+        </View>
+
+        {/* Beautiful Birthdays Card */}
+        <View className="px-4 mb-6">
+          <Text
+            variant="h6"
+            className="font-semibold mb-3"
+            style={{ color: theme.heading }}
+          >
+            Celebrations
+          </Text>
+          {ADDITIONAL_ITEMS.map((item) => (
+            <BirthdayCard key={item.route} item={item} />
+          ))}
+        </View>
+
+        {/* Help & Support Card */}
+        <View className="px-4 mb-8">
+          <Card
+            variant="outlined"
+            className="rounded-2xl p-5"
+            style={{
+              borderWidth: 1,
+              borderColor: theme.border,
+              backgroundColor: theme.card,
+            }}
+          >
+            <View className="flex-row items-start">
+              <View
+                className="w-12 h-12 rounded-full items-center justify-center mr-4"
+                style={{ backgroundColor: `${theme.primary}15` }}
+              >
+                <IconSymbol
+                  name="questionmark.circle.fill"
+                  size={24}
+                  color={theme.primary}
+                />
+              </View>
+              <View className="flex-1">
+                <Text
+                  variant="h6"
+                  className="font-semibold mb-1"
+                  style={{ color: theme.heading }}
+                >
+                  Need Help or Prayer?
+                </Text>
+                <Text
+                  variant="body"
+                  className="mb-3"
+                  style={{ color: theme.muted }}
+                >
+                  Our team is here to support you spiritually and practically
+                </Text>
+                <Pressable
+                  onPress={() => router.push(ROUTES.CONTACT)}
+                  className="self-start px-4 py-2 rounded-full"
+                  style={{ backgroundColor: `${theme.primary}15` }}
+                >
+                  <Text
+                    variant="body"
+                    className="font-semibold"
+                    style={{ color: theme.primary }}
+                  >
+                    Get in Touch
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </Card>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

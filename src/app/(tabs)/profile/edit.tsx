@@ -51,11 +51,9 @@ export default function EditProfile() {
       ]);
     } catch (error) {
       console.error('Error updating profile:', error);
-      Alert.alert(
-        'Error',
-        'Failed to update profile. Please try again.',
-        [{ text: 'OK' }],
-      );
+      Alert.alert('Error', 'Failed to update profile. Please try again.', [
+        { text: 'OK' },
+      ]);
     } finally {
       setIsSaving(false);
     }

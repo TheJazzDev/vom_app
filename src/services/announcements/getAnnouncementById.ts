@@ -1,5 +1,6 @@
 import { announcementsRef } from '@/src/config';
 import { doc, getDoc } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export const getAnnouncementById = async (
   id: string,
@@ -11,8 +12,8 @@ export const getAnnouncementById = async (
     return null;
   }
 
-  return {
+  return serializeFirestoreData<Announcement>({
     id: snapshot.id,
     ...snapshot.data(),
-  } as Announcement;
+  });
 };

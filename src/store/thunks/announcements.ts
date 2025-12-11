@@ -9,12 +9,9 @@ export const fetchAnnouncements = createAsyncThunk(
   'announcements/fetchAnnouncements',
   async (_, { rejectWithValue }) => {
     try {
-      console.log('Fetching announcements...');
       const announcements = await getAnnouncements();
-      console.log('Announcements fetched successfully:', announcements.length);
       return announcements;
     } catch (error) {
-      console.error('fetchAnnouncements thunk error:', error);
       return rejectWithValue(
         error instanceof Error ? error.message : 'Failed to fetch announcements',
       );

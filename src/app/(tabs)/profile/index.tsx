@@ -7,12 +7,7 @@ import { useAuthSlice } from '@/src/store';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useState } from 'react';
-import {
-  Image,
-  RefreshControl,
-  ScrollView,
-  View,
-} from 'react-native';
+import { Image, RefreshControl, ScrollView, View } from 'react-native';
 
 export default function ProfileIndex() {
   const theme = useTheme();
@@ -30,7 +25,6 @@ export default function ProfileIndex() {
       setRefreshing(false);
     }
   }, []);
-
 
   // const getStatusColor = (status: string | undefined) => {
   //   return status === 'active' ? '#10B981' : '#F59E0B';
@@ -411,7 +405,6 @@ export default function ProfileIndex() {
           </Card>
         </View>
       )}
-
     </ScrollView>
   );
 }

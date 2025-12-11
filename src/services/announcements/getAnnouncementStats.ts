@@ -1,5 +1,6 @@
 import { announcementsRef } from '@/src/config';
 import { getDocs, query, where } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export const getAnnouncementStats = async (): Promise<AnnouncementStats> => {
   const publishedQuery = query(
@@ -8,10 +9,12 @@ export const getAnnouncementStats = async (): Promise<AnnouncementStats> => {
   );
 
   const snapshot = await getDocs(publishedQuery);
-  const announcements = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Announcement[];
+  const announcements = snapshot.docs.map((doc) =>
+    serializeFirestoreData<Announcement>({
+      id: doc.id,
+      ...doc.data(),
+    })
+  );
 
   const now = new Date();
   const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);

@@ -10,6 +10,7 @@ import {
   loginThunk,
   logoutThunk,
   sendEmailVerificationLinkThunk,
+  updateUserProfileThunk,
   verifyPhoneAndSignInThunk,
 } from '../thunks/auth';
 
@@ -32,6 +33,7 @@ const initialState: AuthState = {
   isSendingEmailVerificationLink: false,
   isLoggingIn: false,
   isLoggingOut: false,
+  isUpdatingProfile: false,
   error: null,
   successMessage: null,
   isInitialized: false,
@@ -221,6 +223,28 @@ const authSlice = createSlice({
       })
       .addCase(getMemberByIdThunk.rejected, (state, action) => {
         state.isSearchingMember = false;
+        state.error = action.payload as string;
+      });
+
+    // Update User Profile
+    builder
+      .addCase(updateUserProfileThunk.pending, (state) => {
+        state.isUpdatingProfile = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfileThunk.fulfilled, (state, action) => {
+        state.isUpdatingProfile = false;
+        if (
+          action.payload &&
+          typeof action.payload === 'object' &&
+          'id' in action.payload
+        ) {
+          state.currentUser = action.payload;
+        }
+        state.successMessage = 'Profile updated successfully!';
+      })
+      .addCase(updateUserProfileThunk.rejected, (state, action) => {
+        state.isUpdatingProfile = false;
         state.error = action.payload as string;
       });
   },

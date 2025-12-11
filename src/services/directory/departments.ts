@@ -1,16 +1,16 @@
 import { departmentsRef, firestore, membersRef } from '@/src/config';
 import { doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { serializeFirestoreData } from '@/src/utils';
 
 export const getAllDepartments = async (): Promise<Department[]> => {
   try {
     const departmentsSnapshot = await getDocs(departmentsRef);
 
-    return departmentsSnapshot.docs.map(
-      (doc) =>
-        ({
-          id: doc.id,
-          ...doc.data(),
-        }) as Department,
+    return departmentsSnapshot.docs.map((doc) =>
+      serializeFirestoreData<Department>({
+        id: doc.id,
+        ...doc.data(),
+      })
     );
   } catch (error) {
     console.error('Error fetching departments:', error);
@@ -28,10 +28,10 @@ export const getDepartmentById = async (
       return null;
     }
 
-    return {
+    return serializeFirestoreData<Department>({
       id: bandDoc.id,
       ...bandDoc.data(),
-    } as Department;
+    });
   } catch (error) {
     console.error('Error fetching band:', error);
     throw new Error('Failed to fetch band');
@@ -52,12 +52,11 @@ export const getDepartmentWithMembers = async (
     );
     const membersSnapshot = await getDocs(membersQuery);
 
-    const members = membersSnapshot.docs.map(
-      (doc) =>
-        ({
-          id: doc.id,
-          ...doc.data(),
-        }) as UserProfile,
+    const members = membersSnapshot.docs.map((doc) =>
+      serializeFirestoreData<UserProfile>({
+        id: doc.id,
+        ...doc.data(),
+      })
     );
 
     return {

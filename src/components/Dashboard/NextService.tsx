@@ -157,11 +157,53 @@ const NextService = () => {
 
   if (!displayProgramme) {
     return (
-      <Card variant="ghost" className="mb-6">
-        <View className="p-4 items-center">
-          <Text variant="body" style={{ color: theme.muted }}>
-            No upcoming programmes scheduled
+      <Card variant="ghost" className="mb-6 relative overflow-hidden">
+        <LinearGradient
+          colors={[`${theme.muted}08`, 'transparent']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        />
+
+        <View className="relative z-10 items-center">
+          <View
+            className="w-16 h-16 rounded-full items-center justify-center mb-4"
+            style={{ backgroundColor: `${theme.muted}15` }}
+          >
+            <IconSymbol name="calendar.badge.clock" size={32} color={theme.muted} />
+          </View>
+
+          <Text
+            variant="h4"
+            className="font-semibold mb-2 text-center"
+            style={{ color: theme.heading }}
+          >
+            No Upcoming Services
           </Text>
+
+          <Text
+            variant="body"
+            className="text-center mb-4 px-4"
+            style={{ color: theme.muted }}
+          >
+            Check back soon for the next scheduled programme
+          </Text>
+
+          <Button
+            variant="outline"
+            onPress={() => router.push('/programme/upcoming')}
+            className="mt-2"
+          >
+            <Text variant="button" style={{ color: theme.primary }}>
+              View All Programmes
+            </Text>
+          </Button>
         </View>
       </Card>
     );
