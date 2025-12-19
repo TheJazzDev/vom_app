@@ -85,9 +85,9 @@ export default function MinistryIndex() {
             </View>
 
             {/* Optional: Menu Button */}
-            <Pressable className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2">
+            {/* <Pressable className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2">
               <IconSymbol name="ellipsis.circle" size={22} color="white" />
-            </Pressable>
+            </Pressable> */}
           </View>
 
           {/* Scripture Highlight */}

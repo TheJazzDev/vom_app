@@ -11,8 +11,6 @@ export default function TabLayout() {
   const theme = useTheme();
   const { shouldApplyBottomSafeArea } = useAndroidNavigationBar();
 
-  // Apply safe area only to bottom (tab bar area)
-  // Top safe area will be handled individually by main tab index pages
   const edges = shouldApplyBottomSafeArea ? ['bottom'] : [];
 
   return (
@@ -41,16 +39,11 @@ export default function TabLayout() {
             shadowOpacity: 0,
             borderColor: theme.border,
           },
-          // iOS-optimized: Use shift animation for smoother transitions
-          // animation: Platform.OS === 'ios' ? 'shift' : 'fade',
+          animation: Platform.OS === 'ios' ? 'shift' : 'fade',
           // Keep tabs mounted to prevent blank screens during transitions
           lazy: false,
           // Don't freeze content when blurred to prevent render issues
           freezeOnBlur: false,
-          // Keep screens mounted for smooth transitions
-          // unmountOnBlur: false,
-          // Optimize animation duration for iOS
-          // animationDuration: Platform.OS === 'ios' ? 200 : 150,
         }}
       >
         <Tabs.Screen

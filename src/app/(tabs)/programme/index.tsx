@@ -87,13 +87,13 @@ export default function ProgrammeIndex() {
             </View>
 
             {/* Optional: Calendar/Filter Button */}
-            <Pressable className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2">
+            {/* <Pressable className="w-10 h-10 rounded-full bg-white/20 items-center justify-center ml-2">
               <IconSymbol
                 name="line.3.horizontal.decrease.circle"
                 size={22}
                 color="white"
               />
-            </Pressable>
+            </Pressable> */}
           </View>
 
           {/* Enhanced Quick Stats */}

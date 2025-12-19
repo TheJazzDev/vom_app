@@ -16,7 +16,7 @@ export function useAndroidNavigationBar() {
       // If bottom inset is > 0 and < 24, it's likely button navigation
       // Gesture navigation typically has 0 inset or very small inset
       // Button navigation typically has 48dp (about 24-48px) inset
-      const isButtonNav = insets.bottom >= 24;
+      const isButtonNav = insets.bottom >= 28;
       setHasButtonNavigation(isButtonNav);
     }
   }, [insets.bottom]);
