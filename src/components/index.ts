@@ -4,6 +4,7 @@ import { DrawerContent } from './DrawerContent';
 import { ExternalLink } from './ExternalLink';
 import { HapticTab } from './HapticTab';
 import { HelloWave } from './HelloWave';
+import { SourceAwareBackButton } from './Navigation/SourceAwareBackButton';
 import ProgressIndicator from './ProgressIndicator';
 import Spacer from './Spacer';
 
@@ -22,5 +23,6 @@ export {
   HapticTab,
   HelloWave,
   ProgressIndicator,
+  SourceAwareBackButton,
   Spacer,
 };

@@ -1,6 +1,7 @@
 import { IconSymbol } from '@/src/components/Icons';
 import { Text } from '@/src/components/UI';
-import { useTheme } from '@/src/hooks';
+import { ROUTES } from '@/src/constants';
+import { useNavigationSource, useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { FlatList, Pressable, RefreshControl, View } from 'react-native';
@@ -93,6 +94,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
 export default function NotificationsScreen() {
   const theme = useTheme();
   const router = useRouter();
+  const { setSourceRoute } = useNavigationSource();
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
@@ -135,6 +137,8 @@ export default function NotificationsScreen() {
 
     // Navigate to action route if available
     if (notification.actionRoute) {
+      // Set source route so the destination screen knows where to return
+      setSourceRoute(ROUTES.NOTIFICATIONS);
       router.push(notification.actionRoute as any);
     }
   };

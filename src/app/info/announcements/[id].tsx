@@ -1,6 +1,6 @@
 import { IconSymbol } from '@/src/components/Icons';
 import { Text } from '@/src/components/UI';
-import { useTheme } from '@/src/hooks';
+import { useNavigationSource, useTheme } from '@/src/hooks';
 import { useAnnouncementSlice } from '@/src/store/slices';
 import { dispatch } from '@/src/store/store';
 import { fetchAnnouncementById } from '@/src/store/thunks';
@@ -18,9 +18,19 @@ export default function AnnouncementDetail() {
   const theme = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { sourceRoute, clearSourceRoute } = useNavigationSource();
 
   const { announcementById, isAnnouncementByIdLoading, announcementByIdError } =
     useAnnouncementSlice();
+
+  const handleBack = () => {
+    if (sourceRoute) {
+      clearSourceRoute();
+      router.replace(sourceRoute as any);
+    } else {
+      router.back();
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -103,7 +113,7 @@ export default function AnnouncementDetail() {
           {announcementByIdError || 'This announcement could not be loaded.'}
         </Text>
         <Pressable
-          onPress={() => router.back()}
+          onPress={handleBack}
           className="mt-6 px-6 py-3 rounded-full"
           style={{ backgroundColor: theme.primary }}
         >
@@ -126,7 +136,7 @@ export default function AnnouncementDetail() {
       >
         <View className="flex-row items-center mb-4">
           <Pressable
-            onPress={() => router.back()}
+            onPress={handleBack}
             className="bg-white/20 p-2 rounded-full mr-3"
           >
             <IconSymbol name="chevron.left" size={24} color="white" />

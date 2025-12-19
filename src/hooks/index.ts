@@ -1,4 +1,5 @@
 import { useColorScheme } from 'react-native';
+import { useNavigationSource } from '../providers/NavigationSourceProvider';
 import { useThemeMode } from '../providers/ThemeProvider';
 import { useAndroidNavigationBar } from './useAndroidNavigationBar';
 import { useBackHandler } from './useBackHandler';
@@ -13,6 +14,7 @@ export {
   useBackHandler,
   useColorScheme,
   useEventTracking,
+  useNavigationSource,
   useScreenTracking,
   useTabTransition,
   useTheme,

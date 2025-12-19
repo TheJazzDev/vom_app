@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { useTheme } from '../hooks';
 import { persistor, store } from '../store/store';
 import { LoadingProvider } from './LoadingProvider';
+import { NavigationSourceProvider } from './NavigationSourceProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { UnauthorizedModalProvider } from './UnauthorizedModalProvider';
 
@@ -32,11 +33,13 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
         <ThemeProvider>
           <LoadingProvider>
             <UnauthorizedModalProvider>
-              <GestureHandlerRootView
-                style={{ flex: 1, backgroundColor: theme.background }}
-              >
-                {children}
-              </GestureHandlerRootView>
+              <NavigationSourceProvider>
+                <GestureHandlerRootView
+                  style={{ flex: 1, backgroundColor: theme.background }}
+                >
+                  {children}
+                </GestureHandlerRootView>
+              </NavigationSourceProvider>
             </UnauthorizedModalProvider>
           </LoadingProvider>
         </ThemeProvider>
