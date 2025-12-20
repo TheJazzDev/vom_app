@@ -147,10 +147,6 @@ export default function NotificationsScreen() {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
-  // const clearAll = () => {
-  //   setNotifications([]);
-  // };
-
   const onRefresh = async () => {
     setRefreshing(true);
     // Simulate API call

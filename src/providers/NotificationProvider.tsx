@@ -146,7 +146,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
           router.push('/(tabs)/home/daily-prayers');
           break;
         default:
-          router.push('/(tabs)/more/notifications');
+          router.push('/(tabs)/notifications');
       }
     }
   };

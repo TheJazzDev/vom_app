@@ -147,7 +147,7 @@ export function usePushNotifications() {
           break;
         default:
           // Default to notifications tab
-          router.push('/(tabs)/more/notifications');
+          router.push('/(tabs)/notifications');
       }
     }
   };
