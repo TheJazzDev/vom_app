@@ -8,6 +8,7 @@ import { useTheme } from '../hooks';
 import { persistor, store } from '../store/store';
 import { LoadingProvider } from './LoadingProvider';
 import { NavigationSourceProvider } from './NavigationSourceProvider';
+import { NotificationProvider } from './NotificationProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { ToastProvider } from './ToastProvider';
 import { UnauthorizedModalProvider } from './UnauthorizedModalProvider';
@@ -35,13 +36,15 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
           <LoadingProvider>
             <UnauthorizedModalProvider>
               <NavigationSourceProvider>
-                <ToastProvider>
-                  <GestureHandlerRootView
-                    style={{ flex: 1, backgroundColor: theme.background }}
-                  >
-                    {children}
-                  </GestureHandlerRootView>
-                </ToastProvider>
+                <NotificationProvider>
+                  <ToastProvider>
+                    <GestureHandlerRootView
+                      style={{ flex: 1, backgroundColor: theme.background }}
+                    >
+                      {children}
+                    </GestureHandlerRootView>
+                  </ToastProvider>
+                </NotificationProvider>
               </NavigationSourceProvider>
             </UnauthorizedModalProvider>
           </LoadingProvider>

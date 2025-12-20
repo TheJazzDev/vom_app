@@ -1,8 +1,9 @@
 import { Card, Divider, IconSymbol, Text, View } from '@/src/components';
-import { useTheme, useThemeMode } from '@/src/hooks';
+import { useTheme, useThemeMode, useToast } from '@/src/hooks';
+import { useAuthSlice, useNotificationSlice } from '@/src/store';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Alert, Pressable, Switch } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, Linking, Pressable, Switch, Platform } from 'react-native';
 
 type ThemeMode = 'automatic' | 'light' | 'dark';
 
@@ -14,6 +15,7 @@ interface SettingOption {
   value?: boolean;
   onPress?: () => void;
   icon: string;
+  disabled?: boolean;
 }
 
 const ThemeOption = ({
@@ -70,6 +72,8 @@ const SettingItem = ({
     onPress={option.onPress}
     className="flex-row justify-between items-center px-4 py-4"
     android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
+    disabled={option.disabled}
+    style={{ opacity: option.disabled ? 0.5 : 1 }}
   >
     <View className="flex-row items-center flex-1">
       <View className="mr-4">
@@ -93,6 +97,7 @@ const SettingItem = ({
         onValueChange={(value) => onToggle(option.id, value)}
         trackColor={{ false: theme.border, true: `${theme.primary}50` }}
         thumbColor={option.value ? theme.primary : theme.muted}
+        disabled={option.disabled}
       />
     )}
 
@@ -105,25 +110,67 @@ const SettingItem = ({
 export default function Settings() {
   const theme = useTheme();
   const router = useRouter();
+  const toast = useToast();
   const { themeMode, setThemeMode } = useThemeMode();
-  const [notificationSettings, setNotificationSettings] = useState({
-    pushNotifications: true,
-    emailNotifications: false,
-    smsNotifications: true,
-    eventReminders: true,
-    prayerRequests: true,
-    announcements: true,
-  });
+  const { currentUser } = useAuthSlice();
+  const {
+    settings,
+    isLoadingSettings,
+    permissionStatus,
+    loadSettings,
+    saveSettings,
+  } = useNotificationSlice();
+
+  // Load settings on mount
+  useEffect(() => {
+    if (currentUser?.id) {
+      loadSettings(currentUser.id);
+    }
+  }, [currentUser?.id]);
 
   const handleThemeChange = (newTheme: ThemeMode) => {
     setThemeMode(newTheme);
   };
 
-  const handleNotificationToggle = (settingId: string, value: boolean) => {
-    setNotificationSettings((prev) => ({
-      ...prev,
-      [settingId]: value,
-    }));
+  const handleNotificationToggle = async (settingId: string, value: boolean) => {
+    if (!currentUser?.id) {
+      toast.error('Please log in to change settings');
+      return;
+    }
+
+    // If toggling main notifications off, show confirmation
+    if (settingId === 'enabled' && !value) {
+      Alert.alert(
+        'Disable Notifications',
+        'You will no longer receive push notifications from the app. Are you sure?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Disable',
+            style: 'destructive',
+            onPress: () => {
+              saveSettings(currentUser.id, { [settingId]: value });
+              toast.success('Notifications disabled');
+            },
+          },
+        ]
+      );
+      return;
+    }
+
+    saveSettings(currentUser.id, { [settingId]: value });
+
+    if (settingId === 'enabled' && value) {
+      toast.success('Notifications enabled');
+    }
+  };
+
+  const handleOpenNotificationSettings = () => {
+    if (Platform.OS === 'ios') {
+      Linking.openURL('app-settings:');
+    } else {
+      Linking.openSettings();
+    }
   };
 
   const handleAccountAction = (action: string) => {
@@ -153,7 +200,6 @@ export default function Settings() {
             text: 'Sign Out',
             style: 'destructive',
             onPress: () => {
-              // Handle logout
               router.replace('/auth');
             },
           },
@@ -162,54 +208,55 @@ export default function Settings() {
     }
   };
 
+  const notificationsDisabled = !settings.enabled || permissionStatus === 'denied';
+
   const notificationOptions: SettingOption[] = [
     {
-      id: 'pushNotifications',
+      id: 'enabled',
       label: 'Push Notifications',
-      description: 'Receive notifications on your device',
+      description: permissionStatus === 'denied'
+        ? 'Enable in device settings'
+        : 'Receive notifications on your device',
       type: 'toggle',
-      value: notificationSettings.pushNotifications,
+      value: settings.enabled && permissionStatus !== 'denied',
       icon: 'bell.fill',
-    },
-    {
-      id: 'emailNotifications',
-      label: 'Email Notifications',
-      description: 'Receive updates via email',
-      type: 'toggle',
-      value: notificationSettings.emailNotifications,
-      icon: 'envelope.fill',
-    },
-    {
-      id: 'smsNotifications',
-      label: 'SMS Notifications',
-      description: 'Receive text message alerts',
-      type: 'toggle',
-      value: notificationSettings.smsNotifications,
-      icon: 'message.badge.fill',
-    },
-    {
-      id: 'eventReminders',
-      label: 'Event Reminders',
-      description: 'Get notified about upcoming events',
-      type: 'toggle',
-      value: notificationSettings.eventReminders,
-      icon: 'calendar.badge.plus',
-    },
-    {
-      id: 'prayerRequests',
-      label: 'Prayer Request Updates',
-      description: 'Notifications for new prayer requests',
-      type: 'toggle',
-      value: notificationSettings.prayerRequests,
-      icon: 'hands.sparkles.fill',
+      onPress: permissionStatus === 'denied' ? handleOpenNotificationSettings : undefined,
     },
     {
       id: 'announcements',
       label: 'Church Announcements',
       description: 'Important church updates and news',
       type: 'toggle',
-      value: notificationSettings.announcements,
+      value: settings.announcements,
       icon: 'megaphone.fill',
+      disabled: notificationsDisabled,
+    },
+    {
+      id: 'programmes',
+      label: 'Event Reminders',
+      description: 'Get notified about upcoming events',
+      type: 'toggle',
+      value: settings.programmes,
+      icon: 'calendar.badge.plus',
+      disabled: notificationsDisabled,
+    },
+    {
+      id: 'prayers',
+      label: 'Daily Prayers',
+      description: 'Daily prayer notifications',
+      type: 'toggle',
+      value: settings.prayers,
+      icon: 'hands.sparkles.fill',
+      disabled: notificationsDisabled,
+    },
+    {
+      id: 'reminders',
+      label: 'Service Reminders',
+      description: 'Sunday service and special event reminders',
+      type: 'toggle',
+      value: settings.reminders,
+      icon: 'clock.fill',
+      disabled: notificationsDisabled,
     },
   ];
 
@@ -317,6 +364,25 @@ export default function Settings() {
         >
           Notifications
         </Text>
+
+        {permissionStatus === 'denied' && (
+          <Pressable
+            onPress={handleOpenNotificationSettings}
+            className="mb-4 p-4 rounded-lg flex-row items-center"
+            style={{ backgroundColor: `${theme.error}15` }}
+          >
+            <IconSymbol name="exclamationmark.triangle.fill" size={20} color={theme.error} />
+            <View className="ml-3 flex-1">
+              <Text className="font-medium" style={{ color: theme.error }}>
+                Notifications Disabled
+              </Text>
+              <Text variant="caption" style={{ color: theme.muted }}>
+                Tap to enable notifications in device settings
+              </Text>
+            </View>
+            <IconSymbol name="chevron.right" size={16} color={theme.error} />
+          </Pressable>
+        )}
 
         <Card variant="outlined" className="p-0 mb-6">
           {notificationOptions.map((option, index) => (

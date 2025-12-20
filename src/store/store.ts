@@ -14,6 +14,7 @@ import {
 import announcementReducer from './slices/announcementSlice';
 import authReducer from './slices/authSlice';
 import directoryReducer from './slices/directorySlice';
+import notificationReducer from './slices/notificationSlice';
 import programmeReduder from './slices/programmeSlice';
 
 // Auth persistence config
@@ -62,6 +63,7 @@ const rootReducer = combineReducers({
   directory: directoryReducer,
   programme: programmeReduder,
   announcements: announcementReducer,
+  notification: notificationReducer,
 });
 
 export const store = configureStore({
