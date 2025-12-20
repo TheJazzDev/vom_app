@@ -22,10 +22,10 @@ export default function MinistryLayout() {
         name="daily-prayers"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="bible-study" options={{ title: 'Bible Study' }} />
+      <Stack.Screen name="bible-study" options={{ headerShown: false }} />
       <Stack.Screen
         name="recent-sermons"
-        options={{ title: 'Recent Sermons' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="prayer-requests"

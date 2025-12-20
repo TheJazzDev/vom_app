@@ -5,7 +5,7 @@ import { useTheme } from '@/src/hooks';
 import { PRAYER_CATEGORIES, PrayerRequestCategory } from '@/src/services/prayerRequest';
 import { useAuthSlice, usePrayerRequestSlice } from '@/src/store/slices';
 import { fetchPrayerRequestsThunk, togglePrayedThunk } from '@/src/store/thunks';
-import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
+  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -25,8 +26,7 @@ export default function PrayerRequestsScreen() {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { requests, userPrayed, isLoadingRequests, selectedCategory, error } =
-    usePrayerRequestSlice();
+  const { requests, userPrayed, isLoadingRequests, error } = usePrayerRequestSlice();
   const { user } = useAuthSlice();
   const [activeCategory, setActiveCategory] = useState<PrayerRequestCategory | null>(null);
 
@@ -55,138 +55,133 @@ export default function PrayerRequestsScreen() {
     { label: string; emoji: string; color: string }
   ][];
 
+  const activeRequests = requests.filter(r => r.status === 'active');
+  const totalPrayers = requests.reduce((sum, r) => sum + r.prayerCount, 0);
+
   const renderHeader = () => (
-    <>
-      <LinearGradient
-        colors={['#DB2777', '#BE185D']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
-      >
-        <View className="flex-row items-center justify-between mb-3">
-          <View className="flex-row items-center gap-3">
-            <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center">
-              <IconSymbol name="hands.sparkles.fill" size={26} color="white" />
+    <View>
+      {/* Custom Navbar */}
+      <View style={styles.navbar}>
+        <Pressable onPress={() => router.back()} style={styles.backBtn}>
+          <IconSymbol name="arrow.left" size={20} color={theme.text} />
+        </Pressable>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text variant="h5" style={{ color: theme.heading, fontWeight: '700' }}>
+            Prayer Wall
+          </Text>
+        </View>
+        <Pressable onPress={handleCreateRequest} style={styles.addBtn}>
+          <IconSymbol name="plus.circle.fill" size={28} color={theme.primary} />
+        </Pressable>
+      </View>
+
+      {/* Community Banner */}
+      <View style={[styles.communityBanner, { backgroundColor: theme.card }]}>
+        <View style={styles.communityHeader}>
+          <View style={styles.iconCluster}>
+            <View style={[styles.clusterIcon, { backgroundColor: '#EF4444' }]}>
+              <IconSymbol name="heart.fill" size={14} color="white" />
             </View>
-            <View>
-              <Text className="text-white/80 text-sm font-medium">
-                Community Support
-              </Text>
-              <Text className="text-white font-bold text-xl">Prayer Requests</Text>
+            <View style={[styles.clusterIcon, { backgroundColor: '#10B981', marginLeft: -8 }]}>
+              <IconSymbol name="hands.sparkles.fill" size={14} color="white" />
+            </View>
+            <View style={[styles.clusterIcon, { backgroundColor: '#8B5CF6', marginLeft: -8 }]}>
+              <IconSymbol name="person.2.fill" size={14} color="white" />
             </View>
           </View>
-          <Pressable
-            onPress={handleCreateRequest}
-            className="w-10 h-10 rounded-full bg-white/20 items-center justify-center"
-          >
-            <IconSymbol name="plus" size={22} color="white" />
-          </Pressable>
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text style={[styles.communityTitle, { color: theme.heading }]}>
+              Our Community
+            </Text>
+            <Text style={[styles.communitySubtitle, { color: theme.muted }]}>
+              {activeRequests.length} active requests • {totalPrayers} prayers lifted
+            </Text>
+          </View>
         </View>
-        <Text className="text-white/90 leading-6">
-          Share your prayer needs with our community. Together we lift each other up.
+        <Text style={[styles.communityDesc, { color: theme.textSecondary }]}>
+          When two or more are gathered, He is there. Share your burdens and lift each other up in prayer.
         </Text>
-      </LinearGradient>
+      </View>
 
-      {/* Category Filter */}
-      <View className="py-3">
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryScroll}
+      {/* Filter Chips */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.filterContainer}
+        contentContainerStyle={styles.filterContent}
+      >
+        <TouchableOpacity
+          onPress={() => setActiveCategory(null)}
+          style={[
+            styles.filterChip,
+            {
+              backgroundColor: activeCategory === null ? theme.primary : `${theme.muted}20`,
+              borderColor: activeCategory === null ? theme.primary : 'transparent',
+            },
+          ]}
         >
+          <Text style={{ color: activeCategory === null ? 'white' : theme.muted, fontWeight: '600', fontSize: 13 }}>
+            🌟 All
+          </Text>
+        </TouchableOpacity>
+        {categories.map(([key, cat]) => (
           <TouchableOpacity
-            onPress={() => setActiveCategory(null)}
+            key={key}
+            onPress={() => setActiveCategory(key)}
             style={[
-              styles.categoryChip,
+              styles.filterChip,
               {
-                backgroundColor: activeCategory === null ? theme.brand : theme.card,
-                borderColor: activeCategory === null ? theme.brand : theme.border,
+                backgroundColor: activeCategory === key ? `${cat.color}` : `${cat.color}15`,
+                borderColor: activeCategory === key ? cat.color : 'transparent',
               },
             ]}
           >
             <Text
               style={{
-                color: activeCategory === null ? 'white' : theme.text,
+                color: activeCategory === key ? 'white' : cat.color,
+                fontWeight: '600',
+                fontSize: 13,
               }}
-              className="font-medium"
             >
-              All
+              {cat.emoji} {cat.label}
             </Text>
           </TouchableOpacity>
-          {categories.map(([key, cat]) => (
-            <TouchableOpacity
-              key={key}
-              onPress={() => setActiveCategory(key)}
-              style={[
-                styles.categoryChip,
-                {
-                  backgroundColor: activeCategory === key ? `${cat.color}20` : theme.card,
-                  borderColor: activeCategory === key ? cat.color : theme.border,
-                },
-              ]}
-            >
-              <Text
-                style={{
-                  color: activeCategory === key ? cat.color : theme.text,
-                }}
-              >
-                {cat.emoji} {cat.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    </>
+        ))}
+      </ScrollView>
+    </View>
   );
 
   const renderEmptyState = () => (
-    <View className="flex-1 items-center justify-center py-20">
-      <View
-        className="w-20 h-20 rounded-full items-center justify-center mb-4"
-        style={{ backgroundColor: `${theme.brand}15` }}
-      >
-        <IconSymbol name="hands.sparkles.fill" size={40} color={theme.brand} />
+    <View style={styles.emptyState}>
+      <View style={[styles.emptyCircle, { backgroundColor: `${theme.primary}10` }]}>
+        <View style={[styles.innerCircle, { backgroundColor: `${theme.primary}20` }]}>
+          <IconSymbol name="hands.sparkles.fill" size={50} color={theme.primary} />
+        </View>
       </View>
-      <Text
-        variant="h4"
-        style={{ color: theme.heading }}
-        className="font-bold mb-2"
-      >
+      <Text variant="h4" style={{ color: theme.heading, fontWeight: '700', marginTop: 24, marginBottom: 8 }}>
         No Prayer Requests
       </Text>
-      <Text
-        variant="body"
-        style={{ color: theme.textSecondary }}
-        className="text-center px-8 mb-6"
-      >
-        Be the first to share a prayer request with our community.
+      <Text variant="body" style={{ color: theme.muted, textAlign: 'center', paddingHorizontal: 40, marginBottom: 24 }}>
+        Be the first to share a prayer need. Your church family is here to support you.
       </Text>
       <Pressable
         onPress={handleCreateRequest}
-        className="px-6 py-3 rounded-xl flex-row items-center gap-2"
-        style={{ backgroundColor: theme.brand }}
+        style={[styles.emptyButton, { backgroundColor: theme.primary }]}
       >
-        <IconSymbol name="plus" size={18} color="white" />
-        <Text className="text-white font-semibold">Share a Request</Text>
+        <IconSymbol name="plus" size={20} color="white" />
+        <Text style={styles.emptyButtonText}>Submit Request</Text>
       </Pressable>
     </View>
   );
 
   if (isLoadingRequests && requests.length === 0) {
     return (
-      <SafeAreaView
-        edges={['top']}
-        style={{ flex: 1, backgroundColor: theme.background }}
-      >
+      <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
         {renderHeader()}
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary }}
-            className="mt-4"
-          >
-            Loading prayer requests...
+        <View style={styles.loadingState}>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text variant="body" style={{ color: theme.muted, marginTop: 16 }}>
+            Loading prayer wall...
           </Text>
         </View>
       </SafeAreaView>
@@ -194,15 +189,12 @@ export default function PrayerRequestsScreen() {
   }
 
   return (
-    <SafeAreaView
-      edges={['top']}
-      style={{ flex: 1, backgroundColor: theme.background }}
-    >
+    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
       <FlatList
         data={requests}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View className="px-4">
+          <View style={styles.requestWrapper}>
             <PrayerRequestCard
               request={item}
               hasPrayed={userPrayed[item.id] || false}
@@ -216,8 +208,8 @@ export default function PrayerRequestsScreen() {
           <RefreshControl
             refreshing={isLoadingRequests}
             onRefresh={handleRefresh}
-            tintColor={theme.brand}
-            colors={[theme.brand]}
+            tintColor={theme.primary}
+            colors={[theme.primary]}
           />
         }
         contentContainerStyle={styles.listContent}
@@ -228,12 +220,9 @@ export default function PrayerRequestsScreen() {
       {requests.length > 0 && (
         <Pressable
           onPress={handleCreateRequest}
-          style={[
-            styles.fab,
-            { backgroundColor: theme.brand },
-          ]}
+          style={[styles.fab, { backgroundColor: theme.primary }]}
         >
-          <IconSymbol name="plus" size={24} color="white" />
+          <IconSymbol name="hands.sparkles.fill" size={24} color="white" />
         </Pressable>
       )}
     </SafeAreaView>
@@ -241,21 +230,118 @@ export default function PrayerRequestsScreen() {
 }
 
 const styles = StyleSheet.create({
-  headerGradient: {
-    padding: 20,
-    marginBottom: 4,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
+  navbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 8,
   },
-  categoryScroll: {
+  backBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  communityBanner: {
+    marginHorizontal: 16,
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+  },
+  communityHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  iconCluster: {
+    flexDirection: 'row',
+  },
+  clusterIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  communityTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  communitySubtitle: {
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  communityDesc: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontStyle: 'italic',
+  },
+  filterContainer: {
+    marginBottom: 12,
+  },
+  filterContent: {
     paddingHorizontal: 16,
     gap: 8,
   },
-  categoryChip: {
-    paddingHorizontal: 16,
+  filterChip: {
+    paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: 2,
+    marginRight: 8,
+  },
+  requestWrapper: {
+    paddingHorizontal: 16,
+    marginBottom: 4,
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 80,
+  },
+  emptyCircle: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  innerCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 24,
+  },
+  emptyButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  loadingState: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   listContent: {
     paddingBottom: 100,
@@ -264,15 +350,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 24,
     right: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowRadius: 12,
+    elevation: 12,
   },
 });
