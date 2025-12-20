@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Pressable,
@@ -36,25 +36,27 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
 }) => {
   const { isOffline, refresh } = useNetworkStatus();
   const insets = useSafeAreaInsets();
-  const translateY = useRef(new Animated.Value(-100)).current;
-  const isVisible = useRef(false);
+  const translateY = useRef(new Animated.Value(-200)).current;
+  const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    if (isOffline && !isVisible.current) {
-      isVisible.current = true;
+    if (isOffline) {
+      setShouldRender(true);
       Animated.spring(translateY, {
         toValue: 0,
         useNativeDriver: true,
         tension: 80,
         friction: 12,
       }).start();
-    } else if (!isOffline && isVisible.current) {
-      isVisible.current = false;
+    } else {
       Animated.timing(translateY, {
-        toValue: -100,
-        duration: 200,
+        toValue: -200,
+        duration: 250,
         useNativeDriver: true,
-      }).start();
+      }).start(() => {
+        // Only unmount after animation completes
+        setShouldRender(false);
+      });
     }
   }, [isOffline, translateY]);
 
@@ -63,24 +65,28 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
     onRetry?.();
   };
 
-  // Always render but animate visibility
+  // Don't render at all when not needed (after animation)
+  if (!shouldRender && !isOffline) {
+    return null;
+  }
+
   return (
     <Animated.View
       style={[
         styles.container,
         {
           transform: [{ translateY }],
-          paddingTop: insets.top + 8,
+          paddingTop: insets.top + 4,
         },
       ]}
       pointerEvents={isOffline ? 'auto' : 'none'}
     >
       <View style={styles.content}>
         <View style={styles.iconContainer}>
-          <IconSymbol name="wifi.slash" size={18} color="#FFFFFF" />
+          <IconSymbol name="wifi.slash" size={16} color="#FFFFFF" />
         </View>
 
-        <Text style={styles.message} numberOfLines={2}>
+        <Text style={styles.message} numberOfLines={1}>
           {message}
         </Text>
 
@@ -92,7 +98,7 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
             ]}
             onPress={handleRetry}
           >
-            <IconSymbol name="arrow.clockwise" size={14} color="#F59E0B" />
+            <IconSymbol name="arrow.clockwise" size={12} color="#F59E0B" />
             <Text style={styles.retryText}>Retry</Text>
           </Pressable>
         )}
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#F59E0B',
-    zIndex: 9998,
+    zIndex: 999,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
@@ -118,43 +124,43 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    paddingBottom: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    paddingBottom: 8,
   },
   iconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     backgroundColor: 'rgba(0,0,0,0.15)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 8,
   },
   message: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     color: '#FFFFFF',
-    lineHeight: 18,
+    lineHeight: 16,
   },
   retryButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.95)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    marginLeft: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
+    marginLeft: 8,
   },
   retryButtonPressed: {
     opacity: 0.8,
   },
   retryText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
     color: '#F59E0B',
-    marginLeft: 4,
+    marginLeft: 3,
   },
 });
 

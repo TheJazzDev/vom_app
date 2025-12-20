@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
-import { RootState, dispatch } from '../store';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState, AppDispatch } from '../store';
 import {
   registerForPushNotifications,
   unregisterPushToken,
@@ -287,6 +287,7 @@ export const {
 
 export function useNotificationSlice() {
   const state = useSelector((state: RootState) => state.notification);
+  const dispatch = useDispatch<AppDispatch>();
 
   return {
     ...state,
