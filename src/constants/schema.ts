@@ -90,3 +90,22 @@ export const registrationSchema = yup.object().shape({
       'Password must contain at least one uppercase letter, one lowercase letter, and one number',
     ),
 });
+
+// Schema for forgot password screen
+export const forgotPasswordSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email address')
+    .required('Email is required'),
+});
+
+// Schema for phone login screen
+export const phoneLoginSchema = yup.object().shape({
+  phoneNumber: yup
+    .string()
+    .required('Phone number is required')
+    .matches(
+      /^[+]?[\d\s()-]{10,}$/,
+      'Please enter a valid phone number',
+    ),
+});

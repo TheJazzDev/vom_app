@@ -1,14 +1,18 @@
 import {
   activateMemberAccount,
   createGuestAccount,
+  findMemberByPhone,
   findMemberForActivation,
   getMemberByAuthUid,
   getMemberByEmail,
   login,
   logout,
+  sendPasswordResetEmail,
+  sendPhoneLoginCode,
   sendEmailVerificationLink,
   updateUserProfile,
   verifyPhoneCodeAndSignIn,
+  verifyPhoneLoginCode,
 } from '@/src/services/auth';
 import { getMemberById } from '@/src/services/auth/getMemberByEmail';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -185,6 +189,78 @@ export const logoutThunk = createAsyncThunk(
       await logout();
     } catch (error: any) {
       return rejectWithValue(error.message);
+    }
+  },
+);
+
+// Send password reset email thunk
+export const sendPasswordResetEmailThunk = createAsyncThunk<
+  { success: boolean },
+  string,
+  { rejectValue: string }
+>('auth/sendPasswordResetEmail', async (email, { rejectWithValue }) => {
+  try {
+    await sendPasswordResetEmail(email);
+    return { success: true };
+  } catch (error: any) {
+    return rejectWithValue(
+      error.message ?? 'Failed to send password reset email',
+    );
+  }
+});
+
+// Find member by phone thunk
+export const findMemberByPhoneThunk = createAsyncThunk(
+  'auth/findMemberByPhone',
+  async (phoneNumber: string, { rejectWithValue }) => {
+    try {
+      const member = await findMemberByPhone(phoneNumber);
+      return member;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+// Send phone login code thunk
+export const sendPhoneLoginCodeThunk = createAsyncThunk(
+  'auth/sendPhoneLoginCode',
+  async (
+    data: { phoneNumber: string; recaptchaVerifier: any },
+    { rejectWithValue },
+  ) => {
+    try {
+      const result = await sendPhoneLoginCode(
+        data.phoneNumber,
+        data.recaptchaVerifier,
+      );
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+// Verify phone login code thunk
+export const verifyPhoneLoginCodeThunk = createAsyncThunk(
+  'auth/verifyPhoneLoginCode',
+  async (
+    data: {
+      verificationId: string;
+      code: string;
+      member?: UserProfile | null;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const result = await verifyPhoneLoginCode(
+        data.verificationId,
+        data.code,
+        data.member,
+      );
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Phone verification failed');
     }
   },
 );

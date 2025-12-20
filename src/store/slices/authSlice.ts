@@ -4,14 +4,18 @@ import { RootState } from '../store';
 import {
   activateMemberAccountThunk,
   createGuestAccountThunk,
+  findMemberByPhoneThunk,
   findMemberForActivationThunk,
   getMemberByAuthUidThunk,
   getMemberByIdThunk,
   loginThunk,
   logoutThunk,
   sendEmailVerificationLinkThunk,
+  sendPasswordResetEmailThunk,
+  sendPhoneLoginCodeThunk,
   updateUserProfileThunk,
   verifyPhoneAndSignInThunk,
+  verifyPhoneLoginCodeThunk,
 } from '../thunks/auth';
 
 const initialState: AuthState = {
@@ -25,6 +29,8 @@ const initialState: AuthState = {
   phoneVerificationId: null,
   phoneNumber: null,
   isWaitingForSMS: false,
+  phoneMemberFound: null,
+  passwordResetEmailSent: false,
   isLoading: false,
   isfindingMemberForActivation: false,
   isActivatingMemberAccount: false,
@@ -34,6 +40,10 @@ const initialState: AuthState = {
   isLoggingIn: false,
   isLoggingOut: false,
   isUpdatingProfile: false,
+  isSendingPasswordResetEmail: false,
+  isSendingPhoneCode: false,
+  isVerifyingPhoneCode: false,
+  isFindingMemberByPhone: false,
   error: null,
   successMessage: null,
   isInitialized: false,
@@ -54,6 +64,15 @@ const authSlice = createSlice({
     },
     clearGuestRegistrationResult: (state) => {
       state.guestRegistrationResult = null;
+    },
+    clearPhoneLoginState: (state) => {
+      state.phoneVerificationId = null;
+      state.phoneNumber = null;
+      state.isWaitingForSMS = false;
+      state.phoneMemberFound = null;
+    },
+    clearPasswordResetState: (state) => {
+      state.passwordResetEmailSent = false;
     },
     setAuthInitialized: (state) => {
       state.isInitialized = true;
@@ -245,6 +264,78 @@ const authSlice = createSlice({
       })
       .addCase(updateUserProfileThunk.rejected, (state, action) => {
         state.isUpdatingProfile = false;
+        state.error = action.payload as string;
+      });
+
+    // Send Password Reset Email
+    builder
+      .addCase(sendPasswordResetEmailThunk.pending, (state) => {
+        state.isSendingPasswordResetEmail = true;
+        state.error = null;
+        state.passwordResetEmailSent = false;
+      })
+      .addCase(sendPasswordResetEmailThunk.fulfilled, (state) => {
+        state.isSendingPasswordResetEmail = false;
+        state.passwordResetEmailSent = true;
+        state.successMessage = 'Password reset email sent! Check your inbox.';
+      })
+      .addCase(sendPasswordResetEmailThunk.rejected, (state, action) => {
+        state.isSendingPasswordResetEmail = false;
+        state.error = action.payload as string;
+      });
+
+    // Find Member by Phone
+    builder
+      .addCase(findMemberByPhoneThunk.pending, (state) => {
+        state.isFindingMemberByPhone = true;
+        state.error = null;
+        state.phoneMemberFound = null;
+      })
+      .addCase(findMemberByPhoneThunk.fulfilled, (state, action) => {
+        state.isFindingMemberByPhone = false;
+        state.phoneMemberFound = action.payload;
+      })
+      .addCase(findMemberByPhoneThunk.rejected, (state, action) => {
+        state.isFindingMemberByPhone = false;
+        state.error = action.payload as string;
+      });
+
+    // Send Phone Login Code
+    builder
+      .addCase(sendPhoneLoginCodeThunk.pending, (state) => {
+        state.isSendingPhoneCode = true;
+        state.error = null;
+      })
+      .addCase(sendPhoneLoginCodeThunk.fulfilled, (state, action) => {
+        state.isSendingPhoneCode = false;
+        state.phoneVerificationId = action.payload.verificationId;
+        state.phoneNumber = action.payload.phoneNumber;
+        state.isWaitingForSMS = true;
+        state.successMessage = 'Verification code sent to your phone!';
+      })
+      .addCase(sendPhoneLoginCodeThunk.rejected, (state, action) => {
+        state.isSendingPhoneCode = false;
+        state.error = action.payload as string;
+      });
+
+    // Verify Phone Login Code
+    builder
+      .addCase(verifyPhoneLoginCodeThunk.pending, (state) => {
+        state.isVerifyingPhoneCode = true;
+        state.error = null;
+      })
+      .addCase(verifyPhoneLoginCodeThunk.fulfilled, (state, action) => {
+        state.isVerifyingPhoneCode = false;
+        state.currentUser = action.payload;
+        state.isAuthenticated = true;
+        state.phoneVerificationId = null;
+        state.phoneNumber = null;
+        state.isWaitingForSMS = false;
+        state.phoneMemberFound = null;
+        state.successMessage = 'Signed in successfully!';
+      })
+      .addCase(verifyPhoneLoginCodeThunk.rejected, (state, action) => {
+        state.isVerifyingPhoneCode = false;
         state.error = action.payload as string;
       });
   },
