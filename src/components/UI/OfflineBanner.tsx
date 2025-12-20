@@ -5,8 +5,11 @@ import {
   StyleSheet,
   Text,
   View,
+  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Haptics from 'expo-haptics';
 import { IconSymbol } from '../Icons';
 import { useNetworkStatus } from '@/src/hooks/useNetworkStatus';
 
@@ -26,18 +29,19 @@ interface OfflineBannerProps {
 }
 
 /**
- * A banner that appears at the top of the screen when the device is offline.
+ * A snackbar that appears at the bottom of the screen when the device is offline.
  * Automatically shows/hides based on network status.
  */
 export const OfflineBanner: React.FC<OfflineBannerProps> = ({
-  message = "You're offline. Some features may be unavailable.",
+  message = "You're offline",
   showRetry = true,
   onRetry,
 }) => {
   const { isOffline, refresh } = useNetworkStatus();
   const insets = useSafeAreaInsets();
-  const translateY = useRef(new Animated.Value(-200)).current;
+  const translateY = useRef(new Animated.Value(200)).current;
   const [shouldRender, setShouldRender] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     if (isOffline) {
@@ -45,12 +49,12 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
       Animated.spring(translateY, {
         toValue: 0,
         useNativeDriver: true,
-        tension: 80,
-        friction: 12,
+        tension: 65,
+        friction: 11,
       }).start();
     } else {
       Animated.timing(translateY, {
-        toValue: -200,
+        toValue: 200,
         duration: 250,
         useNativeDriver: true,
       }).start(() => {
@@ -60,9 +64,51 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
     }
   }, [isOffline, translateY]);
 
+  const triggerHaptic = async (
+    type: 'light' | 'medium' | 'success'
+  ) => {
+    try {
+      if (type === 'light') {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      } else if (type === 'medium') {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      } else {
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      }
+    } catch (error) {
+      console.debug('[OfflineBanner] Haptic feedback not available:', error);
+    }
+  };
+
   const handleRetry = async () => {
-    await refresh();
-    onRetry?.();
+    if (isRefreshing) return;
+
+    try {
+      setIsRefreshing(true);
+
+      // Initial haptic feedback
+      triggerHaptic('light');
+
+      // Check network status
+      const status = await refresh();
+
+      // Give user time to see the loading state
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      if (status.isConnected && status.isInternetReachable !== false) {
+        // Network is back - haptic success
+        triggerHaptic('success');
+      } else {
+        // Still offline - gentle haptic
+        triggerHaptic('medium');
+      }
+
+      onRetry?.();
+    } catch (error) {
+      console.error('[OfflineBanner] Error refreshing:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   // Don't render at all when not needed (after animation)
@@ -70,36 +116,51 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
     return null;
   }
 
+  // Calculate bottom position
+  // Tab bar height is 85px which already includes safe area handling
+  // Just add spacing above the tab bar
+  const bottomPosition = 85 + 16;
+
   return (
     <Animated.View
       style={[
         styles.container,
         {
           transform: [{ translateY }],
-          paddingTop: insets.top + 4,
+          bottom: bottomPosition,
         },
       ]}
       pointerEvents={isOffline ? 'auto' : 'none'}
     >
-      <View style={styles.content}>
+      <View style={styles.snackbar}>
         <View style={styles.iconContainer}>
-          <IconSymbol name="wifi.slash" size={16} color="#FFFFFF" />
+          <IconSymbol name="wifi.slash" size={18} color="#FFFFFF" />
         </View>
 
-        <Text style={styles.message} numberOfLines={1}>
-          {message}
-        </Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.message} numberOfLines={1}>
+            {isRefreshing ? 'Checking connection...' : message}
+          </Text>
+          <Text style={styles.subtitle} numberOfLines={1}>
+            {isRefreshing ? 'Please wait' : 'Some features may be unavailable'}
+          </Text>
+        </View>
 
         {showRetry && (
           <Pressable
             style={({ pressed }) => [
               styles.retryButton,
-              pressed && styles.retryButtonPressed,
+              pressed && !isRefreshing && styles.retryButtonPressed,
+              isRefreshing && styles.retryButtonDisabled,
             ]}
             onPress={handleRetry}
+            disabled={isRefreshing}
           >
-            <IconSymbol name="arrow.clockwise" size={12} color="#F59E0B" />
-            <Text style={styles.retryText}>Retry</Text>
+            {isRefreshing ? (
+              <ActivityIndicator size="small" color="#FFFFFF" />
+            ) : (
+              <IconSymbol name="arrow.clockwise" size={16} color="#FFFFFF" />
+            )}
           </Pressable>
         )}
       </View>
@@ -110,57 +171,60 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#F59E0B',
+    left: 16,
+    right: 16,
     zIndex: 999,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 6,
   },
-  content: {
+  snackbar: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    paddingBottom: 8,
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
   },
   iconContainer: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#EF4444',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 8,
+    marginRight: 12,
+  },
+  textContainer: {
+    flex: 1,
   },
   message: {
-    flex: 1,
-    fontSize: 13,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
     color: '#FFFFFF',
-    lineHeight: 16,
+    marginBottom: 2,
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#9CA3AF',
   },
   retryButton: {
-    flexDirection: 'row',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.95)',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
     marginLeft: 8,
   },
   retryButtonPressed: {
-    opacity: 0.8,
+    backgroundColor: 'rgba(255,255,255,0.25)',
   },
-  retryText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#F59E0B',
-    marginLeft: 3,
+  retryButtonDisabled: {
+    opacity: 0.6,
   },
 });
 

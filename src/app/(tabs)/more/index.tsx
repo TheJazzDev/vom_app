@@ -5,7 +5,13 @@ import { INFO_CATEGORIES, ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, View } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Quick action items configuration
@@ -52,7 +58,6 @@ export default function MoreIndex() {
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      // Simulate API call - replace with actual API call when available
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Error refreshing more page:', error);
@@ -61,7 +66,6 @@ export default function MoreIndex() {
     }
   }, []);
 
-  // Compact Quick action card component
   const QuickActionCard = ({ item }: { item: (typeof QUICK_ACTIONS)[0] }) => (
     <Pressable
       onPress={() => router.push(item.route)}
@@ -180,7 +184,7 @@ export default function MoreIndex() {
 
   return (
     <SafeAreaView
-      edges={['top']}
+      edges={[]}
       className="flex-1"
       style={{ backgroundColor: theme.background }}
     >
