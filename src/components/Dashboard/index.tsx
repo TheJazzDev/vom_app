@@ -27,7 +27,7 @@ export default function Dashboard({ refreshing, onRefresh }: DashboardProps) {
       className="flex-1"
     >
       <View gradient className="flex-1">
-        <View id="header" className='flex-row justify-between p-4 pt-3 broder-b border-border-tertiary'>
+        <View id="header" className={`flex-row justify-between p-4 pt-3`}>
           <ProfileHeader />
           <Notifications />
         </View>
@@ -41,7 +41,7 @@ export default function Dashboard({ refreshing, onRefresh }: DashboardProps) {
         >
           <View className="px-4">
             <Text variant="h6" className="text-center">
-              Stay 
+              Stay connected with church activities
             </Text>
           </View>
 
