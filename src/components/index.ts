@@ -7,6 +7,7 @@ import { HelloWave } from './HelloWave';
 import ProgressIndicator from './ProgressIndicator';
 import Spacer from './Spacer';
 
+export * from './DailyPrayer';
 export * from './Directory';
 export * from './Forms';
 export * from './Icons';

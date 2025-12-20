@@ -8,6 +8,10 @@ export default function MinistryLayout() {
   return (
     <Stack screenOptions={getStackScreenOptions(theme)}>
       <Stack.Screen name="index" options={{ title: 'Ministry', ...HIDE_HEADER }} />
+      <Stack.Screen
+        name="daily-prayers"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="bible-study" options={{ title: 'Bible Study' }} />
       <Stack.Screen
         name="recent-sermons"

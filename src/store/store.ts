@@ -13,6 +13,7 @@ import {
 } from 'redux-persist';
 import announcementReducer from './slices/announcementSlice';
 import authReducer from './slices/authSlice';
+import dailyPrayerReducer from './slices/dailyPrayerSlice';
 import directoryReducer from './slices/directorySlice';
 import programmeReduder from './slices/programmeSlice';
 
@@ -59,6 +60,7 @@ const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const rootReducer = combineReducers({
   auth: persistedAuthReducer,
+  dailyPrayer: dailyPrayerReducer,
   directory: directoryReducer,
   programme: programmeReduder,
   announcements: announcementReducer,
