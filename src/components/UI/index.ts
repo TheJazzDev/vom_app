@@ -9,6 +9,7 @@ import { TextInput } from './TextInput';
 import { View } from './View';
 import { RHFTextInput } from './RHFTextInput';
 import { ErrorToast } from './ErrorToast';
+import { Toast } from './Toast';
 import LoadingScreen from './LoadingScreen';
 import SearchInput from './SearchInput';
 
@@ -20,6 +21,7 @@ export {
   Countdown,
   Tab,
   Text,
+  Toast,
   Divider,
   TextInput,
   View,
@@ -27,3 +29,5 @@ export {
   RHFTextInput,
   LoadingScreen,
 };
+
+export type { ToastConfig, ToastType } from './Toast';

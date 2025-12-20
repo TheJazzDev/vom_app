@@ -1,6 +1,7 @@
 import { useColorScheme } from 'react-native';
 import { useNavigationSource } from '../providers/NavigationSourceProvider';
 import { useThemeMode } from '../providers/ThemeProvider';
+import { useToast } from '../providers/ToastProvider';
 import { useAndroidNavigationBar } from './useAndroidNavigationBar';
 import { useBackHandler } from './useBackHandler';
 import { useEventTracking, useScreenTracking } from './useScreenTracking';
@@ -19,5 +20,6 @@ export {
   useTabTransition,
   useTheme,
   useThemeColor,
-  useThemeMode
+  useThemeMode,
+  useToast,
 };

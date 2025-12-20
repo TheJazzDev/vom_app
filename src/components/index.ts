@@ -1,6 +1,7 @@
 import AnimatedLoadingButton from './Buttons/AnimatedLoadingButton';
 import { Collapsible } from './Collapsible';
 import { DrawerContent } from './DrawerContent';
+import ErrorBoundary from './ErrorBoundary';
 import { ExternalLink } from './ExternalLink';
 import { HapticTab } from './HapticTab';
 import { HelloWave } from './HelloWave';
@@ -19,6 +20,7 @@ export {
   AnimatedLoadingButton,
   Collapsible,
   DrawerContent,
+  ErrorBoundary,
   ExternalLink,
   HapticTab,
   HelloWave,

@@ -9,6 +9,7 @@ import { persistor, store } from '../store/store';
 import { LoadingProvider } from './LoadingProvider';
 import { NavigationSourceProvider } from './NavigationSourceProvider';
 import { ThemeProvider } from './ThemeProvider';
+import { ToastProvider } from './ToastProvider';
 import { UnauthorizedModalProvider } from './UnauthorizedModalProvider';
 
 type ProvidersProps = {
@@ -34,11 +35,13 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
           <LoadingProvider>
             <UnauthorizedModalProvider>
               <NavigationSourceProvider>
-                <GestureHandlerRootView
-                  style={{ flex: 1, backgroundColor: theme.background }}
-                >
-                  {children}
-                </GestureHandlerRootView>
+                <ToastProvider>
+                  <GestureHandlerRootView
+                    style={{ flex: 1, backgroundColor: theme.background }}
+                  >
+                    {children}
+                  </GestureHandlerRootView>
+                </ToastProvider>
               </NavigationSourceProvider>
             </UnauthorizedModalProvider>
           </LoadingProvider>
