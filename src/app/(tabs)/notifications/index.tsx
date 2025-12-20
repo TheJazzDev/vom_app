@@ -2,178 +2,209 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text } from '@/src/components/UI';
 import { ROUTES } from '@/src/constants';
 import { useNavigationSource, useTheme } from '@/src/hooks';
+import { useAuthSlice, useNotificationSlice } from '@/src/store';
+import { AppNotification, NotificationType, NotificationPriority } from '@/src/services/notifications';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { FlatList, Pressable, RefreshControl, View } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { FlatList, Pressable, RefreshControl, View, ActivityIndicator } from 'react-native';
 
-interface Notification {
-  id: string;
-  type: 'announcement' | 'event' | 'prayer' | 'message' | 'reminder' | 'update';
-  title: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-  actionRoute?: string;
-  priority: 'high' | 'medium' | 'low';
-  sender?: string;
-}
-
-const MOCK_NOTIFICATIONS: Notification[] = [
+// Fallback mock data for when Firestore is empty
+const MOCK_NOTIFICATIONS: AppNotification[] = [
   {
-    id: '1',
+    id: 'mock-1',
     type: 'announcement',
     title: 'Church Revival: 7 Days of Glory',
     message:
       'Join us for a powerful 7-day revival program starting March 15th. Special guest minister Pastor James Adebayo.',
     timestamp: '2 hours ago',
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     read: false,
     priority: 'high',
     sender: 'Church Admin',
-    actionRoute: '/info/announcements/1',
+    actionRoute: '/more/announcement',
   },
   {
-    id: '2',
+    id: 'mock-2',
     type: 'event',
     title: 'Youth Night Tomorrow',
     message:
       "Don't forget about Youth Night tomorrow at 7:30 PM. Bring a friend and experience God's love together!",
     timestamp: '1 day ago',
+    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
     read: false,
     priority: 'medium',
     sender: 'Youth Ministry',
-    actionRoute: '/info/events/2',
+    actionRoute: '/more/events',
   },
   {
-    id: '3',
+    id: 'mock-3',
     type: 'prayer',
     title: 'New Prayer Request',
     message:
       'Sister Grace has submitted a prayer request. Join us in lifting her up in prayer.',
     timestamp: '2 days ago',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     read: true,
     priority: 'medium',
     sender: 'Prayer Ministry',
     actionRoute: '/ministry/prayer-request',
   },
   {
-    id: '4',
+    id: 'mock-4',
     type: 'reminder',
     title: 'Sunday Service Reminder',
     message:
       'Service starts at 9:00 AM tomorrow. Theme: "More Than Conquerors" - Romans 8:37',
     timestamp: '2 days ago',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     read: true,
     priority: 'medium',
     sender: 'Church Calendar',
   },
   {
-    id: '5',
+    id: 'mock-5',
     type: 'update',
     title: 'Profile Update Required',
     message:
       'Please update your contact information to stay connected with church activities.',
     timestamp: '3 days ago',
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     read: true,
     priority: 'low',
     sender: 'System',
     actionRoute: '/profile/edit',
   },
   {
-    id: '6',
+    id: 'mock-6',
     type: 'message',
     title: 'Welcome to Valley of Mercy!',
     message:
       "Thank you for joining our church family. We're excited to have you with us on this spiritual journey.",
     timestamp: '1 week ago',
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     read: true,
     priority: 'high',
     sender: 'Pastor David Johnson',
   },
 ];
 
+const getNotificationIcon = (type: NotificationType, mutedColor: string) => {
+  switch (type) {
+    case 'announcement':
+      return { name: 'megaphone.fill', color: '#EF4444' };
+    case 'event':
+      return { name: 'calendar.badge.plus', color: '#3B82F6' };
+    case 'prayer':
+      return { name: 'hands.sparkles.fill', color: '#8B5CF6' };
+    case 'message':
+      return { name: 'envelope.fill', color: '#10B981' };
+    case 'reminder':
+      return { name: 'clock.fill', color: '#F59E0B' };
+    case 'update':
+      return { name: 'arrow.clockwise', color: '#06B6D4' };
+    default:
+      return { name: 'bell.fill', color: mutedColor };
+  }
+};
+
+const getPriorityColor = (priority: NotificationPriority) => {
+  switch (priority) {
+    case 'high':
+      return '#EF4444';
+    case 'medium':
+      return '#F59E0B';
+    case 'low':
+      return '#10B981';
+  }
+};
+
+const formatTimestamp = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins} min ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+  if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  return date.toLocaleDateString();
+};
+
 export default function NotificationsScreen() {
   const theme = useTheme();
   const router = useRouter();
   const { setSourceRoute } = useNavigationSource();
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
-  const [refreshing, setRefreshing] = useState(false);
+  const { currentUser } = useAuthSlice();
+  const {
+    notifications: reduxNotifications,
+    isLoadingNotifications,
+    unreadCount,
+    loadNotifications,
+    markNotificationAsRead,
+    markAllNotificationsAsRead,
+  } = useNotificationSlice();
+
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
+  const [refreshing, setRefreshing] = useState(false);
 
-  const getNotificationIcon = (type: Notification['type']) => {
-    switch (type) {
-      case 'announcement':
-        return { name: 'megaphone.fill', color: '#EF4444' };
-      case 'event':
-        return { name: 'calendar.badge.plus', color: '#3B82F6' };
-      case 'prayer':
-        return { name: 'hands.sparkles.fill', color: '#8B5CF6' };
-      case 'message':
-        return { name: 'envelope.fill', color: '#10B981' };
-      case 'reminder':
-        return { name: 'clock.fill', color: '#F59E0B' };
-      case 'update':
-        return { name: 'arrow.clockwise', color: '#06B6D4' };
-      default:
-        return { name: 'bell.fill', color: theme.muted };
+  // Use Redux notifications if available, otherwise use mock data
+  const notifications = reduxNotifications.length > 0 ? reduxNotifications : MOCK_NOTIFICATIONS;
+
+  // Load notifications on mount
+  useEffect(() => {
+    if (currentUser?.id) {
+      loadNotifications(currentUser.id);
     }
-  };
+  }, [currentUser?.id]);
 
-  const getPriorityColor = (priority: Notification['priority']) => {
-    switch (priority) {
-      case 'high':
-        return '#EF4444';
-      case 'medium':
-        return '#F59E0B';
-      case 'low':
-        return '#10B981';
+  const handleNotificationPress = useCallback((notification: AppNotification) => {
+    // Mark as read if not already
+    if (!notification.read && !notification.id.startsWith('mock-')) {
+      markNotificationAsRead(notification.id);
     }
-  };
-
-  const handleNotificationPress = (notification: Notification) => {
-    // Mark as read
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n)),
-    );
 
     // Navigate to action route if available
     if (notification.actionRoute) {
-      // Set source route so the destination screen knows where to return
       setSourceRoute(ROUTES.NOTIFICATIONS);
       router.push(notification.actionRoute as any);
     }
-  };
+  }, [markNotificationAsRead, setSourceRoute, router]);
 
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-  };
+  const handleMarkAllAsRead = useCallback(() => {
+    if (currentUser?.id) {
+      markAllNotificationsAsRead(currentUser.id);
+    }
+  }, [currentUser?.id, markAllNotificationsAsRead]);
 
-  const onRefresh = async () => {
+  const onRefresh = useCallback(async () => {
+    if (!currentUser?.id) return;
+
     setRefreshing(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setRefreshing(false);
-  };
+    try {
+      await loadNotifications(currentUser.id);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [currentUser?.id, loadNotifications]);
 
   const filteredNotifications = notifications.filter(
     (n) => filter === 'all' || !n.read,
   );
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const actualUnreadCount = notifications.filter((n) => !n.read).length;
 
-  const NotificationCard = ({
-    notification,
-  }: {
-    notification: Notification;
-  }) => {
-    const iconConfig = getNotificationIcon(notification.type);
+  const NotificationCard = ({ notification }: { notification: AppNotification }) => {
+    const iconConfig = getNotificationIcon(notification.type, theme.muted);
+    const displayTimestamp = notification.timestamp || formatTimestamp(notification.createdAt);
 
     return (
       <Pressable
         onPress={() => handleNotificationPress(notification)}
         style={{
-          backgroundColor: notification.read
-            ? theme.card
-            : `${theme.primary}05`,
+          backgroundColor: notification.read ? theme.card : `${theme.primary}05`,
           borderWidth: 1,
           borderColor: notification.read ? theme.border : `${theme.primary}20`,
           borderLeftWidth: 4,
@@ -221,18 +252,22 @@ export default function NotificationsScreen() {
 
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center">
+                {notification.sender && (
+                  <>
+                    <Text variant="caption" style={{ color: theme.muted }}>
+                      {notification.sender}
+                    </Text>
+                    <Text
+                      variant="caption"
+                      className="mx-2"
+                      style={{ color: theme.muted }}
+                    >
+                      •
+                    </Text>
+                  </>
+                )}
                 <Text variant="caption" style={{ color: theme.muted }}>
-                  {notification.sender}
-                </Text>
-                <Text
-                  variant="caption"
-                  className="mx-2"
-                  style={{ color: theme.muted }}
-                >
-                  •
-                </Text>
-                <Text variant="caption" style={{ color: theme.muted }}>
-                  {notification.timestamp}
+                  {displayTimestamp}
                 </Text>
               </View>
 
@@ -255,22 +290,34 @@ export default function NotificationsScreen() {
     );
   };
 
+  // Show loading state on initial load
+  if (isLoadingNotifications && notifications.length === 0) {
+    return (
+      <View className="flex-1 justify-center items-center" style={{ backgroundColor: theme.background }}>
+        <ActivityIndicator size="large" color={theme.primary} />
+        <Text variant="body" className="mt-4" style={{ color: theme.muted }}>
+          Loading notifications...
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1" style={{ backgroundColor: theme.background }}>
       {/* Header */}
       <View className="px-4 pt-1 pb-3">
         <View className="flex-row items-center justify-between">
-          {unreadCount > 0 && (
+          {actualUnreadCount > 0 && (
             <Text variant="body" style={{ color: theme.muted }}>
-              {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
+              {actualUnreadCount} unread notification{actualUnreadCount !== 1 ? 's' : ''}
             </Text>
           )}
 
           <View className="flex-1" />
 
-          {notifications.length > 0 && (
+          {notifications.length > 0 && actualUnreadCount > 0 && (
             <Pressable
-              onPress={markAllAsRead}
+              onPress={handleMarkAllAsRead}
               className="px-3 py-2 rounded-lg"
               style={{ backgroundColor: `${theme.primary}10` }}
             >
@@ -323,7 +370,7 @@ export default function NotificationsScreen() {
                 color: filter === 'unread' ? 'white' : theme.muted,
               }}
             >
-              Unread ({unreadCount})
+              Unread ({actualUnreadCount})
             </Text>
           </Pressable>
         </View>

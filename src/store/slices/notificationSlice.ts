@@ -8,6 +8,12 @@ import {
   updateNotificationSettings,
   NotificationSettings,
 } from '../../services/notification';
+import {
+  getNotifications,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  AppNotification,
+} from '../../services/notifications';
 
 interface NotificationState {
   // Push token
@@ -22,6 +28,12 @@ interface NotificationState {
 
   // Permission
   permissionStatus: 'undetermined' | 'granted' | 'denied' | null;
+
+  // Notification items
+  notifications: AppNotification[];
+  isLoadingNotifications: boolean;
+  notificationsError: string | null;
+  notificationsLastFetch: number | null;
 
   // Unread count
   unreadCount: number;
@@ -43,6 +55,12 @@ const initialState: NotificationState = {
   settingsError: null,
 
   permissionStatus: null,
+
+  notifications: [],
+  isLoadingNotifications: false,
+  notificationsError: null,
+  notificationsLastFetch: null,
+
   unreadCount: 0,
 };
 
@@ -102,6 +120,45 @@ export const saveNotificationSettings = createAsyncThunk(
   }
 );
 
+export const fetchNotifications = createAsyncThunk(
+  'notification/fetchNotifications',
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      const notifications = await getNotifications(userId);
+      return notifications;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch notifications';
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const markAsRead = createAsyncThunk(
+  'notification/markAsRead',
+  async (notificationId: string, { rejectWithValue }) => {
+    try {
+      await markNotificationAsRead(notificationId);
+      return notificationId;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to mark as read';
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const markAllAsRead = createAsyncThunk(
+  'notification/markAllAsRead',
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      await markAllNotificationsAsRead(userId);
+      return true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to mark all as read';
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const notificationSlice = createSlice({
   name: 'notification',
   initialState,
@@ -121,9 +178,16 @@ const notificationSlice = createSlice({
     clearUnreadCount: (state) => {
       state.unreadCount = 0;
     },
+    addNotification: (state, action: PayloadAction<AppNotification>) => {
+      state.notifications.unshift(action.payload);
+      if (!action.payload.read) {
+        state.unreadCount += 1;
+      }
+    },
     clearErrors: (state) => {
       state.registrationError = null;
       state.settingsError = null;
+      state.notificationsError = null;
     },
     resetNotificationState: () => initialState,
   },
@@ -174,6 +238,39 @@ const notificationSlice = createSlice({
       })
       .addCase(saveNotificationSettings.rejected, (state, action) => {
         state.settingsError = action.payload as string;
+      })
+
+      // Fetch notifications
+      .addCase(fetchNotifications.pending, (state) => {
+        state.isLoadingNotifications = true;
+        state.notificationsError = null;
+      })
+      .addCase(fetchNotifications.fulfilled, (state, action) => {
+        state.isLoadingNotifications = false;
+        state.notifications = action.payload;
+        state.unreadCount = action.payload.filter((n) => !n.read).length;
+        state.notificationsLastFetch = Date.now();
+      })
+      .addCase(fetchNotifications.rejected, (state, action) => {
+        state.isLoadingNotifications = false;
+        state.notificationsError = action.payload as string;
+      })
+
+      // Mark as read
+      .addCase(markAsRead.fulfilled, (state, action) => {
+        const notification = state.notifications.find((n) => n.id === action.payload);
+        if (notification && !notification.read) {
+          notification.read = true;
+          state.unreadCount = Math.max(0, state.unreadCount - 1);
+        }
+      })
+
+      // Mark all as read
+      .addCase(markAllAsRead.fulfilled, (state) => {
+        state.notifications.forEach((n) => {
+          n.read = true;
+        });
+        state.unreadCount = 0;
       });
   },
 });
@@ -183,6 +280,7 @@ export const {
   setUnreadCount,
   incrementUnreadCount,
   clearUnreadCount,
+  addNotification,
   clearErrors,
   resetNotificationState,
 } = notificationSlice.actions;
@@ -201,6 +299,8 @@ export function useNotificationSlice() {
       dispatch(notificationSlice.actions.incrementUnreadCount()),
     clearUnreadCount: () =>
       dispatch(notificationSlice.actions.clearUnreadCount()),
+    addNotification: (notification: AppNotification) =>
+      dispatch(notificationSlice.actions.addNotification(notification)),
     clearErrors: () =>
       dispatch(notificationSlice.actions.clearErrors()),
     resetNotificationState: () =>
@@ -211,6 +311,9 @@ export function useNotificationSlice() {
     loadSettings: (userId: string) => dispatch(fetchNotificationSettings(userId)),
     saveSettings: (userId: string, settings: Partial<NotificationSettings>) =>
       dispatch(saveNotificationSettings({ userId, settings })),
+    loadNotifications: (userId: string) => dispatch(fetchNotifications(userId)),
+    markNotificationAsRead: (notificationId: string) => dispatch(markAsRead(notificationId)),
+    markAllNotificationsAsRead: (userId: string) => dispatch(markAllAsRead(userId)),
   };
 }
 
