@@ -57,6 +57,12 @@ export default function DirectoryLayout() {
           title: 'Reset Password',
         }}
       />
+      <Stack.Screen
+        name="phone-login"
+        options={{
+          title: 'Phone Login',
+        }}
+      />
     </Stack>
   );
 }

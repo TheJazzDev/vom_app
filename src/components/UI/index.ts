@@ -2,6 +2,7 @@ import { Badge } from './Badge';
 import { Button } from './Button';
 import { CachedImage } from './CachedImage';
 import { Card } from './Card';
+import { CategoryBadge } from './CategoryBadge';
 import { Countdown } from './Countdown';
 import { Tab } from './Tab';
 import { Text } from './Text';
@@ -18,6 +19,7 @@ import SearchInput from './SearchInput';
 export {
   Badge,
   CachedImage,
+  CategoryBadge,
   ErrorToast,
   Button,
   Card,

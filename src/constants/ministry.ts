@@ -1,5 +1,12 @@
 export const MINISTRY_OPTIONS: MinistryCardProps[] = [
   {
+    title: 'Daily Prayers',
+    description: 'Start your day with guided prayers',
+    route: '/ministry/daily-prayers',
+    icon: 'sun.max.fill',
+    gradient: ['#F97316', '#EA580C'],
+  },
+  {
     title: 'Bible Study',
     description: 'Join our weekly Bible study sessions',
     route: '/ministry/bible-study',
@@ -16,7 +23,7 @@ export const MINISTRY_OPTIONS: MinistryCardProps[] = [
   {
     title: 'Prayer Requests',
     description: 'Submit or view prayer requests',
-    route: '/ministry/prayer-request',
+    route: '/ministry/prayer-requests',
     icon: 'hands.sparkles.fill',
     gradient: ['#DB2777', '#BE185D'],
   },

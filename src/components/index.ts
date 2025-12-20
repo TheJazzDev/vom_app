@@ -9,11 +9,15 @@ import { SourceAwareBackButton } from './Navigation/SourceAwareBackButton';
 import ProgressIndicator from './ProgressIndicator';
 import Spacer from './Spacer';
 
+export * from './DailyPrayer';
 export * from './Directory';
 export * from './Forms';
 export * from './Icons';
 export * from './Ministry';
+export * from './PrayerRequest';
 export * from './Programme';
+export * from './Social';
+export * from './Testimony';
 export * from './UI';
 
 export {

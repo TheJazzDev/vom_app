@@ -49,6 +49,11 @@ declare global {
     phoneVerificationId: string | null;
     phoneNumber: string | null;
     isWaitingForSMS: boolean;
+    phoneMemberFound: UserProfile | null;
+
+    // Password reset
+    passwordResetEmailSent: boolean;
+
     // Loading states
     isLoading: boolean;
     isSearchingMember: boolean;
@@ -60,6 +65,11 @@ declare global {
     isLoggingIn: boolean;
     isLoggingOut: boolean;
     isUpdatingProfile: boolean;
+    isSendingPasswordResetEmail: boolean;
+    isSendingPhoneCode: boolean;
+    isVerifyingPhoneCode: boolean;
+    isFindingMemberByPhone: boolean;
+
     // Error states
     error: string | null;
     // Success messages

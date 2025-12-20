@@ -14,11 +14,10 @@ import { useProtectedNavigation } from '@/src/hooks/useProtectedNavigation';
 import { dispatch, loginThunk, useAuthSlice } from '@/src/store';
 import { isEmail } from '@/src/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
 import {
-  Alert,
-  BackHandler,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
@@ -34,6 +33,7 @@ const APP_FEATURES = [
 ] as const;
 
 export default function LoginScreen() {
+  const router = useRouter();
   const { navigateTo } = useProtectedNavigation();
   const { error, isLoggingIn, clearError } = useAuthSlice();
 
@@ -53,9 +53,6 @@ export default function LoginScreen() {
 
   useBackHandler(handleBackPress);
 
-  // const emailOrPhone = watch('emailOrPhone');
-  // const showPassword = isEmail(emailOrPhone);
-
   const onSubmit = async (data: LoginFormData) => {
     dispatch(clearError());
 
@@ -63,25 +60,11 @@ export default function LoginScreen() {
 
     try {
       if (isPhoneLogin) {
-        Alert.alert('This feature is not available yet!');
-
-        // const result = await dispatch(
-        //   loginThunk({
-        //     emailOrPhone: data.emailOrPhone,
-        //   }),
-        // );
-
-        // if (loginThunk.rejected.match(result)) {
-        //   const errorMessage = result.payload as string;
-        //   if (errorMessage === 'SMS_CODE_SENT') {
-        //     router.push({
-        //       pathname: '/auth/verify-phone',
-        //       params: {
-        //         phoneNumber: data.emailOrPhone,
-        //       },
-        //     });
-        //   }
-        // }
+        // Redirect to phone login screen for phone-based authentication
+        router.push({
+          pathname: '/auth/phone-login',
+          params: { phoneNumber: data.emailOrPhone },
+        });
       } else {
         const result = await dispatch(
           loginThunk({
@@ -91,8 +74,6 @@ export default function LoginScreen() {
         );
 
         if (loginThunk.fulfilled.match(result)) {
-          // const memberId = result.payload.id;
-          // registerForPushNotificationsAsync(memberId).catch(console.error);
           navigateTo(ROUTES.HOME, true);
         }
 
@@ -108,8 +89,7 @@ export default function LoginScreen() {
   };
 
   const handleForgotPassword = () => {
-    Alert.alert('This feature is not available yet!');
-    // navigateTo('/auth/forgot-password');
+    router.push('/auth/forgot-password');
   };
 
   const renderFeatureList = (features: readonly string[]) => (
