@@ -1,3 +1,4 @@
+import { ErrorBoundary, OfflineBanner } from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import Providers from '@/src/providers/Providers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -52,24 +53,27 @@ export default function RootLayout() {
   }, [loaded, error, router]);
 
   return (
-    <Providers>
-      <StatusBar style="auto" />
-      {appIsReady ? (
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            headerTitleAlign: 'center',
-            headerTintColor: theme.brand,
-            headerStyle: {
-              backgroundColor: theme.background,
-            },
-          }}
-        >
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="auth" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-        </Stack>
-      ) : null}
-    </Providers>
+    <ErrorBoundary>
+      <Providers>
+        <StatusBar style="auto" />
+        <OfflineBanner />
+        {appIsReady ? (
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              headerTitleAlign: 'center',
+              headerTintColor: theme.brand,
+              headerStyle: {
+                backgroundColor: theme.background,
+              },
+            }}
+          >
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="auth" options={{ headerShown: false }} />
+            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+          </Stack>
+        ) : null}
+      </Providers>
+    </ErrorBoundary>
   );
 }

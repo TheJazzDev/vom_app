@@ -43,7 +43,7 @@ export const ROUTES = {
   // Info
   MORE: '/more',
   SETTINGS: '/more/settings',
-  NOTIFICATIONS: '/more/notifications',
+  NOTIFICATIONS: '/notifications',
   ABOUT: '/more/about',
   CONTACT: '/more/contact',
   EVENTS: '/more/events',

@@ -1,4 +1,5 @@
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
+import { SourceAwareBackButton } from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import { Stack, useRouter } from 'expo-router';
 import { Platform, Pressable } from 'react-native';
@@ -29,17 +30,7 @@ export default function ProfileLayout() {
         name="index"
         options={{
           title: 'My Profile',
-          headerLeft: () => (
-            <Pressable
-              onPress={() => router.back()}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-                marginLeft: Platform.OS === 'ios' ? 0 : 16,
-              })}
-            >
-              <IconSymbol name="chevron.left" size={24} color={theme.brand} />
-            </Pressable>
-          ),
+          headerLeft: () => <SourceAwareBackButton tintColor={theme.brand} />,
           headerRight: () => (
             <Pressable
               onPress={() => router.push('/profile/edit')}
@@ -61,7 +52,7 @@ export default function ProfileLayout() {
         name="edit"
         options={{
           title: 'Edit Profile',
-          headerBackTitle: 'Back',
+          headerLeft: () => <SourceAwareBackButton tintColor={theme.brand} />,
         }}
       />
       <Stack.Screen

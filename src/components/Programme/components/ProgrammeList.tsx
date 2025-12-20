@@ -1,10 +1,16 @@
 import { useTheme } from '@/src/hooks';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import { IconSymbol } from '../../Icons';
 import { Text } from '../../UI';
 import { ProgrammeListCardSkeleton } from '../skeletons/ProgrammeListCardSkeleton';
 import ProgrammeListCard from './ProgrammeListCard';
+
+// Performance constants for FlatList
+const INITIAL_NUM_TO_RENDER = 5;
+const MAX_TO_RENDER_PER_BATCH = 5;
+const WINDOW_SIZE = 5;
+const UPDATE_CELLS_BATCHING_PERIOD = 50;
 
 interface ProgrammeListProps {
   isLoading: boolean;
@@ -22,6 +28,13 @@ export const ProgrammeList: React.FC<ProgrammeListProps> = ({
   refreshing = false,
 }) => {
   const theme = useTheme();
+
+  const renderItem = useCallback(
+    ({ item }: { item: AllProgrammes }) => <ProgrammeListCard programme={item} />,
+    []
+  );
+
+  const keyExtractor = useCallback((program: AllProgrammes) => program?.id!, []);
 
   const LoadingSkeleton = () => (
     <View>
@@ -59,8 +72,8 @@ export const ProgrammeList: React.FC<ProgrammeListProps> = ({
   return (
     <FlatList
       data={programmes}
-      keyExtractor={(program) => program?.id!}
-      renderItem={({ item }) => <ProgrammeListCard programme={item} />}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={Platform.OS === 'web'}
       contentContainerStyle={{
@@ -80,6 +93,12 @@ export const ProgrammeList: React.FC<ProgrammeListProps> = ({
         }
         return null;
       }}
+      // Performance optimizations
+      initialNumToRender={INITIAL_NUM_TO_RENDER}
+      maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+      windowSize={WINDOW_SIZE}
+      updateCellsBatchingPeriod={UPDATE_CELLS_BATCHING_PERIOD}
+      removeClippedSubviews={Platform.OS === 'android'}
     />
   );
 };

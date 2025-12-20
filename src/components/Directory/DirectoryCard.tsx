@@ -2,20 +2,21 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text } from '@/src/components/UI';
 import { useProtectedNavigation } from '@/src/hooks/useProtectedNavigation';
 import { LinearGradient } from 'expo-linear-gradient';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 
-export const DirectoryCategoryCard = ({
+export const DirectoryCategoryCard = memo(({
   category,
 }: {
   category: DirectoryProps;
 }) => {
   const { navigateTo, canAccess } = useProtectedNavigation();
 
-  const hasAccess = canAccess(category.route);
+  const hasAccess = useMemo(() => canAccess(category.route), [canAccess, category.route]);
 
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     navigateTo(category.route);
-  };
+  }, [navigateTo, category.route]);
 
   return (
     <Pressable
@@ -94,4 +95,6 @@ export const DirectoryCategoryCard = ({
       </LinearGradient>
     </Pressable>
   );
-};
+});
+
+DirectoryCategoryCard.displayName = 'DirectoryCategoryCard';

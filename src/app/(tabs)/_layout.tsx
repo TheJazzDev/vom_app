@@ -9,13 +9,15 @@ import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const theme = useTheme();
-  const { shouldApplyBottomSafeArea } = useAndroidNavigationBar();
 
-  const edges = shouldApplyBottomSafeArea ? ['bottom'] : [];
+  // Don't apply bottom safe area edges
+  // The tab bar already handles safe area internally with its height and padding
+  // Adding SafeAreaView bottom edge creates excessive spacing
+  const edges: Edges = [];
 
   return (
     <SafeAreaView
-      edges={edges as Edges}
+      edges={edges}
       className="flex-1"
       style={{ backgroundColor: theme.background }}
     >
@@ -39,11 +41,15 @@ export default function TabLayout() {
             shadowOpacity: 0,
             borderColor: theme.border,
           },
-          animation: Platform.OS === 'ios' ? 'shift' : 'fade',
+          // Use 'fade' animation for smooth transitions without black screens
+          // 'shift' animation on iOS can cause black screen flashes
+          animation: 'fade',
           // Keep tabs mounted to prevent blank screens during transitions
           lazy: false,
           // Don't freeze content when blurred to prevent render issues
           freezeOnBlur: false,
+          // Optimize for performance
+          unmountOnBlur: false,
         }}
       >
         <Tabs.Screen

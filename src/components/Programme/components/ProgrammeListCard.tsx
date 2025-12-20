@@ -1,12 +1,37 @@
 import { useTheme } from '@/src/hooks';
 import { formatDate } from '@/src/utils';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import { IconSymbol } from '../../Icons';
 import { Button, Card, Countdown, Text, View } from '../../UI';
 
-const ProgrammeListCard = ({ programme }: { programme: AllProgrammes }) => {
+const getTypeColorClasses = (programmeType: string) => {
+  switch (programmeType.toLowerCase()) {
+    case 'sunday':
+      return {
+        dot: 'bg-emerald-500 dark:bg-emerald-400',
+        text: 'text-emerald-600 dark:text-emerald-400',
+      };
+    case 'shiloh':
+      return {
+        dot: 'bg-blue-500 dark:bg-blue-400',
+        text: 'text-blue-600 dark:text-blue-400',
+      };
+    case 'vigil':
+      return {
+        dot: 'bg-purple-500 dark:bg-purple-400',
+        text: 'text-purple-600 dark:text-purple-400',
+      };
+    default:
+      return {
+        dot: 'bg-gray-500 dark:bg-gray-400',
+        text: 'text-gray-600 dark:text-gray-400',
+      };
+  }
+};
+
+const ProgrammeListCard = memo(({ programme }: { programme: AllProgrammes }) => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -14,38 +39,18 @@ const ProgrammeListCard = ({ programme }: { programme: AllProgrammes }) => {
 
   const { id, topic, date, type } = programme;
 
-  const getTypeColorClasses = (programmeType: string) => {
-    switch (programmeType.toLowerCase()) {
-      case 'sunday':
-        return {
-          dot: 'bg-emerald-500 dark:bg-emerald-400',
-          text: 'text-emerald-600 dark:text-emerald-400',
-        };
-      case 'shiloh':
-        return {
-          dot: 'bg-blue-500 dark:bg-blue-400',
-          text: 'text-blue-600 dark:text-blue-400',
-        };
-      case 'vigil':
-        return {
-          dot: 'bg-purple-500 dark:bg-purple-400',
-          text: 'text-purple-600 dark:text-purple-400',
-        };
-      default:
-        return {
-          dot: 'bg-gray-500 dark:bg-gray-400',
-          text: 'text-gray-600 dark:text-gray-400',
-        };
-    }
-  };
+  const typeColors = useMemo(() => getTypeColorClasses(type), [type]);
 
-  const typeColors = getTypeColorClasses(type);
+  const handlePress = useCallback(() => {
+    router.push(`/programme/${id}`);
+  }, [router, id]);
+
+  const handleAddToCalendar = useCallback(() => {
+    Alert.alert('Add programme to calender feature is not available yet!');
+  }, []);
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => router.push(`/programme/${id}`)}
-    >
+    <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
       <Card variant="outlined" className="mb-3">
         <View className="flex-row items-start justify-between mb-3">
           <View className="flex-1">
@@ -87,7 +92,7 @@ const ProgrammeListCard = ({ programme }: { programme: AllProgrammes }) => {
             variant="outline"
             size="sm"
             className="flex-1 border-gray-300 dark:border-gray-600"
-            onPress={() => router.push(`/programme/${id}`)}
+            onPress={handlePress}
           >
             <View className="flex-row items-center gap-1">
               <Text
@@ -103,11 +108,7 @@ const ProgrammeListCard = ({ programme }: { programme: AllProgrammes }) => {
             variant="ghost"
             size="sm"
             className="bg-gray-50 dark:bg-gray-800 py-2"
-            onPress={() => {
-              Alert.alert(
-                'Add programme to calender feature is not available yet!',
-              );
-            }}
+            onPress={handleAddToCalendar}
           >
             <IconSymbol
               size={16}
@@ -119,6 +120,8 @@ const ProgrammeListCard = ({ programme }: { programme: AllProgrammes }) => {
       </Card>
     </TouchableOpacity>
   );
-};
+});
+
+ProgrammeListCard.displayName = 'ProgrammeListCard';
 
 export default ProgrammeListCard;

@@ -4,6 +4,7 @@ import { useBibleStudySlice } from './bibleStudySlice';
 import { useDailyPrayerSlice } from './dailyPrayerSlice';
 import { useDirectorySlice } from './directorySlice';
 import { useGamificationSlice } from './gamificationSlice';
+import { useNotificationSlice } from './notificationSlice';
 import { usePrayerRequestSlice } from './prayerRequestSlice';
 import { useProgrammeSlice } from './programmeSlice';
 import { useSermonSlice } from './sermonSlice';
@@ -16,6 +17,7 @@ export {
   useDailyPrayerSlice,
   useDirectorySlice,
   useGamificationSlice,
+  useNotificationSlice,
   usePrayerRequestSlice,
   useProgrammeSlice,
   useSermonSlice,
