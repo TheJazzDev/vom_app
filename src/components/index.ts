@@ -12,6 +12,7 @@ export * from './Directory';
 export * from './Forms';
 export * from './Icons';
 export * from './Ministry';
+export * from './PrayerRequest';
 export * from './Programme';
 export * from './Social';
 export * from './UI';

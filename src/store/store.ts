@@ -15,6 +15,7 @@ import announcementReducer from './slices/announcementSlice';
 import authReducer from './slices/authSlice';
 import dailyPrayerReducer from './slices/dailyPrayerSlice';
 import directoryReducer from './slices/directorySlice';
+import prayerRequestReducer from './slices/prayerRequestSlice';
 import programmeReduder from './slices/programmeSlice';
 
 // Auth persistence config
@@ -62,6 +63,7 @@ const rootReducer = combineReducers({
   auth: persistedAuthReducer,
   dailyPrayer: dailyPrayerReducer,
   directory: directoryReducer,
+  prayerRequest: prayerRequestReducer,
   programme: programmeReduder,
   announcements: announcementReducer,
 });

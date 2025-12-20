@@ -23,7 +23,7 @@ export const MINISTRY_OPTIONS: MinistryCardProps[] = [
   {
     title: 'Prayer Requests',
     description: 'Submit or view prayer requests',
-    route: '/ministry/prayer-request',
+    route: '/ministry/prayer-requests',
     icon: 'hands.sparkles.fill',
     gradient: ['#DB2777', '#BE185D'],
   },

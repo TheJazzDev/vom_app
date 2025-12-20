@@ -18,8 +18,8 @@ export default function MinistryLayout() {
         options={{ title: 'Recent Sermons' }}
       />
       <Stack.Screen
-        name="prayer-request"
-        options={{ title: 'Prayer Requests' }}
+        name="prayer-requests"
+        options={{ headerShown: false }}
       />
       <Stack.Screen name="testimonies" options={{ title: 'Testimonies' }} />
     </Stack>
