@@ -5,8 +5,13 @@ import { useNavigationSource, useTheme } from '@/src/hooks';
 import { useAuthSlice, useNotificationSlice } from '@/src/store';
 import { AppNotification, NotificationType, NotificationPriority } from '@/src/services/notifications';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState, useCallback } from 'react';
-import { FlatList, Pressable, RefreshControl, View, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
+import { FlatList, Pressable, RefreshControl, View, ActivityIndicator, Platform } from 'react-native';
+
+// Performance constants
+const INITIAL_NUM_TO_RENDER = 8;
+const MAX_TO_RENDER_PER_BATCH = 5;
+const WINDOW_SIZE = 7;
 
 // Fallback mock data for when Firestore is empty
 const MOCK_NOTIFICATIONS: AppNotification[] = [
@@ -133,6 +138,119 @@ const formatTimestamp = (dateString: string): string => {
   return date.toLocaleDateString();
 };
 
+// Memoized notification card component
+interface NotificationCardProps {
+  notification: AppNotification;
+  theme: ReturnType<typeof import('@/src/hooks').useTheme>;
+  onPress: (notification: AppNotification) => void;
+}
+
+const NotificationCard = memo(({ notification, theme, onPress }: NotificationCardProps) => {
+  const iconConfig = getNotificationIcon(notification.type, theme.muted);
+  const displayTimestamp = notification.timestamp || formatTimestamp(notification.createdAt);
+
+  const handlePress = useCallback(() => {
+    onPress(notification);
+  }, [onPress, notification]);
+
+  const containerStyle = useMemo(() => ({
+    backgroundColor: notification.read ? theme.card : `${theme.primary}05`,
+    borderWidth: 1,
+    borderColor: notification.read ? theme.border : `${theme.primary}20`,
+    borderLeftWidth: 4,
+    borderLeftColor: getPriorityColor(notification.priority),
+  }), [notification.read, notification.priority, theme.card, theme.primary, theme.border]);
+
+  const iconContainerStyle = useMemo(() => ({
+    backgroundColor: `${iconConfig.color}15`,
+  }), [iconConfig.color]);
+
+  return (
+    <Pressable
+      onPress={handlePress}
+      style={containerStyle}
+      className="rounded-lg p-4 mb-3"
+      android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
+    >
+      <View className="flex-row items-start">
+        <View
+          className="w-10 h-10 rounded-full items-center justify-center mr-3"
+          style={iconContainerStyle}
+        >
+          <IconSymbol
+            name={iconConfig.name as any}
+            size={18}
+            color={iconConfig.color}
+          />
+        </View>
+
+        <View className="flex-1">
+          <View className="flex-row items-start justify-between mb-1">
+            <Text
+              variant="h5"
+              className="font-semibold flex-1"
+              style={{ color: theme.heading }}
+            >
+              {notification.title}
+            </Text>
+            {!notification.read && (
+              <View
+                className="w-2 h-2 rounded-full ml-2 mt-1"
+                style={{ backgroundColor: theme.primary }}
+              />
+            )}
+          </View>
+
+          <Text
+            variant="body"
+            className="mb-2 leading-5"
+            style={{ color: theme.text }}
+          >
+            {notification.message}
+          </Text>
+
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center">
+              {notification.sender && (
+                <>
+                  <Text variant="caption" style={{ color: theme.muted }}>
+                    {notification.sender}
+                  </Text>
+                  <Text
+                    variant="caption"
+                    className="mx-2"
+                    style={{ color: theme.muted }}
+                  >
+                    •
+                  </Text>
+                </>
+              )}
+              <Text variant="caption" style={{ color: theme.muted }}>
+                {displayTimestamp}
+              </Text>
+            </View>
+
+            {notification.actionRoute && (
+              <View className="flex-row items-center">
+                <Text variant="caption" style={{ color: theme.primary }}>
+                  View
+                </Text>
+                <IconSymbol
+                  name="chevron.right"
+                  size={12}
+                  color={theme.primary}
+                />
+              </View>
+            )}
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
+});
+
+NotificationCard.displayName = 'NotificationCard';
+
 export default function NotificationsScreen() {
   const theme = useTheme();
   const router = useRouter();
@@ -190,105 +308,28 @@ export default function NotificationsScreen() {
     }
   }, [currentUser?.id, loadNotifications]);
 
-  const filteredNotifications = notifications.filter(
-    (n) => filter === 'all' || !n.read,
+  const filteredNotifications = useMemo(
+    () => notifications.filter((n) => filter === 'all' || !n.read),
+    [notifications, filter]
   );
 
-  const actualUnreadCount = notifications.filter((n) => !n.read).length;
+  const actualUnreadCount = useMemo(
+    () => notifications.filter((n) => !n.read).length,
+    [notifications]
+  );
 
-  const NotificationCard = ({ notification }: { notification: AppNotification }) => {
-    const iconConfig = getNotificationIcon(notification.type, theme.muted);
-    const displayTimestamp = notification.timestamp || formatTimestamp(notification.createdAt);
+  const renderItem = useCallback(
+    ({ item }: { item: AppNotification }) => (
+      <NotificationCard
+        notification={item}
+        theme={theme}
+        onPress={handleNotificationPress}
+      />
+    ),
+    [theme, handleNotificationPress]
+  );
 
-    return (
-      <Pressable
-        onPress={() => handleNotificationPress(notification)}
-        style={{
-          backgroundColor: notification.read ? theme.card : `${theme.primary}05`,
-          borderWidth: 1,
-          borderColor: notification.read ? theme.border : `${theme.primary}20`,
-          borderLeftWidth: 4,
-          borderLeftColor: getPriorityColor(notification.priority),
-        }}
-        className="rounded-lg p-4 mb-3"
-        android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-      >
-        <View className="flex-row items-start">
-          <View
-            className="w-10 h-10 rounded-full items-center justify-center mr-3"
-            style={{ backgroundColor: `${iconConfig.color}15` }}
-          >
-            <IconSymbol
-              name={iconConfig.name as any}
-              size={18}
-              color={iconConfig.color}
-            />
-          </View>
-
-          <View className="flex-1">
-            <View className="flex-row items-start justify-between mb-1">
-              <Text
-                variant="h5"
-                className="font-semibold flex-1"
-                style={{ color: theme.heading }}
-              >
-                {notification.title}
-              </Text>
-              {!notification.read && (
-                <View
-                  className="w-2 h-2 rounded-full ml-2 mt-1"
-                  style={{ backgroundColor: theme.primary }}
-                />
-              )}
-            </View>
-
-            <Text
-              variant="body"
-              className="mb-2 leading-5"
-              style={{ color: theme.text }}
-            >
-              {notification.message}
-            </Text>
-
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                {notification.sender && (
-                  <>
-                    <Text variant="caption" style={{ color: theme.muted }}>
-                      {notification.sender}
-                    </Text>
-                    <Text
-                      variant="caption"
-                      className="mx-2"
-                      style={{ color: theme.muted }}
-                    >
-                      •
-                    </Text>
-                  </>
-                )}
-                <Text variant="caption" style={{ color: theme.muted }}>
-                  {displayTimestamp}
-                </Text>
-              </View>
-
-              {notification.actionRoute && (
-                <View className="flex-row items-center">
-                  <Text variant="caption" style={{ color: theme.primary }}>
-                    View
-                  </Text>
-                  <IconSymbol
-                    name="chevron.right"
-                    size={12}
-                    color={theme.primary}
-                  />
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
-      </Pressable>
-    );
-  };
+  const keyExtractor = useCallback((item: AppNotification) => item.id, []);
 
   // Show loading state on initial load
   if (isLoadingNotifications && notifications.length === 0) {
@@ -380,8 +421,8 @@ export default function NotificationsScreen() {
       {filteredNotifications.length > 0 ? (
         <FlatList
           data={filteredNotifications}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <NotificationCard notification={item} />}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
           contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
           showsVerticalScrollIndicator={false}
           refreshControl={
@@ -391,6 +432,11 @@ export default function NotificationsScreen() {
               tintColor={theme.primary}
             />
           }
+          // Performance optimizations
+          initialNumToRender={INITIAL_NUM_TO_RENDER}
+          maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+          windowSize={WINDOW_SIZE}
+          removeClippedSubviews={Platform.OS === 'android'}
         />
       ) : (
         <View className="flex-1 justify-center items-center px-6">

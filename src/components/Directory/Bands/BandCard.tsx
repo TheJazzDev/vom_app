@@ -1,27 +1,38 @@
 import { useAuthSlice } from '@/src/store';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import { Pressable } from 'react-native';
 import { IconSymbol } from '../../Icons';
 import NotPartOfBandModal from '../../RouteProtection/NotPartOfBandModal';
 import { Text, View } from '../../UI';
 
-const BandCard = ({ band }: { band: Band }) => {
+const BandCard = memo(({ band }: { band: Band }) => {
   const router = useRouter();
   const { currentUser } = useAuthSlice();
   const [showModal, setShowModal] = useState(false);
 
-  const handlePress = () => {
-    const isAdmin = ['admin', 'super_admin'].includes(currentUser!.role);
-    const isMemberOfBand = currentUser?.bandKeys?.some((b) => b === band?.id);
+  const isAdmin = useMemo(
+    () => ['admin', 'super_admin'].includes(currentUser?.role ?? ''),
+    [currentUser?.role]
+  );
 
+  const isMemberOfBand = useMemo(
+    () => currentUser?.bandKeys?.some((b) => b === band?.id) ?? false,
+    [currentUser?.bandKeys, band?.id]
+  );
+
+  const handlePress = useCallback(() => {
     if (isAdmin || isMemberOfBand) {
       router.push(`/directory/bands/${band?.id}` as any);
     } else {
       setShowModal(true);
     }
-  };
+  }, [isAdmin, isMemberOfBand, router, band?.id]);
+
+  const handleCloseModal = useCallback(() => {
+    setShowModal(false);
+  }, []);
 
   return (
     <Pressable
@@ -161,13 +172,15 @@ const BandCard = ({ band }: { band: Band }) => {
       </LinearGradient>
       <NotPartOfBandModal
         visible={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={handleCloseModal}
         bandIcon={band?.icon1}
         bandName={band?.name}
         bandGradient={band?.gradient}
       />
     </Pressable>
   );
-};
+});
+
+BandCard.displayName = 'BandCard';
 
 export default BandCard;
