@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # Allow manual trigger
 
 jobs:
   build-apk:
@@ -24,34 +25,39 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      # Install bun (optional — your project uses bun)
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v1
+      # Setup Bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
-      # Install EAS CLI
-      - name: Install EAS CLI
-        run: |
-          npm install -g eas-cli
+      # Setup Java (required for Android builds)
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      # Install project dependencies
+      # Setup Expo and EAS
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # Install dependencies
       - name: Install dependencies
         run: bun install
 
-      # Authenticate EAS (local build does NOT require login)
-      - name: Prepare EAS local build
-        run: |
-          eas local credentials
+      # Build APK using EAS Build
+      - name: Build Android APK
+        run: eas build --platform android --profile production-apk --non-interactive --no-wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      # Build APK using your production-apk profile
-      - name: Build APK
-        run: |
-          eas build --platform android --profile production-apk --local --output ./vom.apk
-
-      # Upload APK artifact
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-apk
-          path: ./vom.apk
-          retention-days: 7
+      # Note: Since we're using --no-wait, the build happens on EAS servers
+      # To download the artifact, you can check the EAS build dashboard
+      # Or modify this to wait and download the APK

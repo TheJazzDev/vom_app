@@ -2,29 +2,45 @@ import { BandBadge } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons';
 import { IconSymbolName } from '@/src/components/Icons/IconSymbol';
 import { Badge, Card, Text } from '@/src/components/UI';
+import { LevelIndicator } from '@/src/components/Gamification';
 import { useTheme } from '@/src/hooks';
-import { useAuthSlice } from '@/src/store';
+import { useAuthSlice, useGamificationSlice } from '@/src/store';
+import { fetchUserEngagementThunk } from '@/src/store/thunks';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useCallback, useState } from 'react';
-import { Image, RefreshControl, ScrollView, View } from 'react-native';
+import { useCallback, useState, useEffect } from 'react';
+import { Image, RefreshControl, ScrollView, View, Pressable, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '@/src/store/store';
+import { useRouter } from 'expo-router';
 
 export default function ProfileIndex() {
   const theme = useTheme();
-  const { currentUser } = useAuthSlice();
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const { currentUser, user } = useAuthSlice();
+  const { engagement } = useGamificationSlice();
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (user?.odUserId) {
+      dispatch(fetchUserEngagementThunk(user.odUserId));
+    }
+  }, [dispatch, user?.odUserId]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      // TODO: Fetch updated user data when API is available
+      if (user?.odUserId) {
+        await dispatch(fetchUserEngagementThunk(user.odUserId));
+      }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Error refreshing profile:', error);
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [dispatch, user?.odUserId]);
 
   // const getStatusColor = (status: string | undefined) => {
   //   return status === 'active' ? '#10B981' : '#F59E0B';
@@ -227,6 +243,75 @@ export default function ProfileIndex() {
         </View>
       </Card>
 
+      {/* Level Progress */}
+      {engagement && (
+        <View className="px-4 mb-6">
+          <View className="flex-row items-center justify-between mb-2">
+            <Text
+              variant="h5"
+              className="font-semibold"
+              style={{ color: theme.heading }}
+            >
+              Your Journey
+            </Text>
+            <Pressable onPress={() => router.push('/profile/achievements')}>
+              <View className="flex-row items-center gap-1">
+                <Text variant="caption" style={{ color: theme.primary }}>
+                  View All
+                </Text>
+                <IconSymbol name="chevron.right" size={14} color={theme.primary} />
+              </View>
+            </Pressable>
+          </View>
+          <Card variant="gradient-soft" className="rounded-xl p-4">
+            <LevelIndicator
+              points={engagement.points}
+              showProgress={true}
+              showName={true}
+              size="md"
+            />
+            <View
+              className="flex-row items-center justify-between mt-4 pt-4"
+              style={[styles.statsRow, { borderTopColor: theme.border }]}
+            >
+              <View className="flex-1 items-center">
+                <View className="flex-row items-center gap-1">
+                  <IconSymbol name="star.fill" size={16} color="#F59E0B" />
+                  <Text
+                    variant="h6"
+                    className="font-bold"
+                    style={{ color: theme.heading }}
+                  >
+                    {engagement.points}
+                  </Text>
+                </View>
+                <Text variant="caption" style={{ color: theme.muted }}>
+                  Points
+                </Text>
+              </View>
+              <View
+                style={[styles.divider, { backgroundColor: theme.border }]}
+              />
+              <View className="flex-1 items-center">
+                <View className="flex-row items-center gap-1">
+                  <IconSymbol name="flame.fill" size={16} color="#EF4444" />
+                  <Text
+                    variant="h6"
+                    className="font-bold"
+                    style={{ color: theme.heading }}
+                  >
+                    {engagement.streakDays}
+                  </Text>
+                </View>
+                <Text variant="caption" style={{ color: theme.muted }}>
+                  Day Streak
+                </Text>
+              </View>
+            </View>
+          </Card>
+        </View>
+      )}
+
       {/* Contact Information */}
       <View className="px-4 mb-6">
         <Text
@@ -408,3 +493,13 @@ export default function ProfileIndex() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  statsRow: {
+    borderTopWidth: 1,
+  },
+  divider: {
+    width: 1,
+    height: 40,
+  },
+});
