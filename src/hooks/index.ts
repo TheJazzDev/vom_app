@@ -4,6 +4,7 @@ import { useThemeMode } from '../providers/ThemeProvider';
 import { useToast } from '../providers/ToastProvider';
 import { useAndroidNavigationBar } from './useAndroidNavigationBar';
 import { useBackHandler } from './useBackHandler';
+import { useNetworkStatus } from './useNetworkStatus';
 import { useEventTracking, useScreenTracking } from './useScreenTracking';
 import { animateTabChange, useTabTransition } from './useTabTransition';
 import { useTheme } from './useTheme';
@@ -16,6 +17,7 @@ export {
   useColorScheme,
   useEventTracking,
   useNavigationSource,
+  useNetworkStatus,
   useScreenTracking,
   useTabTransition,
   useTheme,

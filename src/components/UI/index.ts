@@ -9,6 +9,7 @@ import { TextInput } from './TextInput';
 import { View } from './View';
 import { RHFTextInput } from './RHFTextInput';
 import { ErrorToast } from './ErrorToast';
+import { OfflineBanner } from './OfflineBanner';
 import { Toast } from './Toast';
 import LoadingScreen from './LoadingScreen';
 import SearchInput from './SearchInput';
@@ -19,6 +20,7 @@ export {
   Button,
   Card,
   Countdown,
+  OfflineBanner,
   Tab,
   Text,
   Toast,

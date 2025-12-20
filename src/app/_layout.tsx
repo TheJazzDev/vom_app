@@ -1,4 +1,4 @@
-import { ErrorBoundary } from '@/src/components';
+import { ErrorBoundary, OfflineBanner } from '@/src/components';
 import { useTheme } from '@/src/hooks';
 import Providers from '@/src/providers/Providers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -56,6 +56,7 @@ export default function RootLayout() {
     <ErrorBoundary>
       <Providers>
         <StatusBar style="auto" />
+        <OfflineBanner />
         {appIsReady ? (
           <Stack
             screenOptions={{
