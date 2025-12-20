@@ -15,6 +15,7 @@ export * from './Ministry';
 export * from './PrayerRequest';
 export * from './Programme';
 export * from './Social';
+export * from './Testimony';
 export * from './UI';
 
 export {

@@ -4,6 +4,7 @@ import { useDailyPrayerSlice } from './dailyPrayerSlice';
 import { useDirectorySlice } from './directorySlice';
 import { usePrayerRequestSlice } from './prayerRequestSlice';
 import { useProgrammeSlice } from './programmeSlice';
+import { useTestimonySlice } from './testimonySlice';
 
 export {
   useAnnouncementSlice,
@@ -12,4 +13,5 @@ export {
   useDirectorySlice,
   usePrayerRequestSlice,
   useProgrammeSlice,
+  useTestimonySlice,
 };

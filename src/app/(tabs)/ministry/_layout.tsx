@@ -21,7 +21,10 @@ export default function MinistryLayout() {
         name="prayer-requests"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="testimonies" options={{ title: 'Testimonies' }} />
+      <Stack.Screen
+        name="testimonies"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

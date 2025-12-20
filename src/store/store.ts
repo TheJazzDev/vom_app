@@ -17,6 +17,7 @@ import dailyPrayerReducer from './slices/dailyPrayerSlice';
 import directoryReducer from './slices/directorySlice';
 import prayerRequestReducer from './slices/prayerRequestSlice';
 import programmeReduder from './slices/programmeSlice';
+import testimonyReducer from './slices/testimonySlice';
 
 // Auth persistence config
 const authTransform = createTransform(
@@ -65,6 +66,7 @@ const rootReducer = combineReducers({
   directory: directoryReducer,
   prayerRequest: prayerRequestReducer,
   programme: programmeReduder,
+  testimony: testimonyReducer,
   announcements: announcementReducer,
 });
 
