@@ -13,10 +13,12 @@ import {
 } from 'redux-persist';
 import announcementReducer from './slices/announcementSlice';
 import authReducer from './slices/authSlice';
+import bibleStudyReducer from './slices/bibleStudySlice';
 import dailyPrayerReducer from './slices/dailyPrayerSlice';
 import directoryReducer from './slices/directorySlice';
 import prayerRequestReducer from './slices/prayerRequestSlice';
 import programmeReduder from './slices/programmeSlice';
+import sermonReducer from './slices/sermonSlice';
 import testimonyReducer from './slices/testimonySlice';
 
 // Auth persistence config
@@ -62,10 +64,12 @@ const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const rootReducer = combineReducers({
   auth: persistedAuthReducer,
+  bibleStudy: bibleStudyReducer,
   dailyPrayer: dailyPrayerReducer,
   directory: directoryReducer,
   prayerRequest: prayerRequestReducer,
   programme: programmeReduder,
+  sermon: sermonReducer,
   testimony: testimonyReducer,
   announcements: announcementReducer,
 });

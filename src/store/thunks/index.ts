@@ -1,5 +1,7 @@
 export * from './announcements';
 export * from './auth';
+export * from './bibleStudyThunks';
 export * from './dailyPrayerThunks';
 export * from './prayerRequestThunks';
+export * from './sermonThunks';
 export * from './testimonyThunks';
