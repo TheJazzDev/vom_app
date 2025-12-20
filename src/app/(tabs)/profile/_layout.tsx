@@ -64,6 +64,13 @@ export default function ProfileLayout() {
           headerBackTitle: 'Back',
         }}
       />
+      <Stack.Screen
+        name="achievements"
+        options={{
+          title: 'Achievements',
+          headerBackTitle: 'Back',
+        }}
+      />
     </Stack>
   );
 }

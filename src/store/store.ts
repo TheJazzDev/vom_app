@@ -16,6 +16,7 @@ import authReducer from './slices/authSlice';
 import bibleStudyReducer from './slices/bibleStudySlice';
 import dailyPrayerReducer from './slices/dailyPrayerSlice';
 import directoryReducer from './slices/directorySlice';
+import gamificationReducer from './slices/gamificationSlice';
 import prayerRequestReducer from './slices/prayerRequestSlice';
 import programmeReduder from './slices/programmeSlice';
 import sermonReducer from './slices/sermonSlice';
@@ -67,6 +68,7 @@ const rootReducer = combineReducers({
   bibleStudy: bibleStudyReducer,
   dailyPrayer: dailyPrayerReducer,
   directory: directoryReducer,
+  gamification: gamificationReducer,
   prayerRequest: prayerRequestReducer,
   programme: programmeReduder,
   sermon: sermonReducer,

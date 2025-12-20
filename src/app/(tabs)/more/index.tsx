@@ -249,6 +249,88 @@ export default function MoreIndex() {
           ))}
         </View>
 
+        {/* Leaderboard Card */}
+        <View className="px-4 mb-6">
+          <Text
+            variant="h6"
+            className="font-semibold mb-3"
+            style={{ color: theme.heading }}
+          >
+            Community
+          </Text>
+          <Pressable
+            onPress={() => router.push('/more/leaderboard')}
+            style={{
+              backgroundColor: theme.card,
+              borderWidth: 1,
+              borderColor: theme.border,
+              borderRadius: 20,
+              padding: 20,
+              marginBottom: 12,
+              shadowColor: '#F59E0B',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.15,
+              shadowRadius: 12,
+              elevation: 5,
+            }}
+            android_ripple={{ color: 'rgba(245,158,11,0.1)' }}
+          >
+            <View className="flex-row items-center">
+              <View
+                className="w-16 h-16 rounded-2xl items-center justify-center mr-4"
+                style={{
+                  backgroundColor: '#F59E0B20',
+                  borderWidth: 2,
+                  borderColor: '#F59E0B40',
+                }}
+              >
+                <IconSymbol name="trophy.fill" size={28} color="#F59E0B" />
+              </View>
+              <View className="flex-1">
+                <View className="flex-row items-center mb-1">
+                  <Text
+                    variant="h5"
+                    className="font-bold"
+                    style={{ color: theme.heading }}
+                  >
+                    Leaderboard
+                  </Text>
+                  <View
+                    className="ml-2 px-2 py-0.5 rounded-full"
+                    style={{ backgroundColor: '#F59E0B20' }}
+                  >
+                    <Text
+                      variant="caption"
+                      className="font-semibold text-xs"
+                      style={{ color: '#F59E0B' }}
+                    >
+                      New
+                    </Text>
+                  </View>
+                </View>
+                <Text variant="body" className="mb-2" style={{ color: theme.muted }}>
+                  See how you rank among members
+                </Text>
+                <View className="flex-row items-center">
+                  <Text
+                    variant="caption"
+                    className="font-semibold"
+                    style={{ color: '#F59E0B' }}
+                  >
+                    View rankings
+                  </Text>
+                  <IconSymbol
+                    name="arrow.right"
+                    size={14}
+                    color="#F59E0B"
+                    style={{ marginLeft: 4 }}
+                  />
+                </View>
+              </View>
+            </View>
+          </Pressable>
+        </View>
+
         {/* Beautiful Birthdays Card */}
         <View className="px-4 mb-6">
           <Text

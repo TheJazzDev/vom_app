@@ -26,6 +26,7 @@ export default function MoreLayout() {
         options={{ title: 'Weekly Activities' }}
       />
       <Stack.Screen name="settings" options={{ title: 'Settings' }} />
+      <Stack.Screen name="leaderboard" options={{ title: 'Leaderboard' }} />
     </Stack>
   );
 }
