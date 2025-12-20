@@ -1,6 +1,7 @@
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { Card } from './Card';
+import { CategoryBadge } from './CategoryBadge';
 import { Countdown } from './Countdown';
 import { Tab } from './Tab';
 import { Text } from './Text';
@@ -14,6 +15,7 @@ import SearchInput from './SearchInput';
 
 export {
   Badge,
+  CategoryBadge,
   ErrorToast,
   Button,
   Card,
