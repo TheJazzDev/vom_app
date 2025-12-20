@@ -5,6 +5,7 @@ import { DEFAULT_BIBLE_STUDY_TOPICS, BIBLE_STUDY_TYPES, BibleStudyType } from '@
 import { useBibleStudySlice } from '@/src/store/slices';
 import { fetchBibleStudySessionsThunk, fetchBibleStudyTopicsThunk } from '@/src/store/thunks';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -21,6 +22,7 @@ import type { AppDispatch } from '@/src/store/store';
 
 export default function BibleStudyScreen() {
   const theme = useTheme();
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { sessions, topics, isLoadingSessions, isLoadingTopics, error } = useBibleStudySlice();
   const [activeType, setActiveType] = useState<BibleStudyType | null>(null);
@@ -50,15 +52,18 @@ export default function BibleStudyScreen() {
         end={{ x: 1, y: 1 }}
         style={styles.headerGradient}
       >
-        <View className="flex-row items-center gap-3 mb-3">
-          <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center">
-            <IconSymbol name="book.fill" size={26} color="white" />
-          </View>
-          <View>
+        <View className="flex-row items-center justify-between mb-3">
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <IconSymbol name="arrow.left" size={20} color="white" />
+          </Pressable>
+          <View style={{ flex: 1, marginLeft: 12 }}>
             <Text className="text-white/80 text-sm font-medium">
               Grow in Faith
             </Text>
             <Text className="text-white font-bold text-xl">Bible Study</Text>
+          </View>
+          <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center">
+            <IconSymbol name="book.fill" size={26} color="white" />
           </View>
         </View>
         <Text className="text-white/90 leading-6">
@@ -353,6 +358,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   typeScroll: {
     paddingHorizontal: 16,
