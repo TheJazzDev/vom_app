@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Pressable,
@@ -50,10 +49,10 @@ export default function BibleStudyScreen() {
         colors={['#2563EB', '#1E40AF']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
+        className="p-5 mb-1 rounded-b-3xl"
       >
         <View className="flex-row items-center justify-between mb-3">
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Pressable onPress={() => router.back()} className="w-10 h-10 rounded-full bg-white/15 items-center justify-center">
             <IconSymbol name="arrow.left" size={20} color="white" />
           </Pressable>
           <View style={{ flex: 1, marginLeft: 12 }}>
@@ -67,7 +66,7 @@ export default function BibleStudyScreen() {
           </View>
         </View>
         <Text className="text-white/90 leading-6">
-          Deepen your understanding of God's Word through our study resources and sessions.
+          Deepen your understanding of God&apos;s Word through our study resources and sessions.
         </Text>
       </LinearGradient>
 
@@ -76,17 +75,15 @@ export default function BibleStudyScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.typeScroll}
+          contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
         >
           <TouchableOpacity
             onPress={() => setActiveType(null)}
-            style={[
-              styles.typeChip,
-              {
-                backgroundColor: activeType === null ? theme.brand : theme.card,
-                borderColor: activeType === null ? theme.brand : theme.border,
-              },
-            ]}
+            className="px-4 py-2 rounded-full border"
+            style={{
+              backgroundColor: activeType === null ? theme.brand : theme.card,
+              borderColor: activeType === null ? theme.brand : theme.border,
+            }}
           >
             <Text
               style={{
@@ -101,13 +98,11 @@ export default function BibleStudyScreen() {
             <TouchableOpacity
               key={key}
               onPress={() => setActiveType(key)}
-              style={[
-                styles.typeChip,
-                {
-                  backgroundColor: activeType === key ? `${type.color}20` : theme.card,
-                  borderColor: activeType === key ? type.color : theme.border,
-                },
-              ]}
+              className="px-4 py-2 rounded-full border"
+              style={{
+                backgroundColor: activeType === key ? `${type.color}20` : theme.card,
+                borderColor: activeType === key ? type.color : theme.border,
+              }}
             >
               <Text
                 style={{
@@ -134,13 +129,11 @@ export default function BibleStudyScreen() {
           {displayTopics.slice(0, 6).map((topic) => (
             <TouchableOpacity
               key={topic.id}
-              style={[
-                styles.topicCard,
-                {
-                  backgroundColor: theme.card,
-                  borderColor: theme.border,
-                },
-              ]}
+              className="px-3 py-2.5 rounded-xl border w-[48%]"
+              style={{
+                backgroundColor: theme.card,
+                borderColor: theme.border,
+              }}
             >
               <View className="flex-row items-center gap-2">
                 <Text className="text-lg">{topic.icon}</Text>
@@ -185,13 +178,11 @@ export default function BibleStudyScreen() {
     return (
       <View className="px-4">
         <Pressable
-          style={[
-            styles.sessionCard,
-            {
-              backgroundColor: theme.card,
-              borderColor: theme.border,
-            },
-          ]}
+          className="rounded-2xl border p-4 mb-3"
+          style={{
+            backgroundColor: theme.card,
+            borderColor: theme.border,
+          }}
         >
           {/* Header */}
           <View className="flex-row items-start justify-between mb-3">
@@ -345,52 +336,9 @@ export default function BibleStudyScreen() {
             colors={[theme.brand]}
           />
         }
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerGradient: {
-    padding: 20,
-    marginBottom: 4,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  typeScroll: {
-    paddingHorizontal: 16,
-    gap: 8,
-  },
-  typeChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  topicCard: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 12,
-    borderWidth: 1,
-    width: '48%',
-  },
-  sessionCard: {
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 16,
-    marginBottom: 12,
-  },
-  listContent: {
-    paddingBottom: 24,
-  },
-});

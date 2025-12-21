@@ -4,7 +4,6 @@ import type { Badge } from '@/src/services/gamification/badges';
 import React, { useEffect } from 'react';
 import {
   Modal,
-  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import Animated, {
@@ -12,7 +11,6 @@ import Animated, {
   useSharedValue,
   withSequence,
   withSpring,
-  withDelay,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
@@ -81,56 +79,60 @@ export const BadgeEarnedModal: React.FC<BadgeEarnedModalProps> = ({
       animationType="fade"
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
+      <View className="flex-1 bg-black/70 items-center justify-center p-6">
         <Animated.View
+          className="w-full max-w-[340px] rounded-3xl p-6 items-center"
           style={[
-            styles.container,
             { backgroundColor: theme.card },
             containerStyle,
           ]}
         >
           {/* Header */}
-          <Text style={[styles.headerText, { color: theme.brand }]}>
+          <Text
+            className="text-sm font-extrabold tracking-[3px] mb-5"
+            style={{ color: theme.brand }}
+          >
             {badges.length === 1 ? 'BADGE EARNED!' : 'BADGES EARNED!'}
           </Text>
 
           {/* Badges */}
-          <View style={styles.badgesContainer}>
+          <View className="w-full gap-4 mb-5">
             {badges.map((badge, index) => {
               const color = getCategoryColor(badge.category);
               return (
                 <Animated.View
                   key={badge.id}
-                  style={[
-                    styles.badgeItem,
-                    { backgroundColor: `${color}10` },
-                  ]}
+                  className="p-4 rounded-2xl items-center"
+                  style={{ backgroundColor: `${color}10` }}
                 >
                   <Animated.View
+                    className="w-20 h-20 rounded-full items-center justify-center mb-3"
                     style={[
-                      styles.badgeIconContainer,
                       { backgroundColor: `${color}20` },
                       shimmerStyle,
                     ]}
                   >
-                    <Text style={styles.badgeIcon}>{badge.icon}</Text>
+                    <Text className="text-[40px]">{badge.icon}</Text>
                   </Animated.View>
                   <Text
-                    style={[styles.badgeName, { color: theme.heading }]}
+                    className="text-lg font-bold mb-1 text-center"
+                    style={{ color: theme.heading }}
                   >
                     {badge.name}
                   </Text>
                   <Text
                     variant="caption"
-                    style={[styles.badgeDescription, { color: theme.textSecondary }]}
+                    className="text-center mb-3"
+                    style={{ color: theme.textSecondary }}
                     numberOfLines={2}
                   >
                     {badge.description}
                   </Text>
                   <View
-                    style={[styles.earnedBadge, { backgroundColor: color }]}
+                    className="px-4 py-1.5 rounded-xl"
+                    style={{ backgroundColor: color }}
                   >
-                    <Text style={styles.earnedText}>✓ Earned</Text>
+                    <Text className="text-white font-semibold text-[13px]">✓ Earned</Text>
                   </View>
                 </Animated.View>
               );
@@ -140,86 +142,13 @@ export const BadgeEarnedModal: React.FC<BadgeEarnedModalProps> = ({
           {/* Continue Button */}
           <TouchableOpacity
             onPress={onClose}
-            style={[styles.continueButton, { backgroundColor: theme.brand }]}
+            className="px-12 py-3.5 rounded-xl"
+            style={{ backgroundColor: theme.brand }}
           >
-            <Text style={styles.continueButtonText}>Awesome!</Text>
+            <Text className="text-white font-bold text-base">Awesome!</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  container: {
-    width: '100%',
-    maxWidth: 340,
-    borderRadius: 24,
-    padding: 24,
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 14,
-    fontWeight: '800',
-    letterSpacing: 3,
-    marginBottom: 20,
-  },
-  badgesContainer: {
-    width: '100%',
-    gap: 16,
-    marginBottom: 20,
-  },
-  badgeItem: {
-    padding: 16,
-    borderRadius: 16,
-    alignItems: 'center',
-  },
-  badgeIconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
-  },
-  badgeIcon: {
-    fontSize: 40,
-  },
-  badgeName: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  badgeDescription: {
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  earnedBadge: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  earnedText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 13,
-  },
-  continueButton: {
-    paddingHorizontal: 48,
-    paddingVertical: 14,
-    borderRadius: 12,
-  },
-  continueButtonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-});

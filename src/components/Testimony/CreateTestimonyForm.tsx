@@ -4,7 +4,6 @@ import { TESTIMONY_CATEGORIES, TestimonyCategory } from '@/src/services/testimon
 import React, { useState } from 'react';
 import {
   ScrollView,
-  StyleSheet,
   TouchableOpacity,
   Switch,
   Alert,
@@ -57,8 +56,8 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={styles.scrollContent}
+      className="flex-1"
+      contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
       showsVerticalScrollIndicator={false}
     >
       {/* Encouragement Header */}
@@ -95,14 +94,13 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
           onChangeText={setTitle}
           placeholder="Give your testimony a title"
           placeholderTextColor={theme.textSecondary}
-          style={[
-            styles.input,
-            {
-              backgroundColor: theme.inputBackground,
-              borderColor: theme.border,
-              color: theme.text,
-            },
-          ]}
+          className="rounded-xl px-4 py-3 text-base"
+          style={{
+            backgroundColor: theme.inputBackground,
+            borderColor: theme.border,
+            borderWidth: 1,
+            color: theme.text,
+          }}
           maxLength={100}
         />
       </View>
@@ -121,14 +119,13 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
             <TouchableOpacity
               key={key}
               onPress={() => setCategory(key)}
-              style={[
-                styles.categoryChip,
-                {
-                  backgroundColor:
-                    category === key ? `${cat.color}20` : theme.inputBackground,
-                  borderColor: category === key ? cat.color : theme.border,
-                },
-              ]}
+              className="px-3 py-2 rounded-2xl"
+              style={{
+                backgroundColor:
+                  category === key ? `${cat.color}20` : theme.inputBackground,
+                borderColor: category === key ? cat.color : theme.border,
+                borderWidth: 1,
+              }}
             >
               <Text className="text-sm">
                 {cat.emoji} {cat.label}
@@ -155,14 +152,14 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
           multiline
           numberOfLines={8}
           textAlignVertical="top"
-          style={[
-            styles.textArea,
-            {
-              backgroundColor: theme.inputBackground,
-              borderColor: theme.border,
-              color: theme.text,
-            },
-          ]}
+          className="rounded-xl px-4 py-3 text-base"
+          style={{
+            backgroundColor: theme.inputBackground,
+            borderColor: theme.border,
+            borderWidth: 1,
+            color: theme.text,
+            minHeight: 200,
+          }}
           maxLength={2000}
         />
         <Text
@@ -208,13 +205,11 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
       <Button
         onPress={handleSubmit}
         disabled={isLoading || !title.trim() || !content.trim()}
-        style={[
-          styles.submitButton,
-          {
-            backgroundColor: theme.brand,
-            opacity: isLoading || !title.trim() || !content.trim() ? 0.5 : 1,
-          },
-        ]}
+        className="rounded-xl py-4 items-center"
+        style={{
+          backgroundColor: theme.brand,
+          opacity: isLoading || !title.trim() || !content.trim() ? 0.5 : 1,
+        }}
       >
         <Text className="text-white font-semibold text-base">
           {isLoading ? 'Sharing...' : 'Share Testimony'}
@@ -223,38 +218,5 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    padding: 16,
-    paddingBottom: 40,
-  },
-  input: {
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-  },
-  textArea: {
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    minHeight: 200,
-  },
-  categoryChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  submitButton: {
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-});
 
 export default CreateTestimonyForm;

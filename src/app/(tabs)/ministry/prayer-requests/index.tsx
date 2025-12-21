@@ -5,18 +5,15 @@ import { useTheme } from '@/src/hooks';
 import { PRAYER_CATEGORIES, PrayerRequestCategory } from '@/src/services/prayerRequest';
 import { useAuthSlice, usePrayerRequestSlice } from '@/src/store/slices';
 import { fetchPrayerRequestsThunk, togglePrayedThunk } from '@/src/store/thunks';
-import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Pressable,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -61,8 +58,11 @@ export default function PrayerRequestsScreen() {
   const renderHeader = () => (
     <View>
       {/* Custom Navbar */}
-      <View style={styles.navbar}>
-        <Pressable onPress={() => router.back()} style={styles.backBtn}>
+      <View className="flex-row items-center px-4 py-3 mb-2">
+        <Pressable
+          onPress={() => router.back()}
+          className="w-10 h-10 rounded-full items-center justify-center"
+        >
           <IconSymbol name="arrow.left" size={20} color={theme.text} />
         </Pressable>
         <View style={{ flex: 1, alignItems: 'center' }}>
@@ -70,35 +70,59 @@ export default function PrayerRequestsScreen() {
             Prayer Wall
           </Text>
         </View>
-        <Pressable onPress={handleCreateRequest} style={styles.addBtn}>
+        <Pressable
+          onPress={handleCreateRequest}
+          className="w-10 h-10 items-center justify-center"
+        >
           <IconSymbol name="plus.circle.fill" size={28} color={theme.primary} />
         </Pressable>
       </View>
 
       {/* Community Banner */}
-      <View style={[styles.communityBanner, { backgroundColor: theme.card }]}>
-        <View style={styles.communityHeader}>
-          <View style={styles.iconCluster}>
-            <View style={[styles.clusterIcon, { backgroundColor: '#EF4444' }]}>
+      <View
+        className="mx-4 p-4 rounded-2xl mb-4"
+        style={{ backgroundColor: theme.card }}
+      >
+        <View className="flex-row items-center mb-3">
+          <View className="flex-row">
+            <View
+              className="w-8 h-8 rounded-2xl items-center justify-center border-2 border-white"
+              style={{ backgroundColor: '#EF4444' }}
+            >
               <IconSymbol name="heart.fill" size={14} color="white" />
             </View>
-            <View style={[styles.clusterIcon, { backgroundColor: '#10B981', marginLeft: -8 }]}>
+            <View
+              className="w-8 h-8 rounded-2xl items-center justify-center -ml-2 border-2 border-white"
+              style={{ backgroundColor: '#10B981' }}
+            >
               <IconSymbol name="hands.sparkles.fill" size={14} color="white" />
             </View>
-            <View style={[styles.clusterIcon, { backgroundColor: '#8B5CF6', marginLeft: -8 }]}>
+            <View
+              className="w-8 h-8 rounded-2xl items-center justify-center -ml-2 border-2 border-white"
+              style={{ backgroundColor: '#8B5CF6' }}
+            >
               <IconSymbol name="person.2.fill" size={14} color="white" />
             </View>
           </View>
           <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={[styles.communityTitle, { color: theme.heading }]}>
+            <Text
+              className="font-bold mb-0.5"
+              style={{ fontSize: 18, color: theme.heading }}
+            >
               Our Community
             </Text>
-            <Text style={[styles.communitySubtitle, { color: theme.muted }]}>
+            <Text
+              className="font-medium"
+              style={{ fontSize: 13, color: theme.muted }}
+            >
               {activeRequests.length} active requests • {totalPrayers} prayers lifted
             </Text>
           </View>
         </View>
-        <Text style={[styles.communityDesc, { color: theme.textSecondary }]}>
+        <Text
+          className="leading-5 italic"
+          style={{ fontSize: 14, color: theme.textSecondary }}
+        >
           When two or more are gathered, He is there. Share your burdens and lift each other up in prayer.
         </Text>
       </View>
@@ -107,18 +131,16 @@ export default function PrayerRequestsScreen() {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={styles.filterContainer}
-        contentContainerStyle={styles.filterContent}
+        className="mb-3"
+        contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
       >
         <TouchableOpacity
           onPress={() => setActiveCategory(null)}
-          style={[
-            styles.filterChip,
-            {
-              backgroundColor: activeCategory === null ? theme.primary : `${theme.muted}20`,
-              borderColor: activeCategory === null ? theme.primary : 'transparent',
-            },
-          ]}
+          className="px-3.5 py-2 rounded-2xl border-2 mr-2"
+          style={{
+            backgroundColor: activeCategory === null ? theme.primary : `${theme.muted}20`,
+            borderColor: activeCategory === null ? theme.primary : 'transparent',
+          }}
         >
           <Text style={{ color: activeCategory === null ? 'white' : theme.muted, fontWeight: '600', fontSize: 13 }}>
             🌟 All
@@ -128,13 +150,11 @@ export default function PrayerRequestsScreen() {
           <TouchableOpacity
             key={key}
             onPress={() => setActiveCategory(key)}
-            style={[
-              styles.filterChip,
-              {
-                backgroundColor: activeCategory === key ? `${cat.color}` : `${cat.color}15`,
-                borderColor: activeCategory === key ? cat.color : 'transparent',
-              },
-            ]}
+            className="px-3.5 py-2 rounded-2xl border-2 mr-2"
+            style={{
+              backgroundColor: activeCategory === key ? `${cat.color}` : `${cat.color}15`,
+              borderColor: activeCategory === key ? cat.color : 'transparent',
+            }}
           >
             <Text
               style={{
@@ -152,9 +172,15 @@ export default function PrayerRequestsScreen() {
   );
 
   const renderEmptyState = () => (
-    <View style={styles.emptyState}>
-      <View style={[styles.emptyCircle, { backgroundColor: `${theme.primary}10` }]}>
-        <View style={[styles.innerCircle, { backgroundColor: `${theme.primary}20` }]}>
+    <View className="flex-1 items-center justify-center py-20">
+      <View
+        className="w-[140px] h-[140px] rounded-full items-center justify-center"
+        style={{ backgroundColor: `${theme.primary}10` }}
+      >
+        <View
+          className="w-[100px] h-[100px] rounded-full items-center justify-center"
+          style={{ backgroundColor: `${theme.primary}20` }}
+        >
           <IconSymbol name="hands.sparkles.fill" size={50} color={theme.primary} />
         </View>
       </View>
@@ -166,10 +192,11 @@ export default function PrayerRequestsScreen() {
       </Text>
       <Pressable
         onPress={handleCreateRequest}
-        style={[styles.emptyButton, { backgroundColor: theme.primary }]}
+        className="flex-row items-center gap-2 px-6 py-3 rounded-3xl"
+        style={{ backgroundColor: theme.primary }}
       >
         <IconSymbol name="plus" size={20} color="white" />
-        <Text style={styles.emptyButtonText}>Submit Request</Text>
+        <Text className="text-white text-base font-semibold">Submit Request</Text>
       </Pressable>
     </View>
   );
@@ -178,7 +205,7 @@ export default function PrayerRequestsScreen() {
     return (
       <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
         {renderHeader()}
-        <View style={styles.loadingState}>
+        <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.primary} />
           <Text variant="body" style={{ color: theme.muted, marginTop: 16 }}>
             Loading prayer wall...
@@ -194,7 +221,7 @@ export default function PrayerRequestsScreen() {
         data={requests}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.requestWrapper}>
+          <View className="px-4 mb-1">
             <PrayerRequestCard
               request={item}
               hasPrayed={userPrayed[item.id] || false}
@@ -212,7 +239,7 @@ export default function PrayerRequestsScreen() {
             colors={[theme.primary]}
           />
         }
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       />
 
@@ -220,7 +247,15 @@ export default function PrayerRequestsScreen() {
       {requests.length > 0 && (
         <Pressable
           onPress={handleCreateRequest}
-          style={[styles.fab, { backgroundColor: theme.primary }]}
+          className="absolute bottom-6 right-6 w-[60px] h-[60px] rounded-[30px] items-center justify-center"
+          style={{
+            backgroundColor: theme.primary,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 6 },
+            shadowOpacity: 0.3,
+            shadowRadius: 12,
+            elevation: 12,
+          }}
         >
           <IconSymbol name="hands.sparkles.fill" size={24} color="white" />
         </Pressable>
@@ -228,137 +263,3 @@ export default function PrayerRequestsScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  navbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 8,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addBtn: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  communityBanner: {
-    marginHorizontal: 16,
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-  },
-  communityHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  iconCluster: {
-    flexDirection: 'row',
-  },
-  clusterIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: 'white',
-  },
-  communityTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 2,
-  },
-  communitySubtitle: {
-    fontSize: 13,
-    fontWeight: '500',
-  },
-  communityDesc: {
-    fontSize: 14,
-    lineHeight: 20,
-    fontStyle: 'italic',
-  },
-  filterContainer: {
-    marginBottom: 12,
-  },
-  filterContent: {
-    paddingHorizontal: 16,
-    gap: 8,
-  },
-  filterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 2,
-    marginRight: 8,
-  },
-  requestWrapper: {
-    paddingHorizontal: 16,
-    marginBottom: 4,
-  },
-  emptyState: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 80,
-  },
-  emptyCircle: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  innerCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 24,
-  },
-  emptyButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  loadingState: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  listContent: {
-    paddingBottom: 100,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 12,
-  },
-});

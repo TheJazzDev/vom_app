@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -65,7 +65,7 @@ export function AnimatedTabContent({
   }));
 
   return (
-    <Animated.View style={[styles.container, animatedStyle, style]}>
+    <Animated.View className="flex-1" style={[animatedStyle, style]}>
       {children}
     </Animated.View>
   );
@@ -91,14 +91,8 @@ export function AnimatedTabContentLite({
   }));
 
   return (
-    <Animated.View style={[styles.container, animatedStyle, style]}>
+    <Animated.View className="flex-1" style={[animatedStyle, style]}>
       {children}
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

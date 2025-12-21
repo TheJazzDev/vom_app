@@ -2,7 +2,6 @@ import { useTheme } from '@/src/hooks';
 import React, { useState } from 'react';
 import {
   TouchableOpacity,
-  StyleSheet,
   ViewStyle,
 } from 'react-native';
 import Animated, {
@@ -81,7 +80,8 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
       onPress={handlePress}
       disabled={disabled || isLoading}
       activeOpacity={0.7}
-      style={[styles.container, style]}
+      className="flex-row items-center"
+      style={style}
     >
       <View className="flex-row items-center gap-1">
         <Animated.View style={animatedStyle}>
@@ -107,12 +107,5 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
 
 export default LikeButton;

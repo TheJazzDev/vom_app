@@ -333,7 +333,7 @@ export default function ContactUs() {
               Get In Touch
             </Text>
             <Text variant="body" className="text-white/90 text-center max-w-xs">
-              We're here to connect with you. Reach out anytime!
+              We&apos;re here to connect with you. Reach out anytime!
             </Text>
           </View>
         </LinearGradient>
@@ -421,7 +421,7 @@ export default function ContactUs() {
                 className="text-center mt-2"
                 style={{ color: theme.muted }}
               >
-                Support God's work through giving
+                Support God&apos;s work through giving
               </Text>
             </View>
 
@@ -468,7 +468,7 @@ export default function ContactUs() {
                 className="font-bold mb-3 text-center"
                 style={{ color: theme.heading }}
               >
-                You're Always Welcome!
+                You&apos;re Always Welcome!
               </Text>
 
               <Text
@@ -476,8 +476,8 @@ export default function ContactUs() {
                 className="text-center leading-6 mb-4"
                 style={{ color: theme.text }}
               >
-                Come as you are and experience God's love and grace in our
-                community. We can't wait to worship with you!
+                Come as you are and experience God&apos;s love and grace in our
+                community. We can&apos;t wait to worship with you!
               </Text>
 
               <View
@@ -489,7 +489,7 @@ export default function ContactUs() {
                   className="italic text-center"
                   style={{ color: theme.primary }}
                 >
-                  "The Lord bless you and keep you" - Numbers 6:24
+                  &quot;The Lord bless you and keep you&quot; - Numbers 6:24
                 </Text>
               </View>
             </View>

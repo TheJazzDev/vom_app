@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import {
   TouchableOpacity,
   Image,
-  StyleSheet,
   Alert,
   ActivityIndicator,
   ScrollView,
@@ -97,7 +96,7 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
 
   const renderMediaItem = (file: MediaFile, index: number) => (
     <View key={index} className="relative mr-3">
-      <Image source={{ uri: file.uri }} style={styles.thumbnail} />
+      <Image source={{ uri: file.uri }} className="w-[100px] h-[100px] rounded-lg" />
       {file.type === 'video' && (
         <View className="absolute inset-0 items-center justify-center bg-black/30 rounded-lg">
           <Text className="text-2xl">▶️</Text>
@@ -105,7 +104,7 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
       )}
       <TouchableOpacity
         onPress={() => removeMedia(index)}
-        style={styles.removeButton}
+        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 items-center justify-center"
         disabled={disabled}
       >
         <Text className="text-white text-xs font-bold">✕</Text>
@@ -118,7 +117,7 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={{ paddingVertical: 8 }}
       >
         {mediaFiles.map((file, index) => renderMediaItem(file, index))}
 
@@ -126,13 +125,11 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
           <TouchableOpacity
             onPress={pickMedia}
             disabled={disabled || isUploading}
-            style={[
-              styles.addButton,
-              {
-                backgroundColor: theme.isDark ? '#374151' : '#F3F4F6',
-                borderColor: theme.isDark ? '#4B5563' : '#D1D5DB',
-              },
-            ]}
+            className="w-[100px] h-[100px] rounded-lg border-2 border-dashed items-center justify-center p-2"
+            style={{
+              backgroundColor: theme.isDark ? '#374151' : '#F3F4F6',
+              borderColor: theme.isDark ? '#4B5563' : '#D1D5DB',
+            }}
           >
             {isUploading ? (
               <ActivityIndicator color={theme.brand} />
@@ -160,37 +157,5 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingVertical: 8,
-  },
-  thumbnail: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-  },
-  removeButton: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#EF4444',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addButton: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-  },
-});
 
 export default MediaUploader;

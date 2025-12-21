@@ -6,7 +6,6 @@ import {
   Modal,
   Pressable,
   ScrollView,
-  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import { BadgeCard } from './BadgeCard';
@@ -55,22 +54,21 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
       {/* Header */}
-      <View style={styles.header}>
+      <View className="flex-row items-center justify-between mb-4 px-1">
         <Text
           variant="h4"
-          style={[styles.headerTitle, { color: theme.heading }]}
+          className="font-bold"
+          style={{ color: theme.heading }}
         >
           Badges
         </Text>
         <View
-          style={[
-            styles.countBadge,
-            { backgroundColor: `${theme.brand}15` },
-          ]}
+          className="px-3 py-1 rounded-xl"
+          style={{ backgroundColor: `${theme.brand}15` }}
         >
-          <Text style={{ color: theme.brand, fontWeight: '600' }}>
+          <Text className="font-semibold" style={{ color: theme.brand }}>
             {earnedCount}/{badges.length}
           </Text>
         </View>
@@ -81,23 +79,18 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryScroll}
+          contentContainerStyle={{ gap: 8, paddingBottom: 12 }}
         >
           <TouchableOpacity
             onPress={() => setActiveCategory('all')}
-            style={[
-              styles.categoryChip,
-              {
-                backgroundColor:
-                  activeCategory === 'all' ? theme.brand : `${theme.brand}15`,
-              },
-            ]}
+            className="flex-row items-center px-3 py-2 rounded-full"
+            style={{
+              backgroundColor: activeCategory === 'all' ? theme.brand : `${theme.brand}15`,
+            }}
           >
             <Text
-              style={{
-                color: activeCategory === 'all' ? 'white' : theme.brand,
-                fontWeight: '600',
-              }}
+              className="font-semibold"
+              style={{ color: activeCategory === 'all' ? 'white' : theme.brand }}
             >
               All
             </Text>
@@ -111,48 +104,38 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
               <TouchableOpacity
                 key={category}
                 onPress={() => setActiveCategory(category)}
-                style={[
-                  styles.categoryChip,
-                  {
-                    backgroundColor:
-                      activeCategory === category
-                        ? getCategoryColor(category)
-                        : `${getCategoryColor(category)}15`,
-                  },
-                ]}
+                className="flex-row items-center px-3 py-2 rounded-full"
+                style={{
+                  backgroundColor: activeCategory === category
+                    ? getCategoryColor(category)
+                    : `${getCategoryColor(category)}15`,
+                }}
               >
-                <Text style={{ fontSize: 14 }}>{config.emoji}</Text>
+                <Text className="text-sm">{config.emoji}</Text>
                 <Text
+                  className="font-semibold ml-1"
                   style={{
-                    color:
-                      activeCategory === category
-                        ? 'white'
-                        : getCategoryColor(category),
-                    fontWeight: '600',
-                    marginLeft: 4,
+                    color: activeCategory === category
+                      ? 'white'
+                      : getCategoryColor(category),
                   }}
                 >
                   {config.label}
                 </Text>
                 <View
-                  style={[
-                    styles.categoryCount,
-                    {
-                      backgroundColor:
-                        activeCategory === category
-                          ? 'rgba(255,255,255,0.3)'
-                          : `${getCategoryColor(category)}30`,
-                    },
-                  ]}
+                  className="ml-1.5 px-1.5 py-0.5 rounded-lg"
+                  style={{
+                    backgroundColor: activeCategory === category
+                      ? 'rgba(255,255,255,0.3)'
+                      : `${getCategoryColor(category)}30`,
+                  }}
                 >
                   <Text
+                    className="text-[10px] font-semibold"
                     style={{
-                      fontSize: 10,
-                      color:
-                        activeCategory === category
-                          ? 'white'
-                          : getCategoryColor(category),
-                      fontWeight: '600',
+                      color: activeCategory === category
+                        ? 'white'
+                        : getCategoryColor(category),
                     }}
                   >
                     {earnedInCategory}/{categoryBadges.length}
@@ -165,7 +148,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
       )}
 
       {/* Badge Grid */}
-      <View style={styles.grid}>
+      <View className="flex-row flex-wrap gap-3">
         {filteredBadges.map((badge) => (
           <BadgeCard
             key={badge.id}
@@ -184,50 +167,43 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
         onRequestClose={() => setSelectedBadge(null)}
       >
         <Pressable
-          style={styles.modalOverlay}
+          className="flex-1 bg-black/50 items-center justify-center p-6"
           onPress={() => setSelectedBadge(null)}
         >
           <Pressable
-            style={[
-              styles.modalContent,
-              { backgroundColor: theme.card },
-            ]}
+            className="w-full max-w-[340px] rounded-3xl p-6 items-center"
+            style={{ backgroundColor: theme.card }}
             onPress={(e) => e.stopPropagation()}
           >
             {selectedBadge && (
               <>
                 <View
-                  style={[
-                    styles.modalIcon,
-                    {
-                      backgroundColor: selectedBadge.isEarned
-                        ? `${getCategoryColor(selectedBadge.category)}20`
-                        : `${theme.textSecondary}10`,
-                    },
-                  ]}
+                  className="w-[100px] h-[100px] rounded-full items-center justify-center mb-4"
+                  style={{
+                    backgroundColor: selectedBadge.isEarned
+                      ? `${getCategoryColor(selectedBadge.category)}20`
+                      : `${theme.textSecondary}10`,
+                  }}
                 >
-                  <Text style={{ fontSize: 48 }}>{selectedBadge.icon}</Text>
+                  <Text className="text-5xl">{selectedBadge.icon}</Text>
                 </View>
                 <Text
                   variant="h3"
-                  style={[styles.modalTitle, { color: theme.heading }]}
+                  className="font-bold mb-2 text-center"
+                  style={{ color: theme.heading }}
                 >
                   {selectedBadge.name}
                 </Text>
                 <Text
                   variant="body"
-                  style={[
-                    styles.modalDescription,
-                    { color: theme.textSecondary },
-                  ]}
+                  className="text-center mb-4"
+                  style={{ color: theme.textSecondary }}
                 >
                   {selectedBadge.description}
                 </Text>
                 <View
-                  style={[
-                    styles.modalRequirement,
-                    { backgroundColor: `${theme.brand}10` },
-                  ]}
+                  className="px-4 py-2 rounded-lg mb-4"
+                  style={{ backgroundColor: `${theme.brand}10` }}
                 >
                   <Text style={{ color: theme.brand }}>
                     {selectedBadge.requirement}
@@ -235,36 +211,31 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
                 </View>
                 {selectedBadge.isEarned ? (
                   <View
-                    style={[
-                      styles.earnedIndicator,
-                      { backgroundColor: getCategoryColor(selectedBadge.category) },
-                    ]}
+                    className="px-5 py-2.5 rounded-full mb-4"
+                    style={{ backgroundColor: getCategoryColor(selectedBadge.category) }}
                   >
-                    <Text style={styles.earnedIndicatorText}>
+                    <Text className="text-white font-bold text-base">
                       ✓ Earned
                     </Text>
                   </View>
                 ) : (
-                  <View style={styles.progressSection}>
+                  <View className="w-full mb-4">
                     <View
-                      style={[
-                        styles.modalProgressBg,
-                        { backgroundColor: `${getCategoryColor(selectedBadge.category)}20` },
-                      ]}
+                      className="h-2 rounded overflow-hidden"
+                      style={{ backgroundColor: `${getCategoryColor(selectedBadge.category)}20` }}
                     >
                       <View
-                        style={[
-                          styles.modalProgressFill,
-                          {
-                            width: `${selectedBadge.progress}%`,
-                            backgroundColor: getCategoryColor(selectedBadge.category),
-                          },
-                        ]}
+                        className="h-full rounded"
+                        style={{
+                          width: `${selectedBadge.progress}%`,
+                          backgroundColor: getCategoryColor(selectedBadge.category),
+                        }}
                       />
                     </View>
                     <Text
                       variant="caption"
-                      style={{ color: theme.textSecondary, marginTop: 4 }}
+                      className="mt-1"
+                      style={{ color: theme.textSecondary }}
                     >
                       {Math.round(selectedBadge.progress)}% complete
                     </Text>
@@ -272,9 +243,10 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
                 )}
                 <TouchableOpacity
                   onPress={() => setSelectedBadge(null)}
-                  style={[styles.closeButton, { backgroundColor: theme.brand }]}
+                  className="px-8 py-3 rounded-xl"
+                  style={{ backgroundColor: theme.brand }}
                 >
-                  <Text style={styles.closeButtonText}>Close</Text>
+                  <Text className="text-white font-semibold text-base">Close</Text>
                 </TouchableOpacity>
               </>
             )}
@@ -284,117 +256,3 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-    paddingHorizontal: 4,
-  },
-  headerTitle: {
-    fontWeight: '700',
-  },
-  countBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  categoryScroll: {
-    gap: 8,
-    paddingBottom: 12,
-  },
-  categoryChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  categoryCount: {
-    marginLeft: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  modalContent: {
-    width: '100%',
-    maxWidth: 340,
-    borderRadius: 24,
-    padding: 24,
-    alignItems: 'center',
-  },
-  modalIcon: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  modalTitle: {
-    fontWeight: '700',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  modalDescription: {
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  modalRequirement: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  earnedIndicator: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginBottom: 16,
-  },
-  earnedIndicatorText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  progressSection: {
-    width: '100%',
-    marginBottom: 16,
-  },
-  modalProgressBg: {
-    height: 8,
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  modalProgressFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  closeButton: {
-    paddingHorizontal: 32,
-    paddingVertical: 12,
-    borderRadius: 12,
-  },
-  closeButtonText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 16,
-  },
-});

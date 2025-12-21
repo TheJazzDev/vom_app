@@ -1,6 +1,6 @@
 import { useTheme } from '@/src/hooks';
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Text } from '../UI/Text';
 import { View } from '../UI/View';
 import { UserAvatar } from '../UserAvatar';
@@ -49,21 +49,10 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     });
   };
 
-  const getInitials = (name: string) => {
-    const parts = name.split(' ');
-    if (parts.length >= 2) {
-      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-    }
-    return name.slice(0, 2).toUpperCase();
-  };
-
   return (
     <View
-      className="flex-row py-3"
-      style={[
-        styles.container,
-        { borderBottomColor: theme.isDark ? '#374151' : '#E5E7EB' },
-      ]}
+      className="flex-row py-3 border-b"
+      style={{ borderBottomColor: theme.isDark ? '#374151' : '#E5E7EB' }}
     >
       <UserAvatar
         name={comment.userName}
@@ -108,11 +97,5 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderBottomWidth: 1,
-  },
-});
 
 export default CommentItem;

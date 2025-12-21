@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
 import { Colors } from '@/src/constants/Colors';
@@ -17,7 +17,7 @@ export function Collapsible({
   return (
     <View>
       <TouchableOpacity
-        style={styles.heading}
+        className="flex-row items-center gap-1.5"
         onPress={() => setIsOpen((value) => !value)}
         activeOpacity={0.8}
       >
@@ -31,19 +31,7 @@ export function Collapsible({
 
         <Text>{title}</Text>
       </TouchableOpacity>
-      {isOpen && <View style={styles.content}>{children}</View>}
+      {isOpen && <View className="mt-1.5 ml-6">{children}</View>}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-  },
-});

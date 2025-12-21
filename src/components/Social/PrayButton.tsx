@@ -1,6 +1,6 @@
 import { useTheme } from '@/src/hooks';
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
+import { TouchableOpacity, ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -77,7 +77,8 @@ export const PrayButton: React.FC<PrayButtonProps> = ({
         onPress={handlePress}
         disabled={disabled || isLoading}
         activeOpacity={0.7}
-        style={[styles.iconContainer, style]}
+        className="flex-row items-center"
+        style={style}
       >
         <View className="flex-row items-center gap-1">
           <Animated.View style={animatedStyle}>
@@ -110,8 +111,8 @@ export const PrayButton: React.FC<PrayButtonProps> = ({
         onPress={handlePress}
         disabled={disabled || isLoading}
         activeOpacity={0.8}
+        className="rounded-3xl items-center justify-center"
         style={[
-          styles.button,
           {
             backgroundColor: hasPrayed
               ? theme.brand
@@ -155,17 +156,5 @@ export const PrayButton: React.FC<PrayButtonProps> = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  button: {
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default PrayButton;

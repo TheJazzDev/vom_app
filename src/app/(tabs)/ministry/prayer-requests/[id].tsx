@@ -19,7 +19,6 @@ import React, { useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
-  StyleSheet,
   Share,
   Pressable,
   Alert,
@@ -155,14 +154,14 @@ export default function PrayerRequestDetailScreen() {
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerClassName="pb-10"
       >
         {/* Header */}
         <LinearGradient
           colors={[category.color, category.color + 'DD']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={styles.headerGradient}
+          className="p-5 mb-5 rounded-b-3xl"
         >
           <View className="flex-row items-center gap-2 mb-3">
             <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
@@ -218,7 +217,8 @@ export default function PrayerRequestDetailScreen() {
 
           {/* Actions */}
           <View
-            style={[styles.actionsContainer, { borderColor: theme.border }]}
+            className="flex-row items-center justify-between py-4 border-t border-b mb-6"
+            style={{ borderColor: theme.border }}
           >
             <View className="flex-row items-center gap-6">
               <PrayButton
@@ -285,8 +285,8 @@ export default function PrayerRequestDetailScreen() {
                   style={{ color: theme.text }}
                   className="italic leading-6"
                 >
-                  "Do not be anxious about anything, but in every situation, by prayer
-                  and petition, with thanksgiving, present your requests to God."
+                  &quot;Do not be anxious about anything, but in every situation, by prayer
+                  and petition, with thanksgiving, present your requests to God.&quot;
                 </Text>
                 <Text
                   variant="caption"
@@ -331,24 +331,3 @@ export default function PrayerRequestDetailScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  headerGradient: {
-    padding: 20,
-    marginBottom: 20,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    marginBottom: 24,
-  },
-});

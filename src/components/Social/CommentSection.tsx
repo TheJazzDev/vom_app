@@ -1,9 +1,8 @@
 import { useTheme } from '@/src/hooks';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  StyleSheet,
   RefreshControl,
 } from 'react-native';
 import { Text } from '../UI/Text';
@@ -114,7 +113,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16 }}
         onEndReached={hasMore ? onLoadMore : undefined}
         onEndReachedThreshold={0.3}
         refreshControl={
@@ -136,12 +135,5 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  listContent: {
-    flexGrow: 1,
-    paddingHorizontal: 16,
-  },
-});
 
 export default CommentSection;

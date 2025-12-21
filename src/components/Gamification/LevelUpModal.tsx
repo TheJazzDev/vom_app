@@ -4,8 +4,6 @@ import type { LevelConfig } from '@/src/services/gamification';
 import React, { useEffect } from 'react';
 import {
   Modal,
-  Pressable,
-  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import Animated, {
@@ -15,7 +13,6 @@ import Animated, {
   withSpring,
   withDelay,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 
 interface LevelUpModalProps {
@@ -89,53 +86,56 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
       animationType="fade"
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
+      <View className="flex-1 bg-black/70 items-center justify-center p-6">
         <Animated.View
+          className="w-full max-w-[340px] rounded-3xl p-8 items-center relative overflow-hidden"
           style={[
-            styles.container,
             { backgroundColor: theme.card },
             containerStyle,
           ]}
         >
           {/* Confetti-like decorations */}
-          <View style={styles.decorations}>
-            <Text style={[styles.decoration, { top: 10, left: 20 }]}>✨</Text>
-            <Text style={[styles.decoration, { top: 30, right: 25 }]}>🎉</Text>
-            <Text style={[styles.decoration, { bottom: 80, left: 15 }]}>⭐</Text>
-            <Text style={[styles.decoration, { bottom: 60, right: 20 }]}>🌟</Text>
+          <View className="absolute top-0 left-0 right-0 bottom-0">
+            <Text className="absolute text-2xl top-2.5 left-5">✨</Text>
+            <Text className="absolute text-2xl top-7.5 right-6">🎉</Text>
+            <Text className="absolute text-2xl bottom-20 left-4">⭐</Text>
+            <Text className="absolute text-2xl bottom-15 right-5">🌟</Text>
           </View>
 
           {/* Level Up Text */}
-          <Text style={[styles.levelUpText, { color: newLevel.color }]}>
+          <Text className="text-sm font-extrabold tracking-[4px] mb-4" style={{ color: newLevel.color }}>
             LEVEL UP!
           </Text>
 
           {/* Level Icon */}
           <Animated.View
+            className="w-30 h-30 rounded-full items-center justify-center mb-4"
             style={[
-              styles.iconContainer,
               { backgroundColor: `${newLevel.color}20` },
               iconStyle,
             ]}
           >
-            <Text style={styles.levelIcon}>{newLevel.icon}</Text>
+            <Text className="text-6xl">{newLevel.icon}</Text>
           </Animated.View>
 
           {/* Level Info */}
           <Text
-            style={[styles.levelNumber, { color: newLevel.color }]}
+            className="text-base font-bold mb-1"
+            style={{ color: newLevel.color }}
           >
             Level {newLevel.level}
           </Text>
           <Text
             variant="h2"
-            style={[styles.levelName, { color: theme.heading }]}
+            className="font-extrabold mb-2 text-center"
+            style={{ color: theme.heading }}
           >
             {newLevel.name}
           </Text>
           <Text
             variant="body"
-            style={[styles.description, { color: theme.textSecondary }]}
+            className="text-center mb-5"
+            style={{ color: theme.textSecondary }}
           >
             {newLevel.description}
           </Text>
@@ -143,14 +143,12 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
           {/* Points to next level */}
           {newLevel.level < 14 && (
             <View
-              style={[
-                styles.nextLevelInfo,
-                { backgroundColor: `${theme.brand}10` },
-              ]}
+              className="px-4 py-3 rounded-xl mb-5"
+              style={{ backgroundColor: `${theme.brand}10` }}
             >
               <Text variant="caption" style={{ color: theme.textSecondary }}>
-                Keep going! You're on your way to becoming{' '}
-                <Text style={{ color: theme.brand, fontWeight: '600' }}>
+                Keep going! You&apos;re on your way to becoming{' '}
+                <Text className="font-semibold" style={{ color: theme.brand }}>
                   {newLevel.level < 14 ? `Level ${newLevel.level + 1}` : 'the ultimate!'}
                 </Text>
               </Text>
@@ -159,12 +157,10 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
 
           {newLevel.level === 14 && (
             <View
-              style={[
-                styles.maxLevelBadge,
-                { backgroundColor: newLevel.color },
-              ]}
+              className="px-5 py-3 rounded-xl mb-5"
+              style={{ backgroundColor: newLevel.color }}
             >
-              <Text style={styles.maxLevelText}>
+              <Text className="text-white font-bold text-xs text-center">
                 🏆 MAXIMUM LEVEL ACHIEVED! 🏆
               </Text>
             </View>
@@ -173,101 +169,13 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
           {/* Continue Button */}
           <TouchableOpacity
             onPress={onClose}
-            style={[styles.continueButton, { backgroundColor: newLevel.color }]}
+            className="px-12 py-3.5 rounded-xl"
+            style={{ backgroundColor: newLevel.color }}
           >
-            <Text style={styles.continueButtonText}>Continue</Text>
+            <Text className="text-white font-bold text-base">Continue</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  container: {
-    width: '100%',
-    maxWidth: 340,
-    borderRadius: 24,
-    padding: 32,
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  decorations: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  decoration: {
-    position: 'absolute',
-    fontSize: 24,
-  },
-  levelUpText: {
-    fontSize: 14,
-    fontWeight: '800',
-    letterSpacing: 4,
-    marginBottom: 16,
-  },
-  iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  levelIcon: {
-    fontSize: 64,
-  },
-  levelNumber: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  levelName: {
-    fontWeight: '800',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  description: {
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  nextLevelInfo: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
-    marginBottom: 20,
-  },
-  maxLevelBadge: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
-    marginBottom: 20,
-  },
-  maxLevelText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  continueButton: {
-    paddingHorizontal: 48,
-    paddingVertical: 14,
-    borderRadius: 12,
-  },
-  continueButtonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-});

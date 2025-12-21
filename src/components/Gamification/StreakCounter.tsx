@@ -2,7 +2,6 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
 interface StreakCounterProps {
   streakDays: number;
@@ -48,15 +47,13 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
   const streakColor = getStreakColor();
 
   return (
-    <View style={styles.container}>
+    <View className="items-center">
       <View
-        style={[
-          styles.streakContainer,
-          {
-            backgroundColor: `${streakColor}15`,
-            padding: sizeStyles[size].containerPadding,
-          },
-        ]}
+        className="flex-row items-center rounded-full gap-1"
+        style={{
+          backgroundColor: `${streakColor}15`,
+          padding: sizeStyles[size].containerPadding,
+        }}
       >
         <IconSymbol
           name="flame.fill"
@@ -64,16 +61,15 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
           color={streakColor}
         />
         <Text
-          style={[
-            styles.streakText,
-            { fontSize: sizeStyles[size].textSize, color: streakColor },
-          ]}
+          className="font-bold"
+          style={{ fontSize: sizeStyles[size].textSize, color: streakColor }}
         >
           {streakDays}
         </Text>
         <Text
           variant="caption"
-          style={{ color: streakColor, marginLeft: 2 }}
+          className="ml-0.5"
+          style={{ color: streakColor }}
         >
           days
         </Text>
@@ -82,7 +78,8 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
       {showLongest && longestStreak !== undefined && longestStreak > 0 && (
         <Text
           variant="caption"
-          style={[styles.longestText, { color: theme.textSecondary }]}
+          className="mt-1"
+          style={{ color: theme.textSecondary }}
         >
           Best: {longestStreak} days
         </Text>
@@ -90,21 +87,3 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  streakContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 20,
-    gap: 4,
-  },
-  streakText: {
-    fontWeight: '700',
-  },
-  longestText: {
-    marginTop: 4,
-  },
-});

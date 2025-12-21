@@ -2,11 +2,11 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { PrayButton } from '@/src/components/Social/PrayButton';
 import { useTheme } from '@/src/hooks';
-import type { PrayerRequest, PrayerRequestCategory } from '@/src/services/prayerRequest';
+import type { PrayerRequest } from '@/src/services/prayerRequest';
 import { PRAYER_CATEGORIES } from '@/src/services/prayerRequest';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 
 interface PrayerRequestCardProps {
   request: PrayerRequest;
@@ -52,14 +52,12 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
   return (
     <Pressable
       onPress={handlePress}
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.card,
-          borderColor: request.isUrgent ? '#EF4444' : theme.border,
-          borderWidth: request.isUrgent ? 2 : 1,
-        },
-      ]}
+      className="rounded-2xl p-4 mb-3"
+      style={{
+        backgroundColor: theme.card,
+        borderColor: request.isUrgent ? '#EF4444' : theme.border,
+        borderWidth: request.isUrgent ? 2 : 1,
+      }}
     >
       {/* Header */}
       <View className="flex-row items-start justify-between mb-3">
@@ -187,13 +185,5 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-  },
-});
 
 export default PrayerRequestCard;

@@ -2,10 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import {
   Animated,
   Pressable,
-  StyleSheet,
   Text,
   View,
-  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconSymbol } from '../Icons';
@@ -115,32 +113,46 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
 
   return (
     <Animated.View
-      style={[
-        styles.container,
-        {
-          transform: [{ translateY }],
-          opacity,
-          marginTop: insets.top + 8,
-          backgroundColor: colors.bg,
-          borderColor: colors.border,
-        },
-      ]}
+      className="absolute top-0 left-4 right-4 rounded-xl border z-[9999]"
+      style={{
+        transform: [{ translateY }],
+        opacity,
+        marginTop: insets.top + 8,
+        backgroundColor: colors.bg,
+        borderColor: colors.border,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 12,
+        elevation: 8,
+      }}
     >
       <Pressable
-        style={styles.content}
+        className="flex-row items-center p-3"
         onPress={dismissToast}
         android_ripple={{ color: 'rgba(0,0,0,0.05)' }}
       >
-        <View style={[styles.iconContainer, { backgroundColor: `${colors.icon}15` }]}>
+        <View
+          className="w-9 h-9 rounded-full justify-center items-center mr-3"
+          style={{ backgroundColor: `${colors.icon}15` }}
+        >
           <IconSymbol name={iconName as any} size={20} color={colors.icon} />
         </View>
 
-        <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: colors.text }]} numberOfLines={1}>
+        <View className="flex-1 mr-2">
+          <Text
+            className="text-[15px] font-semibold"
+            style={{ color: colors.text }}
+            numberOfLines={1}
+          >
             {toast.title}
           </Text>
           {toast.message && (
-            <Text style={[styles.message, { color: colors.text }]} numberOfLines={2}>
+            <Text
+              className="text-[13px] mt-0.5 opacity-85"
+              style={{ color: colors.text }}
+              numberOfLines={2}
+            >
               {toast.message}
             </Text>
           )}
@@ -148,20 +160,21 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
 
         {toast.action && (
           <Pressable
-            style={[styles.actionButton, { backgroundColor: `${colors.icon}15` }]}
+            className="px-3 py-1.5 rounded-md mr-2"
+            style={{ backgroundColor: `${colors.icon}15` }}
             onPress={() => {
               toast.action?.onPress();
               dismissToast();
             }}
           >
-            <Text style={[styles.actionText, { color: colors.icon }]}>
+            <Text className="text-[13px] font-semibold" style={{ color: colors.icon }}>
               {toast.action.label}
             </Text>
           </Pressable>
         )}
 
         <Pressable
-          style={styles.closeButton}
+          className="p-1"
           onPress={dismissToast}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
@@ -171,61 +184,5 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 16,
-    right: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-    zIndex: 9999,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-  },
-  iconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  textContainer: {
-    flex: 1,
-    marginRight: 8,
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  message: {
-    fontSize: 13,
-    marginTop: 2,
-    opacity: 0.85,
-  },
-  actionButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-    marginRight: 8,
-  },
-  actionText: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  closeButton: {
-    padding: 4,
-  },
-});
 
 export default Toast;

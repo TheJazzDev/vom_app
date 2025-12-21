@@ -6,7 +6,6 @@ import { useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import {
-  Platform,
   Pressable,
   RefreshControl,
   ScrollView,

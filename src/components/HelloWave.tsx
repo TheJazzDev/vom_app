@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -28,14 +27,7 @@ export function HelloWave() {
 
   return (
     <Animated.View style={animatedStyle}>
-      <Text style={styles.text}>👋🏽</Text>
+      <Text className="text-xs leading-[32px]">👋🏽</Text>
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 12,
-    lineHeight: 32,
-  },
-});

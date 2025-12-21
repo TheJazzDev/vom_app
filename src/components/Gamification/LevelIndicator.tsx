@@ -3,11 +3,8 @@ import { useTheme } from '@/src/hooks';
 import {
   getLevelFromPoints,
   getProgressToNextLevel,
-  LEVELS,
-  type LevelConfig,
 } from '@/src/services/gamification';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -60,18 +57,16 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
   }));
 
   return (
-    <View style={styles.container}>
+    <View className="flex-row items-center gap-3">
       {/* Level Icon */}
       <View
-        style={[
-          styles.iconContainer,
-          {
-            width: sizeStyles[size].iconSize,
-            height: sizeStyles[size].iconSize,
-            backgroundColor: `${currentLevel.color}20`,
-            borderColor: currentLevel.color,
-          },
-        ]}
+        className="rounded-xl border-2 items-center justify-center"
+        style={{
+          width: sizeStyles[size].iconSize,
+          height: sizeStyles[size].iconSize,
+          backgroundColor: `${currentLevel.color}20`,
+          borderColor: currentLevel.color,
+        }}
       >
         <Text style={{ fontSize: sizeStyles[size].iconFontSize }}>
           {currentLevel.icon}
@@ -79,22 +74,18 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
       </View>
 
       {/* Level Info */}
-      <View style={styles.infoContainer}>
-        <View style={styles.levelRow}>
+      <View className="flex-1">
+        <View className="flex-row items-center gap-2 mb-1">
           <Text
-            style={[
-              styles.levelText,
-              { fontSize: sizeStyles[size].levelSize, color: currentLevel.color },
-            ]}
+            className="font-bold"
+            style={{ fontSize: sizeStyles[size].levelSize, color: currentLevel.color }}
           >
             Lv.{currentLevel.level}
           </Text>
           {showName && (
             <Text
-              style={[
-                styles.levelName,
-                { fontSize: sizeStyles[size].textSize, color: theme.heading },
-              ]}
+              className="font-semibold"
+              style={{ fontSize: sizeStyles[size].textSize, color: theme.heading }}
             >
               {currentLevel.name}
             </Text>
@@ -103,16 +94,14 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
 
         {/* Progress Bar */}
         {showProgress && !isMaxLevel && (
-          <View style={styles.progressContainer}>
+          <View className="flex-row items-center gap-2">
             <View
-              style={[
-                styles.progressBackground,
-                { backgroundColor: `${currentLevel.color}20` },
-              ]}
+              className="flex-1 h-1.5 rounded-sm overflow-hidden"
+              style={{ backgroundColor: `${currentLevel.color}20` }}
             >
               <Animated.View
+                className="h-full rounded-sm"
                 style={[
-                  styles.progressFill,
                   { backgroundColor: currentLevel.color },
                   animatedProgressStyle,
                 ]}
@@ -120,7 +109,8 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
             </View>
             <Text
               variant="caption"
-              style={[styles.progressText, { color: theme.textSecondary }]}
+              className="text-[10px] min-w-[60px]"
+              style={{ color: theme.textSecondary }}
             >
               {progress.current}/{progress.required}
             </Text>
@@ -130,7 +120,8 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
         {isMaxLevel && showProgress && (
           <Text
             variant="caption"
-            style={{ color: currentLevel.color, fontWeight: '600' }}
+            className="font-semibold"
+            style={{ color: currentLevel.color }}
           >
             MAX LEVEL
           </Text>
@@ -139,51 +130,3 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  iconContainer: {
-    borderRadius: 12,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  infoContainer: {
-    flex: 1,
-  },
-  levelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 4,
-  },
-  levelText: {
-    fontWeight: '700',
-  },
-  levelName: {
-    fontWeight: '600',
-  },
-  progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  progressBackground: {
-    flex: 1,
-    height: 6,
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 3,
-  },
-  progressText: {
-    fontSize: 10,
-    minWidth: 60,
-  },
-});

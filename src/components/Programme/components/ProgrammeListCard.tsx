@@ -35,19 +35,24 @@ const ProgrammeListCard = memo(({ programme }: { programme: AllProgrammes }) => 
   const theme = useTheme();
   const router = useRouter();
 
-  if (!programme) return null;
-
-  const { id, topic, date, type } = programme;
+  const id = programme?.id;
+  const topic = programme?.topic;
+  const date = programme?.date;
+  const type = programme?.type ?? '';
 
   const typeColors = useMemo(() => getTypeColorClasses(type), [type]);
 
   const handlePress = useCallback(() => {
-    router.push(`/programme/${id}`);
+    if (id) {
+      router.push(`/programme/${id}`);
+    }
   }, [router, id]);
 
   const handleAddToCalendar = useCallback(() => {
     Alert.alert('Add programme to calender feature is not available yet!');
   }, []);
+
+  if (!programme) return null;
 
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>

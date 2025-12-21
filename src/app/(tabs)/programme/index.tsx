@@ -8,7 +8,7 @@ import { dispatch, useProgrammeSlice } from '@/src/store';
 import { fetchProgrammeStats } from '@/src/store/thunks/programme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProgrammeIndex() {

@@ -3,7 +3,6 @@ import React, { useRef, useEffect } from 'react';
 import {
   View,
   TextInput,
-  StyleSheet,
   Keyboard,
   Platform,
 } from 'react-native';
@@ -94,26 +93,24 @@ export const OTPInput: React.FC<OTPInputProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-row justify-center gap-2">
       {Array.from({ length }).map((_, index) => (
         <TextInput
           key={index}
           ref={(ref) => {
             inputRefs.current[index] = ref;
           }}
-          style={[
-            styles.input,
-            {
-              borderColor: digits[index]
-                ? theme.brand
-                : theme.isDark
-                  ? '#374151'
-                  : '#D1D5DB',
-              backgroundColor: theme.isDark ? '#1F2937' : '#FFFFFF',
-              color: theme.text,
-            },
-            disabled && styles.inputDisabled,
-          ]}
+          className="w-12 h-14 border-2 rounded-xl text-center text-2xl font-semibold"
+          style={{
+            borderColor: digits[index]
+              ? theme.brand
+              : theme.isDark
+                ? '#374151'
+                : '#D1D5DB',
+            backgroundColor: theme.isDark ? '#1F2937' : '#FFFFFF',
+            color: theme.text,
+            opacity: disabled ? 0.5 : 1,
+          }}
           value={digits[index]}
           onChangeText={(text) => handleChange(text, index)}
           onKeyPress={(e) => handleKeyPress(e, index)}
@@ -129,25 +126,5 @@ export const OTPInput: React.FC<OTPInputProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  input: {
-    width: 48,
-    height: 56,
-    borderWidth: 2,
-    borderRadius: 12,
-    textAlign: 'center',
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  inputDisabled: {
-    opacity: 0.5,
-  },
-});
 
 export default OTPInput;

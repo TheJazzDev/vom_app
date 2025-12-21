@@ -18,7 +18,6 @@ import React, { useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
-  StyleSheet,
   Share,
   Pressable,
   Image,
@@ -137,14 +136,14 @@ export default function TestimonyDetailScreen() {
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerClassName="pb-10"
       >
         {/* Header */}
         <LinearGradient
           colors={[category.color, category.color + 'DD']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={styles.headerGradient}
+          className="p-5 mb-5 rounded-b-3xl"
         >
           <View className="flex-row items-center gap-2 mb-3">
             <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
@@ -201,13 +200,13 @@ export default function TestimonyDetailScreen() {
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.mediaScroll}
+                contentContainerClassName="gap-3"
               >
                 {currentTestimony.mediaUrls.map((url, index) => (
                   <Image
                     key={index}
                     source={{ uri: url }}
-                    style={styles.mediaImage}
+                    className="w-[200px] h-[200px] rounded-xl"
                   />
                 ))}
               </ScrollView>
@@ -216,7 +215,8 @@ export default function TestimonyDetailScreen() {
 
           {/* Actions */}
           <View
-            style={[styles.actionsContainer, { borderColor: theme.border }]}
+            className="flex-row items-center justify-between py-4 border-t border-b mb-6"
+            style={{ borderColor: theme.border }}
           >
             <View className="flex-row items-center gap-6">
               <LikeButton
@@ -268,7 +268,7 @@ export default function TestimonyDetailScreen() {
                   style={{ color: theme.text }}
                   className="italic leading-6"
                 >
-                  "Give thanks to the Lord, for he is good; his love endures forever."
+                  &quot;Give thanks to the Lord, for he is good; his love endures forever.&quot;
                 </Text>
                 <Text
                   variant="caption"
@@ -313,32 +313,3 @@ export default function TestimonyDetailScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  headerGradient: {
-    padding: 20,
-    marginBottom: 20,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    marginBottom: 24,
-  },
-  mediaScroll: {
-    gap: 12,
-  },
-  mediaImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 12,
-  },
-});

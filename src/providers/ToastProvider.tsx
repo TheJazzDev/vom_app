@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useCallback, useContext, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Toast, ToastConfig, ToastType } from '../components/UI/Toast';
 
 interface ToastOptions {
@@ -105,11 +105,12 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
       }}
     >
       {children}
-      <View style={styles.toastContainer} pointerEvents="box-none">
+      <View className="absolute inset-0 z-[9999]" pointerEvents="box-none">
         {toasts.map((toast, index) => (
           <View
             key={toast.id}
-            style={[styles.toastWrapper, { top: index * 8 }]}
+            className="absolute left-0 right-0"
+            style={{ top: index * 8 }}
             pointerEvents="box-none"
           >
             <Toast toast={toast} onDismiss={dismiss} />
@@ -119,22 +120,6 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
     </ToastContext.Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  toastContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 9999,
-  },
-  toastWrapper: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-  },
-});
 
 export const useToast = (): ToastContextType => {
   const context = useContext(ToastContext);

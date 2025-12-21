@@ -65,7 +65,7 @@ const AboutUs = () => {
               </Text>
             </View>
             <Text className="text-base text-gray-700 dark:text-gray-300 leading-7">
-              Spreading the Gospel through the Holy Spirit's power, nurturing believers in spiritual growth, and demonstrating God's love through compassionate community service.
+              Spreading the Gospel through the Holy Spirit&apos;s power, nurturing believers in spiritual growth, and demonstrating God&apos;s love through compassionate community service.
             </Text>
           </Animated.View>
 
@@ -136,7 +136,7 @@ const AboutUs = () => {
                   Praises
                 </Text>
                 <Text className="text-sm text-gray-600 dark:text-gray-400 leading-5">
-                  Joyful worship celebrating God's goodness
+                  Joyful worship celebrating God&apos;s goodness
                 </Text>
               </View>
             </View>
@@ -159,12 +159,12 @@ const AboutUs = () => {
           </View>
 
           <Text className="text-base text-white text-center leading-7 mb-6 font-medium">
-            Whether seeking spiritual growth, community fellowship, or simply curious about faith—you'll find a warm welcome. Our doors and hearts are open to all who desire God's love and grace.
+            Whether seeking spiritual growth, community fellowship, or simply curious about faith—you&apos;ll find a warm welcome. Our doors and hearts are open to all who desire God&apos;s love and grace.
           </Text>
 
           <View className="bg-white/20 rounded-2xl p-4 border border-white/30">
             <Text className="text-base text-white text-center italic font-semibold">
-              "Come as you are, grow as you journey, serve as you're called"
+              &quot;Come as you are, grow as you journey, serve as you&apos;re called&quot;
             </Text>
           </View>
         </Animated.View>

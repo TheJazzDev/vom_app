@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated } from 'react-native';
 
 interface TabTransitionProps {
   children: React.ReactNode;
@@ -37,22 +37,14 @@ export function TabTransition({ children, isActive }: TabTransitionProps) {
 
   return (
     <Animated.View
-      style={[
-        styles.container,
-        {
-          opacity,
-          transform: [{ translateY }],
-        },
-      ]}
+      className="flex-1"
+      style={{
+        opacity,
+        transform: [{ translateY }],
+      }}
       pointerEvents={isActive ? 'auto' : 'none'}
     >
       {children}
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

@@ -1,6 +1,5 @@
-import { useTheme } from '@/src/hooks';
 import React from 'react';
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { ViewStyle, TextStyle } from 'react-native';
 import { Text } from './Text';
 import { View } from './View';
 
@@ -61,8 +60,6 @@ export const CategoryBadge: React.FC<CategoryBadgeProps> = ({
   style,
   textStyle,
 }) => {
-  const theme = useTheme();
-
   const colors = categoryColors[category.toLowerCase()] || categoryColors.custom;
 
   const sizeStyles = {
@@ -85,16 +82,16 @@ export const CategoryBadge: React.FC<CategoryBadgeProps> = ({
 
   return (
     <View
+      className="self-start"
       style={[
-        styles.container,
         sizeConfig.container,
         { backgroundColor: colors.bg },
         style,
       ]}
     >
       <Text
+        className="font-semibold"
         style={[
-          styles.text,
           sizeConfig.text,
           { color: colors.text },
           textStyle,
@@ -105,14 +102,5 @@ export const CategoryBadge: React.FC<CategoryBadgeProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'flex-start',
-  },
-  text: {
-    fontWeight: '600',
-  },
-});
 
 export default CategoryBadge;

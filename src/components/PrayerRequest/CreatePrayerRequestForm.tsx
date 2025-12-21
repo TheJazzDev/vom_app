@@ -4,7 +4,6 @@ import { PRAYER_CATEGORIES, PrayerRequestCategory } from '@/src/services/prayerR
 import React, { useState } from 'react';
 import {
   ScrollView,
-  StyleSheet,
   TouchableOpacity,
   Switch,
   Alert,
@@ -58,8 +57,8 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={styles.scrollContent}
+      className="flex-1"
+      contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
       showsVerticalScrollIndicator={false}
     >
       {/* Title */}
@@ -76,14 +75,12 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
           onChangeText={setTitle}
           placeholder="Brief title for your request"
           placeholderTextColor={theme.textSecondary}
-          style={[
-            styles.input,
-            {
-              backgroundColor: theme.inputBackground,
-              borderColor: theme.border,
-              color: theme.text,
-            },
-          ]}
+          className="rounded-xl border px-4 py-3 text-base"
+          style={{
+            backgroundColor: theme.inputBackground,
+            borderColor: theme.border,
+            color: theme.text,
+          }}
           maxLength={100}
         />
       </View>
@@ -102,14 +99,12 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
             <TouchableOpacity
               key={key}
               onPress={() => setCategory(key)}
-              style={[
-                styles.categoryChip,
-                {
-                  backgroundColor:
-                    category === key ? `${cat.color}20` : theme.inputBackground,
-                  borderColor: category === key ? cat.color : theme.border,
-                },
-              ]}
+              className="px-3 py-2 rounded-full border"
+              style={{
+                backgroundColor:
+                  category === key ? `${cat.color}20` : theme.inputBackground,
+                borderColor: category === key ? cat.color : theme.border,
+              }}
             >
               <Text className="text-sm">
                 {cat.emoji} {cat.label}
@@ -136,14 +131,13 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
           multiline
           numberOfLines={6}
           textAlignVertical="top"
-          style={[
-            styles.textArea,
-            {
-              backgroundColor: theme.inputBackground,
-              borderColor: theme.border,
-              color: theme.text,
-            },
-          ]}
+          className="rounded-xl border px-4 py-3 text-base"
+          style={{
+            backgroundColor: theme.inputBackground,
+            borderColor: theme.border,
+            color: theme.text,
+            minHeight: 150,
+          }}
           maxLength={1000}
         />
         <Text
@@ -213,13 +207,11 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
       <Button
         onPress={handleSubmit}
         disabled={isLoading || !title.trim() || !content.trim()}
-        style={[
-          styles.submitButton,
-          {
-            backgroundColor: theme.brand,
-            opacity: isLoading || !title.trim() || !content.trim() ? 0.5 : 1,
-          },
-        ]}
+        className="rounded-xl py-4 items-center"
+        style={{
+          backgroundColor: theme.brand,
+          opacity: isLoading || !title.trim() || !content.trim() ? 0.5 : 1,
+        }}
       >
         <Text className="text-white font-semibold text-base">
           {isLoading ? 'Submitting...' : 'Submit Prayer Request'}
@@ -228,38 +220,5 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    padding: 16,
-    paddingBottom: 40,
-  },
-  input: {
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-  },
-  textArea: {
-    borderRadius: 12,
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    minHeight: 150,
-  },
-  categoryChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  submitButton: {
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-});
 
 export default CreatePrayerRequestForm;

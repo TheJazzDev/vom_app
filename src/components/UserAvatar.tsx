@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Image } from 'expo-image';
 import { getUserInitials } from '../utils';
 import { Text } from './UI';
@@ -58,7 +58,7 @@ const UserAvatar = memo(({
       <View style={containerStyle}>
         <Image
           source={{ uri: avatar }}
-          style={styles.image}
+          className="w-full h-full"
           contentFit="cover"
           placeholder={{ blurhash: BLURHASH }}
           transition={200}
@@ -83,13 +83,6 @@ const UserAvatar = memo(({
       </Text>
     </View>
   );
-});
-
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: '100%',
-  },
 });
 
 UserAvatar.displayName = 'UserAvatar';

@@ -17,7 +17,6 @@ import React, { useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
-  StyleSheet,
   Share,
   Pressable,
 } from 'react-native';
@@ -134,14 +133,14 @@ export default function DailyPrayerDetailScreen() {
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerClassName="pb-10"
       >
         {/* Header */}
         <LinearGradient
           colors={['#F97316', '#EA580C']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={styles.headerGradient}
+          className="p-5 mb-5 rounded-b-3xl"
         >
           <View className="flex-row items-center gap-2 mb-3">
             <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
@@ -163,7 +162,8 @@ export default function DailyPrayerDetailScreen() {
         <View className="px-4">
           {/* Scripture Box */}
           <View
-            style={[styles.scriptureBox, { backgroundColor: `${theme.brand}08` }]}
+            className="rounded-2xl p-4 mb-6"
+            style={{ backgroundColor: `${theme.brand}08` }}
           >
             <View className="flex-row items-start gap-2 mb-2">
               <Text className="text-lg">📖</Text>
@@ -173,7 +173,7 @@ export default function DailyPrayerDetailScreen() {
                   style={{ color: theme.text }}
                   className="italic leading-6"
                 >
-                  "{currentPrayer.scriptureText}"
+                  &quot;{currentPrayer.scriptureText}&quot;
                 </Text>
               </View>
             </View>
@@ -193,7 +193,7 @@ export default function DailyPrayerDetailScreen() {
               style={{ color: theme.heading }}
               className="font-bold mb-3"
             >
-              Today's Reflection
+              Today&apos;s Reflection
             </Text>
             <Text
               variant="body"
@@ -206,7 +206,8 @@ export default function DailyPrayerDetailScreen() {
 
           {/* Actions */}
           <View
-            style={[styles.actionsContainer, { borderColor: theme.border }]}
+            className="flex-row items-center justify-between py-4 border-t border-b"
+            style={{ borderColor: theme.border }}
           >
             <View className="flex-row items-center gap-6">
               <LikeButton
@@ -277,28 +278,3 @@ export default function DailyPrayerDetailScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  headerGradient: {
-    padding: 20,
-    marginBottom: 20,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  scriptureBox: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 24,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-});

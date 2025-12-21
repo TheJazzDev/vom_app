@@ -3,7 +3,7 @@ import React from 'react';
 
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
-import { useAndroidNavigationBar, useTheme } from '@/src/hooks';
+import { useTheme } from '@/src/hooks';
 import { Platform } from 'react-native';
 import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 

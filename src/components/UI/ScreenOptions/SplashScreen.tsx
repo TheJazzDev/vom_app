@@ -3,7 +3,6 @@ import {
   Animated,
   Dimensions,
   Image,
-  StyleSheet,
   useColorScheme,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -79,45 +78,23 @@ export default function SplashScreenComponent({
 
   return (
     <Animated.View
-      style={[
-        styles.container,
-        { backgroundColor, opacity: backgroundOpacity },
-      ]}
+      className="flex-1 justify-center items-center absolute top-0 left-0 right-0 bottom-0 z-[9999]"
+      style={{ backgroundColor, opacity: backgroundOpacity }}
     >
       <StatusBar style="auto" />
       <Animated.View
-        style={[
-          styles.logoContainer,
-          {
-            opacity: logoOpacity,
-            transform: [{ scale: logoScale }],
-          },
-        ]}
+        className="justify-center items-center"
+        style={{
+          opacity: logoOpacity,
+          transform: [{ scale: logoScale }],
+        }}
       >
-        <Image source={logoSource} style={styles.logo} resizeMode="contain" />
+        <Image
+          source={logoSource}
+          style={{ width: Math.min(width * 0.6, 300), height: Math.min(width * 0.6, 300) }}
+          resizeMode="contain"
+        />
       </Animated.View>
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 9999,
-  },
-  logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logo: {
-    width: Math.min(width * 0.6, 300),
-    height: Math.min(width * 0.6, 300),
-  },
-});

@@ -1,7 +1,7 @@
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import React, { useEffect } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -74,15 +74,23 @@ export const PointsAnimation: React.FC<PointsAnimationProps> = ({
   if (!visible) return null;
 
   return (
-    <View style={styles.overlay} pointerEvents="none">
+    <View className="absolute top-25 left-0 right-0 items-center z-[9999]" pointerEvents="none">
       <Animated.View
+        className="px-6 py-4 rounded-2xl border-2 items-center shadow-lg"
         style={[
-          styles.container,
-          { backgroundColor: theme.card, borderColor: theme.brand },
+          {
+            backgroundColor: theme.card,
+            borderColor: theme.brand,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
+            elevation: 8,
+          },
           animatedStyle,
         ]}
       >
-        <Text style={[styles.pointsText, { color: theme.brand }]}>
+        <Text className="text-[32px] font-extrabold" style={{ color: theme.brand }}>
           +{points}
         </Text>
         <Text variant="caption" style={{ color: theme.textSecondary }}>
@@ -92,30 +100,3 @@ export const PointsAnimation: React.FC<PointsAnimationProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-    top: 100,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    zIndex: 9999,
-  },
-  container: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderRadius: 16,
-    borderWidth: 2,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  pointsText: {
-    fontSize: 32,
-    fontWeight: '800',
-  },
-});

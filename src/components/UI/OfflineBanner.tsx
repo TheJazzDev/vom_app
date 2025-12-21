@@ -2,13 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Pressable,
-  StyleSheet,
   Text,
   View,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { IconSymbol } from '../Icons';
 import { useNetworkStatus } from '@/src/hooks/useNetworkStatus';
@@ -38,7 +35,6 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
   onRetry,
 }) => {
   const { isOffline, refresh } = useNetworkStatus();
-  const insets = useSafeAreaInsets();
   const translateY = useRef(new Animated.Value(200)).current;
   const [shouldRender, setShouldRender] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -123,36 +119,33 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
 
   return (
     <Animated.View
-      style={[
-        styles.container,
-        {
-          transform: [{ translateY }],
-          bottom: bottomPosition,
-        },
-      ]}
+      className="absolute left-4 right-4 z-[999]"
+      style={{
+        transform: [{ translateY }],
+        bottom: bottomPosition,
+      }}
       pointerEvents={isOffline ? 'auto' : 'none'}
     >
-      <View style={styles.snackbar}>
-        <View style={styles.iconContainer}>
+      <View className="flex-row items-center bg-gray-800 rounded-xl px-4 py-3 shadow-lg">
+        <View className="w-9 h-9 rounded-full bg-red-500 justify-center items-center mr-3">
           <IconSymbol name="wifi.slash" size={18} color="#FFFFFF" />
         </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.message} numberOfLines={1}>
+        <View className="flex-1">
+          <Text className="text-sm font-semibold text-white mb-0.5" numberOfLines={1}>
             {isRefreshing ? 'Checking connection...' : message}
           </Text>
-          <Text style={styles.subtitle} numberOfLines={1}>
+          <Text className="text-xs text-gray-400" numberOfLines={1}>
             {isRefreshing ? 'Please wait' : 'Some features may be unavailable'}
           </Text>
         </View>
 
         {showRetry && (
           <Pressable
-            style={({ pressed }) => [
-              styles.retryButton,
-              pressed && !isRefreshing && styles.retryButtonPressed,
-              isRefreshing && styles.retryButtonDisabled,
-            ]}
+            className={`w-9 h-9 rounded-full justify-center items-center ml-2 ${
+              isRefreshing ? 'opacity-60' : ''
+            }`}
+            style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
             onPress={handleRetry}
             disabled={isRefreshing}
           >
@@ -167,65 +160,5 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: 16,
-    right: 16,
-    zIndex: 999,
-  },
-  snackbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#1F2937',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  iconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#EF4444',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  message: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginBottom: 2,
-  },
-  subtitle: {
-    fontSize: 12,
-    fontWeight: '400',
-    color: '#9CA3AF',
-  },
-  retryButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  retryButtonPressed: {
-    backgroundColor: 'rgba(255,255,255,0.25)',
-  },
-  retryButtonDisabled: {
-    opacity: 0.6,
-  },
-});
 
 export default OfflineBanner;

@@ -6,7 +6,6 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import { LeaderboardItem } from './LeaderboardItem';
@@ -37,26 +36,22 @@ export const LeaderboardList: React.FC<LeaderboardListProps> = ({
   ];
 
   const renderHeader = () => (
-    <View style={styles.tabsContainer}>
+    <View className="flex-row gap-2 mb-4">
       {tabs.map((tab) => (
         <TouchableOpacity
           key={tab.key}
           onPress={() => onTabChange(tab.key)}
-          style={[
-            styles.tab,
-            {
-              backgroundColor:
-                activeTab === tab.key ? theme.brand : `${theme.brand}10`,
-            },
-          ]}
+          className="flex-1 py-2.5 px-3 rounded-full items-center"
+          style={{
+            backgroundColor:
+              activeTab === tab.key ? theme.brand : `${theme.brand}10`,
+          }}
         >
           <Text
-            style={[
-              styles.tabText,
-              {
-                color: activeTab === tab.key ? 'white' : theme.brand,
-              },
-            ]}
+            className="text-[13px] font-semibold"
+            style={{
+              color: activeTab === tab.key ? 'white' : theme.brand,
+            }}
           >
             {tab.label}
           </Text>
@@ -66,7 +61,7 @@ export const LeaderboardList: React.FC<LeaderboardListProps> = ({
   );
 
   const renderEmpty = () => (
-    <View style={styles.emptyContainer}>
+    <View className="items-center py-12">
       <Text style={{ fontSize: 48, marginBottom: 12 }}>🏆</Text>
       <Text
         variant="h4"
@@ -85,7 +80,7 @@ export const LeaderboardList: React.FC<LeaderboardListProps> = ({
 
   if (isLoading && entries.length === 0) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className="flex-1 p-4 items-center justify-center">
         {renderHeader()}
         <ActivityIndicator size="large" color={theme.brand} />
         <Text
@@ -118,42 +113,8 @@ export const LeaderboardList: React.FC<LeaderboardListProps> = ({
           colors={[theme.brand]}
         />
       }
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 32 }}
       showsVerticalScrollIndicator={false}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  tabsContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 16,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    alignItems: 'center',
-  },
-  tabText: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  listContent: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 32,
-  },
-  loadingContainer: {
-    flex: 1,
-    padding: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    paddingVertical: 48,
-  },
-});

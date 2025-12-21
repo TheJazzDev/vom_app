@@ -9,7 +9,7 @@ import { fetchUserEngagementThunk } from '@/src/store/thunks';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useState, useEffect } from 'react';
-import { Image, RefreshControl, ScrollView, View, Pressable, StyleSheet } from 'react-native';
+import { Image, RefreshControl, ScrollView, View, Pressable } from 'react-native';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/src/store/store';
 import { useRouter } from 'expo-router';
@@ -271,8 +271,8 @@ export default function ProfileIndex() {
               size="md"
             />
             <View
-              className="flex-row items-center justify-between mt-4 pt-4"
-              style={[styles.statsRow, { borderTopColor: theme.border }]}
+              className="flex-row items-center justify-between mt-4 pt-4 border-t"
+              style={{ borderTopColor: theme.border }}
             >
               <View className="flex-1 items-center">
                 <View className="flex-row items-center gap-1">
@@ -290,7 +290,8 @@ export default function ProfileIndex() {
                 </Text>
               </View>
               <View
-                style={[styles.divider, { backgroundColor: theme.border }]}
+                className="w-[1px] h-10"
+                style={{ backgroundColor: theme.border }}
               />
               <View className="flex-1 items-center">
                 <View className="flex-row items-center gap-1">
@@ -493,13 +494,3 @@ export default function ProfileIndex() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  statsRow: {
-    borderTopWidth: 1,
-  },
-  divider: {
-    width: 1,
-    height: 40,
-  },
-});

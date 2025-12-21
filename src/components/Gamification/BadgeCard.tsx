@@ -2,7 +2,7 @@ import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import type { Badge } from '@/src/services/gamification/badges';
 import React from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -65,28 +65,24 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
   return (
     <Pressable
       onPress={onPress}
-      style={[
-        styles.container,
-        sizeStyles[size].container,
-        {
-          backgroundColor: badge.isEarned ? `${categoryColor}10` : theme.card,
-          borderColor: badge.isEarned ? categoryColor : theme.border,
-          opacity: badge.isEarned ? 1 : 0.6,
-        },
-      ]}
+      className="rounded-xl border items-center relative"
+      style={{
+        ...sizeStyles[size].container,
+        backgroundColor: badge.isEarned ? `${categoryColor}10` : theme.card,
+        borderColor: badge.isEarned ? categoryColor : theme.border,
+        opacity: badge.isEarned ? 1 : 0.6,
+      }}
     >
       {/* Badge Icon */}
       <View
-        style={[
-          styles.iconContainer,
-          {
-            width: sizeStyles[size].iconSize,
-            height: sizeStyles[size].iconSize,
-            backgroundColor: badge.isEarned
-              ? `${categoryColor}20`
-              : `${theme.textSecondary}10`,
-          },
-        ]}
+        className="rounded-xl items-center justify-center mb-2 relative"
+        style={{
+          width: sizeStyles[size].iconSize,
+          height: sizeStyles[size].iconSize,
+          backgroundColor: badge.isEarned
+            ? `${categoryColor}20`
+            : `${theme.textSecondary}10`,
+        }}
       >
         <Text
           style={{
@@ -97,7 +93,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
           {badge.icon}
         </Text>
         {!badge.isEarned && (
-          <View style={styles.lockOverlay}>
+          <View className="absolute -bottom-1 -right-1">
             <Text style={{ fontSize: sizeStyles[size].iconFontSize / 2 }}>🔒</Text>
           </View>
         )}
@@ -105,13 +101,11 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
 
       {/* Badge Name */}
       <Text
-        style={[
-          styles.badgeName,
-          {
-            fontSize: sizeStyles[size].nameSize,
-            color: badge.isEarned ? theme.heading : theme.textSecondary,
-          },
-        ]}
+        className="font-semibold text-center"
+        style={{
+          fontSize: sizeStyles[size].nameSize,
+          color: badge.isEarned ? theme.heading : theme.textSecondary,
+        }}
         numberOfLines={2}
       >
         {badge.name}
@@ -119,16 +113,14 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
 
       {/* Progress Bar (for unearned badges) */}
       {!badge.isEarned && badge.progress > 0 && size !== 'sm' && (
-        <View style={styles.progressContainer}>
+        <View className="w-full mt-2">
           <View
-            style={[
-              styles.progressBackground,
-              { backgroundColor: `${categoryColor}20` },
-            ]}
+            className="h-1 rounded-sm overflow-hidden"
+            style={{ backgroundColor: `${categoryColor}20` }}
           >
             <Animated.View
+              className="h-full rounded-sm"
               style={[
-                styles.progressFill,
                 { backgroundColor: categoryColor },
                 progressStyle,
               ]}
@@ -136,7 +128,8 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
           </View>
           <Text
             variant="caption"
-            style={[styles.progressText, { color: theme.textSecondary }]}
+            className="text-[9px] text-center mt-0.5"
+            style={{ color: theme.textSecondary }}
           >
             {Math.round(badge.progress)}%
           </Text>
@@ -146,72 +139,12 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
       {/* Earned Checkmark */}
       {badge.isEarned && (
         <View
-          style={[
-            styles.earnedBadge,
-            { backgroundColor: categoryColor },
-          ]}
+          className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full items-center justify-center"
+          style={{ backgroundColor: categoryColor }}
         >
-          <Text style={styles.earnedText}>✓</Text>
+          <Text className="text-white text-xs font-bold">✓</Text>
         </View>
       )}
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    borderWidth: 1,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  iconContainer: {
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-    position: 'relative',
-  },
-  lockOverlay: {
-    position: 'absolute',
-    bottom: -4,
-    right: -4,
-  },
-  badgeName: {
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  progressContainer: {
-    width: '100%',
-    marginTop: 8,
-  },
-  progressBackground: {
-    height: 4,
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 2,
-  },
-  progressText: {
-    fontSize: 9,
-    textAlign: 'center',
-    marginTop: 2,
-  },
-  earnedBadge: {
-    position: 'absolute',
-    top: -6,
-    right: -6,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  earnedText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '700',
-  },
-});

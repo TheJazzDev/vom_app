@@ -1,6 +1,6 @@
 import { useTheme } from '@/src/hooks';
 import React, { ReactNode } from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Modal, Text, View } from 'react-native';
 
 type Props = {
   visible: boolean;
@@ -24,8 +24,11 @@ export default function IOSMemberModal({
       presentationStyle="pageSheet"
       onRequestClose={onClose}
     >
-      <View style={[styles.header, { backgroundColor: theme.brand }]}>
-        <Text style={[styles.headerText, { color: 'white' }]}>
+      <View
+        className="h-[54px] items-center justify-center"
+        style={{ backgroundColor: theme.brand, elevation: 2 }}
+      >
+        <Text className="text-lg font-semibold text-white">
           {firstName}&apos;s Details
         </Text>
       </View>
@@ -33,19 +36,3 @@ export default function IOSMemberModal({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    height: 54,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 2,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  content: {
-    padding: 16,
-  },
-});

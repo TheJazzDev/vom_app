@@ -2,11 +2,11 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { LikeButton } from '@/src/components/Social/LikeButton';
 import { useTheme } from '@/src/hooks';
-import type { Testimony, TestimonyCategory } from '@/src/services/testimony';
+import type { Testimony } from '@/src/services/testimony';
 import { TESTIMONY_CATEGORIES } from '@/src/services/testimony';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, StyleSheet, Image } from 'react-native';
+import { Pressable, Image } from 'react-native';
 
 interface TestimonyCardProps {
   testimony: Testimony;
@@ -52,13 +52,12 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
   return (
     <Pressable
       onPress={handlePress}
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.card,
-          borderColor: theme.border,
-        },
-      ]}
+      className="rounded-2xl p-4 mb-3"
+      style={{
+        backgroundColor: theme.card,
+        borderColor: theme.border,
+        borderWidth: 1,
+      }}
     >
       {/* Header */}
       <View className="flex-row items-start justify-between mb-3">
@@ -74,7 +73,7 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
           ) : testimony.authorAvatar ? (
             <Image
               source={{ uri: testimony.authorAvatar }}
-              style={styles.avatar}
+              className="w-10 h-10 rounded-full"
             />
           ) : (
             <View
@@ -142,13 +141,13 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
             <Image
               key={index}
               source={{ uri: url }}
-              style={styles.mediaThumbnail}
+              className="w-15 h-15 rounded-lg"
             />
           ))}
           {testimony.mediaUrls.length > 3 && (
             <View
-              style={[styles.mediaThumbnail, { backgroundColor: theme.border }]}
-              className="items-center justify-center"
+              className="w-15 h-15 rounded-lg items-center justify-center"
+              style={{ backgroundColor: theme.border }}
             >
               <Text className="font-semibold" style={{ color: theme.textSecondary }}>
                 +{testimony.mediaUrls.length - 3}
@@ -191,24 +190,5 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 16,
-    marginBottom: 12,
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  mediaThumbnail: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-  },
-});
 
 export default TestimonyCard;

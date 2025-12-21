@@ -19,7 +19,6 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Pressable,
@@ -66,10 +65,14 @@ export default function RecentSermonsScreen() {
         colors={['#7C3AED', '#5B21B6']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.headerGradient}
+        className="p-5 mb-1 rounded-b-3xl"
       >
         <View className="flex-row items-center justify-between mb-3">
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Pressable
+            onPress={() => router.back()}
+            className="w-10 h-10 rounded-full items-center justify-center"
+            style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
+          >
             <IconSymbol name="arrow.left" size={20} color="white" />
           </Pressable>
           <View style={{ flex: 1, marginLeft: 12 }}>
@@ -92,17 +95,16 @@ export default function RecentSermonsScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryScroll}
+          contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
         >
           <TouchableOpacity
             onPress={() => setActiveCategory(null)}
-            style={[
-              styles.categoryChip,
-              {
-                backgroundColor: activeCategory === null ? theme.brand : theme.card,
-                borderColor: activeCategory === null ? theme.brand : theme.border,
-              },
-            ]}
+            className="px-4 py-2 rounded-2xl font-medium"
+            style={{
+              backgroundColor: activeCategory === null ? theme.brand : theme.card,
+              borderColor: activeCategory === null ? theme.brand : theme.border,
+              borderWidth: 1,
+            }}
           >
             <Text
               style={{
@@ -117,13 +119,12 @@ export default function RecentSermonsScreen() {
             <TouchableOpacity
               key={key}
               onPress={() => setActiveCategory(key)}
-              style={[
-                styles.categoryChip,
-                {
-                  backgroundColor: activeCategory === key ? `${category.color}20` : theme.card,
-                  borderColor: activeCategory === key ? category.color : theme.border,
-                },
-              ]}
+              className="px-4 py-2 rounded-2xl"
+              style={{
+                backgroundColor: activeCategory === key ? `${category.color}20` : theme.card,
+                borderColor: activeCategory === key ? category.color : theme.border,
+                borderWidth: 1,
+              }}
             >
               <Text
                 style={{
@@ -158,32 +159,29 @@ export default function RecentSermonsScreen() {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.featuredScroll}
+            contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
           >
             {featuredSermons.slice(0, 5).map((sermon) => {
               const category = SERMON_CATEGORIES[sermon.category];
               return (
                 <Pressable
                   key={sermon.id}
-                  style={[
-                    styles.featuredCard,
-                    {
-                      backgroundColor: theme.card,
-                      borderColor: theme.border,
-                    },
-                  ]}
+                  className="w-[220px] rounded-2xl overflow-hidden"
+                  style={{
+                    backgroundColor: theme.card,
+                    borderColor: theme.border,
+                    borderWidth: 1,
+                  }}
                 >
                   {/* Thumbnail */}
                   <View
-                    style={[
-                      styles.featuredThumbnail,
-                      { backgroundColor: `${category?.color || theme.brand}15` },
-                    ]}
+                    className="h-[120px] relative"
+                    style={{ backgroundColor: `${category?.color || theme.brand}15` }}
                   >
                     {sermon.thumbnailUrl ? (
                       <Image
                         source={{ uri: sermon.thumbnailUrl }}
-                        style={styles.thumbnailImage}
+                        className="w-full h-full"
                         resizeMode="cover"
                       />
                     ) : (
@@ -195,7 +193,10 @@ export default function RecentSermonsScreen() {
                         />
                       </View>
                     )}
-                    <View style={styles.durationBadge}>
+                    <View
+                      className="absolute bottom-2 right-2 px-2 py-1 rounded"
+                      style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+                    >
                       <Text className="text-white text-xs font-medium">
                         {formatDuration(sermon.duration)}
                       </Text>
@@ -253,13 +254,12 @@ export default function RecentSermonsScreen() {
             {series.map((s) => (
               <TouchableOpacity
                 key={s.id}
-                style={[
-                  styles.seriesCard,
-                  {
-                    backgroundColor: theme.card,
-                    borderColor: theme.border,
-                  },
-                ]}
+                className="w-[140px] p-3 rounded-xl"
+                style={{
+                  backgroundColor: theme.card,
+                  borderColor: theme.border,
+                  borderWidth: 1,
+                }}
               >
                 <View
                   className="w-12 h-12 rounded-lg items-center justify-center mb-2"
@@ -303,26 +303,23 @@ export default function RecentSermonsScreen() {
     return (
       <View className="px-4">
         <Pressable
-          style={[
-            styles.sermonCard,
-            {
-              backgroundColor: theme.card,
-              borderColor: theme.border,
-            },
-          ]}
+          className="rounded-2xl p-4 mb-3"
+          style={{
+            backgroundColor: theme.card,
+            borderColor: theme.border,
+            borderWidth: 1,
+          }}
         >
           <View className="flex-row gap-3">
             {/* Thumbnail */}
             <View
-              style={[
-                styles.cardThumbnail,
-                { backgroundColor: `${category?.color || theme.brand}15` },
-              ]}
+              className="w-[100px] h-20 rounded-xl items-center justify-center relative overflow-hidden"
+              style={{ backgroundColor: `${category?.color || theme.brand}15` }}
             >
               {item.thumbnailUrl ? (
                 <Image
                   source={{ uri: item.thumbnailUrl }}
-                  style={styles.cardThumbnailImage}
+                  className="w-full h-full rounded-xl"
                   resizeMode="cover"
                 />
               ) : (
@@ -332,7 +329,10 @@ export default function RecentSermonsScreen() {
                   color={category?.color || theme.brand}
                 />
               )}
-              <View style={styles.cardDurationBadge}>
+              <View
+                className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded"
+                style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+              >
                 <Text className="text-white text-[10px] font-medium">
                   {formatDuration(item.duration)}
                 </Text>
@@ -480,101 +480,9 @@ export default function RecentSermonsScreen() {
             colors={[theme.brand]}
           />
         }
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerGradient: {
-    padding: 20,
-    marginBottom: 4,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  categoryScroll: {
-    paddingHorizontal: 16,
-    gap: 8,
-  },
-  categoryChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  featuredScroll: {
-    paddingHorizontal: 16,
-    gap: 12,
-  },
-  featuredCard: {
-    width: 220,
-    borderRadius: 16,
-    borderWidth: 1,
-    overflow: 'hidden',
-  },
-  featuredThumbnail: {
-    height: 120,
-    position: 'relative',
-  },
-  thumbnailImage: {
-    width: '100%',
-    height: '100%',
-  },
-  durationBadge: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  seriesCard: {
-    width: 140,
-    padding: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  sermonCard: {
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 16,
-    marginBottom: 12,
-  },
-  cardThumbnail: {
-    width: 100,
-    height: 80,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  cardThumbnailImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 12,
-  },
-  cardDurationBadge: {
-    position: 'absolute',
-    bottom: 4,
-    right: 4,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  listContent: {
-    paddingBottom: 24,
-  },
-});

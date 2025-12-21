@@ -1,6 +1,6 @@
 import { Image, ImageProps, ImageContentFit } from 'expo-image';
 import React, { memo } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 // Blur hash placeholder for loading state
 const DEFAULT_BLURHASH = 'L6PZfSi_.AyE_3t7t7R**0o#DgR4';

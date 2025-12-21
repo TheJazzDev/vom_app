@@ -1,14 +1,12 @@
-import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import {
   formatPoints,
-  getLevelFromPoints,
   LEVELS,
   type LeaderboardEntry,
 } from '@/src/services/gamification';
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
 
 interface LeaderboardItemProps {
   entry: LeaderboardEntry;
@@ -59,28 +57,24 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
 
   return (
     <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: isCurrentUser ? `${theme.brand}10` : theme.card,
-          borderColor: isCurrentUser ? theme.brand : theme.border,
-          borderWidth: isCurrentUser ? 2 : 1,
-        },
-      ]}
+      className="flex-row items-center p-3 rounded-xl mb-2 gap-3"
+      style={{
+        backgroundColor: isCurrentUser ? `${theme.brand}10` : theme.card,
+        borderColor: isCurrentUser ? theme.brand : theme.border,
+        borderWidth: isCurrentUser ? 2 : 1,
+      }}
     >
       {/* Rank */}
       <View
-        style={[
-          styles.rankContainer,
-          { backgroundColor: rankStyle.backgroundColor },
-        ]}
+        className="w-9 h-9 rounded-full items-center justify-center"
+        style={{ backgroundColor: rankStyle.backgroundColor }}
       >
         {rankStyle.medal ? (
-          <Text style={[styles.rankMedal, { color: rankStyle.color }]}>
+          <Text className="text-xl" style={{ color: rankStyle.color }}>
             {entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉'}
           </Text>
         ) : (
-          <Text style={[styles.rankText, { color: rankStyle.color }]}>
+          <Text className="text-sm font-bold" style={{ color: rankStyle.color }}>
             {entry.rank}
           </Text>
         )}
@@ -88,44 +82,45 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
 
       {/* Avatar */}
       <View
-        style={[
-          styles.avatarContainer,
-          { backgroundColor: `${level.color}20`, borderColor: level.color },
-        ]}
+        className="w-11 h-11 rounded-full border-2 items-center justify-center overflow-hidden"
+        style={{ backgroundColor: `${level.color}20`, borderColor: level.color }}
       >
         {entry.userAvatar ? (
           <Image
             source={{ uri: entry.userAvatar }}
-            style={styles.avatar}
+            className="w-full h-full"
             resizeMode="cover"
           />
         ) : (
-          <Text style={styles.avatarIcon}>{level.icon}</Text>
+          <Text className="text-2xl">{level.icon}</Text>
         )}
       </View>
 
       {/* User Info */}
-      <View style={styles.userInfo}>
-        <View style={styles.nameRow}>
+      <View className="flex-1">
+        <View className="flex-row items-center gap-2 mb-0.5">
           <Text
-            style={[styles.userName, { color: theme.heading }]}
+            className="text-[15px] font-semibold flex-shrink"
+            style={{ color: theme.heading }}
             numberOfLines={1}
           >
             {entry.userName}
           </Text>
           {isCurrentUser && (
             <View
-              style={[styles.youBadge, { backgroundColor: theme.brand }]}
+              className="px-1.5 py-0.5 rounded"
+              style={{ backgroundColor: theme.brand }}
             >
-              <Text style={styles.youText}>You</Text>
+              <Text className="text-white text-[10px] font-semibold">You</Text>
             </View>
           )}
         </View>
-        <View style={styles.levelRow}>
-          <Text style={{ fontSize: 12 }}>{level.icon}</Text>
+        <View className="flex-row items-center gap-1">
+          <Text className="text-xs">{level.icon}</Text>
           <Text
             variant="caption"
-            style={{ color: level.color, fontWeight: '600' }}
+            className="font-semibold"
+            style={{ color: level.color }}
           >
             Lv.{entry.level} {entry.levelName}
           </Text>
@@ -133,8 +128,8 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
       </View>
 
       {/* Points */}
-      <View style={styles.pointsContainer}>
-        <Text style={[styles.pointsText, { color: theme.brand }]}>
+      <View className="items-end">
+        <Text className="text-base font-bold" style={{ color: theme.brand }}>
           {formatPoints(entry.points)}
         </Text>
         <Text variant="caption" style={{ color: theme.textSecondary }}>
@@ -144,80 +139,3 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 8,
-    gap: 12,
-  },
-  rankContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rankMedal: {
-    fontSize: 20,
-  },
-  rankText: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  avatarContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  avatar: {
-    width: '100%',
-    height: '100%',
-  },
-  avatarIcon: {
-    fontSize: 24,
-  },
-  userInfo: {
-    flex: 1,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 2,
-  },
-  userName: {
-    fontSize: 15,
-    fontWeight: '600',
-    flexShrink: 1,
-  },
-  youBadge: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  youText: {
-    color: 'white',
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  levelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  pointsContainer: {
-    alignItems: 'flex-end',
-  },
-  pointsText: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-});

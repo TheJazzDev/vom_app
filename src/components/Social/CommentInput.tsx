@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
@@ -52,14 +51,11 @@ export const CommentInput: React.FC<CommentInputProps> = ({
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <View
-        className="flex-row items-end py-3 px-4"
-        style={[
-          styles.container,
-          {
-            backgroundColor: theme.isDark ? '#1F2937' : '#F9FAFB',
-            borderTopColor: theme.isDark ? '#374151' : '#E5E7EB',
-          },
-        ]}
+        className="flex-row items-end py-3 px-4 border-t"
+        style={{
+          backgroundColor: theme.isDark ? '#1F2937' : '#F9FAFB',
+          borderTopColor: theme.isDark ? '#374151' : '#E5E7EB',
+        }}
       >
         <UserAvatar
           name={currentUserName}
@@ -68,14 +64,12 @@ export const CommentInput: React.FC<CommentInputProps> = ({
         />
 
         <View
-          className="flex-1 mx-3 rounded-2xl px-4 py-2"
-          style={[
-            styles.inputContainer,
-            {
-              backgroundColor: theme.isDark ? '#374151' : '#FFFFFF',
-              borderColor: theme.isDark ? '#4B5563' : '#E5E7EB',
-            },
-          ]}
+          className="flex-1 mx-3 rounded-2xl px-4 py-2 border"
+          style={{
+            backgroundColor: theme.isDark ? '#374151' : '#FFFFFF',
+            borderColor: theme.isDark ? '#4B5563' : '#E5E7EB',
+            maxHeight: 100,
+          }}
         >
           <TextInput
             value={content}
@@ -86,24 +80,21 @@ export const CommentInput: React.FC<CommentInputProps> = ({
             maxLength={500}
             editable={!disabled && !isSubmitting}
             autoFocus={autoFocus}
-            style={[
-              styles.input,
-              {
-                color: theme.text,
-              },
-            ]}
+            className="text-sm leading-5"
+            style={{
+              color: theme.text,
+              maxHeight: 80,
+            }}
           />
         </View>
 
         <TouchableOpacity
           onPress={handleSubmit}
           disabled={!canSubmit}
-          style={[
-            styles.sendButton,
-            {
-              backgroundColor: canSubmit ? theme.brand : theme.isDark ? '#4B5563' : '#D1D5DB',
-            },
-          ]}
+          className="px-4 py-2 rounded-full min-w-[60px] items-center justify-center"
+          style={{
+            backgroundColor: canSubmit ? theme.brand : theme.isDark ? '#4B5563' : '#D1D5DB',
+          }}
         >
           {isSubmitting ? (
             <ActivityIndicator size="small" color="#FFFFFF" />
@@ -115,28 +106,5 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderTopWidth: 1,
-  },
-  inputContainer: {
-    borderWidth: 1,
-    maxHeight: 100,
-  },
-  input: {
-    fontSize: 14,
-    lineHeight: 20,
-    maxHeight: 80,
-  },
-  sendButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    minWidth: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default CommentInput;

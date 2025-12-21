@@ -4,7 +4,7 @@ import { useTheme } from '@/src/hooks';
 import type { DailyPrayer } from '@/src/services/dailyPrayer';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 import { LikeButton } from '../Social/LikeButton';
 
 interface DailyPrayerCardProps {
@@ -45,13 +45,11 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
   return (
     <Pressable
       onPress={handlePress}
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.card,
-          borderColor: theme.border,
-        },
-      ]}
+      className="rounded-2xl border p-4 mb-3"
+      style={{
+        backgroundColor: theme.card,
+        borderColor: theme.border,
+      }}
     >
       {/* Header */}
       <View className="flex-row items-start justify-between mb-3">
@@ -94,7 +92,7 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
               className="italic leading-5"
               numberOfLines={showFullContent ? undefined : 2}
             >
-              "{prayer.scriptureText}"
+              &quot;{prayer.scriptureText}&quot;
             </Text>
             <Text
               variant="caption"
@@ -153,14 +151,5 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 16,
-    marginBottom: 12,
-  },
-});
 
 export default DailyPrayerCard;

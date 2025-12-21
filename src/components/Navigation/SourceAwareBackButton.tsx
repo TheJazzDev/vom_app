@@ -2,7 +2,7 @@ import { IconSymbol } from '@/src/components/Icons';
 import { useNavigationSource, useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 
 interface SourceAwareBackButtonProps {
   tintColor?: string;
@@ -42,36 +42,22 @@ export const SourceAwareBackButton: React.FC<SourceAwareBackButtonProps> = ({
   return (
     <Pressable
       onPress={handlePress}
-      style={styles.container}
+      className="pr-4"
+      style={{ marginLeft: Platform.OS === 'ios' ? -8 : 0 }}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
-      <View style={styles.content}>
+      <View className="flex-row items-center">
         <IconSymbol
           name="chevron.left"
           size={Platform.OS === 'ios' ? 22 : 24}
           color={color}
         />
         {Platform.OS === 'ios' && (
-          <Text style={[styles.label, { color }]}>Back</Text>
+          <Text className="text-[17px] -ml-1" style={{ color }}>Back</Text>
         )}
       </View>
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginLeft: Platform.OS === 'ios' ? -8 : 0,
-    paddingRight: 16,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 17,
-    marginLeft: -4,
-  },
-});
 
 export default SourceAwareBackButton;

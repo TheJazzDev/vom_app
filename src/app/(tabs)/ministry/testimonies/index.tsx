@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Pressable,
@@ -66,33 +65,61 @@ export default function TestimoniesScreen() {
         colors={['#7C3AED', '#5B21B6', '#4C1D95']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.magazineHeader}
+        className="pt-3 pb-6 mb-5"
       >
-        <View style={styles.headerTop}>
-          <Pressable onPress={() => router.back()} style={styles.headerBackBtn}>
+        <View className="flex-row items-center justify-between px-4 mb-5">
+          <Pressable
+            onPress={() => router.back()}
+            className="w-10 h-10 rounded-full items-center justify-center"
+            style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
+          >
             <IconSymbol name="arrow.left" size={20} color="white" />
           </Pressable>
-          <View style={styles.headerBadge}>
-            <Text style={styles.headerBadgeText}>TESTIMONIES</Text>
+          <View
+            className="px-4 py-1.5 rounded-2xl"
+            style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+          >
+            <Text
+              className="text-white font-extrabold"
+              style={{ fontSize: 11, letterSpacing: 1.5 }}
+            >
+              TESTIMONIES
+            </Text>
           </View>
-          <Pressable onPress={handleCreateTestimony} style={styles.headerActionBtn}>
+          <Pressable
+            onPress={handleCreateTestimony}
+            className="w-10 h-10 rounded-full items-center justify-center"
+            style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
+          >
             <IconSymbol name="square.and.pencil" size={22} color="white" />
           </Pressable>
         </View>
 
-        <View style={styles.heroSection}>
-          <View style={styles.quoteIcon}>
+        <View className="items-center px-6">
+          <View className="mb-2">
             <IconSymbol name="quote.opening" size={32} color="rgba(255,255,255,0.4)" />
           </View>
-          <Text style={styles.heroTitle}>
+          <Text
+            className="text-white font-black mb-2"
+            style={{ fontSize: 32, letterSpacing: -0.5 }}
+          >
             Praise Reports
           </Text>
-          <Text style={styles.heroTagline}>
-            Stories of God's faithfulness in our lives
+          <Text
+            className="text-center italic mb-4"
+            style={{ fontSize: 15, color: 'rgba(255,255,255,0.85)' }}
+          >
+            Stories of God&apos;s faithfulness in our lives
           </Text>
-          <View style={styles.featuredBanner}>
-            <View style={styles.featuredDot} />
-            <Text style={styles.featuredText}>
+          <View
+            className="flex-row items-center px-4 py-2 rounded-3xl"
+            style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
+          >
+            <View
+              className="w-1.5 h-1.5 rounded-full mr-2"
+              style={{ backgroundColor: '#10B981' }}
+            />
+            <Text className="text-white text-[13px] font-semibold">
               {featuredTestimonies.length} Featured • {totalLikes} Amens
             </Text>
           </View>
@@ -100,24 +127,26 @@ export default function TestimoniesScreen() {
       </LinearGradient>
 
       {/* Category Pills */}
-      <View style={styles.categorySection}>
-        <Text style={[styles.sectionLabel, { color: theme.muted }]}>
+      <View className="mb-5">
+        <Text
+          className="px-4 mb-3 font-bold"
+          style={{ fontSize: 11, letterSpacing: 1, color: theme.muted }}
+        >
           BROWSE BY CATEGORY
         </Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryScroll}
+          contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
         >
           <TouchableOpacity
             onPress={() => setActiveCategory(null)}
-            style={[
-              styles.categoryPill,
-              {
-                backgroundColor: activeCategory === null ? theme.primary : theme.card,
-                borderColor: activeCategory === null ? theme.primary : theme.border,
-              },
-            ]}
+            className="flex-row items-center px-4 py-2.5 rounded-3xl mr-2"
+            style={{
+              backgroundColor: activeCategory === null ? theme.primary : theme.card,
+              borderColor: activeCategory === null ? theme.primary : theme.border,
+              borderWidth: 1.5,
+            }}
           >
             <Text
               style={{
@@ -128,15 +157,19 @@ export default function TestimoniesScreen() {
             >
               All Stories
             </Text>
-            <View style={[
-              styles.pillBadge,
-              { backgroundColor: activeCategory === null ? 'rgba(255,255,255,0.3)' : theme.background }
-            ]}>
-              <Text style={{
-                color: activeCategory === null ? 'white' : theme.muted,
-                fontSize: 12,
-                fontWeight: '700',
-              }}>
+            <View
+              className="ml-2 px-2 py-0.5 rounded-xl"
+              style={{
+                backgroundColor: activeCategory === null ? 'rgba(255,255,255,0.3)' : theme.background
+              }}
+            >
+              <Text
+                style={{
+                  color: activeCategory === null ? 'white' : theme.muted,
+                  fontSize: 12,
+                  fontWeight: '700',
+                }}
+              >
                 {testimonies.length}
               </Text>
             </View>
@@ -145,13 +178,12 @@ export default function TestimoniesScreen() {
             <TouchableOpacity
               key={key}
               onPress={() => setActiveCategory(key)}
-              style={[
-                styles.categoryPill,
-                {
-                  backgroundColor: activeCategory === key ? cat.color : theme.card,
-                  borderColor: activeCategory === key ? cat.color : theme.border,
-                },
-              ]}
+              className="flex-row items-center px-4 py-2.5 rounded-3xl mr-2"
+              style={{
+                backgroundColor: activeCategory === key ? cat.color : theme.card,
+                borderColor: activeCategory === key ? cat.color : theme.border,
+                borderWidth: 1.5,
+              }}
             >
               <Text style={{ fontSize: 16, marginRight: 4 }}>{cat.emoji}</Text>
               <Text
@@ -169,7 +201,7 @@ export default function TestimoniesScreen() {
       </View>
 
       {/* Stories Header */}
-      <View style={styles.storiesHeader}>
+      <View className="px-4 mb-3">
         <Text variant="h5" style={{ color: theme.heading, fontWeight: '700' }}>
           Recent Stories
         </Text>
@@ -181,25 +213,41 @@ export default function TestimoniesScreen() {
   );
 
   const renderEmptyState = () => (
-    <View style={styles.emptyState}>
+    <View className="flex-1 items-center justify-center py-20">
       <LinearGradient
         colors={['#EDE9FE', '#DDD6FE']}
-        style={styles.emptyGradient}
+        className="w-[140px] h-[140px] rounded-full items-center justify-center"
       >
         <IconSymbol name="sparkles" size={60} color="#7C3AED" />
       </LinearGradient>
-      <Text variant="h4" style={{ color: theme.heading, fontWeight: '700', marginTop: 24, marginBottom: 8 }}>
+      <Text
+        variant="h4"
+        className="font-bold mt-6 mb-2"
+        style={{ color: theme.heading }}
+      >
         No Testimonies Yet
       </Text>
-      <Text variant="body" style={{ color: theme.muted, textAlign: 'center', paddingHorizontal: 40, marginBottom: 24, lineHeight: 22 }}>
+      <Text
+        variant="body"
+        className="text-center px-10 mb-6"
+        style={{ color: theme.muted, lineHeight: 22 }}
+      >
         Be the first to share how God has moved in your life. Your story could inspire others!
       </Text>
       <Pressable
         onPress={handleCreateTestimony}
-        style={[styles.emptyButton, { backgroundColor: '#7C3AED' }]}
+        className="flex-row items-center gap-2 px-7 py-3.5 rounded-[28px]"
+        style={{
+          backgroundColor: '#7C3AED',
+          shadowColor: '#7C3AED',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.3,
+          shadowRadius: 8,
+          elevation: 6,
+        }}
       >
         <IconSymbol name="sparkles" size={20} color="white" />
-        <Text style={styles.emptyButtonText}>Share Your Story</Text>
+        <Text className="text-white text-base font-bold">Share Your Story</Text>
       </Pressable>
     </View>
   );
@@ -208,9 +256,9 @@ export default function TestimoniesScreen() {
     return (
       <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
         {renderHeader()}
-        <View style={styles.loadingState}>
+        <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#7C3AED" />
-          <Text variant="body" style={{ color: theme.muted, marginTop: 16 }}>
+          <Text variant="body" className="mt-4" style={{ color: theme.muted }}>
             Loading testimonies...
           </Text>
         </View>
@@ -224,7 +272,7 @@ export default function TestimoniesScreen() {
         data={testimonies}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.testimonyWrapper}>
+          <View className="px-4 mb-1">
             <TestimonyCard
               testimony={item}
               isLiked={userLikes[item.id] || false}
@@ -242,7 +290,7 @@ export default function TestimoniesScreen() {
             colors={['#7C3AED']}
           />
         }
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       />
 
@@ -250,13 +298,20 @@ export default function TestimoniesScreen() {
       {testimonies.length > 0 && (
         <Pressable
           onPress={handleCreateTestimony}
-          style={styles.fab}
+          className="absolute bottom-6 right-6 rounded-[30px]"
+          style={{
+            shadowColor: '#7C3AED',
+            shadowOffset: { width: 0, height: 8 },
+            shadowOpacity: 0.4,
+            shadowRadius: 16,
+            elevation: 12,
+          }}
         >
           <LinearGradient
             colors={['#7C3AED', '#5B21B6']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.fabGradient}
+            className="w-[60px] h-[60px] rounded-[30px] items-center justify-center"
           >
             <IconSymbol name="sparkles" size={24} color="white" />
           </LinearGradient>
@@ -265,181 +320,3 @@ export default function TestimoniesScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  magazineHeader: {
-    paddingTop: 12,
-    paddingBottom: 24,
-    marginBottom: 20,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    marginBottom: 20,
-  },
-  headerBackBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerBadge: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 16,
-  },
-  headerBadgeText: {
-    color: 'white',
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 1.5,
-  },
-  headerActionBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  heroSection: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
-  },
-  quoteIcon: {
-    marginBottom: 8,
-  },
-  heroTitle: {
-    fontSize: 32,
-    fontWeight: '900',
-    color: 'white',
-    marginBottom: 8,
-    letterSpacing: -0.5,
-  },
-  heroTagline: {
-    fontSize: 15,
-    color: 'rgba(255,255,255,0.85)',
-    textAlign: 'center',
-    fontStyle: 'italic',
-    marginBottom: 16,
-  },
-  featuredBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    borderRadius: 20,
-  },
-  featuredDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#10B981',
-    marginRight: 8,
-  },
-  featuredText: {
-    color: 'white',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  categorySection: {
-    marginBottom: 20,
-  },
-  sectionLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 1,
-    paddingHorizontal: 16,
-    marginBottom: 12,
-  },
-  categoryScroll: {
-    paddingHorizontal: 16,
-    gap: 8,
-  },
-  categoryPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 24,
-    borderWidth: 1.5,
-    marginRight: 8,
-  },
-  pillBadge: {
-    marginLeft: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-  },
-  storiesHeader: {
-    paddingHorizontal: 16,
-    marginBottom: 12,
-  },
-  testimonyWrapper: {
-    paddingHorizontal: 16,
-    marginBottom: 4,
-  },
-  emptyState: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 80,
-  },
-  emptyGradient: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 28,
-    paddingVertical: 14,
-    borderRadius: 28,
-    shadowColor: '#7C3AED',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  emptyButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  loadingState: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  listContent: {
-    paddingBottom: 100,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    borderRadius: 30,
-    shadowColor: '#7C3AED',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
-    elevation: 12,
-  },
-  fabGradient: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
