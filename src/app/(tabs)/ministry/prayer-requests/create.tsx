@@ -39,7 +39,7 @@ export default function CreatePrayerRequestScreen() {
       isAnonymous: boolean;
       isUrgent: boolean;
     }) => {
-      if (!user?.odUserId) {
+      if (!user?.id) {
         Alert.alert('Error', 'You must be logged in to submit a prayer request');
         return;
       }
@@ -52,7 +52,7 @@ export default function CreatePrayerRequestScreen() {
           status: 'active',
           isAnonymous: data.isAnonymous,
           isUrgent: data.isUrgent,
-          authorId: user.odUserId,
+          authorId: user.id,
           authorName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Member',
           authorAvatar: user.profilePic || null,
         })

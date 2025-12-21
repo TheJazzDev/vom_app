@@ -40,10 +40,10 @@ export default function PrayerRequestsScreen() {
 
   const handlePray = useCallback(
     async (requestId: string) => {
-      if (!user?.odUserId) return;
-      await dispatch(togglePrayedThunk({ requestId, userId: user.odUserId }));
+      if (!user?.id) return;
+      await dispatch(togglePrayedThunk({ requestId, userId: user.id }));
     },
-    [dispatch, user?.odUserId]
+    [dispatch, user?.id]
   );
 
   const handleCreateRequest = () => {

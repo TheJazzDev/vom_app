@@ -39,7 +39,7 @@ export default function CreateTestimonyScreen() {
       isAnonymous: boolean;
       mediaUrls: string[];
     }) => {
-      if (!user?.odUserId) {
+      if (!user?.id) {
         Alert.alert('Error', 'You must be logged in to share a testimony');
         return;
       }
@@ -51,7 +51,7 @@ export default function CreateTestimonyScreen() {
           category: data.category,
           status: 'approved',
           isAnonymous: data.isAnonymous,
-          authorId: user.odUserId,
+          authorId: user.id,
           authorName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Member',
           authorAvatar: user.profilePic || null,
           mediaUrls: data.mediaUrls,

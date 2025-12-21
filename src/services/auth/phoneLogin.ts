@@ -39,6 +39,7 @@ export const findMemberByPhone = async (
       return serializeFirestoreData<UserProfile>({
         ...docData.data(),
         id: docData.id,
+        
       });
     }
 
@@ -54,6 +55,7 @@ export const findMemberByPhone = async (
       return serializeFirestoreData<UserProfile>({
         ...docData.data(),
         id: docData.id,
+        
       });
     }
 
@@ -134,6 +136,7 @@ export const verifyPhoneLoginCode = async (
         verified: true,
         phoneVerified: true,
         lastLoginAt: new Date().toISOString(),
+        
       };
     } else {
       // Try to find member by UID
@@ -146,6 +149,7 @@ export const verifyPhoneLoginCode = async (
         const memberData = serializeFirestoreData<UserProfile>({
           ...docData.data(),
           id: docData.id,
+          
         });
 
         // Update last login

@@ -45,18 +45,18 @@ export default function AchievementsScreen() {
   } = useGamificationSlice();
 
   useEffect(() => {
-    if (user?.odUserId) {
-      dispatch(fetchUserEngagementThunk(user.odUserId));
-      dispatch(fetchUserBadgesThunk(user.odUserId));
-      dispatch(fetchActivityLogThunk({ odUserId: user.odUserId, limit: 10 }));
+    if (user?.id) {
+      dispatch(fetchUserEngagementThunk(user.id));
+      dispatch(fetchUserBadgesThunk(user.id));
+      dispatch(fetchActivityLogThunk({ odUserId: user.id, limit: 10 }));
     }
-  }, [dispatch, user?.odUserId]);
+  }, [dispatch, user?.id]);
 
   const handleRefresh = () => {
-    if (user?.odUserId) {
-      dispatch(fetchUserEngagementThunk(user.odUserId));
-      dispatch(fetchUserBadgesThunk(user.odUserId));
-      dispatch(fetchActivityLogThunk({ odUserId: user.odUserId, limit: 10 }));
+    if (user?.id) {
+      dispatch(fetchUserEngagementThunk(user.id));
+      dispatch(fetchUserBadgesThunk(user.id));
+      dispatch(fetchActivityLogThunk({ odUserId: user.id, limit: 10 }));
     }
   };
 
@@ -87,7 +87,7 @@ export default function AchievementsScreen() {
 
   return (
     <SafeAreaView
-      edges={['top']}
+      edges={[]}
       style={{ flex: 1, backgroundColor: theme.background }}
     >
       <ScrollView
@@ -335,8 +335,9 @@ export default function AchievementsScreen() {
 
 const styles = StyleSheet.create({
   headerGradient: {
-    padding: 24,
+    paddingHorizontal: 24,
     paddingTop: 16,
+    paddingBottom: 32,
     borderBottomLeftRadius: 32,
     borderBottomRightRadius: 32,
   },
@@ -403,7 +404,7 @@ const styles = StyleSheet.create({
   statsGrid: {
     flexDirection: 'row',
     marginHorizontal: 16,
-    marginTop: -20,
+    marginTop: -32,
     borderRadius: 16,
     padding: 16,
     shadowColor: '#000',

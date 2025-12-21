@@ -39,12 +39,12 @@ export default function TestimoniesScreen() {
 
   const handleLikeToggle = useCallback(
     async (testimonyId: string) => {
-      if (!user?.odUserId) return;
+      if (!user?.id) return;
       await dispatch(
-        toggleTestimonyLikeThunk({ testimonyId, userId: user.odUserId })
+        toggleTestimonyLikeThunk({ testimonyId, userId: user.id })
       );
     },
-    [dispatch, user?.odUserId]
+    [dispatch, user?.id]
   );
 
   const handleCreateTestimony = () => {

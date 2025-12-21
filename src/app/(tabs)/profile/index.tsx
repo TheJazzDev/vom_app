@@ -18,21 +18,21 @@ export default function ProfileIndex() {
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { currentUser, user } = useAuthSlice();
+  const { user } = useAuthSlice();
   const { engagement } = useGamificationSlice();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    if (user?.odUserId) {
-      dispatch(fetchUserEngagementThunk(user.odUserId));
+    if (user?.id) {
+      dispatch(fetchUserEngagementThunk(user.id));
     }
-  }, [dispatch, user?.odUserId]);
+  }, [dispatch, user?.id]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      if (user?.odUserId) {
-        await dispatch(fetchUserEngagementThunk(user.odUserId));
+      if (user?.id) {
+        await dispatch(fetchUserEngagementThunk(user.id));
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
@@ -40,15 +40,11 @@ export default function ProfileIndex() {
     } finally {
       setRefreshing(false);
     }
-  }, [dispatch, user?.odUserId]);
-
-  // const getStatusColor = (status: string | undefined) => {
-  //   return status === 'active' ? '#10B981' : '#F59E0B';
-  // };
+  }, [dispatch, user?.id]);
 
   const getVerificationStatus = () => {
-    if (currentUser?.verified) return { text: 'Verified', color: '#10B981' };
-    if (currentUser?.emailVerified || currentUser?.phoneVerified)
+    if (user?.verified) return { text: 'Verified', color: '#10B981' };
+    if (user?.emailVerified || user?.phoneVerified)
       return { text: 'Partially Verified', color: '#F59E0B' };
     return { text: 'Unverified', color: '#EF4444' };
   };
@@ -56,17 +52,17 @@ export default function ProfileIndex() {
   const quickStats = [
     {
       label: 'Join Date',
-      value: currentUser?.joinDate,
+      value: user?.joinDate,
       icon: 'calendar' as IconSymbolName,
     },
     {
       label: 'Status',
-      value: currentUser?.status,
+      value: user?.status,
       icon: 'checkmark.circle' as IconSymbolName,
     },
     {
       label: 'Member ID',
-      value: currentUser?.id,
+      value: user?.id,
       icon: 'number.circle' as IconSymbolName,
     },
   ];
@@ -94,11 +90,10 @@ export default function ProfileIndex() {
           end={{ x: 1, y: 1 }}
           style={{
             paddingTop: 24,
-            paddingBottom: 80,
+            paddingBottom: 40,
             paddingHorizontal: 24,
           }}
         >
-          {/* Background Pattern - Enhanced */}
           <View
             style={{
               position: 'absolute',
@@ -120,7 +115,6 @@ export default function ProfileIndex() {
             </View>
           </View>
 
-          {/* Verification Badge - Improved */}
           <View
             className="rounded-full px-4 py-2 self-start mb-4"
             style={{
@@ -132,7 +126,7 @@ export default function ProfileIndex() {
             <View className="flex-row items-center">
               <IconSymbol
                 name={
-                  currentUser?.verified
+                  user?.verified
                     ? 'checkmark.seal.fill'
                     : 'exclamationmark.triangle.fill'
                 }
@@ -164,9 +158,9 @@ export default function ProfileIndex() {
                   elevation: 8,
                 }}
               >
-                {currentUser?.avatar ? (
+                {user?.avatar ? (
                   <Image
-                    source={{ uri: currentUser.avatar }}
+                    source={{ uri: user.avatar }}
                     className="w-full h-full"
                   />
                 ) : (
@@ -175,17 +169,16 @@ export default function ProfileIndex() {
                     style={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
                   >
                     <Text variant="h1" className="text-white font-bold">
-                      {currentUser?.firstName &&
+                      {user?.firstName &&
                         getUserInitials(
-                          currentUser.firstName,
-                          currentUser.lastName,
+                          user.firstName,
+                          user.lastName,
                         )}
                     </Text>
                   </View>
                 )}
               </View>
-              {/* Online/Verified Indicator */}
-              {currentUser?.verified && (
+              {user?.verified && (
                 <View
                   className="absolute bottom-1 right-1 w-8 h-8 rounded-full items-center justify-center"
                   style={{
@@ -204,8 +197,8 @@ export default function ProfileIndex() {
                 variant="h2"
                 className="text-white font-bold text-center mb-1"
               >
-                {currentUser?.title} {currentUser?.firstName}{' '}
-                {currentUser?.lastName}
+                {user?.title} {user?.firstName}{' '}
+                {user?.lastName}
               </Text>
               <View className="flex-row items-center mb-2">
                 <IconSymbol
@@ -214,7 +207,7 @@ export default function ProfileIndex() {
                   color="rgba(255,255,255,0.8)"
                 />
                 <Text variant="body" className="text-white/80 ml-2">
-                  {currentUser?.email || 'No email provided'}
+                  {user?.email || 'No email provided'}
                 </Text>
               </View>
             </View>
@@ -322,7 +315,7 @@ export default function ProfileIndex() {
           Contact Information
         </Text>
         <Card variant="gradient-soft" className="rounded-xl p-4">
-          {currentUser?.email && (
+          {user?.email && (
             <View className="flex-row items-center mb-3">
               <IconSymbol
                 name="envelope.fill"
@@ -334,11 +327,11 @@ export default function ProfileIndex() {
                 className="ml-3"
                 style={{ color: theme.text }}
               >
-                {currentUser.email}
+                {user.email}
               </Text>
             </View>
           )}
-          {currentUser?.primaryPhone && (
+          {user?.primaryPhone && (
             <View className="flex-row items-center mb-3">
               <IconSymbol name="phone.fill" size={18} color={theme.primary} />
               <Text
@@ -346,11 +339,11 @@ export default function ProfileIndex() {
                 className="ml-3"
                 style={{ color: theme.text }}
               >
-                {currentUser.primaryPhone}
+                {user.primaryPhone}
               </Text>
             </View>
           )}
-          {currentUser?.secondaryPhone && (
+          {user?.secondaryPhone && (
             <View className="flex-row items-center mb-3">
               <IconSymbol
                 name="phone.badge.plus"
@@ -362,11 +355,11 @@ export default function ProfileIndex() {
                 className="ml-3"
                 style={{ color: theme.text }}
               >
-                {currentUser.secondaryPhone}
+                {user.secondaryPhone}
               </Text>
             </View>
           )}
-          {currentUser?.address && (
+          {user?.address && (
             <View className="flex-row items-start">
               <IconSymbol
                 name="location.fill"
@@ -378,7 +371,7 @@ export default function ProfileIndex() {
                 className="ml-3 flex-1"
                 style={{ color: theme.text }}
               >
-                {currentUser.address}
+                {user.address}
               </Text>
             </View>
           )}
@@ -400,7 +393,7 @@ export default function ProfileIndex() {
               Date of Birth
             </Text>
             <Text variant="body" style={{ color: theme.text }}>
-              {currentUser?.dob || 'Not provided'}
+              {user?.dob || 'Not provided'}
             </Text>
           </View>
           <View className="flex-row justify-between">
@@ -412,16 +405,16 @@ export default function ProfileIndex() {
               className="capitalize"
               style={{ color: theme.text }}
             >
-              {currentUser?.gender || 'Not specified'}
+              {user?.gender || 'Not specified'}
             </Text>
           </View>
         </Card>
       </View>
 
       {/* BandData & Position Information */}
-      {(currentUser?.band?.length ||
-        currentUser?.position?.length ||
-        currentUser?.department?.length) && (
+      {(user?.band?.length ||
+        user?.position?.length ||
+        user?.department?.length) && (
         <View className="px-4 mb-6">
           <Text
             variant="h5"
@@ -439,7 +432,7 @@ export default function ProfileIndex() {
               borderColor: theme.border,
             }}
           >
-            {currentUser?.position && currentUser.position.length > 0 && (
+            {user?.position && user.position.length > 0 && (
               <View className="mb-4">
                 <Text
                   variant="body"
@@ -449,13 +442,13 @@ export default function ProfileIndex() {
                   Positions:
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
-                  {currentUser.position.map((pos, index) => (
+                  {user.position.map((pos, index) => (
                     <Badge key={index}>{pos}</Badge>
                   ))}
                 </View>
               </View>
             )}
-            {currentUser?.band && currentUser.band.length > 0 && (
+            {user?.band && user.band.length > 0 && (
               <View className="mb-4">
                 <Text
                   variant="body"
@@ -465,13 +458,13 @@ export default function ProfileIndex() {
                   Bands
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
-                  {currentUser.bandKeys.map((band: BandKeys, index) => (
+                  {user.bandKeys.map((band: BandKeys, index) => (
                     <BandBadge key={index} band={band} />
                   ))}
                 </View>
               </View>
             )}
-            {currentUser?.department && currentUser.department.length > 0 && (
+            {user?.department && user.department.length > 0 && (
               <View className="mb-4">
                 <Text
                   variant="body"
@@ -481,7 +474,7 @@ export default function ProfileIndex() {
                   Departments
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
-                  {currentUser.departmentKeys.map((dept, index) => (
+                  {user.departmentKeys.map((dept, index) => (
                     <Badge key={index}>{dept}</Badge>
                   ))}
                 </View>

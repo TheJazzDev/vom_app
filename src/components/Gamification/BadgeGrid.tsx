@@ -167,12 +167,13 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
       {/* Badge Grid */}
       <View style={styles.grid}>
         {filteredBadges.map((badge) => (
-          <BadgeCard
-            key={badge.id}
-            badge={badge}
-            size="md"
-            onPress={() => setSelectedBadge(badge)}
-          />
+          <View key={badge.id} style={styles.gridItem}>
+            <BadgeCard
+              badge={badge}
+              size="md"
+              onPress={() => setSelectedBadge(badge)}
+            />
+          </View>
         ))}
       </View>
 
@@ -324,7 +325,13 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    gap: 0,
+    // marginHorizontal: -6,
+  },
+  gridItem: {
+    width: '31.333%', // 3 columns: (100% - 2 gaps) / 3
+    paddingHorizontal: 6,
+    marginBottom: 12,
   },
   modalOverlay: {
     flex: 1,

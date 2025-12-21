@@ -7,7 +7,7 @@ import { UserAvatar } from '../UserAvatar';
 
 interface Comment {
   id: string;
-  odUserId: string;
+  userId: string;
   userName: string;
   userAvatar?: string | null;
   content: string;
@@ -28,7 +28,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   onReply,
 }) => {
   const theme = useTheme();
-  const isOwner = currentUserId === comment.odUserId;
+  const isOwner = currentUserId === comment.userId;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

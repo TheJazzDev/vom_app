@@ -29,19 +29,19 @@ export default function LeaderboardScreen() {
   } = useGamificationSlice();
 
   useEffect(() => {
-    if (user?.odUserId) {
-      dispatch(fetchUserEngagementThunk(user.odUserId));
+    if (user?.id) {
+      dispatch(fetchUserEngagementThunk(user.id));
       dispatch(fetchLeaderboardThunk({ type: leaderboardType }));
-      dispatch(fetchUserRankThunk(user.odUserId));
+      dispatch(fetchUserRankThunk(user.id));
     }
-  }, [dispatch, user?.odUserId, leaderboardType]);
+  }, [dispatch, user?.id, leaderboardType]);
 
   const handleRefresh = useCallback(() => {
-    if (user?.odUserId) {
+    if (user?.id) {
       dispatch(fetchLeaderboardThunk({ type: leaderboardType }));
-      dispatch(fetchUserRankThunk(user.odUserId));
+      dispatch(fetchUserRankThunk(user.id));
     }
-  }, [dispatch, user?.odUserId, leaderboardType]);
+  }, [dispatch, user?.id, leaderboardType]);
 
   const handleTabChange = useCallback(
     (tab: 'weekly' | 'monthly' | 'allTime') => {
@@ -112,7 +112,7 @@ export default function LeaderboardScreen() {
       {/* Leaderboard List */}
       <LeaderboardList
         entries={leaderboard}
-        currentUserId={user?.odUserId || ''}
+        currentUserId={user?.id || ''}
         isLoading={isLoadingLeaderboard}
         onRefresh={handleRefresh}
         activeTab={leaderboardType}

@@ -348,6 +348,7 @@ export function useAuthSlice() {
 
   return {
     currentUser,
+    user: currentUser,
     isMember: currentUser?.accountType === 'member',
     isGuest: currentUser?.accountType === 'guest',
     ...rest,

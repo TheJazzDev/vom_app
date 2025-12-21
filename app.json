@@ -53,6 +53,7 @@
       ],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon-2.png",
+        "monoIconImage": "./src/assets/images/adaptive-icon-2.png",
         "backgroundColor": "#0D0D2B"
       },
       "splash": {

@@ -13,9 +13,12 @@ export const findMemberForActivation = async (
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const member = serializeFirestoreData<UserProfile>(
-          querySnapshot.docs[0].data() as UserProfile
-        );
+        const doc = querySnapshot.docs[0];
+        const member = serializeFirestoreData<UserProfile>({
+          ...doc.data(),
+          id: doc.id,
+          
+        });
 
         if (member && (member.hasPassword || member.phoneVerified)) {
           throw new Error(
@@ -40,6 +43,7 @@ export const findMemberForActivation = async (
       const member = serializeFirestoreData<UserProfile>({
         ...doc.data(),
         id: doc.id,
+        
       });
 
       if (member.hasPassword || member.phoneVerified) {
@@ -62,6 +66,7 @@ export const findMemberForActivation = async (
       const member = serializeFirestoreData<UserProfile>({
         ...doc.data(),
         id: doc.id,
+        
       });
 
       if (member.hasPassword || member.phoneVerified) {

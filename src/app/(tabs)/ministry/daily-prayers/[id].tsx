@@ -43,25 +43,25 @@ export default function DailyPrayerDetailScreen() {
   useEffect(() => {
     if (id) {
       dispatch(
-        fetchDailyPrayerByIdThunk({ prayerId: id, userId: user?.odUserId })
+        fetchDailyPrayerByIdThunk({ prayerId: id, userId: user?.id })
       );
       dispatch(fetchDailyPrayerCommentsThunk(id));
     }
-  }, [dispatch, id, user?.odUserId]);
+  }, [dispatch, id, user?.id]);
 
   const handleLikeToggle = useCallback(async () => {
-    if (!user?.odUserId || !id) return;
-    await dispatch(toggleDailyPrayerLikeThunk({ prayerId: id, userId: user.odUserId }));
-  }, [dispatch, id, user?.odUserId]);
+    if (!user?.id || !id) return;
+    await dispatch(toggleDailyPrayerLikeThunk({ prayerId: id, userId: user.id }));
+  }, [dispatch, id, user?.id]);
 
   const handleAddComment = useCallback(
     async (content: string) => {
-      if (!user?.odUserId || !id) return;
+      if (!user?.id || !id) return;
       await dispatch(
         addDailyPrayerCommentThunk({
           prayerId: id,
           comment: {
-            odUserId: user.odUserId,
+            userId: user.id,
             userName: user.firstName || 'Anonymous',
             userAvatar: user.profilePic || null,
             content,
@@ -257,13 +257,13 @@ export default function DailyPrayerDetailScreen() {
             <CommentSection
               comments={comments.map((c) => ({
                 id: c.id,
-                userId: c.odUserId,
+                userId: c.userId,
                 userName: c.userName,
                 userAvatar: c.userAvatar,
                 content: c.content,
                 createdAt: c.createdAt,
               }))}
-              currentUserId={user?.odUserId}
+              currentUserId={user?.id}
               onAddComment={handleAddComment}
               onDeleteComment={handleDeleteComment}
               isLoading={isLoadingComments}

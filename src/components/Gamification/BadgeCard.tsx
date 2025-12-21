@@ -23,19 +23,19 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
 
   const sizeStyles = {
     sm: {
-      container: { width: 80, padding: 8 },
+      container: { width: 80, padding: 8 } as const,
       iconSize: 32,
       iconFontSize: 24,
       nameSize: 10,
     },
     md: {
-      container: { width: 100, padding: 12 },
-      iconSize: 48,
-      iconFontSize: 32,
-      nameSize: 11,
+      container: { width: '100%' as const, padding: 12 },
+      iconSize: 52,
+      iconFontSize: 36,
+      nameSize: 12,
     },
     lg: {
-      container: { width: 140, padding: 16 },
+      container: { width: 140, padding: 16 } as const,
       iconSize: 64,
       iconFontSize: 40,
       nameSize: 13,

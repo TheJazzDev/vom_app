@@ -13,7 +13,7 @@ import { CommentInput } from './CommentInput';
 
 interface Comment {
   id: string;
-  odUserId: string;
+  userId: string;
   userName: string;
   userAvatar?: string | null;
   content: string;

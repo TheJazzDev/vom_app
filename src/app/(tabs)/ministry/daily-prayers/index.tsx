@@ -38,12 +38,12 @@ export default function DailyPrayersScreen() {
 
   const handleLikeToggle = useCallback(
     async (prayerId: string) => {
-      if (!user?.odUserId) return;
+      if (!user?.id) return;
       await dispatch(
-        toggleDailyPrayerLikeThunk({ prayerId, userId: user.odUserId })
+        toggleDailyPrayerLikeThunk({ prayerId, userId: user.id })
       );
     },
-    [dispatch, user?.odUserId]
+    [dispatch, user?.id]
   );
 
   const renderHeader = () => (
