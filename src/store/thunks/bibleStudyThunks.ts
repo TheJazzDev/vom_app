@@ -12,17 +12,20 @@ import {
 // Fetch Bible study sessions
 export const fetchBibleStudySessionsThunk = createAsyncThunk<
   BibleStudySession[],
-  {
-    limitCount?: number;
-    type?: BibleStudyType;
-    topicId?: string;
-  } | undefined,
+  | {
+      limitCount?: number;
+      type?: BibleStudyType;
+      topicId?: string;
+    }
+  | undefined,
   { rejectValue: string }
 >('bibleStudy/fetchSessions', async (options, { rejectWithValue }) => {
   try {
     return await getBibleStudySessions(options);
   } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch Bible study sessions');
+    return rejectWithValue(
+      error.message || 'Failed to fetch Bible study sessions',
+    );
   }
 });
 
@@ -35,7 +38,9 @@ export const fetchBibleStudySessionByIdThunk = createAsyncThunk<
   try {
     return await getBibleStudySessionById(sessionId);
   } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch Bible study session');
+    return rejectWithValue(
+      error.message || 'Failed to fetch Bible study session',
+    );
   }
 });
 
@@ -48,7 +53,9 @@ export const fetchUpcomingBibleStudySessionsThunk = createAsyncThunk<
   try {
     return await getUpcomingBibleStudySessions(limitCount);
   } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch upcoming sessions');
+    return rejectWithValue(
+      error.message || 'Failed to fetch upcoming sessions',
+    );
   }
 });
 
@@ -61,6 +68,8 @@ export const fetchBibleStudyTopicsThunk = createAsyncThunk<
   try {
     return await getBibleStudyTopics();
   } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch Bible study topics');
+    return rejectWithValue(
+      error.message || 'Failed to fetch Bible study topics',
+    );
   }
 });

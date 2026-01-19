@@ -17,6 +17,6 @@ export const getPastProgrammes = async (): Promise<AllProgrammes[]> => {
     serializeFirestoreData<AllProgrammes>({
       id: doc.id,
       ...doc.data(),
-    })
+    }),
   );
 };

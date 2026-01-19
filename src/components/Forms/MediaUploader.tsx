@@ -53,7 +53,10 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
   const pickMedia = async () => {
     if (disabled || isUploading) return;
     if (mediaFiles.length >= maxFiles) {
-      Alert.alert('Limit Reached', `You can only upload up to ${maxFiles} files.`);
+      Alert.alert(
+        'Limit Reached',
+        `You can only upload up to ${maxFiles} files.`,
+      );
       return;
     }
 
@@ -141,7 +144,7 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
                 <Text className="text-3xl mb-1">📷</Text>
                 <Text
                   className="text-xs text-center"
-                  style={{ color: theme.textSecondary }}
+                  style={{ color: theme.muted }}
                 >
                   {placeholder}
                 </Text>
@@ -151,10 +154,7 @@ export const MediaUploader: React.FC<MediaUploaderProps> = ({
         )}
       </ScrollView>
 
-      <Text
-        className="text-xs mt-2"
-        style={{ color: theme.textSecondary }}
-      >
+      <Text className="text-xs mt-2" style={{ color: theme.muted }}>
         {mediaFiles.length}/{maxFiles} files
       </Text>
     </View>

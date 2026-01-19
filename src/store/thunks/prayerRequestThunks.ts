@@ -20,12 +20,13 @@ import {
 // Fetch prayer requests
 export const fetchPrayerRequestsThunk = createAsyncThunk<
   PrayerRequest[],
-  {
-    limitCount?: number;
-    category?: PrayerRequestCategory;
-    status?: PrayerRequestStatus;
-    userId?: string;
-  } | undefined,
+  | {
+      limitCount?: number;
+      category?: PrayerRequestCategory;
+      status?: PrayerRequestStatus;
+      userId?: string;
+    }
+  | undefined,
   { rejectValue: string }
 >('prayerRequest/fetchRequests', async (options, { rejectWithValue }) => {
   try {
@@ -40,29 +41,35 @@ export const fetchPrayerRequestByIdThunk = createAsyncThunk<
   PrayerRequest | null,
   { requestId: string; userId?: string },
   { rejectValue: string }
->('prayerRequest/fetchById', async ({ requestId, userId }, { rejectWithValue, dispatch }) => {
-  try {
-    const request = await getPrayerRequestById(requestId);
+>(
+  'prayerRequest/fetchById',
+  async ({ requestId, userId }, { rejectWithValue, dispatch }) => {
+    try {
+      const request = await getPrayerRequestById(requestId);
 
-    // Check if user has prayed for this request
-    if (request && userId) {
-      const hasPrayed = await hasUserPrayed(requestId, userId);
-      dispatch({
-        type: 'prayerRequest/setUserPrayed',
-        payload: { requestId, prayed: hasPrayed },
-      });
+      // Check if user has prayed for this request
+      if (request && userId) {
+        const hasPrayed = await hasUserPrayed(requestId, userId);
+        dispatch({
+          type: 'prayerRequest/setUserPrayed',
+          payload: { requestId, prayed: hasPrayed },
+        });
+      }
+
+      return request;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch prayer request');
     }
-
-    return request;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch prayer request');
-  }
-});
+  },
+);
 
 // Create prayer request
 export const createPrayerRequestThunk = createAsyncThunk<
   PrayerRequest,
-  Omit<PrayerRequest, 'id' | 'prayerCount' | 'commentsCount' | 'createdAt' | 'updatedAt'>,
+  Omit<
+    PrayerRequest,
+    'id' | 'prayerCount' | 'commentsCount' | 'createdAt' | 'updatedAt'
+  >,
   { rejectValue: string }
 >('prayerRequest/create', async (request, { rejectWithValue }) => {
   try {
@@ -77,14 +84,19 @@ export const updatePrayerRequestThunk = createAsyncThunk<
   { requestId: string; updates: Partial<PrayerRequest> },
   { requestId: string; updates: Partial<PrayerRequest> },
   { rejectValue: string }
->('prayerRequest/update', async ({ requestId, updates }, { rejectWithValue }) => {
-  try {
-    await updatePrayerRequest(requestId, updates);
-    return { requestId, updates };
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to update prayer request');
-  }
-});
+>(
+  'prayerRequest/update',
+  async ({ requestId, updates }, { rejectWithValue }) => {
+    try {
+      await updatePrayerRequest(requestId, updates);
+      return { requestId, updates };
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || 'Failed to update prayer request',
+      );
+    }
+  },
+);
 
 // Delete prayer request
 export const deletePrayerRequestThunk = createAsyncThunk<
@@ -105,14 +117,17 @@ export const togglePrayedThunk = createAsyncThunk<
   { requestId: string; hasPrayed: boolean },
   { requestId: string; userId: string },
   { rejectValue: string }
->('prayerRequest/togglePrayed', async ({ requestId, userId }, { rejectWithValue }) => {
-  try {
-    const hasPrayed = await markAsPrayed(requestId, userId);
-    return { requestId, hasPrayed };
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to mark as prayed');
-  }
-});
+>(
+  'prayerRequest/togglePrayed',
+  async ({ requestId, userId }, { rejectWithValue }) => {
+    try {
+      const hasPrayed = await markAsPrayed(requestId, userId);
+      return { requestId, hasPrayed };
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to mark as prayed');
+    }
+  },
+);
 
 // Mark as answered
 export const markAsAnsweredThunk = createAsyncThunk<
@@ -149,24 +164,30 @@ export const addPrayerRequestCommentThunk = createAsyncThunk<
     comment: Omit<PrayerRequestComment, 'id' | 'createdAt'>;
   },
   { rejectValue: string }
->('prayerRequest/addComment', async ({ requestId, comment }, { rejectWithValue }) => {
-  try {
-    return await addPrayerRequestComment(requestId, comment);
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to add comment');
-  }
-});
+>(
+  'prayerRequest/addComment',
+  async ({ requestId, comment }, { rejectWithValue }) => {
+    try {
+      return await addPrayerRequestComment(requestId, comment);
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to add comment');
+    }
+  },
+);
 
 // Delete comment
 export const deletePrayerRequestCommentThunk = createAsyncThunk<
   string,
   { requestId: string; commentId: string },
   { rejectValue: string }
->('prayerRequest/deleteComment', async ({ requestId, commentId }, { rejectWithValue }) => {
-  try {
-    await deletePrayerRequestComment(requestId, commentId);
-    return commentId;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to delete comment');
-  }
-});
+>(
+  'prayerRequest/deleteComment',
+  async ({ requestId, commentId }, { rejectWithValue }) => {
+    try {
+      await deletePrayerRequestComment(requestId, commentId);
+      return commentId;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to delete comment');
+    }
+  },
+);

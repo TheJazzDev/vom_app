@@ -1,9 +1,7 @@
-import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import {
   formatPoints,
-  getLevelFromPoints,
   LEVELS,
   type LeaderboardEntry,
 } from '@/src/services/gamification';
@@ -48,7 +46,7 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
       default:
         return {
           backgroundColor: theme.card,
-          color: theme.textSecondary,
+          color: theme.muted,
           icon: entry.rank.toString(),
           medal: false,
         };
@@ -114,9 +112,7 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
             {entry.userName}
           </Text>
           {isCurrentUser && (
-            <View
-              style={[styles.youBadge, { backgroundColor: theme.brand }]}
-            >
+            <View style={[styles.youBadge, { backgroundColor: theme.brand }]}>
               <Text style={styles.youText}>You</Text>
             </View>
           )}
@@ -137,7 +133,7 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
         <Text style={[styles.pointsText, { color: theme.brand }]}>
           {formatPoints(entry.points)}
         </Text>
-        <Text variant="caption" style={{ color: theme.textSecondary }}>
+        <Text variant="caption" style={{ color: theme.muted }}>
           pts
         </Text>
       </View>

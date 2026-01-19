@@ -4,13 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View } from '..';
 import Announcement from './Announcement';
 import BirthdayCelebrations from './BirthdayCelebrations';
+import DailyPrayerWidget from './DailyPrayerWidget';
 import Devotionals from './Devotionals';
+import FirstTimers from './FirstTimers';
 import { Notifications } from './Navigations/Notifications';
 import { ProfileHeader } from './Navigations/ProfileHeader';
 import NextService from './NextService';
 import PrayerRequest from './PrayerRequest';
-import QuickAccess from './QuickAccess';
+import QuickActionsWidget from './QuickActionsWidget';
 import RecentSermons from './RecentSermons';
+import TestimoniesWidget from './TestimoniesWidget';
 
 interface DashboardProps {
   refreshing: boolean;
@@ -45,15 +48,19 @@ export default function Dashboard({ refreshing, onRefresh }: DashboardProps) {
             </Text>
           </View>
 
-          {/* <VerseOfTheDay /> */}
+          {/* Devotionals Carousel */}
           <Devotionals />
+
           <View style={{ padding: 10, marginTop: -4 }}>
             <NextService />
+            <FirstTimers />
             <BirthdayCelebrations />
+            <DailyPrayerWidget />
             <Announcement />
             <RecentSermons />
             <PrayerRequest />
-            <QuickAccess />
+            <TestimoniesWidget />
+            <QuickActionsWidget />
           </View>
         </View>
       </View>

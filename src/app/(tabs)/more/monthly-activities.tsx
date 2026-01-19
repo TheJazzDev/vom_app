@@ -483,7 +483,6 @@ export default function MonthlyActivities() {
           </View>
         }
       />
-
     </View>
   );
 }

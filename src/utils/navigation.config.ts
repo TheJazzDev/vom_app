@@ -94,6 +94,9 @@ export function getStackScreenOptions(
     headerStyle: {
       backgroundColor: theme.background,
     },
+    contentStyle: {
+      backgroundColor: theme.background,
+    },
     // Ensure headers respect safe area (important for iOS)
     headerTransparent: false,
     headerBlurEffect: undefined,

@@ -1,5 +1,5 @@
 import { IconSymbol } from '@/src/components/Icons';
-import { LeaderboardList, LevelIndicator, StreakCounter } from '@/src/components/Gamification';
+import { LeaderboardList } from '@/src/components/Gamification';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import { formatPoints } from '@/src/services/gamification';
@@ -47,7 +47,7 @@ export default function LeaderboardScreen() {
     (tab: 'weekly' | 'monthly' | 'allTime') => {
       dispatch(fetchLeaderboardThunk({ type: tab }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return (

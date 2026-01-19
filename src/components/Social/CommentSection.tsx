@@ -1,5 +1,5 @@
 import { useTheme } from '@/src/hooks';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   FlatList,
   ActivityIndicator,

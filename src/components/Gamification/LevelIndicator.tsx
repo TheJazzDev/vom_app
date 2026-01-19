@@ -3,8 +3,6 @@ import { useTheme } from '@/src/hooks';
 import {
   getLevelFromPoints,
   getProgressToNextLevel,
-  LEVELS,
-  type LevelConfig,
 } from '@/src/services/gamification';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -84,7 +82,10 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
           <Text
             style={[
               styles.levelText,
-              { fontSize: sizeStyles[size].levelSize, color: currentLevel.color },
+              {
+                fontSize: sizeStyles[size].levelSize,
+                color: currentLevel.color,
+              },
             ]}
           >
             Lv.{currentLevel.level}
@@ -120,7 +121,7 @@ export const LevelIndicator: React.FC<LevelIndicatorProps> = ({
             </View>
             <Text
               variant="caption"
-              style={[styles.progressText, { color: theme.textSecondary }]}
+              style={[styles.progressText, { color: theme.muted }]}
             >
               {progress.current}/{progress.required}
             </Text>

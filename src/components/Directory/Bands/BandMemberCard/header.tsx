@@ -14,20 +14,20 @@ export const bandMemberHeader = ({
   router: any;
 }) => {
   return (
-    <View className="bg-white dark:bg-dark-background px-4 py-4 mb-4 border-b border-gray-200">
+    <View className="bg-white dark:bg-dark-background px-4 py-4 mb-4 border-b border-gray-200 dark:border-gray-600">
       <View className="flex-row items-center justify-between">
         <TouchableOpacity
           onPress={() => router.back()}
           className="p-2 rounded-lg bg-gray-100"
         >
-          <IconSymbol name='arrow.left' size={24} color="#374151" />
+          <IconSymbol name="arrow.left" size={24} color="#374151" />
         </TouchableOpacity>
 
         <View className="flex-1 items-center">
-          <Text className="text-xl font-bold text-gray-900">
+          <Text className="text-xl font-bold text-gray-900 dark:text-gray-100">
             {selectedBand?.name || 'BandData'}
           </Text>
-          <Text className="text-sm text-gray-600 mt-0.5">
+          <Text className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
             {bandMembers?.length}{' '}
             {bandMembers?.length === 1 ? 'Member' : 'Members'}
           </Text>

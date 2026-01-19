@@ -12,37 +12,6 @@ import {
 } from 'firebase/firestore';
 import { serializeFirestoreData } from '@/src/utils';
 
-// Types
-export type BibleStudyType = 'topic' | 'book' | 'series' | 'devotional';
-
-export interface BibleStudySession {
-  id: string;
-  title: string;
-  description: string;
-  type: BibleStudyType;
-  scriptureReference: string;
-  content: string;
-  videoUrl: string | null;
-  audioUrl: string | null;
-  pdfUrl: string | null;
-  thumbnailUrl: string | null;
-  authorId: string;
-  authorName: string;
-  duration: number; // in minutes
-  isActive: boolean;
-  scheduledDate: string | null;
-  createdAt: string;
-}
-
-export interface BibleStudyTopic {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  sessionsCount: number;
-  color: string;
-}
-
 // Collection reference
 const bibleStudyRef = collection(firestore, 'bibleStudy');
 const topicsRef = collection(firestore, 'bibleStudyTopics');
@@ -53,7 +22,7 @@ export const getBibleStudySessions = async (
     limitCount?: number;
     type?: BibleStudyType;
     topicId?: string;
-  } = {}
+  } = {},
 ): Promise<BibleStudySession[]> => {
   try {
     const { limitCount = 20, type } = options;
@@ -62,7 +31,7 @@ export const getBibleStudySessions = async (
       bibleStudyRef,
       where('isActive', '==', true),
       orderBy('createdAt', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     if (type) {
@@ -71,7 +40,7 @@ export const getBibleStudySessions = async (
         where('isActive', '==', true),
         where('type', '==', type),
         orderBy('createdAt', 'desc'),
-        limit(limitCount)
+        limit(limitCount),
       );
     }
 
@@ -81,7 +50,7 @@ export const getBibleStudySessions = async (
       serializeFirestoreData<BibleStudySession>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get Bible study sessions error:', error);
@@ -91,7 +60,7 @@ export const getBibleStudySessions = async (
 
 // Get Bible study session by ID
 export const getBibleStudySessionById = async (
-  sessionId: string
+  sessionId: string,
 ): Promise<BibleStudySession | null> => {
   try {
     const docRef = doc(bibleStudyRef, sessionId);
@@ -111,7 +80,7 @@ export const getBibleStudySessionById = async (
 
 // Get upcoming Bible study sessions
 export const getUpcomingBibleStudySessions = async (
-  limitCount: number = 5
+  limitCount: number = 5,
 ): Promise<BibleStudySession[]> => {
   try {
     const now = Timestamp.now();
@@ -120,7 +89,7 @@ export const getUpcomingBibleStudySessions = async (
       where('isActive', '==', true),
       where('scheduledDate', '>=', now),
       orderBy('scheduledDate', 'asc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     const snapshot = await getDocs(q);
@@ -129,7 +98,7 @@ export const getUpcomingBibleStudySessions = async (
       serializeFirestoreData<BibleStudySession>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get upcoming Bible study sessions error:', error);
@@ -146,7 +115,7 @@ export const getBibleStudyTopics = async (): Promise<BibleStudyTopic[]> => {
       serializeFirestoreData<BibleStudyTopic>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get Bible study topics error:', error);
@@ -155,7 +124,10 @@ export const getBibleStudyTopics = async (): Promise<BibleStudyTopic[]> => {
 };
 
 // Type display helpers
-export const BIBLE_STUDY_TYPES: Record<BibleStudyType, { label: string; emoji: string; color: string }> = {
+export const BIBLE_STUDY_TYPES: Record<
+  BibleStudyType,
+  { label: string; emoji: string; color: string }
+> = {
   topic: { label: 'Topic Study', emoji: '📚', color: '#3B82F6' },
   book: { label: 'Book Study', emoji: '📖', color: '#8B5CF6' },
   series: { label: 'Series', emoji: '🎬', color: '#EC4899' },
@@ -199,7 +171,7 @@ export const DEFAULT_BIBLE_STUDY_TOPICS: BibleStudyTopic[] = [
   {
     id: 'purpose',
     title: 'Purpose & Calling',
-    description: 'Discovering God\'s plan for your life',
+    description: "Discovering God's plan for your life",
     icon: '🎯',
     sessionsCount: 0,
     color: '#F59E0B',

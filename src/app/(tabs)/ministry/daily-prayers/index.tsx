@@ -3,7 +3,10 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import { useAuthSlice, useDailyPrayerSlice } from '@/src/store/slices';
-import { fetchDailyPrayersThunk, toggleDailyPrayerLikeThunk } from '@/src/store/thunks';
+import {
+  fetchDailyPrayersThunk,
+  toggleDailyPrayerLikeThunk,
+} from '@/src/store/thunks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
@@ -13,13 +16,10 @@ import {
   RefreshControl,
   StyleSheet,
   Pressable,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/src/store/store';
-
-const { width } = Dimensions.get('window');
 
 export default function DailyPrayersScreen() {
   const theme = useTheme();
@@ -39,21 +39,16 @@ export default function DailyPrayersScreen() {
   const handleLikeToggle = useCallback(
     async (prayerId: string) => {
       if (!user?.id) return;
-      await dispatch(
-        toggleDailyPrayerLikeThunk({ prayerId, userId: user.id })
-      );
+      await dispatch(toggleDailyPrayerLikeThunk({ prayerId, userId: user.id }));
     },
-    [dispatch, user?.id]
+    [dispatch, user?.id],
   );
 
   const renderHeader = () => (
     <View style={styles.headerContainer}>
       {/* Custom Header with Back Button */}
       <View style={styles.customHeader}>
-        <Pressable
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
           <IconSymbol name="arrow.left" size={20} color={theme.text} />
         </Pressable>
         <Text variant="h4" style={{ color: theme.heading, fontWeight: 'bold' }}>
@@ -74,7 +69,7 @@ export default function DailyPrayersScreen() {
             <IconSymbol name="sun.max.fill" size={40} color="#EA580C" />
           </View>
           <Text style={styles.heroTitle}>
-            "This is the day the Lord has made"
+            &quot;This is the day the Lord has made&quot;
           </Text>
           <Text style={styles.heroSubtitle}>
             Let us rejoice and be glad in it
@@ -100,16 +95,12 @@ export default function DailyPrayersScreen() {
           <Text style={[styles.statNumber, { color: '#10B981' }]}>
             {Object.keys(userLikes).length}
           </Text>
-          <Text style={[styles.statLabel, { color: theme.muted }]}>
-            Prayed
-          </Text>
+          <Text style={[styles.statLabel, { color: theme.muted }]}>Prayed</Text>
         </View>
         <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
         <View style={styles.statItem}>
           <IconSymbol name="calendar" size={24} color={theme.primary} />
-          <Text style={[styles.statLabel, { color: theme.muted }]}>
-            Daily
-          </Text>
+          <Text style={[styles.statLabel, { color: theme.muted }]}>Daily</Text>
         </View>
       </View>
 
@@ -126,14 +117,30 @@ export default function DailyPrayersScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
-      <View style={[styles.emptyIconContainer, { backgroundColor: `${theme.primary}10` }]}>
+      <View
+        style={[
+          styles.emptyIconContainer,
+          { backgroundColor: `${theme.primary}10` },
+        ]}
+      >
         <IconSymbol name="book.closed.fill" size={50} color={theme.primary} />
       </View>
-      <Text variant="h4" style={{ color: theme.heading, fontWeight: '700', marginBottom: 8 }}>
+      <Text
+        variant="h4"
+        style={{ color: theme.heading, fontWeight: '700', marginBottom: 8 }}
+      >
         No Prayers Available
       </Text>
-      <Text variant="body" style={{ color: theme.muted, textAlign: 'center', paddingHorizontal: 40 }}>
-        Daily devotionals will appear here. Check back tomorrow for spiritual nourishment.
+      <Text
+        variant="body"
+        style={{
+          color: theme.muted,
+          textAlign: 'center',
+          paddingHorizontal: 40,
+        }}
+      >
+        Daily devotionals will appear here. Check back tomorrow for spiritual
+        nourishment.
       </Text>
     </View>
   );
@@ -141,12 +148,26 @@ export default function DailyPrayersScreen() {
   const renderError = () => (
     <View style={styles.emptyContainer}>
       <View style={styles.errorIconContainer}>
-        <IconSymbol name="exclamationmark.triangle.fill" size={50} color="#EF4444" />
+        <IconSymbol
+          name="exclamationmark.triangle.fill"
+          size={50}
+          color="#EF4444"
+        />
       </View>
-      <Text variant="h4" style={{ color: theme.heading, fontWeight: '700', marginBottom: 8 }}>
+      <Text
+        variant="h4"
+        style={{ color: theme.heading, fontWeight: '700', marginBottom: 8 }}
+      >
         Oops! Something Went Wrong
       </Text>
-      <Text variant="body" style={{ color: theme.muted, textAlign: 'center', paddingHorizontal: 40 }}>
+      <Text
+        variant="body"
+        style={{
+          color: theme.muted,
+          textAlign: 'center',
+          paddingHorizontal: 40,
+        }}
+      >
         {error || 'Unable to load prayers. Please try again.'}
       </Text>
     </View>
@@ -154,7 +175,10 @@ export default function DailyPrayersScreen() {
 
   if (isLoadingPrayers && prayers.length === 0) {
     return (
-      <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
+      <SafeAreaView
+        edges={['top']}
+        style={{ flex: 1, backgroundColor: theme.background }}
+      >
         {renderHeader()}
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.primary} />
@@ -167,7 +191,10 @@ export default function DailyPrayersScreen() {
   }
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
+    <SafeAreaView
+      edges={['top']}
+      style={{ flex: 1, backgroundColor: theme.background }}
+    >
       <FlatList
         data={prayers}
         keyExtractor={(item) => item.id}

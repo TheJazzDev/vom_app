@@ -5,6 +5,7 @@ import { useToast } from '../providers/ToastProvider';
 import { useAndroidNavigationBar } from './useAndroidNavigationBar';
 import { useBackHandler } from './useBackHandler';
 import { useNetworkStatus } from './useNetworkStatus';
+import { useOfflineManager } from './useOfflineManager';
 import { usePushNotifications } from './usePushNotifications';
 import { useEventTracking, useScreenTracking } from './useScreenTracking';
 import { animateTabChange, useTabTransition } from './useTabTransition';
@@ -19,6 +20,7 @@ export {
   useEventTracking,
   useNavigationSource,
   useNetworkStatus,
+  useOfflineManager,
   usePushNotifications,
   useScreenTracking,
   useTabTransition,

@@ -1,12 +1,6 @@
 import { useTheme } from '@/src/hooks';
 import React, { useRef, useEffect } from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Keyboard,
-  Platform,
-} from 'react-native';
+import { View, TextInput, StyleSheet, Keyboard, Platform } from 'react-native';
 
 interface OTPInputProps {
   length?: number;
@@ -24,7 +18,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
   disabled = false,
 }) => {
   const theme = useTheme();
-  const inputRefs = useRef<Array<TextInput | null>>([]);
+  const inputRefs = useRef<(TextInput | null)[]>([]);
   const digits = value.split('').concat(Array(length - value.length).fill(''));
 
   useEffect(() => {

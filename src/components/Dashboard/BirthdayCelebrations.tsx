@@ -18,7 +18,7 @@ const BirthdayCelebrations = () => {
     const todayDay = today.getDate();
 
     return allMembers.filter((member) => {
-      if (!member.dob) return false;
+      if (!member || !member.dob) return false;
 
       // Parse format like "January 12", "May 9", "November 27"
       const dobParts = member.dob.trim().split(' ');

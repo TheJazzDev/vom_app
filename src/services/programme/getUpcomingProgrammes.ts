@@ -16,6 +16,6 @@ export const getUpcomingProgrammes = async (): Promise<AllProgrammes[]> => {
     serializeFirestoreData<AllProgrammes>({
       id: doc.id,
       ...doc.data(),
-    })
+    }),
   );
 };

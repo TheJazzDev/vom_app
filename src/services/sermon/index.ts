@@ -11,36 +11,6 @@ import {
 } from 'firebase/firestore';
 import { serializeFirestoreData } from '@/src/utils';
 
-// Types
-export type SermonCategory = 'sunday' | 'midweek' | 'special' | 'conference' | 'revival';
-
-export interface Sermon {
-  id: string;
-  title: string;
-  preacher: string;
-  preacherTitle: string;
-  preacherPhoto: string | null;
-  description: string;
-  scriptureReference: string;
-  category: SermonCategory;
-  videoUrl: string | null;
-  audioUrl: string | null;
-  thumbnailUrl: string | null;
-  duration: number; // in minutes
-  viewCount: number;
-  isActive: boolean;
-  sermonDate: string;
-  createdAt: string;
-}
-
-export interface SermonSeries {
-  id: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string | null;
-  sermonsCount: number;
-}
-
 // Collection reference
 const sermonsRef = collection(firestore, 'sermons');
 const seriesRef = collection(firestore, 'sermonSeries');
@@ -51,7 +21,7 @@ export const getSermons = async (
     limitCount?: number;
     category?: SermonCategory;
     seriesId?: string;
-  } = {}
+  } = {},
 ): Promise<Sermon[]> => {
   try {
     const { limitCount = 20, category } = options;
@@ -60,7 +30,7 @@ export const getSermons = async (
       sermonsRef,
       where('isActive', '==', true),
       orderBy('sermonDate', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     if (category) {
@@ -69,7 +39,7 @@ export const getSermons = async (
         where('isActive', '==', true),
         where('category', '==', category),
         orderBy('sermonDate', 'desc'),
-        limit(limitCount)
+        limit(limitCount),
       );
     }
 
@@ -79,7 +49,7 @@ export const getSermons = async (
       serializeFirestoreData<Sermon>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get sermons error:', error);
@@ -89,7 +59,7 @@ export const getSermons = async (
 
 // Get sermon by ID
 export const getSermonById = async (
-  sermonId: string
+  sermonId: string,
 ): Promise<Sermon | null> => {
   try {
     const docRef = doc(sermonsRef, sermonId);
@@ -109,14 +79,14 @@ export const getSermonById = async (
 
 // Get featured sermons (most viewed)
 export const getFeaturedSermons = async (
-  limitCount: number = 5
+  limitCount: number = 5,
 ): Promise<Sermon[]> => {
   try {
     const q = query(
       sermonsRef,
       where('isActive', '==', true),
       orderBy('viewCount', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     const snapshot = await getDocs(q);
@@ -125,7 +95,7 @@ export const getFeaturedSermons = async (
       serializeFirestoreData<Sermon>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get featured sermons error:', error);
@@ -142,7 +112,7 @@ export const getSermonSeries = async (): Promise<SermonSeries[]> => {
       serializeFirestoreData<SermonSeries>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get sermon series error:', error);
@@ -151,7 +121,10 @@ export const getSermonSeries = async (): Promise<SermonSeries[]> => {
 };
 
 // Category display helpers
-export const SERMON_CATEGORIES: Record<SermonCategory, { label: string; emoji: string; color: string }> = {
+export const SERMON_CATEGORIES: Record<
+  SermonCategory,
+  { label: string; emoji: string; color: string }
+> = {
   sunday: { label: 'Sunday Service', emoji: '⛪', color: '#3B82F6' },
   midweek: { label: 'Mid-Week', emoji: '📖', color: '#8B5CF6' },
   special: { label: 'Special Program', emoji: '✨', color: '#EC4899' },

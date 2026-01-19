@@ -4,7 +4,12 @@ import { useTheme } from '@/src/hooks';
 import { dispatch, useDirectorySlice } from '@/src/store';
 import { fetchAllBandsThunk } from '@/src/store/thunks/directory';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Platform, RefreshControl } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  RefreshControl,
+} from 'react-native';
 
 // Performance constants
 const INITIAL_NUM_TO_RENDER = 4;
@@ -33,7 +38,7 @@ export default function DirectoryBands() {
 
   const renderItem = useCallback(
     ({ item }: { item: Band }) => <BandCategoryCard band={item} />,
-    []
+    [],
   );
 
   const keyExtractor = useCallback((item: Band) => item.id, []);

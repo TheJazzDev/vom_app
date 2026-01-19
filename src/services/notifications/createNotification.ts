@@ -1,13 +1,13 @@
 import { notificationsRef } from '@/src/config';
-import { addDoc, serverTimestamp } from 'firebase/firestore';
-import { CreateNotificationInput, AppNotification } from './types';
+import { addDoc } from 'firebase/firestore';
+import { CreateNotificationInput } from './types';
 
 /**
  * Create a new notification
  * Can be used by admin or system to send notifications to users
  */
 export const createNotification = async (
-  input: CreateNotificationInput
+  input: CreateNotificationInput,
 ): Promise<string> => {
   try {
     const now = new Date().toISOString();
@@ -43,7 +43,7 @@ export const createNotification = async (
  */
 export const createUserNotification = async (
   userId: string,
-  input: Omit<CreateNotificationInput, 'userId' | 'isGlobal'>
+  input: Omit<CreateNotificationInput, 'userId' | 'isGlobal'>,
 ): Promise<string> => {
   return createNotification({
     ...input,
@@ -56,7 +56,7 @@ export const createUserNotification = async (
  * Create a global notification for all users
  */
 export const createGlobalNotification = async (
-  input: Omit<CreateNotificationInput, 'userId' | 'isGlobal'>
+  input: Omit<CreateNotificationInput, 'userId' | 'isGlobal'>,
 ): Promise<string> => {
   return createNotification({
     ...input,
@@ -67,9 +67,11 @@ export const createGlobalNotification = async (
 /**
  * Create notification from an announcement
  */
-export const createAnnouncementNotification = async (
-  announcement: { id: string; title: string; content?: string }
-): Promise<string> => {
+export const createAnnouncementNotification = async (announcement: {
+  id: string;
+  title: string;
+  content?: string;
+}): Promise<string> => {
   return createGlobalNotification({
     type: 'announcement',
     title: announcement.title,
@@ -87,9 +89,11 @@ export const createAnnouncementNotification = async (
  */
 export const createProgrammeNotification = async (
   programme: { id: string; title: string; date?: string },
-  userId?: string
+  userId?: string,
 ): Promise<string> => {
-  const createFn = userId ? createUserNotification.bind(null, userId) : createGlobalNotification;
+  const createFn = userId
+    ? createUserNotification.bind(null, userId)
+    : createGlobalNotification;
 
   return createFn({
     type: 'event',

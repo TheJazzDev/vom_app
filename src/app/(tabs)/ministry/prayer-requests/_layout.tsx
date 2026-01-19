@@ -24,7 +24,8 @@ export default function PrayerRequestsLayout() {
         name="create"
         options={{
           title: 'New Prayer Request',
-          presentation: 'modal',
+          presentation: 'fullScreenModal',
+          animation: 'fade',
         }}
       />
     </Stack>

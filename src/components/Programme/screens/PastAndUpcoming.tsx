@@ -1,6 +1,5 @@
 import { Button, ProgrammeList, Spacer, Text, View } from '@/src/components';
 import { ProgrammeFilters } from '@/src/components/Programme/components/ProgrammeFilters';
-import { useTheme } from '@/src/hooks';
 import { dispatch } from '@/src/store';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
@@ -26,7 +25,6 @@ export const PastAndUpcomingScreen: React.FC<PastAndUpcomingScreenProps> = ({
   refreshAction,
   showRefreshControl = true,
 }) => {
-  const theme = useTheme();
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');

@@ -41,7 +41,9 @@ export const getCardTextColor = (
 };
 
 // Helper function to extract border radius from className
-const getBorderRadiusFromClassName = (className: string): number | undefined => {
+const getBorderRadiusFromClassName = (
+  className: string,
+): number | undefined => {
   // Check for common border radius classes
   if (className.includes('rounded-none')) return 0;
   if (className.includes('rounded-full')) return 9999;
@@ -54,8 +56,12 @@ const getBorderRadiusFromClassName = (className: string): number | undefined => 
   if (className.includes('rounded')) return 4;
 
   // Check for specific corner radius (these won't affect the container but we'll return default)
-  if (className.includes('rounded-t-') || className.includes('rounded-b-') ||
-      className.includes('rounded-l-') || className.includes('rounded-r-')) {
+  if (
+    className.includes('rounded-t-') ||
+    className.includes('rounded-b-') ||
+    className.includes('rounded-l-') ||
+    className.includes('rounded-r-')
+  ) {
     return 12; // Return default since we can't easily extract specific corner values
   }
 

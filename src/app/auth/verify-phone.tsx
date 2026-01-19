@@ -72,7 +72,7 @@ export default function VerifyPhoneScreen() {
       <View gradient scrollable>
         <View className="items-center py-6">
           <Text variant="h2">Verify Phone Number</Text>
-          <Text className="text-center mt-2 text-gray-600 max-w-[90%]">
+          <Text className="text-center mt-2 text-gray-600 dark:text-gray-300 max-w-[90%]">
             We&apos;ve sent a 4-digit verification code to
           </Text>
           <Text className="text-center font-semibold text-lg mt-1">

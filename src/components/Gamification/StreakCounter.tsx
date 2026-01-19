@@ -71,10 +71,7 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
         >
           {streakDays}
         </Text>
-        <Text
-          variant="caption"
-          style={{ color: streakColor, marginLeft: 2 }}
-        >
+        <Text variant="caption" style={{ color: streakColor, marginLeft: 2 }}>
           days
         </Text>
       </View>
@@ -82,7 +79,7 @@ export const StreakCounter: React.FC<StreakCounterProps> = ({
       {showLongest && longestStreak !== undefined && longestStreak > 0 && (
         <Text
           variant="caption"
-          style={[styles.longestText, { color: theme.textSecondary }]}
+          style={[styles.longestText, { color: theme.muted }]}
         >
           Best: {longestStreak} days
         </Text>

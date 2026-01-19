@@ -105,7 +105,10 @@ const gamificationSlice = createSlice({
     clearNewlyEarnedBadges: (state) => {
       state.newlyEarnedBadges = [];
     },
-    setLeaderboardType: (state, action: PayloadAction<'weekly' | 'monthly' | 'allTime'>) => {
+    setLeaderboardType: (
+      state,
+      action: PayloadAction<'weekly' | 'monthly' | 'allTime'>,
+    ) => {
       state.leaderboardType = action.payload;
     },
     showPointsAward: (state, action: PayloadAction<PointsAward>) => {
@@ -137,7 +140,8 @@ const gamificationSlice = createSlice({
       })
       .addCase(awardPointsThunk.fulfilled, (state, action) => {
         state.isAwardingPoints = false;
-        const { newPoints, leveledUp, newLevel, pointsAwarded, description } = action.payload;
+        const { newPoints, leveledUp, newLevel, pointsAwarded, description } =
+          action.payload;
 
         // Update engagement points
         if (state.engagement) {
@@ -168,23 +172,22 @@ const gamificationSlice = createSlice({
       });
 
     // Update streak
-    builder
-      .addCase(updateStreakThunk.fulfilled, (state, action) => {
-        const { streakDays, streakBonus } = action.payload;
-        if (state.engagement) {
-          state.engagement.streakDays = streakDays;
-        }
+    builder.addCase(updateStreakThunk.fulfilled, (state, action) => {
+      const { streakDays, streakBonus } = action.payload;
+      if (state.engagement) {
+        state.engagement.streakDays = streakDays;
+      }
 
-        // Show streak bonus if awarded
-        if (streakBonus) {
-          state.recentPointsAward = {
-            points: streakBonus,
-            description: `${streakDays}-day streak bonus!`,
-            timestamp: Date.now(),
-          };
-          state.showPointsAnimation = true;
-        }
-      });
+      // Show streak bonus if awarded
+      if (streakBonus) {
+        state.recentPointsAward = {
+          points: streakBonus,
+          description: `${streakDays}-day streak bonus!`,
+          timestamp: Date.now(),
+        };
+        state.showPointsAnimation = true;
+      }
+    });
 
     // Fetch leaderboard
     builder
@@ -202,10 +205,9 @@ const gamificationSlice = createSlice({
       });
 
     // Fetch user rank
-    builder
-      .addCase(fetchUserRankThunk.fulfilled, (state, action) => {
-        state.userRank = action.payload;
-      });
+    builder.addCase(fetchUserRankThunk.fulfilled, (state, action) => {
+      state.userRank = action.payload;
+    });
 
     // Fetch badges
     builder
@@ -223,21 +225,20 @@ const gamificationSlice = createSlice({
       });
 
     // Check badges
-    builder
-      .addCase(checkBadgesThunk.fulfilled, (state, action) => {
-        const newBadges = action.payload;
-        if (newBadges.length > 0) {
-          state.newlyEarnedBadges = newBadges;
+    builder.addCase(checkBadgesThunk.fulfilled, (state, action) => {
+      const newBadges = action.payload;
+      if (newBadges.length > 0) {
+        state.newlyEarnedBadges = newBadges;
 
-          // Update badges list
-          newBadges.forEach((newBadge) => {
-            const index = state.badges.findIndex((b) => b.id === newBadge.id);
-            if (index !== -1) {
-              state.badges[index] = newBadge;
-            }
-          });
-        }
-      });
+        // Update badges list
+        newBadges.forEach((newBadge) => {
+          const index = state.badges.findIndex((b) => b.id === newBadge.id);
+          if (index !== -1) {
+            state.badges[index] = newBadge;
+          }
+        });
+      }
+    });
 
     // Fetch activity log
     builder

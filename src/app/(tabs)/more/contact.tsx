@@ -61,8 +61,8 @@ const ContactMethod: React.FC<ContactMethodProps> = ({
       );
     } else if (type === 'location') {
       const encodedAddress = encodeURIComponent(value);
-      Linking.openURL(`https://maps.google.com/?q=${encodedAddress}`).catch(() =>
-        Alert.alert('Error', 'Unable to open maps'),
+      Linking.openURL(`https://maps.google.com/?q=${encodedAddress}`).catch(
+        () => Alert.alert('Error', 'Unable to open maps'),
       );
     }
   };
@@ -122,9 +122,113 @@ const ContactMethod: React.FC<ContactMethodProps> = ({
                 </Text>
               </View>
 
+              <IconSymbol name="chevron.right" size={20} color={theme.muted} />
+            </View>
+          </View>
+        </LinearGradient>
+      </Animated.View>
+    </Pressable>
+  );
+};
+
+interface SocialMediaLinkProps {
+  platform: string;
+  icon: string;
+  url: string;
+  gradient: [string, string];
+  handle: string;
+}
+
+const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
+  platform,
+  icon,
+  url,
+  gradient,
+  handle,
+}) => {
+  const theme = useTheme();
+  const [scaleAnim] = useState(new Animated.Value(1));
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 3,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePress = () => {
+    Linking.openURL(url).catch(() =>
+      Alert.alert('Error', `Unable to open ${platform}`),
+    );
+  };
+
+  return (
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={handlePress}
+      className="mb-3"
+    >
+      <Animated.View
+        style={{
+          transform: [{ scale: scaleAnim }],
+        }}
+      >
+        <LinearGradient
+          colors={gradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            borderRadius: 16,
+            padding: 1,
+          }}
+        >
+          <View
+            className="rounded-[15px] p-4"
+            style={{ backgroundColor: theme.card }}
+          >
+            <View className="flex-row items-center">
+              <LinearGradient
+                colors={gradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 12,
+                }}
+              >
+                <IconSymbol name={icon as any} size={24} color="white" />
+              </LinearGradient>
+
+              <View className="flex-1">
+                <Text
+                  variant="body"
+                  className="font-bold mb-1"
+                  style={{ color: theme.heading }}
+                >
+                  {platform}
+                </Text>
+                <Text variant="caption" style={{ color: theme.muted }}>
+                  {handle}
+                </Text>
+              </View>
+
               <IconSymbol
-                name="chevron.right"
-                size={20}
+                name="arrow.up.forward"
+                size={18}
                 color={theme.muted}
               />
             </View>
@@ -222,7 +326,11 @@ const BankAccountCard: React.FC<BankAccountCardProps> = ({
                 {bankName}
               </Text>
               {copied === 'Bank Name' ? (
-                <IconSymbol name="checkmark.circle.fill" size={18} color="#10B981" />
+                <IconSymbol
+                  name="checkmark.circle.fill"
+                  size={18}
+                  color="#10B981"
+                />
               ) : (
                 <IconSymbol name="doc.on.doc" size={16} color={theme.muted} />
               )}
@@ -250,7 +358,11 @@ const BankAccountCard: React.FC<BankAccountCardProps> = ({
                 {accountName}
               </Text>
               {copied === 'Account Name' ? (
-                <IconSymbol name="checkmark.circle.fill" size={18} color="#10B981" />
+                <IconSymbol
+                  name="checkmark.circle.fill"
+                  size={18}
+                  color="#10B981"
+                />
               ) : (
                 <IconSymbol name="doc.on.doc" size={16} color={theme.muted} />
               )}
@@ -279,7 +391,11 @@ const BankAccountCard: React.FC<BankAccountCardProps> = ({
                 {accountNumber}
               </Text>
               {copied === 'Account Number' ? (
-                <IconSymbol name="checkmark.circle.fill" size={20} color="#10B981" />
+                <IconSymbol
+                  name="checkmark.circle.fill"
+                  size={20}
+                  color="#10B981"
+                />
               ) : (
                 <IconSymbol name="doc.on.doc" size={18} color={theme.muted} />
               )}
@@ -326,14 +442,21 @@ export default function ContactUs() {
               className="w-20 h-20 rounded-full items-center justify-center mb-4"
               style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
             >
-              <IconSymbol name="heart.text.square.fill" size={40} color="white" />
+              <IconSymbol
+                name="heart.text.square.fill"
+                size={40}
+                color="white"
+              />
             </View>
 
-            <Text variant="h1" className="text-white font-bold text-center mb-2">
+            <Text
+              variant="h1"
+              className="text-white font-bold text-center mb-2"
+            >
               Get In Touch
             </Text>
             <Text variant="body" className="text-white/90 text-center max-w-xs">
-              We're here to connect with you. Reach out anytime!
+              We&apos;re here to connect with you. Reach out anytime!
             </Text>
           </View>
         </LinearGradient>
@@ -396,6 +519,51 @@ export default function ContactUs() {
             />
           </View>
 
+          {/* Social Media Links */}
+          <View className="mb-8">
+            <View className="flex-row items-center mb-4">
+              <View
+                className="h-px flex-1"
+                style={{ backgroundColor: theme.border }}
+              />
+              <Text
+                variant="h5"
+                className="font-bold mx-4"
+                style={{ color: theme.heading }}
+              >
+                Follow Us
+              </Text>
+              <View
+                className="h-px flex-1"
+                style={{ backgroundColor: theme.border }}
+              />
+            </View>
+
+            <SocialMediaLink
+              platform="TikTok"
+              icon="play.circle.fill"
+              url="https://www.tiktok.com/@valleyofmercy01"
+              handle="@valleyofmercy01"
+              gradient={['#000000', '#69C9D0']}
+            />
+
+            <SocialMediaLink
+              platform="Instagram"
+              icon="camera.fill"
+              url="https://www.instagram.com/csmc_vom?igsh=am5wMXVqb2UzcWdx&utm_source=qr"
+              handle="@csmc_vom"
+              gradient={['#833AB4', '#FD1D1D']}
+            />
+
+            <SocialMediaLink
+              platform="Facebook"
+              icon="person.3.fill"
+              url="https://www.facebook.com/share/183xHZHbPm/?mibextid=wwXIfr"
+              handle="Valley of Mercy"
+              gradient={['#1877F2', '#0C63D4']}
+            />
+          </View>
+
           {/* Church Accounts */}
           <View className="mb-6">
             <View className="items-center mb-6">
@@ -421,7 +589,7 @@ export default function ContactUs() {
                 className="text-center mt-2"
                 style={{ color: theme.muted }}
               >
-                Support God's work through giving
+                Support God&apos;s work through giving
               </Text>
             </View>
 
@@ -468,7 +636,7 @@ export default function ContactUs() {
                 className="font-bold mb-3 text-center"
                 style={{ color: theme.heading }}
               >
-                You're Always Welcome!
+                You&apos;re Always Welcome!
               </Text>
 
               <Text
@@ -476,8 +644,8 @@ export default function ContactUs() {
                 className="text-center leading-6 mb-4"
                 style={{ color: theme.text }}
               >
-                Come as you are and experience God's love and grace in our
-                community. We can't wait to worship with you!
+                Come as you are and experience God&apos;s love and grace in our
+                community. We can&apos;t wait to worship with you!
               </Text>
 
               <View
@@ -489,7 +657,7 @@ export default function ContactUs() {
                   className="italic text-center"
                   style={{ color: theme.primary }}
                 >
-                  "The Lord bless you and keep you" - Numbers 6:24
+                  &quot;The Lord bless you and keep you&quot; - Numbers 6:24
                 </Text>
               </View>
             </View>

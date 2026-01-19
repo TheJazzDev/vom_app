@@ -69,12 +69,12 @@ export default function ProgressIndicator({
       {/* Current Step Info */}
       <View className="items-center">
         {steps[currentStep]?.label && (
-          <Text className="font-semibold text-gray-800 mb-1">
+          <Text className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
             {steps[currentStep]?.label}
           </Text>
         )}
         {steps[currentStep]?.description && (
-          <Text className="text-sm text-gray-600 text-center">
+          <Text className="text-sm text-gray-600 dark:text-gray-300 text-center">
             {steps[currentStep].description}
           </Text>
         )}

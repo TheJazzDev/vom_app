@@ -7,7 +7,6 @@ import {
   fetchAllDepartmentsThunk,
   fetchAllMembersThunk,
   fetchBandWithMembersThunk,
-  fetchDepartmentByIdThunk,
   fetchDepartmentWithMembersThunk,
   fetchDirectoryStatsThunk,
 } from '../thunks/directory';

@@ -7,12 +7,7 @@ import { fetchAnnouncementById } from '@/src/store/thunks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 
 export default function AnnouncementDetail() {
   const theme = useTheme();
@@ -80,11 +75,7 @@ export default function AnnouncementDetail() {
         style={{ backgroundColor: theme.background }}
       >
         <ActivityIndicator size="large" color={theme.primary} />
-        <Text
-          variant="body"
-          className="mt-4"
-          style={{ color: theme.muted }}
-        >
+        <Text variant="body" className="mt-4" style={{ color: theme.muted }}>
           Loading announcement...
         </Text>
       </View>
@@ -97,7 +88,11 @@ export default function AnnouncementDetail() {
         className="flex-1 items-center justify-center px-6"
         style={{ backgroundColor: theme.background }}
       >
-        <IconSymbol name="exclamationmark.triangle" size={48} color={theme.muted} />
+        <IconSymbol
+          name="exclamationmark.triangle"
+          size={48}
+          color={theme.muted}
+        />
         <Text
           variant="h3"
           className="mt-4 font-semibold text-center"

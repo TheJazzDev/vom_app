@@ -2,10 +2,15 @@ import { PrayerRequestCard } from '@/src/components/PrayerRequest';
 import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
-import { PRAYER_CATEGORIES, PrayerRequestCategory } from '@/src/services/prayerRequest';
+import {
+  PRAYER_CATEGORIES,
+  PrayerRequestCategory,
+} from '@/src/services/prayerRequest';
 import { useAuthSlice, usePrayerRequestSlice } from '@/src/store/slices';
-import { fetchPrayerRequestsThunk, togglePrayedThunk } from '@/src/store/thunks';
-import { BlurView } from 'expo-blur';
+import {
+  fetchPrayerRequestsThunk,
+  togglePrayedThunk,
+} from '@/src/store/thunks';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -16,7 +21,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -26,16 +30,21 @@ export default function PrayerRequestsScreen() {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { requests, userPrayed, isLoadingRequests, error } = usePrayerRequestSlice();
+  const { requests, userPrayed, isLoadingRequests } = usePrayerRequestSlice();
   const { user } = useAuthSlice();
-  const [activeCategory, setActiveCategory] = useState<PrayerRequestCategory | null>(null);
+  const [activeCategory, setActiveCategory] =
+    useState<PrayerRequestCategory | null>(null);
 
   useEffect(() => {
-    dispatch(fetchPrayerRequestsThunk({ category: activeCategory || undefined }));
+    dispatch(
+      fetchPrayerRequestsThunk({ category: activeCategory || undefined }),
+    );
   }, [dispatch, activeCategory]);
 
   const handleRefresh = useCallback(() => {
-    dispatch(fetchPrayerRequestsThunk({ category: activeCategory || undefined }));
+    dispatch(
+      fetchPrayerRequestsThunk({ category: activeCategory || undefined }),
+    );
   }, [dispatch, activeCategory]);
 
   const handlePray = useCallback(
@@ -43,19 +52,19 @@ export default function PrayerRequestsScreen() {
       if (!user?.id) return;
       await dispatch(togglePrayedThunk({ requestId, userId: user.id }));
     },
-    [dispatch, user?.id]
+    [dispatch, user?.id],
   );
 
   const handleCreateRequest = () => {
-    router.push('/ministry/prayer-requests/create' as any);
+    router.push('/create-prayer-request' as any);
   };
 
   const categories = Object.entries(PRAYER_CATEGORIES) as [
     PrayerRequestCategory,
-    { label: string; emoji: string; color: string }
+    { label: string; emoji: string; color: string },
   ][];
 
-  const activeRequests = requests.filter(r => r.status === 'active');
+  const activeRequests = requests.filter((r) => r.status === 'active');
   const totalPrayers = requests.reduce((sum, r) => sum + r.prayerCount, 0);
 
   const renderHeader = () => (
@@ -66,7 +75,10 @@ export default function PrayerRequestsScreen() {
           <IconSymbol name="arrow.left" size={20} color={theme.text} />
         </Pressable>
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text variant="h5" style={{ color: theme.heading, fontWeight: '700' }}>
+          <Text
+            variant="h5"
+            style={{ color: theme.heading, fontWeight: '700' }}
+          >
             Prayer Wall
           </Text>
         </View>
@@ -82,10 +94,20 @@ export default function PrayerRequestsScreen() {
             <View style={[styles.clusterIcon, { backgroundColor: '#EF4444' }]}>
               <IconSymbol name="heart.fill" size={14} color="white" />
             </View>
-            <View style={[styles.clusterIcon, { backgroundColor: '#10B981', marginLeft: -8 }]}>
+            <View
+              style={[
+                styles.clusterIcon,
+                { backgroundColor: '#10B981', marginLeft: -8 },
+              ]}
+            >
               <IconSymbol name="hands.sparkles.fill" size={14} color="white" />
             </View>
-            <View style={[styles.clusterIcon, { backgroundColor: '#8B5CF6', marginLeft: -8 }]}>
+            <View
+              style={[
+                styles.clusterIcon,
+                { backgroundColor: '#8B5CF6', marginLeft: -8 },
+              ]}
+            >
               <IconSymbol name="person.2.fill" size={14} color="white" />
             </View>
           </View>
@@ -94,12 +116,14 @@ export default function PrayerRequestsScreen() {
               Our Community
             </Text>
             <Text style={[styles.communitySubtitle, { color: theme.muted }]}>
-              {activeRequests.length} active requests • {totalPrayers} prayers lifted
+              {activeRequests.length} active requests • {totalPrayers} prayers
+              lifted
             </Text>
           </View>
         </View>
-        <Text style={[styles.communityDesc, { color: theme.textSecondary }]}>
-          When two or more are gathered, He is there. Share your burdens and lift each other up in prayer.
+        <Text style={[styles.communityDesc, { color: theme.muted }]}>
+          When two or more are gathered, He is there. Share your burdens and
+          lift each other up in prayer.
         </Text>
       </View>
 
@@ -115,12 +139,20 @@ export default function PrayerRequestsScreen() {
           style={[
             styles.filterChip,
             {
-              backgroundColor: activeCategory === null ? theme.primary : `${theme.muted}20`,
-              borderColor: activeCategory === null ? theme.primary : 'transparent',
+              backgroundColor:
+                activeCategory === null ? theme.primary : `${theme.muted}20`,
+              borderColor:
+                activeCategory === null ? theme.primary : 'transparent',
             },
           ]}
         >
-          <Text style={{ color: activeCategory === null ? 'white' : theme.muted, fontWeight: '600', fontSize: 13 }}>
+          <Text
+            style={{
+              color: activeCategory === null ? 'white' : theme.muted,
+              fontWeight: '600',
+              fontSize: 13,
+            }}
+          >
             🌟 All
           </Text>
         </TouchableOpacity>
@@ -131,7 +163,8 @@ export default function PrayerRequestsScreen() {
             style={[
               styles.filterChip,
               {
-                backgroundColor: activeCategory === key ? `${cat.color}` : `${cat.color}15`,
+                backgroundColor:
+                  activeCategory === key ? `${cat.color}` : `${cat.color}15`,
                 borderColor: activeCategory === key ? cat.color : 'transparent',
               },
             ]}
@@ -153,16 +186,44 @@ export default function PrayerRequestsScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <View style={[styles.emptyCircle, { backgroundColor: `${theme.primary}10` }]}>
-        <View style={[styles.innerCircle, { backgroundColor: `${theme.primary}20` }]}>
-          <IconSymbol name="hands.sparkles.fill" size={50} color={theme.primary} />
+      <View
+        style={[styles.emptyCircle, { backgroundColor: `${theme.primary}10` }]}
+      >
+        <View
+          style={[
+            styles.innerCircle,
+            { backgroundColor: `${theme.primary}20` },
+          ]}
+        >
+          <IconSymbol
+            name="hands.sparkles.fill"
+            size={50}
+            color={theme.primary}
+          />
         </View>
       </View>
-      <Text variant="h4" style={{ color: theme.heading, fontWeight: '700', marginTop: 24, marginBottom: 8 }}>
+      <Text
+        variant="h4"
+        style={{
+          color: theme.heading,
+          fontWeight: '700',
+          marginTop: 24,
+          marginBottom: 8,
+        }}
+      >
         No Prayer Requests
       </Text>
-      <Text variant="body" style={{ color: theme.muted, textAlign: 'center', paddingHorizontal: 40, marginBottom: 24 }}>
-        Be the first to share a prayer need. Your church family is here to support you.
+      <Text
+        variant="body"
+        style={{
+          color: theme.muted,
+          textAlign: 'center',
+          paddingHorizontal: 40,
+          marginBottom: 24,
+        }}
+      >
+        Be the first to share a prayer need. Your church family is here to
+        support you.
       </Text>
       <Pressable
         onPress={handleCreateRequest}
@@ -176,7 +237,10 @@ export default function PrayerRequestsScreen() {
 
   if (isLoadingRequests && requests.length === 0) {
     return (
-      <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
+      <SafeAreaView
+        edges={['top']}
+        style={{ flex: 1, backgroundColor: theme.background }}
+      >
         {renderHeader()}
         <View style={styles.loadingState}>
           <ActivityIndicator size="large" color={theme.primary} />
@@ -189,7 +253,10 @@ export default function PrayerRequestsScreen() {
   }
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
+    <SafeAreaView
+      edges={['top']}
+      style={{ flex: 1, backgroundColor: theme.background }}
+    >
       <FlatList
         data={requests}
         keyExtractor={(item) => item.id}

@@ -1,5 +1,9 @@
 import { auth, firestore } from '@/src/config/firebase';
-import { handleFirebaseError, toInternationNigeriaPhone } from '@/src/utils';
+import {
+  handleFirebaseError,
+  toInternationNigeriaPhone,
+  serializeFirestoreData,
+} from '@/src/utils';
 import {
   PhoneAuthProvider,
   signInWithCredential,
@@ -13,7 +17,6 @@ import {
   where,
   doc,
 } from 'firebase/firestore';
-import { serializeFirestoreData } from '@/src/utils';
 
 /**
  * Find member by phone number for phone login
@@ -39,7 +42,6 @@ export const findMemberByPhone = async (
       return serializeFirestoreData<UserProfile>({
         ...docData.data(),
         id: docData.id,
-        
       });
     }
 
@@ -55,7 +57,6 @@ export const findMemberByPhone = async (
       return serializeFirestoreData<UserProfile>({
         ...docData.data(),
         id: docData.id,
-        
       });
     }
 
@@ -78,7 +79,9 @@ export const sendPhoneLoginCode = async (
 ): Promise<{ verificationId: string; phoneNumber: string }> => {
   try {
     if (!recaptchaVerifier) {
-      throw new Error('reCAPTCHA verifier is required for phone authentication');
+      throw new Error(
+        'reCAPTCHA verifier is required for phone authentication',
+      );
     }
 
     const normalizedPhone = toInternationNigeriaPhone(phoneNumber);
@@ -136,7 +139,6 @@ export const verifyPhoneLoginCode = async (
         verified: true,
         phoneVerified: true,
         lastLoginAt: new Date().toISOString(),
-        
       };
     } else {
       // Try to find member by UID
@@ -149,7 +151,6 @@ export const verifyPhoneLoginCode = async (
         const memberData = serializeFirestoreData<UserProfile>({
           ...docData.data(),
           id: docData.id,
-          
         });
 
         // Update last login

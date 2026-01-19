@@ -2,7 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from 'firebase/app';
 // @ts-ignore
 import { getReactNativePersistence, initializeAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { Platform } from 'react-native';
 
@@ -31,9 +35,16 @@ const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 
-// Initialize other services
-const firestore = getFirestore(app);
+// Initialize Firestore with offline persistence enabled
+// React Native supports persistent cache with multi-tab support
+const firestore = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
+
+const db = firestore; // Alias for consistency
 const storage = getStorage(app);
 
-export { auth, firestore, storage };
+export { auth, db, firestore, storage };
 export default app;

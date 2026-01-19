@@ -7,7 +7,11 @@ import {
   fetchUpcomingBibleStudySessionsThunk,
   fetchBibleStudyTopicsThunk,
 } from '../thunks/bibleStudyThunks';
-import type { BibleStudySession, BibleStudyTopic, BibleStudyType } from '@/src/services/bibleStudy';
+import type {
+  BibleStudySession,
+  BibleStudyTopic,
+  BibleStudyType,
+} from '@/src/services/bibleStudy';
 import { DEFAULT_BIBLE_STUDY_TOPICS } from '@/src/services/bibleStudy';
 
 interface BibleStudyState {
@@ -93,14 +97,20 @@ const bibleStudySlice = createSlice({
         state.isLoadingUpcoming = true;
         state.error = null;
       })
-      .addCase(fetchUpcomingBibleStudySessionsThunk.fulfilled, (state, action) => {
-        state.isLoadingUpcoming = false;
-        state.upcomingSessions = action.payload;
-      })
-      .addCase(fetchUpcomingBibleStudySessionsThunk.rejected, (state, action) => {
-        state.isLoadingUpcoming = false;
-        state.error = action.payload as string;
-      });
+      .addCase(
+        fetchUpcomingBibleStudySessionsThunk.fulfilled,
+        (state, action) => {
+          state.isLoadingUpcoming = false;
+          state.upcomingSessions = action.payload;
+        },
+      )
+      .addCase(
+        fetchUpcomingBibleStudySessionsThunk.rejected,
+        (state, action) => {
+          state.isLoadingUpcoming = false;
+          state.error = action.payload as string;
+        },
+      );
 
     // Fetch topics
     builder
@@ -110,7 +120,10 @@ const bibleStudySlice = createSlice({
       })
       .addCase(fetchBibleStudyTopicsThunk.fulfilled, (state, action) => {
         state.isLoadingTopics = false;
-        state.topics = action.payload.length > 0 ? action.payload : DEFAULT_BIBLE_STUDY_TOPICS;
+        state.topics =
+          action.payload.length > 0
+            ? action.payload
+            : DEFAULT_BIBLE_STUDY_TOPICS;
       })
       .addCase(fetchBibleStudyTopicsThunk.rejected, (state, action) => {
         state.isLoadingTopics = false;
@@ -119,11 +132,8 @@ const bibleStudySlice = createSlice({
   },
 });
 
-export const {
-  clearError,
-  clearCurrentSession,
-  setSelectedType,
-} = bibleStudySlice.actions;
+export const { clearError, clearCurrentSession, setSelectedType } =
+  bibleStudySlice.actions;
 
 export function useBibleStudySlice() {
   return useSelector(({ bibleStudy }: RootState) => bibleStudy);

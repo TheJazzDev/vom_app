@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconSymbol } from '../Icons';
@@ -36,7 +35,10 @@ const TOAST_ICONS: Record<ToastType, string> = {
   info: 'info.circle.fill',
 };
 
-const TOAST_COLORS: Record<ToastType, { bg: string; border: string; icon: string; text: string }> = {
+const TOAST_COLORS: Record<
+  ToastType,
+  { bg: string; border: string; icon: string; text: string }
+> = {
   success: {
     bg: '#ECFDF5',
     border: '#A7F3D0',
@@ -131,16 +133,27 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
         onPress={dismissToast}
         android_ripple={{ color: 'rgba(0,0,0,0.05)' }}
       >
-        <View style={[styles.iconContainer, { backgroundColor: `${colors.icon}15` }]}>
+        <View
+          style={[
+            styles.iconContainer,
+            { backgroundColor: `${colors.icon}15` },
+          ]}
+        >
           <IconSymbol name={iconName as any} size={20} color={colors.icon} />
         </View>
 
         <View style={styles.textContainer}>
-          <Text style={[styles.title, { color: colors.text }]} numberOfLines={1}>
+          <Text
+            style={[styles.title, { color: colors.text }]}
+            numberOfLines={1}
+          >
             {toast.title}
           </Text>
           {toast.message && (
-            <Text style={[styles.message, { color: colors.text }]} numberOfLines={2}>
+            <Text
+              style={[styles.message, { color: colors.text }]}
+              numberOfLines={2}
+            >
               {toast.message}
             </Text>
           )}
@@ -148,7 +161,10 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
 
         {toast.action && (
           <Pressable
-            style={[styles.actionButton, { backgroundColor: `${colors.icon}15` }]}
+            style={[
+              styles.actionButton,
+              { backgroundColor: `${colors.icon}15` },
+            ]}
             onPress={() => {
               toast.action?.onPress();
               dismissToast();

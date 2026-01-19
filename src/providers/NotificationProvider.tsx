@@ -1,14 +1,31 @@
-import React, { createContext, useContext, useEffect, useRef, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  ReactNode,
+} from 'react';
 import * as Notifications from 'expo-notifications';
 import { useRouter } from 'expo-router';
 import { useAuthSlice, useNotificationSlice } from '../store';
-import { Platform } from 'react-native';
+import { Platform, AppState, AppStateStatus } from 'react-native';
+
+// Configure how notifications are handled when app is in foreground
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 interface NotificationContextValue {
   requestPermission: () => Promise<void>;
 }
 
-const NotificationContext = createContext<NotificationContextValue | null>(null);
+const NotificationContext = createContext<NotificationContextValue | null>(
+  null,
+);
 
 interface NotificationProviderProps {
   children: ReactNode;
@@ -25,10 +42,13 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     registerNotifications,
     setPermissionStatus,
     incrementUnreadCount,
+    loadNotifications,
   } = useNotificationSlice();
 
   const hasRegistered = useRef(false);
-  const notificationListener = useRef<Notifications.EventSubscription | null>(null);
+  const notificationListener = useRef<Notifications.EventSubscription | null>(
+    null,
+  );
   const responseListener = useRef<Notifications.EventSubscription | null>(null);
 
   // Setup notification channels for Android
@@ -57,20 +77,22 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     checkPermissionStatus();
 
     // Listen for incoming notifications (app in foreground)
-    notificationListener.current = Notifications.addNotificationReceivedListener(
-      (notification) => {
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
         // Increment unread count when notification received
         incrementUnreadCount();
-        console.log('[NotificationProvider] Notification received:', notification.request.content.title);
-      }
-    );
+
+        // Reload notifications to include the new one
+        if (currentUser?.id) {
+          loadNotifications(currentUser.id);
+        }
+      });
 
     // Listen for notification responses (user tapped notification)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
         handleNotificationResponse(response);
-      }
-    );
+      });
 
     return () => {
       if (notificationListener.current) {
@@ -80,7 +102,41 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
         responseListener.current.remove();
       }
     };
-  }, []);
+  }, [currentUser?.id, incrementUnreadCount, loadNotifications]);
+
+  // Re-check permission status when app comes to foreground
+  useEffect(() => {
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        // App has come to foreground, re-check permission status
+        // This catches cases where user went to settings and enabled notifications
+        const previousStatus = await Notifications.getPermissionsAsync();
+        await checkPermissionStatus();
+
+        // If user just enabled notifications, attempt to register
+        if (previousStatus.status !== 'granted' && currentUser?.id) {
+          const newStatus = await Notifications.getPermissionsAsync();
+          if (newStatus.status === 'granted') {
+            console.log(
+              '[NotificationProvider] Permission granted, registering...',
+            );
+            await registerNotifications(currentUser.id);
+          }
+        }
+
+        console.log('[NotificationProvider] App active, rechecked permissions');
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [currentUser?.id, registerNotifications]);
 
   const setupAndroidChannels = async () => {
     await Promise.all([
@@ -120,7 +176,9 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     }
   };
 
-  const handleNotificationResponse = (response: Notifications.NotificationResponse) => {
+  const handleNotificationResponse = (
+    response: Notifications.NotificationResponse,
+  ) => {
     const data = response.notification.request.content.data;
 
     // Navigate based on notification data
@@ -167,7 +225,9 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
 export function useNotificationProvider() {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error('useNotificationProvider must be used within NotificationProvider');
+    throw new Error(
+      'useNotificationProvider must be used within NotificationProvider',
+    );
   }
   return context;
 }

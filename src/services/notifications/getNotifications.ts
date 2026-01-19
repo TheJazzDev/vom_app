@@ -1,6 +1,6 @@
 import { notificationsRef } from '@/src/config';
 import { serializeFirestoreData } from '@/src/utils';
-import { getDocs, query, where, orderBy, limit } from 'firebase/firestore';
+import { getDocs, query, where, limit } from 'firebase/firestore';
 import { AppNotification } from './types';
 
 /**
@@ -9,21 +9,21 @@ import { AppNotification } from './types';
  */
 export const getNotifications = async (
   userId: string,
-  limitCount: number = 50
+  limitCount: number = 50,
 ): Promise<AppNotification[]> => {
   try {
     // Fetch user-specific notifications
     const userQuery = query(
       notificationsRef,
       where('userId', '==', userId),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     // Fetch global notifications
     const globalQuery = query(
       notificationsRef,
       where('isGlobal', '==', true),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     const [userSnapshot, globalSnapshot] = await Promise.all([
@@ -35,14 +35,14 @@ export const getNotifications = async (
       serializeFirestoreData<AppNotification>({
         id: doc.id,
         ...doc.data(),
-      })
+      }),
     );
 
     const globalNotifications = globalSnapshot.docs.map((doc) =>
       serializeFirestoreData<AppNotification>({
         id: doc.id,
         ...doc.data(),
-      })
+      }),
     );
 
     // Combine and deduplicate (in case a notification is both user-specific and global)
@@ -62,11 +62,17 @@ export const getNotifications = async (
       return dateB - dateA;
     });
 
-    console.log('[NotificationsService] Fetched notifications:', allNotifications.length);
+    console.log(
+      '[NotificationsService] Fetched notifications:',
+      allNotifications.length,
+    );
 
     return allNotifications;
   } catch (error) {
-    console.error('[NotificationsService] Error fetching notifications:', error);
+    console.error(
+      '[NotificationsService] Error fetching notifications:',
+      error,
+    );
     throw error;
   }
 };

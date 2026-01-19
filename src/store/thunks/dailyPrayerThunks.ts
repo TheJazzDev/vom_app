@@ -34,7 +34,7 @@ export const fetchTodaysPrayerThunk = createAsyncThunk<
   try {
     return await getTodaysPrayer();
   } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch today\'s prayer');
+    return rejectWithValue(error.message || "Failed to fetch today's prayer");
   }
 });
 
@@ -43,38 +43,44 @@ export const fetchDailyPrayerByIdThunk = createAsyncThunk<
   DailyPrayer | null,
   { prayerId: string; userId?: string },
   { rejectValue: string }
->('dailyPrayer/fetchById', async ({ prayerId, userId }, { rejectWithValue, dispatch }) => {
-  try {
-    const prayer = await getDailyPrayerById(prayerId);
+>(
+  'dailyPrayer/fetchById',
+  async ({ prayerId, userId }, { rejectWithValue, dispatch }) => {
+    try {
+      const prayer = await getDailyPrayerById(prayerId);
 
-    // Check if user has liked this prayer
-    if (prayer && userId) {
-      const hasLiked = await hasUserLikedPrayer(prayerId, userId);
-      dispatch({
-        type: 'dailyPrayer/setUserLike',
-        payload: { prayerId, liked: hasLiked },
-      });
+      // Check if user has liked this prayer
+      if (prayer && userId) {
+        const hasLiked = await hasUserLikedPrayer(prayerId, userId);
+        dispatch({
+          type: 'dailyPrayer/setUserLike',
+          payload: { prayerId, liked: hasLiked },
+        });
+      }
+
+      return prayer;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch prayer');
     }
-
-    return prayer;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch prayer');
-  }
-});
+  },
+);
 
 // Toggle like
 export const toggleDailyPrayerLikeThunk = createAsyncThunk<
   { prayerId: string; isLiked: boolean },
   { prayerId: string; userId: string },
   { rejectValue: string }
->('dailyPrayer/toggleLike', async ({ prayerId, userId }, { rejectWithValue }) => {
-  try {
-    const isLiked = await toggleDailyPrayerLike(prayerId, userId);
-    return { prayerId, isLiked };
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to toggle like');
-  }
-});
+>(
+  'dailyPrayer/toggleLike',
+  async ({ prayerId, userId }, { rejectWithValue }) => {
+    try {
+      const isLiked = await toggleDailyPrayerLike(prayerId, userId);
+      return { prayerId, isLiked };
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to toggle like');
+    }
+  },
+);
 
 // Fetch comments
 export const fetchDailyPrayerCommentsThunk = createAsyncThunk<
@@ -97,24 +103,30 @@ export const addDailyPrayerCommentThunk = createAsyncThunk<
     comment: Omit<DailyPrayerComment, 'id' | 'createdAt'>;
   },
   { rejectValue: string }
->('dailyPrayer/addComment', async ({ prayerId, comment }, { rejectWithValue }) => {
-  try {
-    return await addDailyPrayerComment(prayerId, comment);
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to add comment');
-  }
-});
+>(
+  'dailyPrayer/addComment',
+  async ({ prayerId, comment }, { rejectWithValue }) => {
+    try {
+      return await addDailyPrayerComment(prayerId, comment);
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to add comment');
+    }
+  },
+);
 
 // Delete comment
 export const deleteDailyPrayerCommentThunk = createAsyncThunk<
   string,
   { prayerId: string; commentId: string },
   { rejectValue: string }
->('dailyPrayer/deleteComment', async ({ prayerId, commentId }, { rejectWithValue }) => {
-  try {
-    await deleteDailyPrayerComment(prayerId, commentId);
-    return commentId;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to delete comment');
-  }
-});
+>(
+  'dailyPrayer/deleteComment',
+  async ({ prayerId, commentId }, { rejectWithValue }) => {
+    try {
+      await deleteDailyPrayerComment(prayerId, commentId);
+      return commentId;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to delete comment');
+    }
+  },
+);

@@ -44,16 +44,16 @@ export default function TestimonyDetailScreen() {
 
   useEffect(() => {
     if (id) {
-      dispatch(
-        fetchTestimonyByIdThunk({ testimonyId: id, userId: user?.id })
-      );
+      dispatch(fetchTestimonyByIdThunk({ testimonyId: id, userId: user?.id }));
       dispatch(fetchTestimonyCommentsThunk(id));
     }
   }, [dispatch, id, user?.id]);
 
   const handleLikeToggle = useCallback(async () => {
     if (!user?.id || !id) return;
-    await dispatch(toggleTestimonyLikeThunk({ testimonyId: id, userId: user.id }));
+    await dispatch(
+      toggleTestimonyLikeThunk({ testimonyId: id, userId: user.id }),
+    );
   }, [dispatch, id, user?.id]);
 
   const handleAddComment = useCallback(
@@ -65,21 +65,23 @@ export default function TestimonyDetailScreen() {
           comment: {
             userId: user.id,
             userName: user.firstName || 'Anonymous',
-            userAvatar: user.profilePic || null,
+            userAvatar: user.avatar || null,
             content,
           },
-        })
+        }),
       );
     },
-    [dispatch, id, user]
+    [dispatch, id, user],
   );
 
   const handleDeleteComment = useCallback(
     async (commentId: string) => {
       if (!id) return;
-      await dispatch(deleteTestimonyCommentThunk({ testimonyId: id, commentId }));
+      await dispatch(
+        deleteTestimonyCommentThunk({ testimonyId: id, commentId }),
+      );
     },
-    [dispatch, id]
+    [dispatch, id],
   );
 
   const handleShare = async () => {
@@ -113,11 +115,7 @@ export default function TestimonyDetailScreen() {
         <Stack.Screen options={{ title: 'Testimony' }} />
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary }}
-            className="mt-4"
-          >
+          <Text variant="body" style={{ color: theme.muted }} className="mt-4">
             Loading testimony...
           </Text>
         </View>
@@ -150,16 +148,16 @@ export default function TestimonyDetailScreen() {
             <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
               <Text className="text-base">{category.emoji}</Text>
             </View>
-            <Text className="text-white/90 font-medium">
-              {category.label}
-            </Text>
+            <Text className="text-white/90 font-medium">{category.label}</Text>
           </View>
           <Text className="text-white font-bold text-2xl mb-2">
             {currentTestimony.title}
           </Text>
           <View className="flex-row items-center gap-2">
             <Text className="text-white/80 text-sm">
-              {currentTestimony.isAnonymous ? 'Anonymous' : currentTestimony.authorName}
+              {currentTestimony.isAnonymous
+                ? 'Anonymous'
+                : currentTestimony.authorName}
             </Text>
             <Text className="text-white/60">•</Text>
             <Text className="text-white/80 text-sm">
@@ -189,30 +187,31 @@ export default function TestimonyDetailScreen() {
           </View>
 
           {/* Media Gallery */}
-          {currentTestimony.mediaUrls && currentTestimony.mediaUrls.length > 0 && (
-            <View className="mb-6">
-              <Text
-                variant="h4"
-                style={{ color: theme.heading }}
-                className="font-bold mb-3"
-              >
-                Photos
-              </Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.mediaScroll}
-              >
-                {currentTestimony.mediaUrls.map((url, index) => (
-                  <Image
-                    key={index}
-                    source={{ uri: url }}
-                    style={styles.mediaImage}
-                  />
-                ))}
-              </ScrollView>
-            </View>
-          )}
+          {currentTestimony.mediaUrls &&
+            currentTestimony.mediaUrls.length > 0 && (
+              <View className="mb-6">
+                <Text
+                  variant="h4"
+                  style={{ color: theme.heading }}
+                  className="font-bold mb-3"
+                >
+                  Photos
+                </Text>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.mediaScroll}
+                >
+                  {currentTestimony.mediaUrls.map((url, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: url }}
+                      style={styles.mediaImage}
+                    />
+                  ))}
+                </ScrollView>
+              </View>
+            )}
 
           {/* Actions */}
           <View
@@ -229,7 +228,7 @@ export default function TestimonyDetailScreen() {
                 <Text className="text-base">💬</Text>
                 <Text
                   variant="body"
-                  style={{ color: theme.textSecondary }}
+                  style={{ color: theme.muted }}
                   className="font-medium"
                 >
                   {currentTestimony.commentsCount}
@@ -268,7 +267,8 @@ export default function TestimonyDetailScreen() {
                   style={{ color: theme.text }}
                   className="italic leading-6"
                 >
-                  "Give thanks to the Lord, for he is good; his love endures forever."
+                  &quot;Give thanks to the Lord, for he is good; his love
+                  endures forever.&quot;
                 </Text>
                 <Text
                   variant="caption"

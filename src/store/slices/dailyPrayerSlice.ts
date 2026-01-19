@@ -10,7 +10,10 @@ import {
   addDailyPrayerCommentThunk,
   deleteDailyPrayerCommentThunk,
 } from '../thunks/dailyPrayerThunks';
-import type { DailyPrayer, DailyPrayerComment } from '@/src/services/dailyPrayer';
+import type {
+  DailyPrayer,
+  DailyPrayerComment,
+} from '@/src/services/dailyPrayer';
 
 interface DailyPrayerState {
   prayers: DailyPrayer[];
@@ -66,7 +69,10 @@ const dailyPrayerSlice = createSlice({
       state.currentPrayer = null;
       state.comments = [];
     },
-    setUserLike: (state, action: PayloadAction<{ prayerId: string; liked: boolean }>) => {
+    setUserLike: (
+      state,
+      action: PayloadAction<{ prayerId: string; liked: boolean }>,
+    ) => {
       state.userLikes[action.payload.prayerId] = action.payload.liked;
     },
   },

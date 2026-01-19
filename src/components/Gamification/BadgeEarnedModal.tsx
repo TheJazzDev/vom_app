@@ -2,17 +2,11 @@ import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import type { Badge } from '@/src/services/gamification/badges';
 import React, { useEffect } from 'react';
-import {
-  Modal,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Modal, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSequence,
-  withSpring,
-  withDelay,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
@@ -45,10 +39,10 @@ export const BadgeEarnedModal: React.FC<BadgeEarnedModalProps> = ({
       shimmer.value = withRepeat(
         withSequence(
           withTiming(1, { duration: 1500 }),
-          withTiming(0, { duration: 1500 })
+          withTiming(0, { duration: 1500 }),
         ),
         -1,
-        true
+        true,
       );
     }
   }, [visible, badges]);
@@ -101,10 +95,7 @@ export const BadgeEarnedModal: React.FC<BadgeEarnedModalProps> = ({
               return (
                 <Animated.View
                   key={badge.id}
-                  style={[
-                    styles.badgeItem,
-                    { backgroundColor: `${color}10` },
-                  ]}
+                  style={[styles.badgeItem, { backgroundColor: `${color}10` }]}
                 >
                   <Animated.View
                     style={[
@@ -115,14 +106,12 @@ export const BadgeEarnedModal: React.FC<BadgeEarnedModalProps> = ({
                   >
                     <Text style={styles.badgeIcon}>{badge.icon}</Text>
                   </Animated.View>
-                  <Text
-                    style={[styles.badgeName, { color: theme.heading }]}
-                  >
+                  <Text style={[styles.badgeName, { color: theme.heading }]}>
                     {badge.name}
                   </Text>
                   <Text
                     variant="caption"
-                    style={[styles.badgeDescription, { color: theme.textSecondary }]}
+                    style={[styles.badgeDescription, { color: theme.muted }]}
                     numberOfLines={2}
                   >
                     {badge.description}

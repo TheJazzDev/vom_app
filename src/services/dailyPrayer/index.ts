@@ -18,31 +18,6 @@ import {
 } from 'firebase/firestore';
 import { serializeFirestoreData } from '@/src/utils';
 
-// Types
-export interface DailyPrayer {
-  id: string;
-  title: string;
-  content: string;
-  scriptureReference: string;
-  scriptureText: string;
-  date: string;
-  authorId: string;
-  authorName: string;
-  likesCount: number;
-  commentsCount: number;
-  isActive: boolean;
-  createdAt: string;
-}
-
-export interface DailyPrayerComment {
-  id: string;
-  userId: string;
-  userName: string;
-  userAvatar: string | null;
-  content: string;
-  createdAt: string;
-}
-
 // Collection reference
 const dailyPrayersRef = collection(firestore, 'dailyPrayers');
 
@@ -116,7 +91,7 @@ export const getTodaysPrayer = async (): Promise<DailyPrayer | null> => {
       id: snapshot.docs[0].id,
     });
   } catch (error) {
-    console.error('Get today\'s prayer error:', error);
+    console.error("Get today's prayer error:", error);
     throw error;
   }
 };
@@ -263,7 +238,10 @@ export const deleteDailyPrayerComment = async (
 
 // Admin: Create daily prayer
 export const createDailyPrayer = async (
-  prayer: Omit<DailyPrayer, 'id' | 'likesCount' | 'commentsCount' | 'createdAt'>,
+  prayer: Omit<
+    DailyPrayer,
+    'id' | 'likesCount' | 'commentsCount' | 'createdAt'
+  >,
 ): Promise<DailyPrayer> => {
   try {
     const newPrayer = {

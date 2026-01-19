@@ -1,10 +1,5 @@
 import { IconSymbol } from '@/src/components/Icons';
-import {
-  BadgeGrid,
-  LevelIndicator,
-  PointsBadge,
-  StreakCounter,
-} from '@/src/components/Gamification';
+import { BadgeGrid } from '@/src/components/Gamification';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import {
@@ -41,7 +36,6 @@ export default function AchievementsScreen() {
     activityLog,
     isLoadingEngagement,
     isLoadingBadges,
-    isLoadingActivity,
   } = useGamificationSlice();
 
   useEffect(() => {
@@ -61,8 +55,12 @@ export default function AchievementsScreen() {
   };
 
   const earnedBadges = getEarnedBadgesCount(badges);
-  const currentLevel = engagement ? LEVELS.find((l) => l.level === engagement.level) : LEVELS[0];
-  const progress = engagement ? getProgressToNextLevel(engagement.points) : { percentage: 0 };
+  const currentLevel = engagement
+    ? LEVELS.find((l) => l.level === engagement.level)
+    : LEVELS[0];
+  const progress = engagement
+    ? getProgressToNextLevel(engagement.points)
+    : { percentage: 0 };
 
   const isLoading = isLoadingEngagement || isLoadingBadges;
 
@@ -74,10 +72,7 @@ export default function AchievementsScreen() {
       >
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary, marginTop: 12 }}
-          >
+          <Text variant="body" style={{ color: theme.muted, marginTop: 12 }}>
             Loading achievements...
           </Text>
         </View>
@@ -131,7 +126,7 @@ export default function AchievementsScreen() {
             </Text>
             {currentLevel?.description && (
               <Text style={styles.levelDescription}>
-                "{currentLevel.description}"
+                &quot;{currentLevel.description}&quot;
               </Text>
             )}
           </View>
@@ -148,16 +143,15 @@ export default function AchievementsScreen() {
                 />
               </View>
               <Text style={styles.progressText}>
-                {Math.round(progress.percentage)}% to Level {engagement.level + 1}
+                {Math.round(progress.percentage)}% to Level{' '}
+                {engagement.level + 1}
               </Text>
             </View>
           )}
 
           {engagement?.level === 14 && (
             <View style={styles.maxLevelBadge}>
-              <Text style={styles.maxLevelText}>
-                MAXIMUM LEVEL ACHIEVED
-              </Text>
+              <Text style={styles.maxLevelText}>MAXIMUM LEVEL ACHIEVED</Text>
             </View>
           )}
         </LinearGradient>
@@ -168,11 +162,13 @@ export default function AchievementsScreen() {
             <Text style={[styles.statValue, { color: theme.brand }]}>
               {formatPoints(engagement?.points || 0)}
             </Text>
-            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
+            <Text style={[styles.statLabel, { color: theme.muted }]}>
               Total Points
             </Text>
           </View>
-          <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
+          <View
+            style={[styles.statDivider, { backgroundColor: theme.border }]}
+          />
           <View style={styles.statItem}>
             <View className="flex-row items-center gap-1">
               <IconSymbol name="flame.fill" size={18} color="#F59E0B" />
@@ -180,16 +176,18 @@ export default function AchievementsScreen() {
                 {engagement?.streakDays || 0}
               </Text>
             </View>
-            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
+            <Text style={[styles.statLabel, { color: theme.muted }]}>
               Day Streak
             </Text>
           </View>
-          <View style={[styles.statDivider, { backgroundColor: theme.border }]} />
+          <View
+            style={[styles.statDivider, { backgroundColor: theme.border }]}
+          />
           <View style={styles.statItem}>
             <Text style={[styles.statValue, { color: '#10B981' }]}>
               {earnedBadges}/{badges.length}
             </Text>
-            <Text style={[styles.statLabel, { color: theme.textSecondary }]}>
+            <Text style={[styles.statLabel, { color: theme.muted }]}>
               Badges
             </Text>
           </View>
@@ -236,14 +234,14 @@ export default function AchievementsScreen() {
                   </View>
                   <View style={styles.activityInfo}>
                     <Text
-                      style={[styles.activityDescription, { color: theme.heading }]}
+                      style={[
+                        styles.activityDescription,
+                        { color: theme.heading },
+                      ]}
                     >
                       {activity.description}
                     </Text>
-                    <Text
-                      variant="caption"
-                      style={{ color: theme.textSecondary }}
-                    >
+                    <Text variant="caption" style={{ color: theme.muted }}>
                       {new Date(activity.createdAt).toLocaleDateString()}
                     </Text>
                   </View>
@@ -291,7 +289,9 @@ export default function AchievementsScreen() {
                   <Text
                     style={[
                       styles.levelCardNumber,
-                      { color: isCurrentLevel ? level.color : theme.textSecondary },
+                      {
+                        color: isCurrentLevel ? level.color : theme.muted,
+                      },
                     ]}
                   >
                     Lv.{level.level}
@@ -307,7 +307,7 @@ export default function AchievementsScreen() {
                   </Text>
                   <Text
                     variant="caption"
-                    style={{ color: theme.textSecondary, textAlign: 'center' }}
+                    style={{ color: theme.muted, textAlign: 'center' }}
                   >
                     {formatPoints(level.minPoints)} pts
                   </Text>

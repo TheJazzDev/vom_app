@@ -26,7 +26,7 @@ export default function RootLayout() {
     SplineSans: require('../assets/fonts/SplineSans-Regular.ttf'),
   });
 
-   useEffect(() => {
+  useEffect(() => {
     async function prepare() {
       try {
         // wait for fonts
@@ -66,11 +66,40 @@ export default function RootLayout() {
               headerStyle: {
                 backgroundColor: theme.background,
               },
+              contentStyle: {
+                backgroundColor: theme.background,
+              },
             }}
           >
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="auth" options={{ headerShown: false }} />
             <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="create-testimony"
+              options={{
+                presentation: 'modal',
+                title: 'Share Testimony',
+                headerShown: true,
+                headerTitleAlign: 'center',
+                headerStyle: {
+                  backgroundColor: theme.background,
+                },
+                headerTintColor: theme.brand,
+              }}
+            />
+            <Stack.Screen
+              name="create-prayer-request"
+              options={{
+                presentation: 'modal',
+                title: 'New Prayer Request',
+                headerShown: true,
+                headerTitleAlign: 'center',
+                headerStyle: {
+                  backgroundColor: theme.background,
+                },
+                headerTintColor: theme.brand,
+              }}
+            />
           </Stack>
         ) : null}
       </Providers>

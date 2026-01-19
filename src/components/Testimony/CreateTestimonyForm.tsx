@@ -1,6 +1,9 @@
 import { Text, View, TextInput, Button } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
-import { TESTIMONY_CATEGORIES, TestimonyCategory } from '@/src/services/testimony';
+import {
+  TESTIMONY_CATEGORIES,
+  TestimonyCategory,
+} from '@/src/services/testimony';
 import React, { useState } from 'react';
 import {
   ScrollView,
@@ -52,7 +55,7 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
 
   const categories = Object.entries(TESTIMONY_CATEGORIES) as [
     TestimonyCategory,
-    { label: string; emoji: string; color: string }
+    { label: string; emoji: string; color: string },
   ][];
 
   return (
@@ -61,7 +64,6 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
-      {/* Encouragement Header */}
       <View
         className="rounded-xl p-4 mb-6"
         style={{ backgroundColor: `${theme.brand}08` }}
@@ -74,8 +76,8 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
               style={{ color: theme.text }}
               className="leading-6"
             >
-              Your testimony can inspire and encourage others in their faith journey.
-              Share how God has worked in your life!
+              Your testimony can inspire and encourage others in their faith
+              journey. Share how God has worked in your life!
             </Text>
           </View>
         </View>
@@ -94,11 +96,11 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
           value={title}
           onChangeText={setTitle}
           placeholder="Give your testimony a title"
-          placeholderTextColor={theme.textSecondary}
+          placeholderTextColor={theme.muted}
           style={[
             styles.input,
             {
-              backgroundColor: theme.inputBackground,
+              backgroundColor: theme.card,
               borderColor: theme.border,
               color: theme.text,
             },
@@ -125,7 +127,7 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
                 styles.categoryChip,
                 {
                   backgroundColor:
-                    category === key ? `${cat.color}20` : theme.inputBackground,
+                    category === key ? `${cat.color}20` : theme.card,
                   borderColor: category === key ? cat.color : theme.border,
                 },
               ]}
@@ -151,14 +153,14 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
           value={content}
           onChangeText={setContent}
           placeholder="Share your testimony... What has God done in your life?"
-          placeholderTextColor={theme.textSecondary}
+          placeholderTextColor={theme.muted}
           multiline
           numberOfLines={8}
           textAlignVertical="top"
           style={[
             styles.textArea,
             {
-              backgroundColor: theme.inputBackground,
+              backgroundColor: theme.card,
               borderColor: theme.border,
               color: theme.text,
             },
@@ -167,7 +169,7 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
         />
         <Text
           variant="caption"
-          style={{ color: theme.textSecondary }}
+          style={{ color: theme.muted }}
           className="text-right mt-1"
         >
           {content.length}/2000
@@ -177,7 +179,7 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
       {/* Options */}
       <View
         className="rounded-xl p-4 mb-6"
-        style={{ backgroundColor: theme.inputBackground }}
+        style={{ backgroundColor: theme.card }}
       >
         <View className="flex-row items-center justify-between">
           <View className="flex-1">
@@ -188,10 +190,7 @@ export const CreateTestimonyForm: React.FC<CreateTestimonyFormProps> = ({
             >
               Share anonymously
             </Text>
-            <Text
-              variant="caption"
-              style={{ color: theme.textSecondary }}
-            >
+            <Text variant="caption" style={{ color: theme.muted }}>
               Your name will not be shown
             </Text>
           </View>

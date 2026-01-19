@@ -49,14 +49,6 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     });
   };
 
-  const getInitials = (name: string) => {
-    const parts = name.split(' ');
-    if (parts.length >= 2) {
-      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-    }
-    return name.slice(0, 2).toUpperCase();
-  };
-
   return (
     <View
       className="flex-row py-3"
@@ -74,10 +66,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
       <View className="flex-1 ml-3">
         <View className="flex-row items-center justify-between mb-1">
           <Text className="font-semibold text-sm">{comment.userName}</Text>
-          <Text
-            className="text-xs"
-            style={{ color: theme.textSecondary }}
-          >
+          <Text className="text-xs" style={{ color: theme.muted }}>
             {formatDate(comment.createdAt)}
           </Text>
         </View>

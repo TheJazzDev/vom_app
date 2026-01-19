@@ -122,7 +122,10 @@ export default function DirectoryDepartments() {
               <IconSymbol name="person.badge.plus" size={24} color="white" />
             </View>
             <View className="flex-1">
-              <Text variant="h5" className="text-white dark:text-white font-bold">
+              <Text
+                variant="h5"
+                className="text-white dark:text-white font-bold"
+              >
                 Want to Join a Department?
               </Text>
               <Text

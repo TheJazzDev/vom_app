@@ -65,7 +65,7 @@ export default function RegistrationScreen() {
           {/* Header */}
           <View className="items-center py-4 mb-6">
             <Text variant="h3">Join Our Community</Text>
-            <Text className="text-center mt-2 text-gray-600 max-w-[90%]">
+            <Text className="text-center mt-2 text-gray-600 dark:text-gray-300 max-w-[90%]">
               Create your account to get started
             </Text>
           </View>
@@ -99,7 +99,7 @@ export default function RegistrationScreen() {
           </View>
 
           <Card variant="outlined" className="mb-8">
-            <Text className="text-gray-700 text-sm text-center">
+            <Text className="text-gray-700 dark:text-gray-300 text-sm text-center">
               We&apos;ll check if you&apos;re already a member and set up your
               account accordingly. New users will be created as guest accounts.
             </Text>
@@ -118,7 +118,9 @@ export default function RegistrationScreen() {
           </AnimatedLoadingButton>
 
           <View className="flex-row items-center justify-center mb-8">
-            <Text className="text-gray-600">Already have an account? </Text>
+            <Text className="text-gray-600 dark:text-gray-300">
+              Already have an account?{' '}
+            </Text>
             <TouchableOpacity onPress={() => router.push('/auth')}>
               <RNText className="text-blue-500 font-medium">Sign In</RNText>
             </TouchableOpacity>

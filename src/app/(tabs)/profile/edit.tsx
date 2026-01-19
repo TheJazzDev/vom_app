@@ -4,6 +4,7 @@ import { useTheme } from '@/src/hooks';
 import { dispatch, useAuthSlice } from '@/src/store';
 import { updateUserProfileThunk } from '@/src/store/thunks/auth';
 import { getUserInitials } from '@/src/utils';
+import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -30,18 +31,80 @@ export default function EditProfile() {
     currentUser?.secondaryPhone || '',
   );
   const [address, setAddress] = useState(currentUser?.address || '');
+  const [avatarUri, setAvatarUri] = useState<string | null>(null);
+
+  const handlePickImage = async () => {
+    try {
+      // Request permissions
+      const permissionResult =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (!permissionResult.granted) {
+        Alert.alert(
+          'Permission Required',
+          'Please allow access to your photo library to change your profile picture.',
+        );
+        return;
+      }
+
+      // Launch image picker
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        setAvatarUri(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    Alert.alert(
+      'Remove Photo',
+      'Are you sure you want to remove your profile photo?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove',
+          style: 'destructive',
+          onPress: () => {
+            setAvatarUri('');
+          },
+        },
+      ],
+    );
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      const updateData: any = {
+        primaryPhone,
+        secondaryPhone,
+        address,
+      };
+
+      // If user picked a new image
+      if (avatarUri) {
+        updateData.avatarUri = avatarUri;
+        updateData.oldAvatarUrl = currentUser?.avatar;
+      }
+      // If user explicitly removed photo (empty string)
+      else if (avatarUri === '') {
+        updateData.avatar = '';
+      }
+
       // Update user profile in database
-      await dispatch(
-        updateUserProfileThunk({
-          primaryPhone,
-          secondaryPhone,
-          address,
-        }),
-      ).unwrap();
+      await dispatch(updateUserProfileThunk(updateData)).unwrap();
 
       Alert.alert('Success', 'Your profile has been updated successfully!', [
         {
@@ -206,7 +269,22 @@ export default function EditProfile() {
               borderColor: theme.primary,
             }}
           >
-            {currentUser?.avatar ? (
+            {avatarUri ? (
+              <Image source={{ uri: avatarUri }} className="w-full h-full" />
+            ) : avatarUri === '' ? (
+              <View
+                className="w-full h-full items-center justify-center"
+                style={{ backgroundColor: theme.primary }}
+              >
+                <Text variant="h1" className="text-white font-bold">
+                  {currentUser?.firstName &&
+                    getUserInitials(
+                      currentUser.firstName,
+                      currentUser.lastName,
+                    )}
+                </Text>
+              </View>
+            ) : currentUser?.avatar ? (
               <Image
                 source={{ uri: currentUser.avatar }}
                 className="w-full h-full"
@@ -233,16 +311,37 @@ export default function EditProfile() {
               borderWidth: 3,
               borderColor: theme.background,
             }}
-            onPress={() =>
-              Alert.alert('Change Photo', 'Photo upload feature coming soon!')
-            }
+            onPress={handlePickImage}
+            disabled={isUploadingPhoto}
           >
-            <IconSymbol name="camera.fill" size={18} color="white" />
+            {isUploadingPhoto ? (
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <IconSymbol name="camera.fill" size={18} color="white" />
+            )}
           </Pressable>
         </View>
-        <Text variant="caption" style={{ color: theme.muted }}>
-          Tap to change profile photo
-        </Text>
+        <View className="flex-row gap-2 items-center">
+          <Text variant="caption" style={{ color: theme.muted }}>
+            Tap to change profile photo
+          </Text>
+          {(avatarUri || currentUser?.avatar) && avatarUri !== '' && (
+            <>
+              <Text variant="caption" style={{ color: theme.muted }}>
+                •
+              </Text>
+              <Pressable onPress={handleRemovePhoto}>
+                <Text
+                  variant="caption"
+                  className="font-semibold"
+                  style={{ color: theme.destructive || '#ef4444' }}
+                >
+                  Remove
+                </Text>
+              </Pressable>
+            </>
+          )}
+        </View>
       </View>
 
       <View className="px-4 pb-6">

@@ -10,7 +10,7 @@ export const getAllBands = async (): Promise<Band[]> => {
       serializeFirestoreData<Band>({
         id: doc.id,
         ...doc.data(),
-      })
+      }),
     );
   } catch (error) {
     console.error('Error fetching bands:', error);
@@ -57,7 +57,7 @@ export const getBandWithMembers = async (
         serializeFirestoreData<UserProfile>({
           id: doc.id,
           ...doc.data(),
-        })
+        }),
       );
     } else {
       // Get members that have this bandId in their bandKeys array
@@ -71,7 +71,7 @@ export const getBandWithMembers = async (
         serializeFirestoreData<UserProfile>({
           id: doc.id,
           ...doc.data(),
-        })
+        }),
       );
     }
 

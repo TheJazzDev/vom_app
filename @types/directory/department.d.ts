@@ -1,11 +1,11 @@
 import { IconSymbolName } from '@/src/components/Icons/IconSymbol';
-import { DepartmentEnum } from '@/src/enum/detartment';
+import { DepartmentEnum } from '@/src/enum/department';
 
 declare global {
   export type DepartmentRole = 'Head' | 'Assistant' | 'Secretary' | 'Treasurer' | 'Member';
 
   type DepartmentKeys =
-    | INTERPRETATIO
+    | INTERPRETATION
     | PROGRAMME
     | MEDIA
     | TREASURY

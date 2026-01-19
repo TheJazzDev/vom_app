@@ -34,7 +34,9 @@ const ForgotPasswordScreen = () => {
   } = useAuthSlice();
 
   const { control, handleSubmit } = useForm<ForgotPasswordFormData>({
-    resolver: yupResolver(forgotPasswordSchema) as Resolver<ForgotPasswordFormData>,
+    resolver: yupResolver(
+      forgotPasswordSchema,
+    ) as Resolver<ForgotPasswordFormData>,
     defaultValues: {
       email: '',
     },
@@ -68,15 +70,17 @@ const ForgotPasswordScreen = () => {
           <Text variant="h2" className="text-center">
             Check Your Email
           </Text>
-          <Text className="text-center mt-3 text-gray-600 px-4">
+          <Text className="text-center mt-3 text-gray-600 dark:text-gray-300 px-4">
             We&apos;ve sent a password reset link to your email address. Please
             check your inbox and follow the instructions to reset your password.
           </Text>
         </View>
 
         <Card variant="outlined" className="p-4 mb-6">
-          <Text className="text-gray-700 text-sm text-center">
-            <Text className="font-semibold">Didn&apos;t receive the email? </Text>
+          <Text className="text-gray-700 dark:text-gray-300 text-sm text-center">
+            <Text className="font-semibold">
+              Didn&apos;t receive the email?{' '}
+            </Text>
             Check your spam folder or request a new reset link.
           </Text>
         </Card>
@@ -118,7 +122,7 @@ const ForgotPasswordScreen = () => {
           <Text variant="h2" className="text-center">
             Reset Password
           </Text>
-          <Text className="text-center mt-2 text-gray-600 px-4">
+          <Text className="text-center mt-2 text-gray-600 dark:text-gray-300 px-4">
             Enter your email address and we&apos;ll send you a link to reset
             your password.
           </Text>
@@ -162,7 +166,7 @@ const ForgotPasswordScreen = () => {
         <Spacer height={24} />
 
         <Card variant="gradient-soft" className="p-4">
-          <Text className="text-gray-700 text-sm text-center">
+          <Text className="text-gray-700 dark:text-gray-300 text-sm text-center">
             <Text className="font-semibold">Remember your password? </Text>
             Go back to sign in and access your account.
           </Text>

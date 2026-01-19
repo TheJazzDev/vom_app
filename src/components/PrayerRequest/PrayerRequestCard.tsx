@@ -2,7 +2,7 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { PrayButton } from '@/src/components/Social/PrayButton';
 import { useTheme } from '@/src/hooks';
-import type { PrayerRequest, PrayerRequestCategory } from '@/src/services/prayerRequest';
+import type { PrayerRequest } from '@/src/services/prayerRequest';
 import { PRAYER_CATEGORIES } from '@/src/services/prayerRequest';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -68,9 +68,13 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
           {request.isAnonymous ? (
             <View
               className="w-10 h-10 rounded-full items-center justify-center"
-              style={{ backgroundColor: `${theme.textSecondary}20` }}
+              style={{ backgroundColor: `${theme.muted}20` }}
             >
-              <IconSymbol name="person.fill.questionmark" size={18} color={theme.textSecondary} />
+              <IconSymbol
+                name="person.fill.questionmark"
+                size={18}
+                color={theme.muted}
+              />
             </View>
           ) : (
             <View
@@ -89,7 +93,7 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
             >
               {request.isAnonymous ? 'Anonymous' : request.authorName}
             </Text>
-            <Text variant="caption" style={{ color: theme.textSecondary }}>
+            <Text variant="caption" style={{ color: theme.muted }}>
               {formatDate(request.createdAt)}
             </Text>
           </View>
@@ -101,8 +105,15 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
             className="px-2 py-1 rounded-full flex-row items-center gap-1"
             style={{ backgroundColor: '#FEE2E2' }}
           >
-            <IconSymbol name="exclamationmark.triangle.fill" size={12} color="#EF4444" />
-            <Text className="text-xs font-semibold" style={{ color: '#EF4444' }}>
+            <IconSymbol
+              name="exclamationmark.triangle.fill"
+              size={12}
+              color="#EF4444"
+            />
+            <Text
+              className="text-xs font-semibold"
+              style={{ color: '#EF4444' }}
+            >
               Urgent
             </Text>
           </View>
@@ -147,7 +158,7 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
       {/* Content */}
       <Text
         variant="body"
-        style={{ color: theme.textSecondary }}
+        style={{ color: theme.muted }}
         className="leading-6 mb-4"
         numberOfLines={showFullContent ? undefined : 3}
       >
@@ -167,7 +178,7 @@ export const PrayerRequestCard: React.FC<PrayerRequestCardProps> = ({
           )}
           <View className="flex-row items-center gap-1">
             <Text className="text-sm">💬</Text>
-            <Text variant="caption" style={{ color: theme.textSecondary }}>
+            <Text variant="caption" style={{ color: theme.muted }}>
               {request.commentsCount}
             </Text>
           </View>

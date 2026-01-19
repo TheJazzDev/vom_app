@@ -92,7 +92,7 @@ export const PrayButton: React.FC<PrayButtonProps> = ({
             <Text
               style={{
                 fontSize: config.fontSize,
-                color: hasPrayed ? theme.brand : theme.textSecondary,
+                color: hasPrayed ? theme.brand : theme.muted,
               }}
               className="font-medium"
             >
@@ -144,7 +144,7 @@ export const PrayButton: React.FC<PrayButtonProps> = ({
             <Text
               style={{
                 fontSize: config.fontSize - 2,
-                color: hasPrayed ? 'rgba(255,255,255,0.8)' : theme.textSecondary,
+                color: hasPrayed ? 'rgba(255,255,255,0.8)' : theme.muted,
               }}
             >
               ({prayerCount})

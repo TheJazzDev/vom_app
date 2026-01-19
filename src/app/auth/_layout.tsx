@@ -18,6 +18,9 @@ export default function DirectoryLayout() {
         headerStyle: {
           backgroundColor: theme.background,
         },
+        contentStyle: {
+          backgroundColor: theme.background,
+        },
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Sign In' }} />

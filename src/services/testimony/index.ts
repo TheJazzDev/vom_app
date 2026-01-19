@@ -17,45 +17,6 @@ import {
 } from 'firebase/firestore';
 import { serializeFirestoreData } from '@/src/utils';
 
-// Types
-export type TestimonyCategory =
-  | 'healing'
-  | 'provision'
-  | 'deliverance'
-  | 'salvation'
-  | 'restoration'
-  | 'breakthrough'
-  | 'protection'
-  | 'other';
-
-export type TestimonyStatus = 'pending' | 'approved' | 'rejected';
-
-export interface Testimony {
-  id: string;
-  title: string;
-  content: string;
-  category: TestimonyCategory;
-  status: TestimonyStatus;
-  isAnonymous: boolean;
-  authorId: string;
-  authorName: string;
-  authorAvatar: string | null;
-  likesCount: number;
-  commentsCount: number;
-  mediaUrls: string[];
-  createdAt: string;
-  approvedAt: string | null;
-}
-
-export interface TestimonyComment {
-  id: string;
-  userId: string;
-  userName: string;
-  userAvatar: string | null;
-  content: string;
-  createdAt: string;
-}
-
 // Collection reference
 const testimoniesRef = collection(firestore, 'testimonies');
 
@@ -66,7 +27,7 @@ export const getTestimonies = async (
     category?: TestimonyCategory;
     userId?: string;
     status?: TestimonyStatus;
-  } = {}
+  } = {},
 ): Promise<Testimony[]> => {
   try {
     const { limitCount = 20, category, userId, status = 'approved' } = options;
@@ -75,7 +36,7 @@ export const getTestimonies = async (
       testimoniesRef,
       where('status', '==', status),
       orderBy('createdAt', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     if (category) {
@@ -84,7 +45,7 @@ export const getTestimonies = async (
         where('status', '==', status),
         where('category', '==', category),
         orderBy('createdAt', 'desc'),
-        limit(limitCount)
+        limit(limitCount),
       );
     }
 
@@ -93,7 +54,7 @@ export const getTestimonies = async (
         testimoniesRef,
         where('authorId', '==', userId),
         orderBy('createdAt', 'desc'),
-        limit(limitCount)
+        limit(limitCount),
       );
     }
 
@@ -103,7 +64,7 @@ export const getTestimonies = async (
       serializeFirestoreData<Testimony>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get testimonies error:', error);
@@ -113,7 +74,7 @@ export const getTestimonies = async (
 
 // Get testimony by ID
 export const getTestimonyById = async (
-  testimonyId: string
+  testimonyId: string,
 ): Promise<Testimony | null> => {
   try {
     const docRef = doc(testimoniesRef, testimonyId);
@@ -133,7 +94,10 @@ export const getTestimonyById = async (
 
 // Create testimony
 export const createTestimony = async (
-  testimony: Omit<Testimony, 'id' | 'likesCount' | 'commentsCount' | 'createdAt' | 'approvedAt'>
+  testimony: Omit<
+    Testimony,
+    'id' | 'likesCount' | 'commentsCount' | 'createdAt' | 'approvedAt'
+  >,
 ): Promise<Testimony> => {
   try {
     const newTestimony = {
@@ -162,7 +126,9 @@ export const createTestimony = async (
 // Update testimony
 export const updateTestimony = async (
   testimonyId: string,
-  updates: Partial<Pick<Testimony, 'title' | 'content' | 'category' | 'mediaUrls'>>
+  updates: Partial<
+    Pick<Testimony, 'title' | 'content' | 'category' | 'mediaUrls'>
+  >,
 ): Promise<void> => {
   try {
     const testimonyRef = doc(testimoniesRef, testimonyId);
@@ -187,10 +153,13 @@ export const deleteTestimony = async (testimonyId: string): Promise<void> => {
 // Toggle like
 export const toggleTestimonyLike = async (
   testimonyId: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> => {
   try {
-    const likeRef = doc(firestore, `testimonies/${testimonyId}/likes/${userId}`);
+    const likeRef = doc(
+      firestore,
+      `testimonies/${testimonyId}/likes/${userId}`,
+    );
     const testimonyRef = doc(testimoniesRef, testimonyId);
     const likeSnap = await getDoc(likeRef);
 
@@ -217,10 +186,13 @@ export const toggleTestimonyLike = async (
 // Check if user has liked
 export const hasUserLikedTestimony = async (
   testimonyId: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> => {
   try {
-    const likeRef = doc(firestore, `testimonies/${testimonyId}/likes/${userId}`);
+    const likeRef = doc(
+      firestore,
+      `testimonies/${testimonyId}/likes/${userId}`,
+    );
     const likeSnap = await getDoc(likeRef);
     return likeSnap.exists();
   } catch (error) {
@@ -231,12 +203,12 @@ export const hasUserLikedTestimony = async (
 
 // Get comments
 export const getTestimonyComments = async (
-  testimonyId: string
+  testimonyId: string,
 ): Promise<TestimonyComment[]> => {
   try {
     const commentsRef = collection(
       firestore,
-      `testimonies/${testimonyId}/comments`
+      `testimonies/${testimonyId}/comments`,
     );
     const q = query(commentsRef, orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -245,7 +217,7 @@ export const getTestimonyComments = async (
       serializeFirestoreData<TestimonyComment>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get testimony comments error:', error);
@@ -256,12 +228,12 @@ export const getTestimonyComments = async (
 // Add comment
 export const addTestimonyComment = async (
   testimonyId: string,
-  comment: Omit<TestimonyComment, 'id' | 'createdAt'>
+  comment: Omit<TestimonyComment, 'id' | 'createdAt'>,
 ): Promise<TestimonyComment> => {
   try {
     const commentsRef = collection(
       firestore,
-      `testimonies/${testimonyId}/comments`
+      `testimonies/${testimonyId}/comments`,
     );
     const testimonyRef = doc(testimoniesRef, testimonyId);
 
@@ -287,12 +259,12 @@ export const addTestimonyComment = async (
 // Delete comment
 export const deleteTestimonyComment = async (
   testimonyId: string,
-  commentId: string
+  commentId: string,
 ): Promise<void> => {
   try {
     const commentRef = doc(
       firestore,
-      `testimonies/${testimonyId}/comments/${commentId}`
+      `testimonies/${testimonyId}/comments/${commentId}`,
     );
     const testimonyRef = doc(testimoniesRef, testimonyId);
 
@@ -305,7 +277,10 @@ export const deleteTestimonyComment = async (
 };
 
 // Category display helpers
-export const TESTIMONY_CATEGORIES: Record<TestimonyCategory, { label: string; emoji: string; color: string }> = {
+export const TESTIMONY_CATEGORIES: Record<
+  TestimonyCategory,
+  { label: string; emoji: string; color: string }
+> = {
   healing: { label: 'Healing', emoji: '🏥', color: '#EF4444' },
   provision: { label: 'Provision', emoji: '🎁', color: '#10B981' },
   deliverance: { label: 'Deliverance', emoji: '⛓️', color: '#8B5CF6' },

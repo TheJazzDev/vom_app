@@ -30,7 +30,7 @@ export const fetchUserEngagementThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch engagement');
     }
-  }
+  },
 );
 
 // Initialize user engagement (for new users)
@@ -41,9 +41,11 @@ export const initializeEngagementThunk = createAsyncThunk(
       const engagement = await initializeUserEngagement(odUserId);
       return engagement;
     } catch (error: any) {
-      return rejectWithValue(error.message || 'Failed to initialize engagement');
+      return rejectWithValue(
+        error.message || 'Failed to initialize engagement',
+      );
     }
-  }
+  },
 );
 
 // Award points
@@ -59,7 +61,7 @@ export const awardPointsThunk = createAsyncThunk(
       activityType: ActivityType;
       customPoints?: number;
     },
-    { rejectWithValue, dispatch }
+    { rejectWithValue, dispatch },
   ) => {
     try {
       const result = await awardPoints(odUserId, activityType, customPoints);
@@ -74,7 +76,7 @@ export const awardPointsThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to award points');
     }
-  }
+  },
 );
 
 // Update streak (call on app open/daily login)
@@ -93,7 +95,7 @@ export const updateStreakThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to update streak');
     }
-  }
+  },
 );
 
 // Fetch leaderboard
@@ -107,7 +109,7 @@ export const fetchLeaderboardThunk = createAsyncThunk(
       type?: 'weekly' | 'monthly' | 'allTime';
       limit?: number;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const leaderboard = await getLeaderboard(type, limit);
@@ -115,7 +117,7 @@ export const fetchLeaderboardThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch leaderboard');
     }
-  }
+  },
 );
 
 // Fetch user rank
@@ -128,7 +130,7 @@ export const fetchUserRankThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch user rank');
     }
-  }
+  },
 );
 
 // Fetch user badges
@@ -141,7 +143,7 @@ export const fetchUserBadgesThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch badges');
     }
-  }
+  },
 );
 
 // Check and award badges
@@ -154,7 +156,7 @@ export const checkBadgesThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to check badges');
     }
-  }
+  },
 );
 
 // Fetch activity log
@@ -162,7 +164,7 @@ export const fetchActivityLogThunk = createAsyncThunk(
   'gamification/fetchActivityLog',
   async (
     { odUserId, limit = 20 }: { odUserId: string; limit?: number },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const activityLog = await getActivityLog(odUserId, limit);
@@ -170,7 +172,7 @@ export const fetchActivityLogThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch activity log');
     }
-  }
+  },
 );
 
 // Combined action: Daily login check (updates streak + awards daily points)
@@ -187,7 +189,7 @@ export const dailyLoginCheckThunk = createAsyncThunk(
           awardPointsThunk({
             odUserId,
             activityType: 'daily_login',
-          })
+          }),
         ).unwrap();
       }
 
@@ -198,5 +200,5 @@ export const dailyLoginCheckThunk = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to process daily login');
     }
-  }
+  },
 );

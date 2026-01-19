@@ -16,8 +16,10 @@ import authReducer from './slices/authSlice';
 import bibleStudyReducer from './slices/bibleStudySlice';
 import dailyPrayerReducer from './slices/dailyPrayerSlice';
 import directoryReducer from './slices/directorySlice';
+import firstTimerReducer from './slices/firstTimerSlice';
 import gamificationReducer from './slices/gamificationSlice';
 import notificationReducer from './slices/notificationSlice';
+import offlineReducer from './slices/offlineSlice';
 import prayerRequestReducer from './slices/prayerRequestSlice';
 import programmeReduder from './slices/programmeSlice';
 import sermonReducer from './slices/sermonSlice';
@@ -61,16 +63,30 @@ const authPersistConfig = {
   transforms: [authTransform],
 };
 
-// Persist only the auth slice
+// Persist the auth slice
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
+// Persist config for offline queue
+const offlinePersistConfig = {
+  key: 'offline',
+  storage: AsyncStorage,
+  whitelist: ['queue', 'lastSyncTime'], // Only persist queue and sync time
+};
+
+const persistedOfflineReducer = persistReducer(
+  offlinePersistConfig,
+  offlineReducer,
+);
 
 const rootReducer = combineReducers({
   auth: persistedAuthReducer,
   bibleStudy: bibleStudyReducer,
   dailyPrayer: dailyPrayerReducer,
   directory: directoryReducer,
+  firstTimers: firstTimerReducer,
   gamification: gamificationReducer,
   notification: notificationReducer,
+  offline: persistedOfflineReducer,
   prayerRequest: prayerRequestReducer,
   programme: programmeReduder,
   sermon: sermonReducer,
@@ -80,12 +96,24 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
+  middleware: (getDefaultMiddleware) => {
+    const middleware = getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    });
+
+    // Add performance middleware in development
+    if (__DEV__) {
+      const {
+        performanceMiddleware,
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+      } = require('./middleware/performanceMiddleware');
+      return middleware.concat(performanceMiddleware);
+    }
+
+    return middleware;
+  },
 });
 
 export const persistor = persistStore(store);

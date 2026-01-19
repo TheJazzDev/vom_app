@@ -1,11 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   children: ReactNode;
@@ -56,15 +50,14 @@ class ErrorBoundary extends Component<Props, State> {
             <Text style={styles.emoji}>😔</Text>
             <Text style={styles.title}>Oops! Something went wrong</Text>
             <Text style={styles.message}>
-              We're sorry, but something unexpected happened. Please try again.
+              We&apos;re sorry, but something unexpected happened. Please try
+              again.
             </Text>
 
             {__DEV__ && this.state.error && (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorTitle}>Error Details:</Text>
-                <Text style={styles.errorText}>
-                  {this.state.error.message}
-                </Text>
+                <Text style={styles.errorText}>{this.state.error.message}</Text>
               </View>
             )}
 

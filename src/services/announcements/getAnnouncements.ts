@@ -13,7 +13,7 @@ export const getAnnouncements = async (): Promise<Announcement[]> => {
       serializeFirestoreData<Announcement>({
         id: doc.id,
         ...doc.data(),
-      })
+      }),
     );
 
     // Filter for published announcements and sort by date in memory

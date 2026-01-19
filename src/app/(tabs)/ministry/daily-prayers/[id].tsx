@@ -42,16 +42,16 @@ export default function DailyPrayerDetailScreen() {
 
   useEffect(() => {
     if (id) {
-      dispatch(
-        fetchDailyPrayerByIdThunk({ prayerId: id, userId: user?.id })
-      );
+      dispatch(fetchDailyPrayerByIdThunk({ prayerId: id, userId: user?.id }));
       dispatch(fetchDailyPrayerCommentsThunk(id));
     }
   }, [dispatch, id, user?.id]);
 
   const handleLikeToggle = useCallback(async () => {
     if (!user?.id || !id) return;
-    await dispatch(toggleDailyPrayerLikeThunk({ prayerId: id, userId: user.id }));
+    await dispatch(
+      toggleDailyPrayerLikeThunk({ prayerId: id, userId: user.id }),
+    );
   }, [dispatch, id, user?.id]);
 
   const handleAddComment = useCallback(
@@ -63,21 +63,23 @@ export default function DailyPrayerDetailScreen() {
           comment: {
             userId: user.id,
             userName: user.firstName || 'Anonymous',
-            userAvatar: user.profilePic || null,
+            userAvatar: user.avatar || null,
             content,
           },
-        })
+        }),
       );
     },
-    [dispatch, id, user]
+    [dispatch, id, user],
   );
 
   const handleDeleteComment = useCallback(
     async (commentId: string) => {
       if (!id) return;
-      await dispatch(deleteDailyPrayerCommentThunk({ prayerId: id, commentId }));
+      await dispatch(
+        deleteDailyPrayerCommentThunk({ prayerId: id, commentId }),
+      );
     },
-    [dispatch, id]
+    [dispatch, id],
   );
 
   const handleShare = async () => {
@@ -111,11 +113,7 @@ export default function DailyPrayerDetailScreen() {
         <Stack.Screen options={{ title: 'Daily Prayer' }} />
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary }}
-            className="mt-4"
-          >
+          <Text variant="body" style={{ color: theme.muted }} className="mt-4">
             Loading prayer...
           </Text>
         </View>
@@ -163,7 +161,10 @@ export default function DailyPrayerDetailScreen() {
         <View className="px-4">
           {/* Scripture Box */}
           <View
-            style={[styles.scriptureBox, { backgroundColor: `${theme.brand}08` }]}
+            style={[
+              styles.scriptureBox,
+              { backgroundColor: `${theme.brand}08` },
+            ]}
           >
             <View className="flex-row items-start gap-2 mb-2">
               <Text className="text-lg">📖</Text>
@@ -173,7 +174,7 @@ export default function DailyPrayerDetailScreen() {
                   style={{ color: theme.text }}
                   className="italic leading-6"
                 >
-                  "{currentPrayer.scriptureText}"
+                  &quot;{currentPrayer.scriptureText}&quot;
                 </Text>
               </View>
             </View>
@@ -193,7 +194,7 @@ export default function DailyPrayerDetailScreen() {
               style={{ color: theme.heading }}
               className="font-bold mb-3"
             >
-              Today's Reflection
+              Today&apos;s Reflection
             </Text>
             <Text
               variant="body"
@@ -219,7 +220,7 @@ export default function DailyPrayerDetailScreen() {
                 <Text className="text-base">💬</Text>
                 <Text
                   variant="body"
-                  style={{ color: theme.textSecondary }}
+                  style={{ color: theme.muted }}
                   className="font-medium"
                 >
                   {currentPrayer.commentsCount}

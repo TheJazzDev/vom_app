@@ -13,7 +13,11 @@ import {
   addPrayerRequestCommentThunk,
   deletePrayerRequestCommentThunk,
 } from '../thunks/prayerRequestThunks';
-import type { PrayerRequest, PrayerRequestComment, PrayerRequestCategory } from '@/src/services/prayerRequest';
+import type {
+  PrayerRequest,
+  PrayerRequestComment,
+  PrayerRequestCategory,
+} from '@/src/services/prayerRequest';
 
 interface PrayerRequestState {
   requests: PrayerRequest[];
@@ -75,10 +79,16 @@ const prayerRequestSlice = createSlice({
       state.currentRequest = null;
       state.comments = [];
     },
-    setSelectedCategory: (state, action: PayloadAction<PrayerRequestCategory | null>) => {
+    setSelectedCategory: (
+      state,
+      action: PayloadAction<PrayerRequestCategory | null>,
+    ) => {
       state.selectedCategory = action.payload;
     },
-    setUserPrayed: (state, action: PayloadAction<{ requestId: string; prayed: boolean }>) => {
+    setUserPrayed: (
+      state,
+      action: PayloadAction<{ requestId: string; prayed: boolean }>,
+    ) => {
       state.userPrayed[action.payload.requestId] = action.payload.prayed;
     },
   },
@@ -179,7 +189,9 @@ const prayerRequestSlice = createSlice({
         state.userPrayed[requestId] = hasPrayed;
 
         // Update prayer count in requests list
-        const requestIndex = state.requests.findIndex((r) => r.id === requestId);
+        const requestIndex = state.requests.findIndex(
+          (r) => r.id === requestId,
+        );
         if (requestIndex !== -1) {
           state.requests[requestIndex].prayerCount += hasPrayed ? 1 : -1;
         }

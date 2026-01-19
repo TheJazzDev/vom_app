@@ -1,7 +1,7 @@
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import React, { useEffect } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -18,8 +18,6 @@ interface PointsAnimationProps {
   visible: boolean;
   onComplete: () => void;
 }
-
-const { width } = Dimensions.get('window');
 
 export const PointsAnimation: React.FC<PointsAnimationProps> = ({
   points,
@@ -46,29 +44,26 @@ export const PointsAnimation: React.FC<PointsAnimationProps> = ({
           1500,
           withTiming(0, { duration: 300 }, () => {
             runOnJS(onComplete)();
-          })
-        )
+          }),
+        ),
       );
 
       translateY.value = withSequence(
         withTiming(0, { duration: 300, easing: Easing.out(Easing.back(1.5)) }),
-        withDelay(1500, withTiming(-30, { duration: 300 }))
+        withDelay(1500, withTiming(-30, { duration: 300 })),
       );
 
       scale.value = withSequence(
         withTiming(1.2, { duration: 200 }),
         withTiming(1, { duration: 100 }),
-        withDelay(1400, withTiming(0.8, { duration: 200 }))
+        withDelay(1400, withTiming(0.8, { duration: 200 })),
       );
     }
   }, [visible]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    transform: [
-      { translateY: translateY.value },
-      { scale: scale.value },
-    ],
+    transform: [{ translateY: translateY.value }, { scale: scale.value }],
   }));
 
   if (!visible) return null;
@@ -85,7 +80,7 @@ export const PointsAnimation: React.FC<PointsAnimationProps> = ({
         <Text style={[styles.pointsText, { color: theme.brand }]}>
           +{points}
         </Text>
-        <Text variant="caption" style={{ color: theme.textSecondary }}>
+        <Text variant="caption" style={{ color: theme.muted }}>
           {description}
         </Text>
       </Animated.View>

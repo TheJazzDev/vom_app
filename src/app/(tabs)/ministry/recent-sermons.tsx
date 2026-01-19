@@ -33,15 +33,11 @@ export default function RecentSermonsScreen() {
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    sermons,
-    featuredSermons,
-    series,
-    isLoadingSermons,
-    isLoadingFeatured,
-    error,
-  } = useSermonSlice();
-  const [activeCategory, setActiveCategory] = useState<SermonCategory | null>(null);
+  const { sermons, featuredSermons, series, isLoadingSermons } =
+    useSermonSlice();
+  const [activeCategory, setActiveCategory] = useState<SermonCategory | null>(
+    null,
+  );
 
   useEffect(() => {
     dispatch(fetchSermonsThunk({ category: activeCategory || undefined }));
@@ -57,7 +53,7 @@ export default function RecentSermonsScreen() {
 
   const categories = Object.entries(SERMON_CATEGORIES) as [
     SermonCategory,
-    { label: string; emoji: string; color: string }
+    { label: string; emoji: string; color: string },
   ][];
 
   const renderHeader = () => (
@@ -83,7 +79,8 @@ export default function RecentSermonsScreen() {
           </View>
         </View>
         <Text className="text-white/90 leading-6">
-          Watch and listen to powerful messages from our ministers to strengthen your faith.
+          Watch and listen to powerful messages from our ministers to strengthen
+          your faith.
         </Text>
       </LinearGradient>
 
@@ -99,8 +96,10 @@ export default function RecentSermonsScreen() {
             style={[
               styles.categoryChip,
               {
-                backgroundColor: activeCategory === null ? theme.brand : theme.card,
-                borderColor: activeCategory === null ? theme.brand : theme.border,
+                backgroundColor:
+                  activeCategory === null ? theme.brand : theme.card,
+                borderColor:
+                  activeCategory === null ? theme.brand : theme.border,
               },
             ]}
           >
@@ -120,8 +119,10 @@ export default function RecentSermonsScreen() {
               style={[
                 styles.categoryChip,
                 {
-                  backgroundColor: activeCategory === key ? `${category.color}20` : theme.card,
-                  borderColor: activeCategory === key ? category.color : theme.border,
+                  backgroundColor:
+                    activeCategory === key ? `${category.color}20` : theme.card,
+                  borderColor:
+                    activeCategory === key ? category.color : theme.border,
                 },
               ]}
             >
@@ -150,7 +151,7 @@ export default function RecentSermonsScreen() {
             </Text>
             <View className="flex-row items-center gap-1">
               <IconSymbol name="flame.fill" size={16} color="#F59E0B" />
-              <Text variant="caption" style={{ color: theme.textSecondary }}>
+              <Text variant="caption" style={{ color: theme.muted }}>
                 Most Viewed
               </Text>
             </View>
@@ -177,7 +178,9 @@ export default function RecentSermonsScreen() {
                   <View
                     style={[
                       styles.featuredThumbnail,
-                      { backgroundColor: `${category?.color || theme.brand}15` },
+                      {
+                        backgroundColor: `${category?.color || theme.brand}15`,
+                      },
                     ]}
                   >
                     {sermon.thumbnailUrl ? (
@@ -214,7 +217,7 @@ export default function RecentSermonsScreen() {
                     </Text>
                     <Text
                       variant="caption"
-                      style={{ color: theme.textSecondary }}
+                      style={{ color: theme.muted }}
                       className="mt-1"
                     >
                       {sermon.preacher}
@@ -265,7 +268,11 @@ export default function RecentSermonsScreen() {
                   className="w-12 h-12 rounded-lg items-center justify-center mb-2"
                   style={{ backgroundColor: `${theme.brand}15` }}
                 >
-                  <IconSymbol name="folder.fill" size={24} color={theme.brand} />
+                  <IconSymbol
+                    name="folder.fill"
+                    size={24}
+                    color={theme.brand}
+                  />
                 </View>
                 <Text
                   variant="body"
@@ -275,7 +282,7 @@ export default function RecentSermonsScreen() {
                 >
                   {s.title}
                 </Text>
-                <Text variant="caption" style={{ color: theme.textSecondary }}>
+                <Text variant="caption" style={{ color: theme.muted }}>
                   {s.sermonsCount} sermons
                 </Text>
               </TouchableOpacity>
@@ -291,7 +298,9 @@ export default function RecentSermonsScreen() {
           style={{ color: theme.heading }}
           className="font-bold"
         >
-          {activeCategory ? SERMON_CATEGORIES[activeCategory].label : 'All Sermons'}
+          {activeCategory
+            ? SERMON_CATEGORIES[activeCategory].label
+            : 'All Sermons'}
         </Text>
       </View>
     </>
@@ -351,7 +360,7 @@ export default function RecentSermonsScreen() {
               </Text>
               <Text
                 variant="caption"
-                style={{ color: theme.textSecondary }}
+                style={{ color: theme.muted }}
                 className="mt-1"
               >
                 {item.preacher} • {item.preacherTitle}
@@ -359,7 +368,9 @@ export default function RecentSermonsScreen() {
               <View className="flex-row items-center gap-2 mt-2">
                 <View
                   className="px-2 py-1 rounded-full"
-                  style={{ backgroundColor: `${category?.color || theme.brand}15` }}
+                  style={{
+                    backgroundColor: `${category?.color || theme.brand}15`,
+                  }}
                 >
                   <Text
                     className="text-xs font-medium"
@@ -370,8 +381,8 @@ export default function RecentSermonsScreen() {
                 </View>
                 {item.viewCount > 0 && (
                   <View className="flex-row items-center gap-1">
-                    <IconSymbol name="eye.fill" size={12} color={theme.textSecondary} />
-                    <Text variant="caption" style={{ color: theme.textSecondary }}>
+                    <IconSymbol name="eye.fill" size={12} color={theme.muted} />
+                    <Text variant="caption" style={{ color: theme.muted }}>
                       {item.viewCount.toLocaleString()}
                     </Text>
                   </View>
@@ -388,21 +399,37 @@ export default function RecentSermonsScreen() {
                 style={{ backgroundColor: `${theme.brand}08` }}
               >
                 <IconSymbol name="book.fill" size={12} color={theme.brand} />
-                <Text variant="caption" style={{ color: theme.brand }} className="font-medium">
+                <Text
+                  variant="caption"
+                  style={{ color: theme.brand }}
+                  className="font-medium"
+                >
                   {item.scriptureReference}
                 </Text>
               </View>
               <View className="flex-row items-center gap-3">
                 {item.videoUrl && (
                   <TouchableOpacity className="flex-row items-center gap-1">
-                    <IconSymbol name="play.circle.fill" size={16} color={theme.brand} />
-                    <Text variant="caption" style={{ color: theme.brand }}>Watch</Text>
+                    <IconSymbol
+                      name="play.circle.fill"
+                      size={16}
+                      color={theme.brand}
+                    />
+                    <Text variant="caption" style={{ color: theme.brand }}>
+                      Watch
+                    </Text>
                   </TouchableOpacity>
                 )}
                 {item.audioUrl && (
                   <TouchableOpacity className="flex-row items-center gap-1">
-                    <IconSymbol name="headphones" size={16} color={theme.brand} />
-                    <Text variant="caption" style={{ color: theme.brand }}>Listen</Text>
+                    <IconSymbol
+                      name="headphones"
+                      size={16}
+                      color={theme.brand}
+                    />
+                    <Text variant="caption" style={{ color: theme.brand }}>
+                      Listen
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -430,7 +457,7 @@ export default function RecentSermonsScreen() {
       </Text>
       <Text
         variant="body"
-        style={{ color: theme.textSecondary }}
+        style={{ color: theme.muted }}
         className="text-center px-8"
       >
         {activeCategory
@@ -449,11 +476,7 @@ export default function RecentSermonsScreen() {
         {renderHeader()}
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary }}
-            className="mt-4"
-          >
+          <Text variant="body" style={{ color: theme.muted }} className="mt-4">
             Loading sermons...
           </Text>
         </View>

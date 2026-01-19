@@ -17,24 +17,15 @@ export default function MinistryLayout() {
 
   return (
     <Stack screenOptions={screenOptions}>
-      <Stack.Screen name="index" options={{ title: 'Ministry', ...HIDE_HEADER }} />
       <Stack.Screen
-        name="daily-prayers"
-        options={{ headerShown: false }}
+        name="index"
+        options={{ title: 'Ministry', ...HIDE_HEADER }}
       />
+      <Stack.Screen name="daily-prayers" options={{ headerShown: false }} />
       <Stack.Screen name="bible-study" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="recent-sermons"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="prayer-requests"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="testimonies"
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="recent-sermons" options={{ headerShown: false }} />
+      <Stack.Screen name="prayer-requests" options={{ headerShown: false }} />
+      <Stack.Screen name="testimonies" options={{ headerShown: false }} />
     </Stack>
   );
 }

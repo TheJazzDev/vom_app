@@ -23,6 +23,7 @@ export function useAndroidNavigationBar() {
 
   return {
     hasButtonNavigation,
-    shouldApplyBottomSafeArea: Platform.OS === 'android' ? hasButtonNavigation : true,
+    shouldApplyBottomSafeArea:
+      Platform.OS === 'android' ? hasButtonNavigation : true,
   };
 }

@@ -13,14 +13,16 @@ export const getAnnouncementStats = async (): Promise<AnnouncementStats> => {
     serializeFirestoreData<Announcement>({
       id: doc.id,
       ...doc.data(),
-    })
+    }),
   );
 
   const now = new Date();
   const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const highPriority = announcements.filter((a) => a.priority === 'high').length;
+  const highPriority = announcements.filter(
+    (a) => a.priority === 'high',
+  ).length;
   const thisWeek = announcements.filter(
     (a) => new Date(a.date) >= oneWeekAgo,
   ).length;

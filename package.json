@@ -4,11 +4,16 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "lint:fix": "expo lint --fix",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
+    "type-check": "tsc --noEmit",
+    "firebase:indexes:pull": "firebase firestore:indexes > firestore.indexes.json",
+    "firebase:indexes:push": "firebase deploy --only firestore:indexes",
+    "firebase:indexes:view": "firebase firestore:indexes"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

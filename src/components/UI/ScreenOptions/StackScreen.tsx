@@ -1,10 +1,9 @@
 import { View } from '@/src/components';
 import { ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
-import { useAuthSlice } from '@/src/store';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerToggleButton } from '@react-navigation/drawer';
-import { Stack, usePathname, useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { ReactNode } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { ProfileHeader } from '../../Dashboard/Navigations/ProfileHeader';
@@ -43,17 +42,6 @@ export const StackWrapper = ({
   headerRight?: boolean;
 }) => {
   const theme = useTheme();
-  const pathname = usePathname();
-  const { isAuthenticated } = useAuthSlice();
-
-  const isParentIndex = [
-    '/programme',
-    '/directory',
-    '/ministry',
-    '/profile',
-    '/info',
-    '/auth',
-  ].includes(pathname);
 
   return (
     // <SafeAreaView

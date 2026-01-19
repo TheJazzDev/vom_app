@@ -2,7 +2,7 @@ import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { LikeButton } from '@/src/components/Social/LikeButton';
 import { useTheme } from '@/src/hooks';
-import type { Testimony, TestimonyCategory } from '@/src/services/testimony';
+import type { Testimony } from '@/src/services/testimony';
 import { TESTIMONY_CATEGORIES } from '@/src/services/testimony';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -67,9 +67,13 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
           {testimony.isAnonymous ? (
             <View
               className="w-10 h-10 rounded-full items-center justify-center"
-              style={{ backgroundColor: `${theme.textSecondary}20` }}
+              style={{ backgroundColor: `${theme.muted}20` }}
             >
-              <IconSymbol name="person.fill.questionmark" size={18} color={theme.textSecondary} />
+              <IconSymbol
+                name="person.fill.questionmark"
+                size={18}
+                color={theme.muted}
+              />
             </View>
           ) : testimony.authorAvatar ? (
             <Image
@@ -81,7 +85,10 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
               className="w-10 h-10 rounded-full items-center justify-center"
               style={{ backgroundColor: `${category.color}20` }}
             >
-              <Text className="text-lg font-bold" style={{ color: category.color }}>
+              <Text
+                className="text-lg font-bold"
+                style={{ color: category.color }}
+              >
                 {testimony.authorName.charAt(0).toUpperCase()}
               </Text>
             </View>
@@ -95,7 +102,7 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
             >
               {testimony.isAnonymous ? 'Anonymous' : testimony.authorName}
             </Text>
-            <Text variant="caption" style={{ color: theme.textSecondary }}>
+            <Text variant="caption" style={{ color: theme.muted }}>
               {formatDate(testimony.createdAt)}
             </Text>
           </View>
@@ -128,7 +135,7 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
       {/* Content */}
       <Text
         variant="body"
-        style={{ color: theme.textSecondary }}
+        style={{ color: theme.muted }}
         className="leading-6 mb-4"
         numberOfLines={showFullContent ? undefined : 3}
       >
@@ -150,7 +157,7 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
               style={[styles.mediaThumbnail, { backgroundColor: theme.border }]}
               className="items-center justify-center"
             >
-              <Text className="font-semibold" style={{ color: theme.textSecondary }}>
+              <Text className="font-semibold" style={{ color: theme.muted }}>
                 +{testimony.mediaUrls.length - 3}
               </Text>
             </View>
@@ -171,7 +178,7 @@ export const TestimonyCard: React.FC<TestimonyCardProps> = ({
           )}
           <View className="flex-row items-center gap-1">
             <Text className="text-sm">💬</Text>
-            <Text variant="caption" style={{ color: theme.textSecondary }}>
+            <Text variant="caption" style={{ color: theme.muted }}>
               {testimony.commentsCount}
             </Text>
           </View>

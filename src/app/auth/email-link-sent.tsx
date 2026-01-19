@@ -83,7 +83,10 @@ const EmailLinkSent = () => {
   }, [fadeAnim, float1, float2, pulseAnim, slideAnim]);
 
   return (
-    <View gradient className="flex-1 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+    <View
+      gradient
+      className="flex-1 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900"
+    >
       {/* Floating Background Elements */}
       <Animated.View
         style={{

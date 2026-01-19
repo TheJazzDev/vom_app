@@ -280,7 +280,10 @@ export default function BirthdaysPage() {
             <Text variant="h4" className="text-white dark:text-white font-bold">
               {monthlyBirthdays.todayBirthdays.length}
             </Text>
-            <Text variant="caption" className="text-white/80 dark:dark:text-white/80">
+            <Text
+              variant="caption"
+              className="text-white/80 dark:dark:text-white/80"
+            >
               Today
             </Text>
           </View>
@@ -288,7 +291,10 @@ export default function BirthdaysPage() {
             <Text variant="h4" className="text-white dark:text-white font-bold">
               {monthlyBirthdays.upcomingBirthdays.length}
             </Text>
-            <Text variant="caption" className="text-white/80 dark:dark:text-white/80">
+            <Text
+              variant="caption"
+              className="text-white/80 dark:dark:text-white/80"
+            >
               Upcoming
             </Text>
           </View>
@@ -296,7 +302,10 @@ export default function BirthdaysPage() {
             <Text variant="h4" className="text-white dark:text-white font-bold">
               {monthlyBirthdays.pastBirthdays.length}
             </Text>
-            <Text variant="caption" className="text-white/80 dark:dark:text-white/80">
+            <Text
+              variant="caption"
+              className="text-white/80 dark:dark:text-white/80"
+            >
               Past
             </Text>
           </View>

@@ -1,10 +1,5 @@
 import { firestore } from '@/src/config/firebase';
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
-} from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import type { Badge, UserEngagement } from './index';
 
 // ============================================
@@ -175,7 +170,7 @@ export const BADGE_DEFINITIONS: BadgeDefinition[] = [
   {
     id: 'witness',
     name: 'Witness',
-    description: 'Sharing God\'s goodness',
+    description: "Sharing God's goodness",
     icon: '📢',
     category: 'community',
     requirement: 'Share 5 testimonies',
@@ -381,9 +376,7 @@ export const BADGE_DEFINITIONS: BadgeDefinition[] = [
 // ============================================
 
 // Get user's badges with progress
-export const getUserBadges = async (
-  odUserId: string
-): Promise<Badge[]> => {
+export const getUserBadges = async (odUserId: string): Promise<Badge[]> => {
   try {
     const engagementRef = doc(firestore, 'userEngagement', odUserId);
     const docSnap = await getDoc(engagementRef);
@@ -433,7 +426,7 @@ export const getUserBadges = async (
 
 // Check and award new badges
 export const checkAndAwardBadges = async (
-  odUserId: string
+  odUserId: string,
 ): Promise<Badge[]> => {
   try {
     const engagementRef = doc(firestore, 'userEngagement', odUserId);
@@ -482,7 +475,7 @@ export const checkAndAwardBadges = async (
 // Get badges by category
 export const getBadgesByCategory = (
   badges: Badge[],
-  category: Badge['category']
+  category: Badge['category'],
 ): Badge[] => {
   return badges.filter((badge) => badge.category === category);
 };
@@ -495,7 +488,7 @@ export const getEarnedBadgesCount = (badges: Badge[]): number => {
 // Get next achievable badges (closest to earning)
 export const getNextAchievableBadges = (
   badges: Badge[],
-  count: number = 3
+  count: number = 3,
 ): Badge[] => {
   return badges
     .filter((badge) => !badge.isEarned && badge.progress > 0)

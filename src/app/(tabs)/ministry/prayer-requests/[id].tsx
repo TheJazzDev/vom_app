@@ -47,7 +47,7 @@ export default function PrayerRequestDetailScreen() {
   useEffect(() => {
     if (id) {
       dispatch(
-        fetchPrayerRequestByIdThunk({ requestId: id, userId: user?.id })
+        fetchPrayerRequestByIdThunk({ requestId: id, userId: user?.id }),
       );
       dispatch(fetchPrayerRequestCommentsThunk(id));
     }
@@ -67,21 +67,23 @@ export default function PrayerRequestDetailScreen() {
           comment: {
             userId: user.id,
             userName: user.firstName || 'Anonymous',
-            userAvatar: user.profilePic || null,
+            userAvatar: user.avatar || null,
             content,
           },
-        })
+        }),
       );
     },
-    [dispatch, id, user]
+    [dispatch, id, user],
   );
 
   const handleDeleteComment = useCallback(
     async (commentId: string) => {
       if (!id) return;
-      await dispatch(deletePrayerRequestCommentThunk({ requestId: id, commentId }));
+      await dispatch(
+        deletePrayerRequestCommentThunk({ requestId: id, commentId }),
+      );
     },
-    [dispatch, id]
+    [dispatch, id],
   );
 
   const handleMarkAsAnswered = () => {
@@ -95,7 +97,7 @@ export default function PrayerRequestDetailScreen() {
           text: 'Yes, Praise God!',
           onPress: () => dispatch(markAsAnsweredThunk(id)),
         },
-      ]
+      ],
     );
   };
 
@@ -130,11 +132,7 @@ export default function PrayerRequestDetailScreen() {
         <Stack.Screen options={{ title: 'Prayer Request' }} />
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary }}
-            className="mt-4"
-          >
+          <Text variant="body" style={{ color: theme.muted }} className="mt-4">
             Loading prayer request...
           </Text>
         </View>
@@ -168,9 +166,7 @@ export default function PrayerRequestDetailScreen() {
             <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
               <Text className="text-base">{category.emoji}</Text>
             </View>
-            <Text className="text-white/90 font-medium">
-              {category.label}
-            </Text>
+            <Text className="text-white/90 font-medium">{category.label}</Text>
             {currentRequest.isUrgent && (
               <View className="px-2 py-1 rounded-full bg-white/20">
                 <Text className="text-white text-xs font-semibold">Urgent</Text>
@@ -178,7 +174,9 @@ export default function PrayerRequestDetailScreen() {
             )}
             {currentRequest.status === 'answered' && (
               <View className="px-2 py-1 rounded-full bg-green-500">
-                <Text className="text-white text-xs font-semibold">✓ Answered</Text>
+                <Text className="text-white text-xs font-semibold">
+                  ✓ Answered
+                </Text>
               </View>
             )}
           </View>
@@ -187,7 +185,9 @@ export default function PrayerRequestDetailScreen() {
           </Text>
           <View className="flex-row items-center gap-2">
             <Text className="text-white/80 text-sm">
-              {currentRequest.isAnonymous ? 'Anonymous' : currentRequest.authorName}
+              {currentRequest.isAnonymous
+                ? 'Anonymous'
+                : currentRequest.authorName}
             </Text>
             <Text className="text-white/60">•</Text>
             <Text className="text-white/80 text-sm">
@@ -231,7 +231,7 @@ export default function PrayerRequestDetailScreen() {
                 <Text className="text-base">💬</Text>
                 <Text
                   variant="body"
-                  style={{ color: theme.textSecondary }}
+                  style={{ color: theme.muted }}
                   className="font-medium"
                 >
                   {currentRequest.commentsCount}
@@ -246,8 +246,15 @@ export default function PrayerRequestDetailScreen() {
                   className="flex-row items-center gap-1 px-3 py-2 rounded-lg"
                   style={{ backgroundColor: '#DCFCE7' }}
                 >
-                  <IconSymbol name="checkmark.circle.fill" size={18} color="#16A34A" />
-                  <Text className="text-sm font-medium" style={{ color: '#16A34A' }}>
+                  <IconSymbol
+                    name="checkmark.circle.fill"
+                    size={18}
+                    color="#16A34A"
+                  />
+                  <Text
+                    className="text-sm font-medium"
+                    style={{ color: '#16A34A' }}
+                  >
                     Answered
                   </Text>
                 </Pressable>
@@ -285,8 +292,9 @@ export default function PrayerRequestDetailScreen() {
                   style={{ color: theme.text }}
                   className="italic leading-6"
                 >
-                  "Do not be anxious about anything, but in every situation, by prayer
-                  and petition, with thanksgiving, present your requests to God."
+                  &quot;Do not be anxious about anything, but in every
+                  situation, by prayer and petition, with thanksgiving, present
+                  your requests to God.&quot;
                 </Text>
                 <Text
                   variant="caption"

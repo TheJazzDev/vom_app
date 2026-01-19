@@ -2,9 +2,15 @@ import { TestimonyCard } from '@/src/components/Testimony';
 import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
-import { TESTIMONY_CATEGORIES, TestimonyCategory } from '@/src/services/testimony';
+import {
+  TESTIMONY_CATEGORIES,
+  TestimonyCategory,
+} from '@/src/services/testimony';
 import { useAuthSlice, useTestimonySlice } from '@/src/store/slices';
-import { fetchTestimoniesThunk, toggleTestimonyLikeThunk } from '@/src/store/thunks';
+import {
+  fetchTestimoniesThunk,
+  toggleTestimonyLikeThunk,
+} from '@/src/store/thunks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -25,9 +31,10 @@ export default function TestimoniesScreen() {
   const theme = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { testimonies, userLikes, isLoadingTestimonies, error } = useTestimonySlice();
+  const { testimonies, userLikes, isLoadingTestimonies } = useTestimonySlice();
   const { user } = useAuthSlice();
-  const [activeCategory, setActiveCategory] = useState<TestimonyCategory | null>(null);
+  const [activeCategory, setActiveCategory] =
+    useState<TestimonyCategory | null>(null);
 
   useEffect(() => {
     dispatch(fetchTestimoniesThunk({ category: activeCategory || undefined }));
@@ -41,22 +48,22 @@ export default function TestimoniesScreen() {
     async (testimonyId: string) => {
       if (!user?.id) return;
       await dispatch(
-        toggleTestimonyLikeThunk({ testimonyId, userId: user.id })
+        toggleTestimonyLikeThunk({ testimonyId, userId: user.id }),
       );
     },
-    [dispatch, user?.id]
+    [dispatch, user?.id],
   );
 
   const handleCreateTestimony = () => {
-    router.push('/ministry/testimonies/create' as any);
+    router.push('/create-testimony' as any);
   };
 
   const categories = Object.entries(TESTIMONY_CATEGORIES) as [
     TestimonyCategory,
-    { label: string; emoji: string; color: string }
+    { label: string; emoji: string; color: string },
   ][];
 
-  const featuredTestimonies = testimonies.filter(t => t.isFeatured);
+  const featuredTestimonies = testimonies.filter((t) => t.isFeatured);
   const totalLikes = testimonies.reduce((sum, t) => sum + t.likesCount, 0);
 
   const renderHeader = () => (
@@ -75,20 +82,25 @@ export default function TestimoniesScreen() {
           <View style={styles.headerBadge}>
             <Text style={styles.headerBadgeText}>TESTIMONIES</Text>
           </View>
-          <Pressable onPress={handleCreateTestimony} style={styles.headerActionBtn}>
+          <Pressable
+            onPress={handleCreateTestimony}
+            style={styles.headerActionBtn}
+          >
             <IconSymbol name="square.and.pencil" size={22} color="white" />
           </Pressable>
         </View>
 
         <View style={styles.heroSection}>
           <View style={styles.quoteIcon}>
-            <IconSymbol name="quote.opening" size={32} color="rgba(255,255,255,0.4)" />
+            <IconSymbol
+              name="quote.opening"
+              size={32}
+              color="rgba(255,255,255,0.4)"
+            />
           </View>
-          <Text style={styles.heroTitle}>
-            Praise Reports
-          </Text>
+          <Text style={styles.heroTitle}>Praise Reports</Text>
           <Text style={styles.heroTagline}>
-            Stories of God's faithfulness in our lives
+            Stories of God&apos;s faithfulness in our lives
           </Text>
           <View style={styles.featuredBanner}>
             <View style={styles.featuredDot} />
@@ -114,8 +126,10 @@ export default function TestimoniesScreen() {
             style={[
               styles.categoryPill,
               {
-                backgroundColor: activeCategory === null ? theme.primary : theme.card,
-                borderColor: activeCategory === null ? theme.primary : theme.border,
+                backgroundColor:
+                  activeCategory === null ? theme.primary : theme.card,
+                borderColor:
+                  activeCategory === null ? theme.primary : theme.border,
               },
             ]}
           >
@@ -128,15 +142,24 @@ export default function TestimoniesScreen() {
             >
               All Stories
             </Text>
-            <View style={[
-              styles.pillBadge,
-              { backgroundColor: activeCategory === null ? 'rgba(255,255,255,0.3)' : theme.background }
-            ]}>
-              <Text style={{
-                color: activeCategory === null ? 'white' : theme.muted,
-                fontSize: 12,
-                fontWeight: '700',
-              }}>
+            <View
+              style={[
+                styles.pillBadge,
+                {
+                  backgroundColor:
+                    activeCategory === null
+                      ? 'rgba(255,255,255,0.3)'
+                      : theme.background,
+                },
+              ]}
+            >
+              <Text
+                style={{
+                  color: activeCategory === null ? 'white' : theme.muted,
+                  fontSize: 12,
+                  fontWeight: '700',
+                }}
+              >
                 {testimonies.length}
               </Text>
             </View>
@@ -148,8 +171,10 @@ export default function TestimoniesScreen() {
               style={[
                 styles.categoryPill,
                 {
-                  backgroundColor: activeCategory === key ? cat.color : theme.card,
-                  borderColor: activeCategory === key ? cat.color : theme.border,
+                  backgroundColor:
+                    activeCategory === key ? cat.color : theme.card,
+                  borderColor:
+                    activeCategory === key ? cat.color : theme.border,
                 },
               ]}
             >
@@ -188,11 +213,29 @@ export default function TestimoniesScreen() {
       >
         <IconSymbol name="sparkles" size={60} color="#7C3AED" />
       </LinearGradient>
-      <Text variant="h4" style={{ color: theme.heading, fontWeight: '700', marginTop: 24, marginBottom: 8 }}>
+      <Text
+        variant="h4"
+        style={{
+          color: theme.heading,
+          fontWeight: '700',
+          marginTop: 24,
+          marginBottom: 8,
+        }}
+      >
         No Testimonies Yet
       </Text>
-      <Text variant="body" style={{ color: theme.muted, textAlign: 'center', paddingHorizontal: 40, marginBottom: 24, lineHeight: 22 }}>
-        Be the first to share how God has moved in your life. Your story could inspire others!
+      <Text
+        variant="body"
+        style={{
+          color: theme.muted,
+          textAlign: 'center',
+          paddingHorizontal: 40,
+          marginBottom: 24,
+          lineHeight: 22,
+        }}
+      >
+        Be the first to share how God has moved in your life. Your story could
+        inspire others!
       </Text>
       <Pressable
         onPress={handleCreateTestimony}
@@ -206,7 +249,10 @@ export default function TestimoniesScreen() {
 
   if (isLoadingTestimonies && testimonies.length === 0) {
     return (
-      <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
+      <SafeAreaView
+        edges={['top']}
+        style={{ flex: 1, backgroundColor: theme.background }}
+      >
         {renderHeader()}
         <View style={styles.loadingState}>
           <ActivityIndicator size="large" color="#7C3AED" />
@@ -219,7 +265,10 @@ export default function TestimoniesScreen() {
   }
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.background }}>
+    <SafeAreaView
+      edges={['top']}
+      style={{ flex: 1, backgroundColor: theme.background }}
+    >
       <FlatList
         data={testimonies}
         keyExtractor={(item) => item.id}
@@ -248,10 +297,7 @@ export default function TestimoniesScreen() {
 
       {/* Write Story FAB */}
       {testimonies.length > 0 && (
-        <Pressable
-          onPress={handleCreateTestimony}
-          style={styles.fab}
-        >
+        <Pressable onPress={handleCreateTestimony} style={styles.fab}>
           <LinearGradient
             colors={['#7C3AED', '#5B21B6']}
             start={{ x: 0, y: 0 }}

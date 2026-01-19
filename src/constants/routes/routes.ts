@@ -36,7 +36,8 @@ export const ROUTES = {
   // Ministry
   MINISTRY: '/ministry',
   BIBLE_STUDY: '/ministry/bible-study',
-  PRAYER_REQUEST: '/ministry/prayer-request',
+  DAILY_PRAYERS: '/ministry/daily-prayers',
+  PRAYER_REQUEST: '/ministry/prayer-requests',
   RECENT_SERMONS: '/ministry/recent-sermons',
   TESTIMONIES: '/ministry/testimonies',
 
@@ -51,6 +52,7 @@ export const ROUTES = {
   WEEKLY_ACTIVITIES: '/more/weekly-activities',
   MONTHLY_ACTIVITIES: '/more/monthly-activities',
   BIRTHDAYS: '/more/birthdays',
+  FIRST_TIMERS: '/more/first-timers',
 } as const;
 
 export type RouteKeys = keyof typeof ROUTES;

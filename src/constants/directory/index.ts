@@ -1,4 +1,3 @@
-
 import { DIRECTORY_CATEGORIES } from './directory';
 import { getBandRoleDetails } from './getBandRoleDetails';
 

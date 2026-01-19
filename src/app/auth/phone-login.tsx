@@ -1,10 +1,4 @@
-import {
-  Button,
-  Card,
-  Spacer,
-  Text,
-  View,
-} from '@/src/components';
+import { Button, Card, Spacer, Text, View } from '@/src/components';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
@@ -48,7 +42,7 @@ export default function PhoneLoginScreen() {
           <Text variant="h2" className="text-center">
             Phone Login
           </Text>
-          <Text className="text-center mt-3 text-gray-600 px-4">
+          <Text className="text-center mt-3 text-gray-600 dark:text-gray-300 px-4">
             Phone login will be available soon!
           </Text>
         </View>
@@ -57,7 +51,7 @@ export default function PhoneLoginScreen() {
           <Text variant="h5" className="font-semibold mb-3 text-center">
             Coming Soon
           </Text>
-          <Text className="text-gray-700 text-sm text-center leading-relaxed">
+          <Text className="text-gray-700 dark:text-gray-300 text-sm text-center leading-relaxed">
             We&apos;re working on enabling phone number login for a more
             convenient sign-in experience. In the meantime, please use email
             login or activate your account through the member activation flow.
@@ -65,7 +59,7 @@ export default function PhoneLoginScreen() {
         </Card>
 
         <Card variant="outlined" className="p-4 mb-6">
-          <Text className="text-gray-700 text-sm text-center">
+          <Text className="text-gray-700 dark:text-gray-300 text-sm text-center">
             <Text className="font-semibold">Existing members: </Text>
             If you&apos;ve previously activated your account with your phone
             number, please use the email login option for now.
@@ -95,7 +89,7 @@ export default function PhoneLoginScreen() {
         <Spacer height={24} />
 
         <Card variant="outlined" className="p-4">
-          <Text className="text-gray-700 text-sm text-center">
+          <Text className="text-gray-700 dark:text-gray-300 text-sm text-center">
             <Text className="font-semibold">Need help? </Text>
             Contact the church office for assistance with your account.
           </Text>

@@ -6,9 +6,7 @@ import {
   Text,
   View,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { IconSymbol } from '../Icons';
 import { useNetworkStatus } from '@/src/hooks/useNetworkStatus';
@@ -38,7 +36,6 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
   onRetry,
 }) => {
   const { isOffline, refresh } = useNetworkStatus();
-  const insets = useSafeAreaInsets();
   const translateY = useRef(new Animated.Value(200)).current;
   const [shouldRender, setShouldRender] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -64,16 +61,16 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
     }
   }, [isOffline, translateY]);
 
-  const triggerHaptic = async (
-    type: 'light' | 'medium' | 'success'
-  ) => {
+  const triggerHaptic = async (type: 'light' | 'medium' | 'success') => {
     try {
       if (type === 'light') {
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       } else if (type === 'medium') {
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       } else {
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        await Haptics.notificationAsync(
+          Haptics.NotificationFeedbackType.Success,
+        );
       }
     } catch (error) {
       console.debug('[OfflineBanner] Haptic feedback not available:', error);
@@ -93,7 +90,7 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
       const status = await refresh();
 
       // Give user time to see the loading state
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (status.isConnected && status.isInternetReachable !== false) {
         // Network is back - haptic success

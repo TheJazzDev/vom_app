@@ -1,10 +1,6 @@
 import { useTheme } from '@/src/hooks';
 import React, { useState } from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -96,7 +92,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
           <Text
             style={{
               fontSize: config.fontSize,
-              color: liked ? theme.brand : theme.textSecondary,
+              color: liked ? theme.brand : theme.muted,
             }}
             className="font-medium"
           >

@@ -1,9 +1,16 @@
 import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
-import { DEFAULT_BIBLE_STUDY_TOPICS, BIBLE_STUDY_TYPES, BibleStudyType } from '@/src/services/bibleStudy';
+import {
+  DEFAULT_BIBLE_STUDY_TOPICS,
+  BIBLE_STUDY_TYPES,
+  BibleStudyType,
+} from '@/src/services/bibleStudy';
 import { useBibleStudySlice } from '@/src/store/slices';
-import { fetchBibleStudySessionsThunk, fetchBibleStudyTopicsThunk } from '@/src/store/thunks';
+import {
+  fetchBibleStudySessionsThunk,
+  fetchBibleStudyTopicsThunk,
+} from '@/src/store/thunks';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -24,7 +31,7 @@ export default function BibleStudyScreen() {
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { sessions, topics, isLoadingSessions, isLoadingTopics, error } = useBibleStudySlice();
+  const { sessions, topics, isLoadingSessions } = useBibleStudySlice();
   const [activeType, setActiveType] = useState<BibleStudyType | null>(null);
 
   useEffect(() => {
@@ -39,7 +46,7 @@ export default function BibleStudyScreen() {
 
   const studyTypes = Object.entries(BIBLE_STUDY_TYPES) as [
     BibleStudyType,
-    { label: string; emoji: string; color: string }
+    { label: string; emoji: string; color: string },
   ][];
 
   const displayTopics = topics.length > 0 ? topics : DEFAULT_BIBLE_STUDY_TOPICS;
@@ -67,7 +74,8 @@ export default function BibleStudyScreen() {
           </View>
         </View>
         <Text className="text-white/90 leading-6">
-          Deepen your understanding of God's Word through our study resources and sessions.
+          Deepen your understanding of God&apos;s Word through our study
+          resources and sessions.
         </Text>
       </LinearGradient>
 
@@ -104,7 +112,8 @@ export default function BibleStudyScreen() {
               style={[
                 styles.typeChip,
                 {
-                  backgroundColor: activeType === key ? `${type.color}20` : theme.card,
+                  backgroundColor:
+                    activeType === key ? `${type.color}20` : theme.card,
                   borderColor: activeType === key ? type.color : theme.border,
                 },
               ]}
@@ -154,7 +163,7 @@ export default function BibleStudyScreen() {
                   </Text>
                   <Text
                     variant="caption"
-                    style={{ color: theme.textSecondary }}
+                    style={{ color: theme.muted }}
                     numberOfLines={1}
                   >
                     {topic.sessionsCount} sessions
@@ -211,7 +220,7 @@ export default function BibleStudyScreen() {
                 >
                   {item.title}
                 </Text>
-                <Text variant="caption" style={{ color: theme.textSecondary }}>
+                <Text variant="caption" style={{ color: theme.muted }}>
                   {type?.label || 'Study'} • {item.duration} min
                 </Text>
               </View>
@@ -235,7 +244,7 @@ export default function BibleStudyScreen() {
           {/* Description */}
           <Text
             variant="body"
-            style={{ color: theme.textSecondary }}
+            style={{ color: theme.muted }}
             className="leading-5"
             numberOfLines={2}
           >
@@ -247,20 +256,30 @@ export default function BibleStudyScreen() {
             <View className="flex-row items-center gap-2">
               {item.videoUrl && (
                 <View className="flex-row items-center gap-1">
-                  <IconSymbol name="play.circle.fill" size={14} color={theme.brand} />
-                  <Text variant="caption" style={{ color: theme.brand }}>Video</Text>
+                  <IconSymbol
+                    name="play.circle.fill"
+                    size={14}
+                    color={theme.brand}
+                  />
+                  <Text variant="caption" style={{ color: theme.brand }}>
+                    Video
+                  </Text>
                 </View>
               )}
               {item.audioUrl && (
                 <View className="flex-row items-center gap-1">
                   <IconSymbol name="headphones" size={14} color={theme.brand} />
-                  <Text variant="caption" style={{ color: theme.brand }}>Audio</Text>
+                  <Text variant="caption" style={{ color: theme.brand }}>
+                    Audio
+                  </Text>
                 </View>
               )}
               {item.pdfUrl && (
                 <View className="flex-row items-center gap-1">
                   <IconSymbol name="doc.fill" size={14} color={theme.brand} />
-                  <Text variant="caption" style={{ color: theme.brand }}>PDF</Text>
+                  <Text variant="caption" style={{ color: theme.brand }}>
+                    PDF
+                  </Text>
                 </View>
               )}
             </View>
@@ -297,7 +316,7 @@ export default function BibleStudyScreen() {
       </Text>
       <Text
         variant="body"
-        style={{ color: theme.textSecondary }}
+        style={{ color: theme.muted }}
         className="text-center px-8"
       >
         Bible study sessions will appear here. Check back soon for new content.
@@ -314,11 +333,7 @@ export default function BibleStudyScreen() {
         {renderHeader()}
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color={theme.brand} />
-          <Text
-            variant="body"
-            style={{ color: theme.textSecondary }}
-            className="mt-4"
-          >
+          <Text variant="body" style={{ color: theme.muted }} className="mt-4">
             Loading Bible studies...
           </Text>
         </View>

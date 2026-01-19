@@ -1,6 +1,12 @@
-import { NotificationType, NotificationPriority } from '@/src/services/notifications';
+import {
+  NotificationType,
+  NotificationPriority,
+} from '@/src/services/notifications';
 
-export const getNotificationIcon = (type: NotificationType, mutedColor: string) => {
+export const getNotificationIcon = (
+  type: NotificationType,
+  mutedColor: string,
+) => {
   switch (type) {
     case 'announcement':
       return { name: 'megaphone.fill', color: '#EF4444' };

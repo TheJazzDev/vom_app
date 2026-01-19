@@ -2,12 +2,7 @@ import { Text, View } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
 import type { LevelConfig } from '@/src/services/gamification';
 import React, { useEffect } from 'react';
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Modal, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -15,7 +10,6 @@ import Animated, {
   withSpring,
   withDelay,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 
 interface LevelUpModalProps {
@@ -51,8 +45,8 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
         200,
         withSequence(
           withSpring(1.3, { damping: 8, stiffness: 100 }),
-          withSpring(1, { damping: 10, stiffness: 120 })
-        )
+          withSpring(1, { damping: 10, stiffness: 120 }),
+        ),
       );
 
       // Rotate icon
@@ -63,8 +57,8 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
           withTiming(-15, { duration: 100 }),
           withTiming(10, { duration: 100 }),
           withTiming(-10, { duration: 100 }),
-          withTiming(0, { duration: 100 })
-        )
+          withTiming(0, { duration: 100 }),
+        ),
       );
     }
   }, [visible, newLevel]);
@@ -74,10 +68,7 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
   }));
 
   const iconStyle = useAnimatedStyle(() => ({
-    transform: [
-      { scale: iconScale.value },
-      { rotate: `${rotation.value}deg` },
-    ],
+    transform: [{ scale: iconScale.value }, { rotate: `${rotation.value}deg` }],
   }));
 
   if (!newLevel) return null;
@@ -101,8 +92,12 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
           <View style={styles.decorations}>
             <Text style={[styles.decoration, { top: 10, left: 20 }]}>✨</Text>
             <Text style={[styles.decoration, { top: 30, right: 25 }]}>🎉</Text>
-            <Text style={[styles.decoration, { bottom: 80, left: 15 }]}>⭐</Text>
-            <Text style={[styles.decoration, { bottom: 60, right: 20 }]}>🌟</Text>
+            <Text style={[styles.decoration, { bottom: 80, left: 15 }]}>
+              ⭐
+            </Text>
+            <Text style={[styles.decoration, { bottom: 60, right: 20 }]}>
+              🌟
+            </Text>
           </View>
 
           {/* Level Up Text */}
@@ -122,9 +117,7 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
           </Animated.View>
 
           {/* Level Info */}
-          <Text
-            style={[styles.levelNumber, { color: newLevel.color }]}
-          >
+          <Text style={[styles.levelNumber, { color: newLevel.color }]}>
             Level {newLevel.level}
           </Text>
           <Text
@@ -135,7 +128,7 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
           </Text>
           <Text
             variant="body"
-            style={[styles.description, { color: theme.textSecondary }]}
+            style={[styles.description, { color: theme.muted }]}
           >
             {newLevel.description}
           </Text>
@@ -148,10 +141,12 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
                 { backgroundColor: `${theme.brand}10` },
               ]}
             >
-              <Text variant="caption" style={{ color: theme.textSecondary }}>
-                Keep going! You're on your way to becoming{' '}
+              <Text variant="caption" style={{ color: theme.muted }}>
+                Keep going! You&apos;re on your way to becoming{' '}
                 <Text style={{ color: theme.brand, fontWeight: '600' }}>
-                  {newLevel.level < 14 ? `Level ${newLevel.level + 1}` : 'the ultimate!'}
+                  {newLevel.level < 14
+                    ? `Level ${newLevel.level + 1}`
+                    : 'the ultimate!'}
                 </Text>
               </Text>
             </View>

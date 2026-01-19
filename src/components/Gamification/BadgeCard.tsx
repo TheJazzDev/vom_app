@@ -84,7 +84,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
             height: sizeStyles[size].iconSize,
             backgroundColor: badge.isEarned
               ? `${categoryColor}20`
-              : `${theme.textSecondary}10`,
+              : `${theme.muted}10`,
           },
         ]}
       >
@@ -98,7 +98,9 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
         </Text>
         {!badge.isEarned && (
           <View style={styles.lockOverlay}>
-            <Text style={{ fontSize: sizeStyles[size].iconFontSize / 2 }}>🔒</Text>
+            <Text style={{ fontSize: sizeStyles[size].iconFontSize / 2 }}>
+              🔒
+            </Text>
           </View>
         )}
       </View>
@@ -109,7 +111,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
           styles.badgeName,
           {
             fontSize: sizeStyles[size].nameSize,
-            color: badge.isEarned ? theme.heading : theme.textSecondary,
+            color: badge.isEarned ? theme.heading : theme.muted,
           },
         ]}
         numberOfLines={2}
@@ -136,7 +138,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
           </View>
           <Text
             variant="caption"
-            style={[styles.progressText, { color: theme.textSecondary }]}
+            style={[styles.progressText, { color: theme.muted }]}
           >
             {Math.round(badge.progress)}%
           </Text>
@@ -145,12 +147,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
 
       {/* Earned Checkmark */}
       {badge.isEarned && (
-        <View
-          style={[
-            styles.earnedBadge,
-            { backgroundColor: categoryColor },
-          ]}
-        >
+        <View style={[styles.earnedBadge, { backgroundColor: categoryColor }]}>
           <Text style={styles.earnedText}>✓</Text>
         </View>
       )}

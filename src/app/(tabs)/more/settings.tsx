@@ -113,13 +113,8 @@ export default function Settings() {
   const toast = useToast();
   const { themeMode, setThemeMode } = useThemeMode();
   const { currentUser } = useAuthSlice();
-  const {
-    settings,
-    isLoadingSettings,
-    permissionStatus,
-    loadSettings,
-    saveSettings,
-  } = useNotificationSlice();
+  const { settings, permissionStatus, loadSettings, saveSettings } =
+    useNotificationSlice();
 
   // Load settings on mount
   useEffect(() => {
@@ -132,7 +127,10 @@ export default function Settings() {
     setThemeMode(newTheme);
   };
 
-  const handleNotificationToggle = async (settingId: string, value: boolean) => {
+  const handleNotificationToggle = async (
+    settingId: string,
+    value: boolean,
+  ) => {
     if (!currentUser?.id) {
       toast.error('Please log in to change settings');
       return;
@@ -153,7 +151,7 @@ export default function Settings() {
               toast.success('Notifications disabled');
             },
           },
-        ]
+        ],
       );
       return;
     }
@@ -208,19 +206,24 @@ export default function Settings() {
     }
   };
 
-  const notificationsDisabled = !settings.enabled || permissionStatus === 'denied';
+  const notificationsDisabled =
+    !settings.enabled || permissionStatus === 'denied';
 
   const notificationOptions: SettingOption[] = [
     {
       id: 'enabled',
       label: 'Push Notifications',
-      description: permissionStatus === 'denied'
-        ? 'Enable in device settings'
-        : 'Receive notifications on your device',
+      description:
+        permissionStatus === 'denied'
+          ? 'Enable in device settings'
+          : 'Receive notifications on your device',
       type: 'toggle',
       value: settings.enabled && permissionStatus !== 'denied',
       icon: 'bell.fill',
-      onPress: permissionStatus === 'denied' ? handleOpenNotificationSettings : undefined,
+      onPress:
+        permissionStatus === 'denied'
+          ? handleOpenNotificationSettings
+          : undefined,
     },
     {
       id: 'announcements',
@@ -371,7 +374,11 @@ export default function Settings() {
             className="mb-4 p-4 rounded-lg flex-row items-center"
             style={{ backgroundColor: `${theme.error}15` }}
           >
-            <IconSymbol name="exclamationmark.triangle.fill" size={20} color={theme.error} />
+            <IconSymbol
+              name="exclamationmark.triangle.fill"
+              size={20}
+              color={theme.error}
+            />
             <View className="ml-3 flex-1">
               <Text className="font-medium" style={{ color: theme.error }}>
                 Notifications Disabled

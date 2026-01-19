@@ -13,7 +13,9 @@ export const fetchAnnouncements = createAsyncThunk(
       return announcements;
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : 'Failed to fetch announcements',
+        error instanceof Error
+          ? error.message
+          : 'Failed to fetch announcements',
       );
     }
   },

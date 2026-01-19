@@ -3,7 +3,7 @@ import React from 'react';
 
 import { HapticTab } from '@/src/components';
 import { IconSymbol } from '@/src/components/Icons/IconSymbol';
-import { useAndroidNavigationBar, useTheme } from '@/src/hooks';
+import { useTheme } from '@/src/hooks';
 import { Platform } from 'react-native';
 import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 
@@ -41,6 +41,9 @@ export default function TabLayout() {
             shadowOpacity: 0,
             borderColor: theme.border,
           },
+          sceneStyle: {
+            backgroundColor: theme.background,
+          },
           // Use 'fade' animation for smooth transitions without black screens
           // 'shift' animation on iOS can cause black screen flashes
           animation: 'fade',
@@ -48,8 +51,6 @@ export default function TabLayout() {
           lazy: false,
           // Don't freeze content when blurred to prevent render issues
           freezeOnBlur: false,
-          // Optimize for performance
-          unmountOnBlur: false,
         }}
       >
         <Tabs.Screen

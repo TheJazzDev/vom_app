@@ -27,7 +27,8 @@ export interface AppError {
  */
 const FIREBASE_AUTH_ERRORS: Record<string, string> = {
   'auth/invalid-email': 'Please enter a valid email address.',
-  'auth/user-disabled': 'This account has been disabled. Please contact support.',
+  'auth/user-disabled':
+    'This account has been disabled. Please contact support.',
   'auth/user-not-found': 'No account found with this email. Please sign up.',
   'auth/wrong-password': 'Incorrect password. Please try again.',
   'auth/email-already-in-use': 'An account with this email already exists.',
@@ -35,8 +36,10 @@ const FIREBASE_AUTH_ERRORS: Record<string, string> = {
   'auth/too-many-requests': 'Too many attempts. Please try again later.',
   'auth/network-request-failed': 'Network error. Please check your connection.',
   'auth/invalid-credential': 'Invalid credentials. Please check and try again.',
-  'auth/invalid-verification-code': 'Invalid verification code. Please try again.',
-  'auth/code-expired': 'Verification code has expired. Please request a new one.',
+  'auth/invalid-verification-code':
+    'Invalid verification code. Please try again.',
+  'auth/code-expired':
+    'Verification code has expired. Please request a new one.',
   'auth/popup-closed-by-user': 'Sign-in was cancelled. Please try again.',
   'auth/requires-recent-login': 'Please log in again to complete this action.',
   'auth/invalid-phone-number': 'Please enter a valid phone number.',
@@ -137,13 +140,7 @@ function extractErrorCode(error: unknown): string {
   if (typeof error === 'string') return error;
 
   const err = error as any;
-  return (
-    err.code ||
-    err.errorCode ||
-    err.name ||
-    err.type ||
-    'UNKNOWN_ERROR'
-  );
+  return err.code || err.errorCode || err.name || err.type || 'UNKNOWN_ERROR';
 }
 
 /**
@@ -167,7 +164,11 @@ function extractErrorMessage(error: unknown): string {
 /**
  * Gets a user-friendly message for the error
  */
-function getUserFriendlyMessage(code: string, message: string, category: ErrorCategory): string {
+function getUserFriendlyMessage(
+  code: string,
+  message: string,
+  category: ErrorCategory,
+): string {
   // Check Firebase Auth errors
   if (FIREBASE_AUTH_ERRORS[code]) {
     return FIREBASE_AUTH_ERRORS[code];

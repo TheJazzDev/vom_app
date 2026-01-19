@@ -1,5 +1,9 @@
 import { firestore } from '@/src/config';
-import { isEmail, serializeFirestoreData, toInternationNigeriaPhone } from '@/src/utils';
+import {
+  isEmail,
+  serializeFirestoreData,
+  toInternationNigeriaPhone,
+} from '@/src/utils';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 export const findMemberForActivation = async (
@@ -17,7 +21,6 @@ export const findMemberForActivation = async (
         const member = serializeFirestoreData<UserProfile>({
           ...doc.data(),
           id: doc.id,
-          
         });
 
         if (member && (member.hasPassword || member.phoneVerified)) {
@@ -43,7 +46,6 @@ export const findMemberForActivation = async (
       const member = serializeFirestoreData<UserProfile>({
         ...doc.data(),
         id: doc.id,
-        
       });
 
       if (member.hasPassword || member.phoneVerified) {
@@ -66,7 +68,6 @@ export const findMemberForActivation = async (
       const member = serializeFirestoreData<UserProfile>({
         ...doc.data(),
         id: doc.id,
-        
       });
 
       if (member.hasPassword || member.phoneVerified) {

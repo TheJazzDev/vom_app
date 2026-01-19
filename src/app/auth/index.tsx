@@ -17,11 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 
 const APP_FEATURES = [
   'View church services and events',
@@ -116,7 +112,7 @@ export default function LoginScreen() {
       <View gradient scrollable>
         <View className="items-center py-6 mb-6">
           <Text variant="h2">Welcome Back</Text>
-          <Text className="text-center mt-2 text-gray-600">
+          <Text className="text-center mt-2 text-gray-600 dark:text-gray-300">
             Sign in to access your account
           </Text>
         </View>
@@ -168,11 +164,11 @@ export default function LoginScreen() {
 
         <View className="gap-3 mb-6">
           <View className="flex-row items-center mb-2">
-            <View className="flex-1 h-px bg-gray-300" />
-            <Text className="mx-4 text-gray-500">
+            <View className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
+            <Text className="mx-4 text-gray-500 dark:text-gray-400">
               Don&apos;t have an account?
             </Text>
-            <View className="flex-1 h-px bg-gray-300" />
+            <View className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
           </View>
 
           <Button
@@ -202,7 +198,7 @@ export default function LoginScreen() {
 
         {/* Help Section */}
         <Card variant="outlined" className="p-4">
-          <Text className="text-gray-700 text-sm text-center">
+          <Text className="text-gray-700 dark:text-gray-300 text-sm text-center">
             <Text className="font-semibold">Need help choosing? </Text>
             If you&apos;re an existing VOM member without an account, use
             &quot;Activate Account&quot;. New to VOM? Use &quot;Create New

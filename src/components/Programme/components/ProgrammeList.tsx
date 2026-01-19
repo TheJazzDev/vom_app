@@ -30,11 +30,16 @@ export const ProgrammeList: React.FC<ProgrammeListProps> = ({
   const theme = useTheme();
 
   const renderItem = useCallback(
-    ({ item }: { item: AllProgrammes }) => <ProgrammeListCard programme={item} />,
-    []
+    ({ item }: { item: AllProgrammes }) => (
+      <ProgrammeListCard programme={item} />
+    ),
+    [],
   );
 
-  const keyExtractor = useCallback((program: AllProgrammes) => program?.id!, []);
+  const keyExtractor = useCallback(
+    (program: AllProgrammes) => program?.id!,
+    [],
+  );
 
   const LoadingSkeleton = () => (
     <View>

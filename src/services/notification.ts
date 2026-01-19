@@ -1,7 +1,13 @@
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { Platform } from 'react-native';
 import { firestore } from '../config/firebase';
 
@@ -36,7 +42,10 @@ const DEFAULT_SETTINGS: NotificationSettings = {
 /**
  * Register push notification token with Firestore
  */
-export async function registerPushToken(userId: string, token: string): Promise<void> {
+export async function registerPushToken(
+  userId: string,
+  token: string,
+): Promise<void> {
   if (!userId || !token) {
     console.warn('[NotificationService] Missing userId or token');
     return;
@@ -56,7 +65,7 @@ export async function registerPushToken(userId: string, token: string): Promise<
           model: Device.modelName,
         },
       },
-      { merge: true }
+      { merge: true },
     );
 
     console.log('[NotificationService] Token registered successfully');
@@ -93,7 +102,9 @@ export async function unregisterPushToken(userId: string): Promise<void> {
 /**
  * Get notification settings for a user
  */
-export async function getNotificationSettings(userId: string): Promise<NotificationSettings> {
+export async function getNotificationSettings(
+  userId: string,
+): Promise<NotificationSettings> {
   if (!userId) {
     return DEFAULT_SETTINGS;
   }
@@ -109,7 +120,10 @@ export async function getNotificationSettings(userId: string): Promise<Notificat
 
     return DEFAULT_SETTINGS;
   } catch (error) {
-    console.error('[NotificationService] Failed to get notification settings:', error);
+    console.error(
+      '[NotificationService] Failed to get notification settings:',
+      error,
+    );
     return DEFAULT_SETTINGS;
   }
 }
@@ -119,7 +133,7 @@ export async function getNotificationSettings(userId: string): Promise<Notificat
  */
 export async function updateNotificationSettings(
   userId: string,
-  settings: Partial<NotificationSettings>
+  settings: Partial<NotificationSettings>,
 ): Promise<void> {
   if (!userId) {
     console.warn('[NotificationService] Missing userId');
@@ -149,7 +163,9 @@ export async function updateNotificationSettings(
  */
 export async function requestPushNotificationToken(): Promise<string | null> {
   if (!Device.isDevice) {
-    console.warn('[NotificationService] Must use physical device for push notifications');
+    console.warn(
+      '[NotificationService] Must use physical device for push notifications',
+    );
     return null;
   }
 
@@ -185,14 +201,17 @@ export async function requestPushNotificationToken(): Promise<string | null> {
     return null;
   }
 
-  const pushToken = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+  const pushToken = (await Notifications.getExpoPushTokenAsync({ projectId }))
+    .data;
   return pushToken;
 }
 
 /**
  * Full registration flow: request permission + register token
  */
-export async function registerForPushNotifications(userId: string): Promise<string | null> {
+export async function registerForPushNotifications(
+  userId: string,
+): Promise<string | null> {
   const token = await requestPushNotificationToken();
 
   if (token && userId) {

@@ -1,17 +1,11 @@
 import { InfoCategoryCardCompact } from '@/src/components/ChurchInfo/InfoCategoryCard';
 import { IconSymbol, IconSymbolName } from '@/src/components/Icons/IconSymbol';
-import { Card, Text } from '@/src/components/UI';
+import { Text } from '@/src/components/UI';
 import { INFO_CATEGORIES, ROUTES } from '@/src/constants';
 import { useTheme } from '@/src/hooks';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import {
-  Platform,
-  Pressable,
-  RefreshControl,
-  ScrollView,
-  View,
-} from 'react-native';
+import { Pressable, RefreshControl, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Quick action items configuration
@@ -115,14 +109,9 @@ export default function MoreIndex() {
         backgroundColor: theme.card,
         borderWidth: 1,
         borderColor: theme.border,
-        borderRadius: 20,
-        padding: 20,
-        marginBottom: 12,
-        shadowColor: item.color,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-        elevation: 5,
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 8,
       }}
       android_ripple={{ color: 'rgba(236,72,153,0.1)' }}
     >
@@ -268,14 +257,9 @@ export default function MoreIndex() {
               backgroundColor: theme.card,
               borderWidth: 1,
               borderColor: theme.border,
-              borderRadius: 20,
-              padding: 20,
-              marginBottom: 12,
-              shadowColor: '#F59E0B',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.15,
-              shadowRadius: 12,
-              elevation: 5,
+              borderRadius: 16,
+              padding: 16,
+              marginBottom: 8,
             }}
             android_ripple={{ color: 'rgba(245,158,11,0.1)' }}
           >
@@ -312,7 +296,11 @@ export default function MoreIndex() {
                     </Text>
                   </View>
                 </View>
-                <Text variant="body" className="mb-2" style={{ color: theme.muted }}>
+                <Text
+                  variant="body"
+                  className="mb-2"
+                  style={{ color: theme.muted }}
+                >
                   See how you rank among members
                 </Text>
                 <View className="flex-row items-center">
@@ -347,61 +335,6 @@ export default function MoreIndex() {
           {ADDITIONAL_ITEMS.map((item) => (
             <BirthdayCard key={item.route} item={item} />
           ))}
-        </View>
-
-        {/* Help & Support Card */}
-        <View className="px-4 mb-8">
-          <Card
-            variant="outlined"
-            className="rounded-2xl p-5"
-            style={{
-              borderWidth: 1,
-              borderColor: theme.border,
-              backgroundColor: theme.card,
-            }}
-          >
-            <View className="flex-row items-start">
-              <View
-                className="w-12 h-12 rounded-full items-center justify-center mr-4"
-                style={{ backgroundColor: `${theme.primary}15` }}
-              >
-                <IconSymbol
-                  name="questionmark.circle.fill"
-                  size={24}
-                  color={theme.primary}
-                />
-              </View>
-              <View className="flex-1">
-                <Text
-                  variant="h6"
-                  className="font-semibold mb-1"
-                  style={{ color: theme.heading }}
-                >
-                  Need Help or Prayer?
-                </Text>
-                <Text
-                  variant="body"
-                  className="mb-3"
-                  style={{ color: theme.muted }}
-                >
-                  Our team is here to support you spiritually and practically
-                </Text>
-                <Pressable
-                  onPress={() => router.push(ROUTES.CONTACT)}
-                  className="self-start px-4 py-2 rounded-full"
-                  style={{ backgroundColor: `${theme.primary}15` }}
-                >
-                  <Text
-                    variant="body"
-                    className="font-semibold"
-                    style={{ color: theme.primary }}
-                  >
-                    Get in Touch
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </Card>
         </View>
       </ScrollView>
     </SafeAreaView>

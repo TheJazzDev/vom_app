@@ -9,3 +9,4 @@ export const programmesRef = collection(firestore, 'programmes');
 export const departmentsRef = collection(firestore, 'departments');
 export const announcementsRef = collection(firestore, 'announcements');
 export const notificationsRef = collection(firestore, 'notifications');
+export const firstTimersRef = collection(firestore, 'firstTimers');

@@ -94,7 +94,7 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
               className="italic leading-5"
               numberOfLines={showFullContent ? undefined : 2}
             >
-              "{prayer.scriptureText}"
+              &quot;{prayer.scriptureText}&quot;
             </Text>
             <Text
               variant="caption"
@@ -110,7 +110,7 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
       {/* Content */}
       <Text
         variant="body"
-        style={{ color: theme.textSecondary }}
+        style={{ color: theme.muted }}
         className="leading-6 mb-4"
         numberOfLines={showFullContent ? undefined : 3}
       >
@@ -130,10 +130,7 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
           )}
           <View className="flex-row items-center gap-1">
             <Text className="text-sm">💬</Text>
-            <Text
-              variant="caption"
-              style={{ color: theme.textSecondary }}
-            >
+            <Text variant="caption" style={{ color: theme.muted }}>
               {prayer.commentsCount}
             </Text>
           </View>

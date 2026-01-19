@@ -5,10 +5,10 @@ import { InfoRow } from './InfoRow';
 export function TopSectionCardStyle({ data }: { data: any }) {
   return (
     <View
-      className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 my-2"
+      className="bg-gray-50 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-4 my-2"
       id="top-section"
     >
-      <View className="border-b border-gray-300 pb-2 mb-3">
+      <View className="border-b border-gray-300 dark:border-gray-600 pb-2 mb-3">
         <Text
           variant="h4"
           color="heading"
@@ -141,7 +141,10 @@ export function TopSectionModernCard({ data }: { data: any }) {
       >
         {data.type} SERVICE PROGRAMME
       </Text>
-      <Text variant="body2" className="text-gray-500 mt-1 mb-3 text-center">
+      <Text
+        variant="body2"
+        className="text-gray-500 dark:text-gray-400 mt-1 mb-3 text-center"
+      >
         {formatDate(data.date)}
       </Text>
 
@@ -149,7 +152,7 @@ export function TopSectionModernCard({ data }: { data: any }) {
         <View className="flex-row items-start">
           <View className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></View>
           <View className="flex-1">
-            <Text className="text-xs font-semibold text-gray-500 uppercase">
+            <Text className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
               Theme
             </Text>
             <Text variant="h5">{data.theme}</Text>
@@ -159,7 +162,7 @@ export function TopSectionModernCard({ data }: { data: any }) {
         <View className="flex-row items-start">
           <View className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3"></View>
           <View className="flex-1">
-            <Text className="text-xs font-semibold text-gray-500 uppercase">
+            <Text className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
               Topic
             </Text>
             <Text variant="h6">{data.topic}</Text>
@@ -169,7 +172,7 @@ export function TopSectionModernCard({ data }: { data: any }) {
         <View className="flex-row items-start">
           <View className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3"></View>
           <View className="flex-1">
-            <Text className="text-xs font-semibold text-gray-500 uppercase">
+            <Text className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
               Lesson
             </Text>
             <Text variant="body">{data.lesson}</Text>
@@ -191,7 +194,7 @@ export function TopSectionMinimalist({ data }: { data: any }) {
       </Text>
       <Text
         variant="h6"
-        className="text-center font-light tracking-[0.1em] text-gray-600 mb-4"
+        className="text-center font-light tracking-[0.1em] text-gray-600 dark:text-gray-300 mb-4"
       >
         PROGRAMME
       </Text>
@@ -202,7 +205,7 @@ export function TopSectionMinimalist({ data }: { data: any }) {
 
       <View className="gap-4">
         <View>
-          <Text className="text-center text-xs uppercase tracking-wide text-gray-500 mb-1">
+          <Text className="text-center text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
             Theme
           </Text>
           <Text variant="h5" className="text-center font-medium">
@@ -211,7 +214,7 @@ export function TopSectionMinimalist({ data }: { data: any }) {
         </View>
 
         <View>
-          <Text className="text-center text-xs uppercase tracking-wide text-gray-500 mb-1">
+          <Text className="text-center text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
             Topic
           </Text>
           <Text variant="h6" className="text-center">
@@ -220,7 +223,7 @@ export function TopSectionMinimalist({ data }: { data: any }) {
         </View>
 
         <View>
-          <Text className="text-center text-xs uppercase tracking-wide text-gray-500 mb-1">
+          <Text className="text-center text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
             Lesson
           </Text>
           <Text variant="body" className="text-center">

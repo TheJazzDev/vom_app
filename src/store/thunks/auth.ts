@@ -156,7 +156,14 @@ export const sendEmailVerificationLinkThunk = createAsyncThunk<
 export const updateUserProfileThunk = createAsyncThunk(
   'auth/updateUserProfile',
   async (
-    data: { primaryPhone?: string; secondaryPhone?: string; address?: string },
+    data: {
+      primaryPhone?: string;
+      secondaryPhone?: string;
+      address?: string;
+      avatar?: string;
+      avatarUri?: string;
+      oldAvatarUrl?: string;
+    },
     { rejectWithValue, dispatch },
   ) => {
     try {

@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { FlatList, View, ActivityIndicator, Platform, RefreshControl } from 'react-native';
+import {
+  FlatList,
+  View,
+  ActivityIndicator,
+  Platform,
+  RefreshControl,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Text } from '@/src/components/UI';
 import { ROUTES } from '@/src/constants';
@@ -51,7 +57,7 @@ export default function NotificationsScreen() {
         router.push(notification.actionRoute as any);
       }
     },
-    [markNotificationAsRead, setSourceRoute, router]
+    [markNotificationAsRead, setSourceRoute, router],
   );
 
   const handleMarkAllAsRead = useCallback(() => {
@@ -73,27 +79,33 @@ export default function NotificationsScreen() {
 
   const filteredNotifications = useMemo(
     () => notifications?.filter((n) => filter === 'all' || !n.read) || [],
-    [notifications, filter]
+    [notifications, filter],
   );
 
   const unreadCount = useMemo(
     () => notifications?.filter((n) => !n.read).length || 0,
-    [notifications]
+    [notifications],
   );
 
   const renderItem = useCallback(
     ({ item }: { item: AppNotification }) => (
       <NotificationCard notification={item} onPress={handleNotificationPress} />
     ),
-    [handleNotificationPress]
+    [handleNotificationPress],
   );
 
   const keyExtractor = useCallback((item: AppNotification) => item.id, []);
 
   // Show loading state on initial load
-  if (isLoadingNotifications && (!notifications || notifications.length === 0)) {
+  if (
+    isLoadingNotifications &&
+    (!notifications || notifications.length === 0)
+  ) {
     return (
-      <View className="flex-1 justify-center items-center" style={{ backgroundColor: theme.background }}>
+      <View
+        className="flex-1 justify-center items-center"
+        style={{ backgroundColor: theme.background }}
+      >
         <ActivityIndicator size="large" color={theme.primary} />
         <Text variant="body" className="mt-4" style={{ color: theme.muted }}>
           Loading notifications...

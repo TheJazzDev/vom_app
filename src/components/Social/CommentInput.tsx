@@ -81,7 +81,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
             value={content}
             onChangeText={setContent}
             placeholder={placeholder}
-            placeholderTextColor={theme.textSecondary}
+            placeholderTextColor={theme.muted}
             multiline
             maxLength={500}
             editable={!disabled && !isSubmitting}
@@ -101,7 +101,11 @@ export const CommentInput: React.FC<CommentInputProps> = ({
           style={[
             styles.sendButton,
             {
-              backgroundColor: canSubmit ? theme.brand : theme.isDark ? '#4B5563' : '#D1D5DB',
+              backgroundColor: canSubmit
+                ? theme.brand
+                : theme.isDark
+                  ? '#4B5563'
+                  : '#D1D5DB',
             },
           ]}
         >

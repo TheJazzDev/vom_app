@@ -15,7 +15,10 @@ const Announcement = () => {
   const { announcements, isAnnouncementsLoading, announcementsError } =
     useAnnouncementSlice();
 
-  const latestAnnouncements = announcements.slice(0, 2);
+  const latestAnnouncements =
+    announcements && announcements.length > 0
+      ? announcements.filter((a) => a != null).slice(0, 2)
+      : [];
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -80,7 +83,11 @@ const Announcement = () => {
       ) : isAnnouncementsLoading && announcements.length === 0 ? (
         <View className="items-center justify-center py-8">
           <ActivityIndicator size="small" color={theme.primary} />
-          <Text variant="caption" className="mt-2" style={{ color: theme.muted }}>
+          <Text
+            variant="caption"
+            className="mt-2"
+            style={{ color: theme.muted }}
+          >
             Loading announcements...
           </Text>
         </View>

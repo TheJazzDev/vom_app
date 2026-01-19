@@ -74,10 +74,7 @@ export const LeaderboardList: React.FC<LeaderboardListProps> = ({
       >
         No Rankings Yet
       </Text>
-      <Text
-        variant="body"
-        style={{ color: theme.textSecondary, textAlign: 'center' }}
-      >
+      <Text variant="body" style={{ color: theme.muted, textAlign: 'center' }}>
         Be the first to earn points and claim the top spot!
       </Text>
     </View>
@@ -88,10 +85,7 @@ export const LeaderboardList: React.FC<LeaderboardListProps> = ({
       <View style={styles.loadingContainer}>
         {renderHeader()}
         <ActivityIndicator size="large" color={theme.brand} />
-        <Text
-          variant="body"
-          style={{ color: theme.textSecondary, marginTop: 12 }}
-        >
+        <Text variant="body" style={{ color: theme.muted, marginTop: 12 }}>
           Loading leaderboard...
         </Text>
       </View>

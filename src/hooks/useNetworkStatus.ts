@@ -70,9 +70,11 @@ export const useNetworkStatus = () => {
     ...networkStatus,
     refresh,
     // Convenience: true only if we're sure we're online
-    isOnline: networkStatus.isConnected && networkStatus.isInternetReachable !== false,
+    isOnline:
+      networkStatus.isConnected && networkStatus.isInternetReachable !== false,
     // Convenience: true only if we're sure we're offline
-    isOffline: !networkStatus.isConnected || networkStatus.isInternetReachable === false,
+    isOffline:
+      !networkStatus.isConnected || networkStatus.isInternetReachable === false,
   };
 };
 

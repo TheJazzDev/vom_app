@@ -44,10 +44,7 @@ export const PointsBadge: React.FC<PointsBadgeProps> = ({
         {formatPoints(points)}
       </Text>
       {showLabel && (
-        <Text
-          variant="caption"
-          style={{ color: theme.brand, marginLeft: 2 }}
-        >
+        <Text variant="caption" style={{ color: theme.brand, marginLeft: 2 }}>
           pts
         </Text>
       )}

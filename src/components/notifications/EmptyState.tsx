@@ -10,7 +10,11 @@ interface EmptyStateProps {
   onShowAll: () => void;
 }
 
-export const EmptyState = ({ filter, hasNotifications, onShowAll }: EmptyStateProps) => {
+export const EmptyState = ({
+  filter,
+  hasNotifications,
+  onShowAll,
+}: EmptyStateProps) => {
   const theme = useTheme();
 
   return (

@@ -10,7 +10,7 @@ export const getAllDepartments = async (): Promise<Department[]> => {
       serializeFirestoreData<Department>({
         id: doc.id,
         ...doc.data(),
-      })
+      }),
     );
   } catch (error) {
     console.error('Error fetching departments:', error);
@@ -56,7 +56,7 @@ export const getDepartmentWithMembers = async (
       serializeFirestoreData<UserProfile>({
         id: doc.id,
         ...doc.data(),
-      })
+      }),
     );
 
     return {

@@ -19,12 +19,13 @@ import {
 // Fetch testimonies
 export const fetchTestimoniesThunk = createAsyncThunk<
   Testimony[],
-  {
-    limitCount?: number;
-    category?: TestimonyCategory;
-    userId?: string;
-    status?: TestimonyStatus;
-  } | undefined,
+  | {
+      limitCount?: number;
+      category?: TestimonyCategory;
+      userId?: string;
+      status?: TestimonyStatus;
+    }
+  | undefined,
   { rejectValue: string }
 >('testimony/fetchTestimonies', async (options, { rejectWithValue }) => {
   try {
@@ -39,29 +40,35 @@ export const fetchTestimonyByIdThunk = createAsyncThunk<
   Testimony | null,
   { testimonyId: string; userId?: string },
   { rejectValue: string }
->('testimony/fetchById', async ({ testimonyId, userId }, { rejectWithValue, dispatch }) => {
-  try {
-    const testimony = await getTestimonyById(testimonyId);
+>(
+  'testimony/fetchById',
+  async ({ testimonyId, userId }, { rejectWithValue, dispatch }) => {
+    try {
+      const testimony = await getTestimonyById(testimonyId);
 
-    // Check if user has liked this testimony
-    if (testimony && userId) {
-      const hasLiked = await hasUserLikedTestimony(testimonyId, userId);
-      dispatch({
-        type: 'testimony/setUserLike',
-        payload: { testimonyId, liked: hasLiked },
-      });
+      // Check if user has liked this testimony
+      if (testimony && userId) {
+        const hasLiked = await hasUserLikedTestimony(testimonyId, userId);
+        dispatch({
+          type: 'testimony/setUserLike',
+          payload: { testimonyId, liked: hasLiked },
+        });
+      }
+
+      return testimony;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch testimony');
     }
-
-    return testimony;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch testimony');
-  }
-});
+  },
+);
 
 // Create testimony
 export const createTestimonyThunk = createAsyncThunk<
   Testimony,
-  Omit<Testimony, 'id' | 'likesCount' | 'commentsCount' | 'createdAt' | 'approvedAt'>,
+  Omit<
+    Testimony,
+    'id' | 'likesCount' | 'commentsCount' | 'createdAt' | 'approvedAt'
+  >,
   { rejectValue: string }
 >('testimony/create', async (testimony, { rejectWithValue }) => {
   try {
@@ -104,14 +111,17 @@ export const toggleTestimonyLikeThunk = createAsyncThunk<
   { testimonyId: string; isLiked: boolean },
   { testimonyId: string; userId: string },
   { rejectValue: string }
->('testimony/toggleLike', async ({ testimonyId, userId }, { rejectWithValue }) => {
-  try {
-    const isLiked = await toggleTestimonyLike(testimonyId, userId);
-    return { testimonyId, isLiked };
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to toggle like');
-  }
-});
+>(
+  'testimony/toggleLike',
+  async ({ testimonyId, userId }, { rejectWithValue }) => {
+    try {
+      const isLiked = await toggleTestimonyLike(testimonyId, userId);
+      return { testimonyId, isLiked };
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to toggle like');
+    }
+  },
+);
 
 // Fetch comments
 export const fetchTestimonyCommentsThunk = createAsyncThunk<
@@ -134,24 +144,30 @@ export const addTestimonyCommentThunk = createAsyncThunk<
     comment: Omit<TestimonyComment, 'id' | 'createdAt'>;
   },
   { rejectValue: string }
->('testimony/addComment', async ({ testimonyId, comment }, { rejectWithValue }) => {
-  try {
-    return await addTestimonyComment(testimonyId, comment);
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to add comment');
-  }
-});
+>(
+  'testimony/addComment',
+  async ({ testimonyId, comment }, { rejectWithValue }) => {
+    try {
+      return await addTestimonyComment(testimonyId, comment);
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to add comment');
+    }
+  },
+);
 
 // Delete comment
 export const deleteTestimonyCommentThunk = createAsyncThunk<
   string,
   { testimonyId: string; commentId: string },
   { rejectValue: string }
->('testimony/deleteComment', async ({ testimonyId, commentId }, { rejectWithValue }) => {
-  try {
-    await deleteTestimonyComment(testimonyId, commentId);
-    return commentId;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to delete comment');
-  }
-});
+>(
+  'testimony/deleteComment',
+  async ({ testimonyId, commentId }, { rejectWithValue }) => {
+    try {
+      await deleteTestimonyComment(testimonyId, commentId);
+      return commentId;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to delete comment');
+    }
+  },
+);

@@ -104,8 +104,5 @@ export const phoneLoginSchema = yup.object().shape({
   phoneNumber: yup
     .string()
     .required('Phone number is required')
-    .matches(
-      /^[+]?[\d\s()-]{10,}$/,
-      'Please enter a valid phone number',
-    ),
+    .matches(/^[+]?[\d\s()-]{10,}$/, 'Please enter a valid phone number'),
 });

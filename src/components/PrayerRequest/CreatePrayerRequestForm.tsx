@@ -1,6 +1,9 @@
 import { Text, View, TextInput, Button } from '@/src/components/UI';
 import { useTheme } from '@/src/hooks';
-import { PRAYER_CATEGORIES, PrayerRequestCategory } from '@/src/services/prayerRequest';
+import {
+  PRAYER_CATEGORIES,
+  PrayerRequestCategory,
+} from '@/src/services/prayerRequest';
 import React, { useState } from 'react';
 import {
   ScrollView,
@@ -21,10 +24,9 @@ interface CreatePrayerRequestFormProps {
   isLoading?: boolean;
 }
 
-export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = ({
-  onSubmit,
-  isLoading = false,
-}) => {
+export const CreatePrayerRequestForm: React.FC<
+  CreatePrayerRequestFormProps
+> = ({ onSubmit, isLoading = false }) => {
   const theme = useTheme();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -53,7 +55,7 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
 
   const categories = Object.entries(PRAYER_CATEGORIES) as [
     PrayerRequestCategory,
-    { label: string; emoji: string; color: string }
+    { label: string; emoji: string; color: string },
   ][];
 
   return (
@@ -75,11 +77,11 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
           value={title}
           onChangeText={setTitle}
           placeholder="Brief title for your request"
-          placeholderTextColor={theme.textSecondary}
+          placeholderTextColor={theme.muted}
           style={[
             styles.input,
             {
-              backgroundColor: theme.inputBackground,
+              backgroundColor: theme.card,
               borderColor: theme.border,
               color: theme.text,
             },
@@ -106,7 +108,7 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
                 styles.categoryChip,
                 {
                   backgroundColor:
-                    category === key ? `${cat.color}20` : theme.inputBackground,
+                    category === key ? `${cat.color}20` : theme.card,
                   borderColor: category === key ? cat.color : theme.border,
                 },
               ]}
@@ -132,14 +134,14 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
           value={content}
           onChangeText={setContent}
           placeholder="Share what you'd like others to pray for..."
-          placeholderTextColor={theme.textSecondary}
+          placeholderTextColor={theme.muted}
           multiline
           numberOfLines={6}
           textAlignVertical="top"
           style={[
             styles.textArea,
             {
-              backgroundColor: theme.inputBackground,
+              backgroundColor: theme.card,
               borderColor: theme.border,
               color: theme.text,
             },
@@ -148,7 +150,7 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
         />
         <Text
           variant="caption"
-          style={{ color: theme.textSecondary }}
+          style={{ color: theme.muted }}
           className="text-right mt-1"
         >
           {content.length}/1000
@@ -158,7 +160,7 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
       {/* Options */}
       <View
         className="rounded-xl p-4 mb-6"
-        style={{ backgroundColor: theme.inputBackground }}
+        style={{ backgroundColor: theme.card }}
       >
         <View className="flex-row items-center justify-between mb-4">
           <View className="flex-1">
@@ -169,10 +171,7 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
             >
               Post anonymously
             </Text>
-            <Text
-              variant="caption"
-              style={{ color: theme.textSecondary }}
-            >
+            <Text variant="caption" style={{ color: theme.muted }}>
               Your name will not be shown
             </Text>
           </View>
@@ -193,10 +192,7 @@ export const CreatePrayerRequestForm: React.FC<CreatePrayerRequestFormProps> = (
             >
               Mark as urgent
             </Text>
-            <Text
-              variant="caption"
-              style={{ color: theme.textSecondary }}
-            >
+            <Text variant="caption" style={{ color: theme.muted }}>
               Highlight for immediate attention
             </Text>
           </View>

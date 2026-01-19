@@ -24,7 +24,8 @@ export default function TestimoniesLayout() {
         name="create"
         options={{
           title: 'Share Testimony',
-          presentation: 'modal',
+          presentation: 'fullScreenModal',
+          animation: 'fade',
         }}
       />
     </Stack>

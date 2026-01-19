@@ -47,8 +47,8 @@ export const DepartmentMemberCard: React.FC<DepartmentMemberCardProps> = ({
   const roleIcon = getRoleIcon(role);
   const roleColor = getRoleColor(role);
 
-//   console.log(role)
-//   console.log(member.department[0].name)
+  //   console.log(role)
+  //   console.log(member.department[0].name)
 
   return (
     <TouchableOpacity

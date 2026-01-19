@@ -1,10 +1,14 @@
 import { auth, db } from '@/src/config/firebase';
+import { updateMemberAvatar } from '@/src/services/storage/avatarService';
 import { doc, updateDoc } from 'firebase/firestore';
 
 interface UpdateProfileData {
   primaryPhone?: string;
   secondaryPhone?: string;
   address?: string;
+  avatar?: string;
+  avatarUri?: string;
+  oldAvatarUrl?: string;
 }
 
 export async function updateUserProfile(data: UpdateProfileData) {
@@ -15,13 +19,33 @@ export async function updateUserProfile(data: UpdateProfileData) {
       throw new Error('No authenticated user found');
     }
 
+    let avatarUrl = data.avatar;
+
+    // If avatarUri is provided, upload the new avatar
+    if (data.avatarUri) {
+      avatarUrl = await updateMemberAvatar(
+        data.avatarUri,
+        data.oldAvatarUrl,
+        user.uid,
+      );
+    }
+
+    // Prepare update data
+    const updateData: any = {
+      updatedAt: new Date().toISOString(),
+    };
+
+    if (data.primaryPhone !== undefined)
+      updateData.primaryPhone = data.primaryPhone;
+    if (data.secondaryPhone !== undefined)
+      updateData.secondaryPhone = data.secondaryPhone;
+    if (data.address !== undefined) updateData.address = data.address;
+    if (avatarUrl !== undefined) updateData.avatar = avatarUrl;
+
     // Update member document in Firestore
     const memberRef = doc(db, 'members', user.uid);
 
-    await updateDoc(memberRef, {
-      ...data,
-      updatedAt: new Date().toISOString(),
-    });
+    await updateDoc(memberRef, updateData);
 
     return { success: true };
   } catch (error) {

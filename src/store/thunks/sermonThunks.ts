@@ -12,11 +12,12 @@ import {
 // Fetch sermons
 export const fetchSermonsThunk = createAsyncThunk<
   Sermon[],
-  {
-    limitCount?: number;
-    category?: SermonCategory;
-    seriesId?: string;
-  } | undefined,
+  | {
+      limitCount?: number;
+      category?: SermonCategory;
+      seriesId?: string;
+    }
+  | undefined,
   { rejectValue: string }
 >('sermon/fetchSermons', async (options, { rejectWithValue }) => {
   try {

@@ -1,6 +1,6 @@
 import { Image, ImageProps, ImageContentFit } from 'expo-image';
 import React, { memo } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 // Blur hash placeholder for loading state
 const DEFAULT_BLURHASH = 'L6PZfSi_.AyE_3t7t7R**0o#DgR4';
@@ -32,50 +32,50 @@ interface CachedImageProps extends Omit<ImageProps, 'source'> {
  *   fallback={<UserInitials name={user.name} />}
  * />
  */
-const CachedImage = memo(({
-  uri,
-  fallback,
-  containerStyle,
-  size,
-  borderRadius,
-  contentFit = 'cover',
-  showPlaceholder = true,
-  style,
-  ...props
-}: CachedImageProps) => {
-  const hasValidUri = uri && uri.trim() !== '';
-
-  const imageStyle = [
-    size ? { width: size, height: size } : undefined,
-    borderRadius !== undefined ? { borderRadius } : undefined,
+const CachedImage = memo(
+  ({
+    uri,
+    fallback,
+    containerStyle,
+    size,
+    borderRadius,
+    contentFit = 'cover',
+    showPlaceholder = true,
     style,
-  ];
+    ...props
+  }: CachedImageProps) => {
+    const hasValidUri = uri && uri.trim() !== '';
 
-  if (!hasValidUri) {
-    if (fallback) {
-      return (
-        <View style={containerStyle}>
-          {fallback}
-        </View>
-      );
+    const imageStyle = [
+      size ? { width: size, height: size } : undefined,
+      borderRadius !== undefined ? { borderRadius } : undefined,
+      style,
+    ];
+
+    if (!hasValidUri) {
+      if (fallback) {
+        return <View style={containerStyle}>{fallback}</View>;
+      }
+      return null;
     }
-    return null;
-  }
 
-  return (
-    <View style={containerStyle}>
-      <Image
-        source={{ uri }}
-        style={imageStyle}
-        contentFit={contentFit}
-        placeholder={showPlaceholder ? { blurhash: DEFAULT_BLURHASH } : undefined}
-        transition={200}
-        cachePolicy="memory-disk"
-        {...props}
-      />
-    </View>
-  );
-});
+    return (
+      <View style={containerStyle}>
+        <Image
+          source={{ uri }}
+          style={imageStyle}
+          contentFit={contentFit}
+          placeholder={
+            showPlaceholder ? { blurhash: DEFAULT_BLURHASH } : undefined
+          }
+          transition={200}
+          cachePolicy="memory-disk"
+          {...props}
+        />
+      </View>
+    );
+  },
+);
 
 CachedImage.displayName = 'CachedImage';
 

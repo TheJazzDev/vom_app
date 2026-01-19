@@ -12,7 +12,11 @@ import {
   addTestimonyCommentThunk,
   deleteTestimonyCommentThunk,
 } from '../thunks/testimonyThunks';
-import type { Testimony, TestimonyComment, TestimonyCategory } from '@/src/services/testimony';
+import type {
+  Testimony,
+  TestimonyComment,
+  TestimonyCategory,
+} from '@/src/services/testimony';
 
 interface TestimonyState {
   testimonies: Testimony[];
@@ -72,10 +76,16 @@ const testimonySlice = createSlice({
       state.currentTestimony = null;
       state.comments = [];
     },
-    setSelectedCategory: (state, action: PayloadAction<TestimonyCategory | null>) => {
+    setSelectedCategory: (
+      state,
+      action: PayloadAction<TestimonyCategory | null>,
+    ) => {
       state.selectedCategory = action.payload;
     },
-    setUserLike: (state, action: PayloadAction<{ testimonyId: string; liked: boolean }>) => {
+    setUserLike: (
+      state,
+      action: PayloadAction<{ testimonyId: string; liked: boolean }>,
+    ) => {
       state.userLikes[action.payload.testimonyId] = action.payload.liked;
     },
   },
@@ -137,7 +147,10 @@ const testimonySlice = createSlice({
         const { testimonyId, updates } = action.payload;
         const index = state.testimonies.findIndex((t) => t.id === testimonyId);
         if (index !== -1) {
-          state.testimonies[index] = { ...state.testimonies[index], ...updates };
+          state.testimonies[index] = {
+            ...state.testimonies[index],
+            ...updates,
+          };
         }
         if (state.currentTestimony?.id === testimonyId) {
           state.currentTestimony = { ...state.currentTestimony, ...updates };
@@ -157,7 +170,9 @@ const testimonySlice = createSlice({
       })
       .addCase(deleteTestimonyThunk.fulfilled, (state, action) => {
         state.isDeletingTestimony = false;
-        state.testimonies = state.testimonies.filter((t) => t.id !== action.payload);
+        state.testimonies = state.testimonies.filter(
+          (t) => t.id !== action.payload,
+        );
         state.successMessage = 'Testimony deleted successfully';
       })
       .addCase(deleteTestimonyThunk.rejected, (state, action) => {

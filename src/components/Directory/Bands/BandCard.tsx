@@ -14,12 +14,12 @@ const BandCard = memo(({ band }: { band: Band }) => {
 
   const isAdmin = useMemo(
     () => ['admin', 'super_admin'].includes(currentUser?.role ?? ''),
-    [currentUser?.role]
+    [currentUser?.role],
   );
 
   const isMemberOfBand = useMemo(
     () => currentUser?.bandKeys?.some((b) => b === band?.id) ?? false,
-    [currentUser?.bandKeys, band?.id]
+    [currentUser?.bandKeys, band?.id],
   );
 
   const handlePress = useCallback(() => {

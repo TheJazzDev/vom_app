@@ -54,7 +54,9 @@ export const validateName = (
   const isValid = value.length >= 2;
   return {
     isValid,
-    message: isValid ? `✓ ${fieldName} is cool!` : `✗ ${fieldName} must be at least 2 characters`,
+    message: isValid
+      ? `✓ ${fieldName} is cool!`
+      : `✗ ${fieldName} must be at least 2 characters`,
     type: isValid ? 'success' : 'error',
   };
 };

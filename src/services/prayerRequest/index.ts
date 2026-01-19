@@ -13,7 +13,6 @@ import {
   deleteDoc,
   increment,
   serverTimestamp,
-  Timestamp,
   setDoc,
 } from 'firebase/firestore';
 import { serializeFirestoreData } from '@/src/utils';
@@ -66,7 +65,7 @@ export const getPrayerRequests = async (
     category?: PrayerRequestCategory;
     status?: PrayerRequestStatus;
     userId?: string;
-  } = {}
+  } = {},
 ): Promise<PrayerRequest[]> => {
   try {
     const { limitCount = 20, category, status = 'active', userId } = options;
@@ -75,7 +74,7 @@ export const getPrayerRequests = async (
       prayerRequestsRef,
       where('status', '==', status),
       orderBy('createdAt', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     if (category) {
@@ -84,7 +83,7 @@ export const getPrayerRequests = async (
         where('status', '==', status),
         where('category', '==', category),
         orderBy('createdAt', 'desc'),
-        limit(limitCount)
+        limit(limitCount),
       );
     }
 
@@ -93,7 +92,7 @@ export const getPrayerRequests = async (
         prayerRequestsRef,
         where('authorId', '==', userId),
         orderBy('createdAt', 'desc'),
-        limit(limitCount)
+        limit(limitCount),
       );
     }
 
@@ -103,7 +102,7 @@ export const getPrayerRequests = async (
       serializeFirestoreData<PrayerRequest>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get prayer requests error:', error);
@@ -113,7 +112,7 @@ export const getPrayerRequests = async (
 
 // Get prayer request by ID
 export const getPrayerRequestById = async (
-  requestId: string
+  requestId: string,
 ): Promise<PrayerRequest | null> => {
   try {
     const docRef = doc(prayerRequestsRef, requestId);
@@ -133,7 +132,10 @@ export const getPrayerRequestById = async (
 
 // Create prayer request
 export const createPrayerRequest = async (
-  request: Omit<PrayerRequest, 'id' | 'prayerCount' | 'commentsCount' | 'createdAt' | 'updatedAt'>
+  request: Omit<
+    PrayerRequest,
+    'id' | 'prayerCount' | 'commentsCount' | 'createdAt' | 'updatedAt'
+  >,
 ): Promise<PrayerRequest> => {
   try {
     const newRequest = {
@@ -161,7 +163,12 @@ export const createPrayerRequest = async (
 // Update prayer request
 export const updatePrayerRequest = async (
   requestId: string,
-  updates: Partial<Pick<PrayerRequest, 'title' | 'content' | 'category' | 'status' | 'isUrgent'>>
+  updates: Partial<
+    Pick<
+      PrayerRequest,
+      'title' | 'content' | 'category' | 'status' | 'isUrgent'
+    >
+  >,
 ): Promise<void> => {
   try {
     const requestRef = doc(prayerRequestsRef, requestId);
@@ -189,10 +196,13 @@ export const deletePrayerRequest = async (requestId: string): Promise<void> => {
 // Mark as prayed
 export const markAsPrayed = async (
   requestId: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> => {
   try {
-    const prayedRef = doc(firestore, `prayerRequests/${requestId}/prayed/${userId}`);
+    const prayedRef = doc(
+      firestore,
+      `prayerRequests/${requestId}/prayed/${userId}`,
+    );
     const requestRef = doc(prayerRequestsRef, requestId);
     const prayedSnap = await getDoc(prayedRef);
 
@@ -219,10 +229,13 @@ export const markAsPrayed = async (
 // Check if user has prayed
 export const hasUserPrayed = async (
   requestId: string,
-  userId: string
+  userId: string,
 ): Promise<boolean> => {
   try {
-    const prayedRef = doc(firestore, `prayerRequests/${requestId}/prayed/${userId}`);
+    const prayedRef = doc(
+      firestore,
+      `prayerRequests/${requestId}/prayed/${userId}`,
+    );
     const prayedSnap = await getDoc(prayedRef);
     return prayedSnap.exists();
   } catch (error) {
@@ -233,12 +246,12 @@ export const hasUserPrayed = async (
 
 // Get comments
 export const getPrayerRequestComments = async (
-  requestId: string
+  requestId: string,
 ): Promise<PrayerRequestComment[]> => {
   try {
     const commentsRef = collection(
       firestore,
-      `prayerRequests/${requestId}/comments`
+      `prayerRequests/${requestId}/comments`,
     );
     const q = query(commentsRef, orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
@@ -247,7 +260,7 @@ export const getPrayerRequestComments = async (
       serializeFirestoreData<PrayerRequestComment>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get prayer request comments error:', error);
@@ -258,12 +271,12 @@ export const getPrayerRequestComments = async (
 // Add comment
 export const addPrayerRequestComment = async (
   requestId: string,
-  comment: Omit<PrayerRequestComment, 'id' | 'createdAt'>
+  comment: Omit<PrayerRequestComment, 'id' | 'createdAt'>,
 ): Promise<PrayerRequestComment> => {
   try {
     const commentsRef = collection(
       firestore,
-      `prayerRequests/${requestId}/comments`
+      `prayerRequests/${requestId}/comments`,
     );
     const requestRef = doc(prayerRequestsRef, requestId);
 
@@ -289,12 +302,12 @@ export const addPrayerRequestComment = async (
 // Delete comment
 export const deletePrayerRequestComment = async (
   requestId: string,
-  commentId: string
+  commentId: string,
 ): Promise<void> => {
   try {
     const commentRef = doc(
       firestore,
-      `prayerRequests/${requestId}/comments/${commentId}`
+      `prayerRequests/${requestId}/comments/${commentId}`,
     );
     const requestRef = doc(prayerRequestsRef, requestId);
 
@@ -321,7 +334,10 @@ export const markAsAnswered = async (requestId: string): Promise<void> => {
 };
 
 // Category display helpers
-export const PRAYER_CATEGORIES: Record<PrayerRequestCategory, { label: string; emoji: string; color: string }> = {
+export const PRAYER_CATEGORIES: Record<
+  PrayerRequestCategory,
+  { label: string; emoji: string; color: string }
+> = {
   health: { label: 'Health', emoji: '🏥', color: '#EF4444' },
   family: { label: 'Family', emoji: '👨‍👩‍👧‍👦', color: '#F59E0B' },
   finances: { label: 'Finances', emoji: '💰', color: '#10B981' },

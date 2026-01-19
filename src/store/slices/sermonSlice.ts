@@ -7,7 +7,11 @@ import {
   fetchFeaturedSermonsThunk,
   fetchSermonSeriesThunk,
 } from '../thunks/sermonThunks';
-import type { Sermon, SermonSeries, SermonCategory } from '@/src/services/sermon';
+import type {
+  Sermon,
+  SermonSeries,
+  SermonCategory,
+} from '@/src/services/sermon';
 
 interface SermonState {
   sermons: Sermon[];
@@ -51,7 +55,10 @@ const sermonSlice = createSlice({
     clearCurrentSermon: (state) => {
       state.currentSermon = null;
     },
-    setSelectedCategory: (state, action: PayloadAction<SermonCategory | null>) => {
+    setSelectedCategory: (
+      state,
+      action: PayloadAction<SermonCategory | null>,
+    ) => {
       state.selectedCategory = action.payload;
     },
   },
@@ -118,11 +125,8 @@ const sermonSlice = createSlice({
   },
 });
 
-export const {
-  clearError,
-  clearCurrentSermon,
-  setSelectedCategory,
-} = sermonSlice.actions;
+export const { clearError, clearCurrentSermon, setSelectedCategory } =
+  sermonSlice.actions;
 
 export function useSermonSlice() {
   return useSelector(({ sermon }: RootState) => sermon);

@@ -38,12 +38,16 @@ export interface PushNotificationState {
 export function usePushNotifications() {
   const router = useRouter();
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  const [notification, setNotification] = useState<Notifications.Notification | null>(null);
-  const [permissionStatus, setPermissionStatus] = useState<Notifications.PermissionStatus | null>(null);
+  const [notification, setNotification] =
+    useState<Notifications.Notification | null>(null);
+  const [permissionStatus, setPermissionStatus] =
+    useState<Notifications.PermissionStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const notificationListener = useRef<Notifications.EventSubscription | null>(null);
+  const notificationListener = useRef<Notifications.EventSubscription | null>(
+    null,
+  );
   const responseListener = useRef<Notifications.EventSubscription | null>(null);
 
   useEffect(() => {
@@ -54,18 +58,16 @@ export function usePushNotifications() {
     checkPermissionStatus();
 
     // Listen for incoming notifications (app in foreground)
-    notificationListener.current = Notifications.addNotificationReceivedListener(
-      (notification) => {
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
-      }
-    );
+      });
 
     // Listen for notification responses (user tapped notification)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
         handleNotificationResponse(response);
-      }
-    );
+      });
 
     return () => {
       if (notificationListener.current) {
@@ -118,7 +120,7 @@ export function usePushNotifications() {
   };
 
   const handleNotificationResponse = (
-    response: Notifications.NotificationResponse
+    response: Notifications.NotificationResponse,
   ) => {
     const data = response.notification.request.content.data;
 
@@ -166,7 +168,8 @@ export function usePushNotifications() {
         return null;
       }
 
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
 
       if (existingStatus !== 'granted') {
@@ -193,15 +196,15 @@ export function usePushNotifications() {
         return null;
       }
 
-      const token = (
-        await Notifications.getExpoPushTokenAsync({ projectId })
-      ).data;
+      const token = (await Notifications.getExpoPushTokenAsync({ projectId }))
+        .data;
 
       setExpoPushToken(token);
       setIsLoading(false);
       return token;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to get push token';
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to get push token';
       setError(errorMessage);
       setIsLoading(false);
       return null;
@@ -215,7 +218,7 @@ export function usePushNotifications() {
     title: string,
     body: string,
     data?: Record<string, unknown>,
-    trigger?: Notifications.NotificationTriggerInput
+    trigger?: Notifications.NotificationTriggerInput,
   ) => {
     await Notifications.scheduleNotificationAsync({
       content: {

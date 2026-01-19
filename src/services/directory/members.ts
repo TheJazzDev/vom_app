@@ -9,7 +9,7 @@ export async function getAllMembers(): Promise<UserProfile[]> {
     serializeFirestoreData<UserProfile>({
       ...(doc.data() as UserProfile),
       uid: doc.id,
-    })
+    }),
   );
 }
 

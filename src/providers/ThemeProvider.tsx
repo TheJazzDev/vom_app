@@ -20,12 +20,32 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = '@vom_app_theme_preference';
 
+// Helper function to apply theme synchronously during initialization
+const applyThemeImmediate = (mode: ThemeMode) => {
+  switch (mode) {
+    case 'automatic':
+      Appearance.setColorScheme(null);
+      break;
+    case 'light':
+      Appearance.setColorScheme('light');
+      break;
+    case 'dark':
+      Appearance.setColorScheme('dark');
+      break;
+  }
+};
+
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('automatic');
+  // Initialize with system theme to prevent flash
+  const [themeMode, setThemeModeState] = useState<ThemeMode>(() => {
+    // Default to 'automatic' but apply system theme immediately
+    applyThemeImmediate('automatic');
+    return 'automatic';
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,6 +61,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
       if (savedTheme && ['automatic', 'light', 'dark'].includes(savedTheme)) {
         setThemeModeState(savedTheme as ThemeMode);
+      } else {
+        // No saved preference, apply system theme immediately
+        applyTheme('automatic');
       }
     } catch (error) {
       console.error('Failed to load theme preference:', error);

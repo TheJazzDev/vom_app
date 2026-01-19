@@ -72,10 +72,13 @@ export const registerPushNotifications = createAsyncThunk(
       const token = await registerForPushNotifications(userId);
       return token;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to register for notifications';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to register for notifications';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const unregisterNotifications = createAsyncThunk(
@@ -85,10 +88,13 @@ export const unregisterNotifications = createAsyncThunk(
       await unregisterPushToken(userId);
       return null;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to unregister notifications';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to unregister notifications';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const fetchNotificationSettings = createAsyncThunk(
@@ -98,26 +104,31 @@ export const fetchNotificationSettings = createAsyncThunk(
       const settings = await getNotificationSettings(userId);
       return settings;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch settings';
+      const message =
+        error instanceof Error ? error.message : 'Failed to fetch settings';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const saveNotificationSettings = createAsyncThunk(
   'notification/saveSettings',
   async (
-    { userId, settings }: { userId: string; settings: Partial<NotificationSettings> },
-    { rejectWithValue }
+    {
+      userId,
+      settings,
+    }: { userId: string; settings: Partial<NotificationSettings> },
+    { rejectWithValue },
   ) => {
     try {
       await updateNotificationSettings(userId, settings);
       return settings;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to save settings';
+      const message =
+        error instanceof Error ? error.message : 'Failed to save settings';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const fetchNotifications = createAsyncThunk(
@@ -127,10 +138,13 @@ export const fetchNotifications = createAsyncThunk(
       const notifications = await getNotifications(userId);
       return notifications;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch notifications';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to fetch notifications';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const markAsRead = createAsyncThunk(
@@ -140,10 +154,11 @@ export const markAsRead = createAsyncThunk(
       await markNotificationAsRead(notificationId);
       return notificationId;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to mark as read';
+      const message =
+        error instanceof Error ? error.message : 'Failed to mark as read';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const markAllAsRead = createAsyncThunk(
@@ -153,10 +168,11 @@ export const markAllAsRead = createAsyncThunk(
       await markAllNotificationsAsRead(userId);
       return true;
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to mark all as read';
+      const message =
+        error instanceof Error ? error.message : 'Failed to mark all as read';
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 const notificationSlice = createSlice({
@@ -165,7 +181,7 @@ const notificationSlice = createSlice({
   reducers: {
     setPermissionStatus: (
       state,
-      action: PayloadAction<'undetermined' | 'granted' | 'denied'>
+      action: PayloadAction<'undetermined' | 'granted' | 'denied'>,
     ) => {
       state.permissionStatus = action.payload;
     },
@@ -258,7 +274,9 @@ const notificationSlice = createSlice({
 
       // Mark as read
       .addCase(markAsRead.fulfilled, (state, action) => {
-        const notification = state.notifications.find((n) => n.id === action.payload);
+        const notification = state.notifications.find(
+          (n) => n.id === action.payload,
+        );
         if (notification && !notification.read) {
           notification.read = true;
           state.unreadCount = Math.max(0, state.unreadCount - 1);
@@ -302,19 +320,22 @@ export function useNotificationSlice() {
       dispatch(notificationSlice.actions.clearUnreadCount()),
     addNotification: (notification: AppNotification) =>
       dispatch(notificationSlice.actions.addNotification(notification)),
-    clearErrors: () =>
-      dispatch(notificationSlice.actions.clearErrors()),
+    clearErrors: () => dispatch(notificationSlice.actions.clearErrors()),
     resetNotificationState: () =>
       dispatch(notificationSlice.actions.resetNotificationState()),
     // Dispatched async thunks
-    registerNotifications: (userId: string) => dispatch(registerPushNotifications(userId)),
+    registerNotifications: (userId: string) =>
+      dispatch(registerPushNotifications(userId)),
     unregister: (userId: string) => dispatch(unregisterNotifications(userId)),
-    loadSettings: (userId: string) => dispatch(fetchNotificationSettings(userId)),
+    loadSettings: (userId: string) =>
+      dispatch(fetchNotificationSettings(userId)),
     saveSettings: (userId: string, settings: Partial<NotificationSettings>) =>
       dispatch(saveNotificationSettings({ userId, settings })),
     loadNotifications: (userId: string) => dispatch(fetchNotifications(userId)),
-    markNotificationAsRead: (notificationId: string) => dispatch(markAsRead(notificationId)),
-    markAllNotificationsAsRead: (userId: string) => dispatch(markAllAsRead(userId)),
+    markNotificationAsRead: (notificationId: string) =>
+      dispatch(markAsRead(notificationId)),
+    markAllNotificationsAsRead: (userId: string) =>
+      dispatch(markAllAsRead(userId)),
   };
 }
 

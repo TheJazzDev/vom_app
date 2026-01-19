@@ -9,7 +9,14 @@ import { fetchUserEngagementThunk } from '@/src/store/thunks';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useState, useEffect } from 'react';
-import { Image, RefreshControl, ScrollView, View, Pressable, StyleSheet } from 'react-native';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  View,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/src/store/store';
 import { useRouter } from 'expo-router';
@@ -170,10 +177,7 @@ export default function ProfileIndex() {
                   >
                     <Text variant="h1" className="text-white font-bold">
                       {user?.firstName &&
-                        getUserInitials(
-                          user.firstName,
-                          user.lastName,
-                        )}
+                        getUserInitials(user.firstName, user.lastName)}
                     </Text>
                   </View>
                 )}
@@ -197,8 +201,7 @@ export default function ProfileIndex() {
                 variant="h2"
                 className="text-white font-bold text-center mb-1"
               >
-                {user?.title} {user?.firstName}{' '}
-                {user?.lastName}
+                {user?.title} {user?.firstName} {user?.lastName}
               </Text>
               <View className="flex-row items-center mb-2">
                 <IconSymbol
@@ -252,7 +255,11 @@ export default function ProfileIndex() {
                 <Text variant="caption" style={{ color: theme.primary }}>
                   View All
                 </Text>
-                <IconSymbol name="chevron.right" size={14} color={theme.primary} />
+                <IconSymbol
+                  name="chevron.right"
+                  size={14}
+                  color={theme.primary}
+                />
               </View>
             </Pressable>
           </View>

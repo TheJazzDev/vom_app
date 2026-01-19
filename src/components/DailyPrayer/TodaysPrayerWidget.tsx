@@ -1,6 +1,5 @@
 import { IconSymbol } from '@/src/components/Icons';
 import { Text, View } from '@/src/components/UI';
-import { useTheme } from '@/src/hooks';
 import type { DailyPrayer } from '@/src/services/dailyPrayer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -18,7 +17,6 @@ export const TodaysPrayerWidget: React.FC<TodaysPrayerWidgetProps> = ({
   isLoading = false,
   onPress,
 }) => {
-  const theme = useTheme();
   const router = useRouter();
 
   const handlePress = () => {
@@ -39,7 +37,9 @@ export const TodaysPrayerWidget: React.FC<TodaysPrayerWidgetProps> = ({
           style={styles.gradient}
         >
           <ActivityIndicator color="white" size="large" />
-          <Text className="text-white/80 mt-2">Loading today's prayer...</Text>
+          <Text className="text-white/80 mt-2">
+            Loading today&apos;s prayer...
+          </Text>
         </LinearGradient>
       </View>
     );
@@ -79,16 +79,15 @@ export const TodaysPrayerWidget: React.FC<TodaysPrayerWidgetProps> = ({
             <View className="w-8 h-8 rounded-full bg-white/20 items-center justify-center">
               <IconSymbol name="sun.max.fill" size={18} color="white" />
             </View>
-            <Text className="text-white/90 font-semibold">Today's Prayer</Text>
+            <Text className="text-white/90 font-semibold">
+              Today&apos;s Prayer
+            </Text>
           </View>
           <IconSymbol name="chevron.right" size={18} color="white" />
         </View>
 
         {/* Title */}
-        <Text
-          className="text-white font-bold text-lg mb-2"
-          numberOfLines={2}
-        >
+        <Text className="text-white font-bold text-lg mb-2" numberOfLines={2}>
           {prayer.title}
         </Text>
 
@@ -98,7 +97,7 @@ export const TodaysPrayerWidget: React.FC<TodaysPrayerWidgetProps> = ({
             className="text-white/90 italic text-sm leading-5"
             numberOfLines={2}
           >
-            "{prayer.scriptureText}"
+            &quot;{prayer.scriptureText}&quot;
           </Text>
           <Text className="text-white/70 text-xs font-semibold mt-1">
             — {prayer.scriptureReference}
@@ -113,7 +112,9 @@ export const TodaysPrayerWidget: React.FC<TodaysPrayerWidgetProps> = ({
           </View>
           <View className="flex-row items-center gap-1">
             <Text className="text-sm">💬</Text>
-            <Text className="text-white/80 text-sm">{prayer.commentsCount}</Text>
+            <Text className="text-white/80 text-sm">
+              {prayer.commentsCount}
+            </Text>
           </View>
         </View>
       </LinearGradient>

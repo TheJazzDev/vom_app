@@ -9,6 +9,6 @@ export async function getAllChildren(): Promise<ChildrenProfile[]> {
     serializeFirestoreData<ChildrenProfile>({
       ...(doc.data() as ChildrenProfile),
       uid: doc.id,
-    })
+    }),
   );
 }

@@ -102,34 +102,36 @@ export function NavigationButtons({
               }}
               className="items-center justify-center"
             >
-              <Text color='neutral' className="font-bold">
+              <Text color="neutral" className="font-bold">
                 {Math.round(((currentIndex + 1) / totalSlides) * 100)}%
               </Text>
             </View>
           </View>
         </View>
 
-        {<TouchableOpacity
-          onPress={isLastSlide ? onComplete : onNext}
-          style={{
-            width: 56,
-            height: 56,
-            borderRadius: 28,
-            backgroundColor: accentColor,
-            shadowColor: accentColor,
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 8,
-            elevation: 4,
-          }}
-          className="items-center justify-center"
-        >
-          {isLastSlide ? (
-            <IconSymbol name="checkmark" size={24} color="white" />
-          ) : (
-            <IconSymbol name="chevron.right" size={24} color="white" />
-          )}
-        </TouchableOpacity>}
+        {
+          <TouchableOpacity
+            onPress={isLastSlide ? onComplete : onNext}
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 28,
+              backgroundColor: accentColor,
+              shadowColor: accentColor,
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 8,
+              elevation: 4,
+            }}
+            className="items-center justify-center"
+          >
+            {isLastSlide ? (
+              <IconSymbol name="checkmark" size={24} color="white" />
+            ) : (
+              <IconSymbol name="chevron.right" size={24} color="white" />
+            )}
+          </TouchableOpacity>
+        }
       </View>
 
       {/* Call to Action */}
@@ -140,7 +142,9 @@ export function NavigationButtons({
             style={{ backgroundColor: accentColor }}
             className="py-4 px-8 rounded-xl items-center"
           >
-            <Text className="text-white dark:text-white font-bold text-lg">Get Started</Text>
+            <Text className="text-white dark:text-white font-bold text-lg">
+              Get Started
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (

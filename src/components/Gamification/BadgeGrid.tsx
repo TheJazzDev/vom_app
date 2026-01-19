@@ -18,13 +18,14 @@ interface BadgeGridProps {
 
 type BadgeCategory = Badge['category'];
 
-const CATEGORY_CONFIG: Record<BadgeCategory, { label: string; emoji: string }> = {
-  prayer: { label: 'Prayer', emoji: '🙏' },
-  study: { label: 'Study', emoji: '📖' },
-  community: { label: 'Community', emoji: '👥' },
-  streak: { label: 'Streaks', emoji: '🔥' },
-  special: { label: 'Special', emoji: '✨' },
-};
+const CATEGORY_CONFIG: Record<BadgeCategory, { label: string; emoji: string }> =
+  {
+    prayer: { label: 'Prayer', emoji: '🙏' },
+    study: { label: 'Study', emoji: '📖' },
+    community: { label: 'Community', emoji: '👥' },
+    streak: { label: 'Streaks', emoji: '🔥' },
+    special: { label: 'Special', emoji: '✨' },
+  };
 
 export const BadgeGrid: React.FC<BadgeGridProps> = ({
   badges,
@@ -32,7 +33,9 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
 }) => {
   const theme = useTheme();
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
-  const [activeCategory, setActiveCategory] = useState<BadgeCategory | 'all'>('all');
+  const [activeCategory, setActiveCategory] = useState<BadgeCategory | 'all'>(
+    'all',
+  );
 
   const categories = Object.keys(CATEGORY_CONFIG) as BadgeCategory[];
 
@@ -65,10 +68,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
           Badges
         </Text>
         <View
-          style={[
-            styles.countBadge,
-            { backgroundColor: `${theme.brand}15` },
-          ]}
+          style={[styles.countBadge, { backgroundColor: `${theme.brand}15` }]}
         >
           <Text style={{ color: theme.brand, fontWeight: '600' }}>
             {earnedCount}/{badges.length}
@@ -104,8 +104,12 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
           </TouchableOpacity>
           {categories.map((category) => {
             const config = CATEGORY_CONFIG[category];
-            const categoryBadges = badges.filter((b) => b.category === category);
-            const earnedInCategory = categoryBadges.filter((b) => b.isEarned).length;
+            const categoryBadges = badges.filter(
+              (b) => b.category === category,
+            );
+            const earnedInCategory = categoryBadges.filter(
+              (b) => b.isEarned,
+            ).length;
 
             return (
               <TouchableOpacity
@@ -189,10 +193,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
           onPress={() => setSelectedBadge(null)}
         >
           <Pressable
-            style={[
-              styles.modalContent,
-              { backgroundColor: theme.card },
-            ]}
+            style={[styles.modalContent, { backgroundColor: theme.card }]}
             onPress={(e) => e.stopPropagation()}
           >
             {selectedBadge && (
@@ -203,7 +204,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
                     {
                       backgroundColor: selectedBadge.isEarned
                         ? `${getCategoryColor(selectedBadge.category)}20`
-                        : `${theme.textSecondary}10`,
+                        : `${theme.muted}10`,
                     },
                   ]}
                 >
@@ -217,10 +218,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
                 </Text>
                 <Text
                   variant="body"
-                  style={[
-                    styles.modalDescription,
-                    { color: theme.textSecondary },
-                  ]}
+                  style={[styles.modalDescription, { color: theme.muted }]}
                 >
                   {selectedBadge.description}
                 </Text>
@@ -238,19 +236,23 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
                   <View
                     style={[
                       styles.earnedIndicator,
-                      { backgroundColor: getCategoryColor(selectedBadge.category) },
+                      {
+                        backgroundColor: getCategoryColor(
+                          selectedBadge.category,
+                        ),
+                      },
                     ]}
                   >
-                    <Text style={styles.earnedIndicatorText}>
-                      ✓ Earned
-                    </Text>
+                    <Text style={styles.earnedIndicatorText}>✓ Earned</Text>
                   </View>
                 ) : (
                   <View style={styles.progressSection}>
                     <View
                       style={[
                         styles.modalProgressBg,
-                        { backgroundColor: `${getCategoryColor(selectedBadge.category)}20` },
+                        {
+                          backgroundColor: `${getCategoryColor(selectedBadge.category)}20`,
+                        },
                       ]}
                     >
                       <View
@@ -258,14 +260,16 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
                           styles.modalProgressFill,
                           {
                             width: `${selectedBadge.progress}%`,
-                            backgroundColor: getCategoryColor(selectedBadge.category),
+                            backgroundColor: getCategoryColor(
+                              selectedBadge.category,
+                            ),
                           },
                         ]}
                       />
                     </View>
                     <Text
                       variant="caption"
-                      style={{ color: theme.textSecondary, marginTop: 4 }}
+                      style={{ color: theme.muted, marginTop: 4 }}
                     >
                       {Math.round(selectedBadge.progress)}% complete
                     </Text>

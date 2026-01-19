@@ -176,7 +176,11 @@ const NextService = () => {
             className="w-16 h-16 rounded-full items-center justify-center mb-4"
             style={{ backgroundColor: `${theme.muted}15` }}
           >
-            <IconSymbol name="calendar.badge.clock" size={32} color={theme.muted} />
+            <IconSymbol
+              name="calendar.badge.clock"
+              size={32}
+              color={theme.muted}
+            />
           </View>
 
           <Text

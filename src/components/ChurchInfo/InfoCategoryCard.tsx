@@ -90,11 +90,7 @@ export const InfoCategoryCardCompact = ({ category }: { category: any }) => {
             className="w-10 h-10 rounded-xl items-center justify-center"
             style={{ backgroundColor: category.gradient[0] }}
           >
-            <IconSymbol
-              name={category.icon}
-              size={20}
-              color="white"
-            />
+            <IconSymbol name={category.icon} size={20} color="white" />
           </View>
 
           <View className="flex-1">
@@ -120,11 +116,7 @@ export const InfoCategoryCardCompact = ({ category }: { category: any }) => {
           </View>
         </View>
 
-        <IconSymbol
-          name="chevron.right"
-          size={18}
-          color={theme.muted}
-        />
+        <IconSymbol name="chevron.right" size={18} color={theme.muted} />
       </View>
     </Pressable>
   );

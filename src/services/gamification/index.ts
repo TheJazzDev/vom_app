@@ -10,7 +10,6 @@ import {
   limit,
   getDocs,
   increment,
-  arrayUnion,
   Timestamp,
   addDoc,
   where,
@@ -222,10 +221,16 @@ export const LEVELS: LevelConfig[] = [
 // POINTS CONFIGURATION
 // ============================================
 
-export const POINTS_CONFIG: Record<ActivityType, { points: number; description: string }> = {
+export const POINTS_CONFIG: Record<
+  ActivityType,
+  { points: number; description: string }
+> = {
   daily_login: { points: 5, description: 'Daily login bonus' },
   daily_prayer_read: { points: 10, description: 'Read daily prayer' },
-  prayer_request_submit: { points: 20, description: 'Submitted prayer request' },
+  prayer_request_submit: {
+    points: 20,
+    description: 'Submitted prayer request',
+  },
   pray_for_someone: { points: 5, description: 'Prayed for someone' },
   bible_study_complete: { points: 30, description: 'Completed Bible study' },
   sermon_watch: { points: 15, description: 'Watched a sermon' },
@@ -241,10 +246,10 @@ export const POINTS_CONFIG: Record<ActivityType, { points: number; description: 
 
 // Streak bonuses (extra points for maintaining streaks)
 export const STREAK_BONUSES: Record<number, number> = {
-  7: 50,    // 7-day streak
-  14: 100,  // 14-day streak
-  30: 250,  // 30-day streak
-  60: 500,  // 60-day streak
+  7: 50, // 7-day streak
+  14: 100, // 14-day streak
+  30: 250, // 30-day streak
+  60: 500, // 60-day streak
   90: 1000, // 90-day streak
   180: 2500, // 180-day streak
   365: 10000, // 1-year streak (legendary!)
@@ -268,7 +273,9 @@ export const getNextLevel = (currentLevel: number): LevelConfig | null => {
   return LEVELS[currentLevel]; // since levels are 1-indexed, currentLevel gives next
 };
 
-export const getProgressToNextLevel = (points: number): { current: number; required: number; percentage: number } => {
+export const getProgressToNextLevel = (
+  points: number,
+): { current: number; required: number; percentage: number } => {
   const currentLevel = getLevelFromPoints(points);
   const nextLevel = getNextLevel(currentLevel.level);
 
@@ -278,7 +285,10 @@ export const getProgressToNextLevel = (points: number): { current: number; requi
 
   const pointsInCurrentLevel = points - currentLevel.minPoints;
   const pointsRequiredForNext = nextLevel.minPoints - currentLevel.minPoints;
-  const percentage = Math.min((pointsInCurrentLevel / pointsRequiredForNext) * 100, 100);
+  const percentage = Math.min(
+    (pointsInCurrentLevel / pointsRequiredForNext) * 100,
+    100,
+  );
 
   return {
     current: pointsInCurrentLevel,
@@ -305,7 +315,7 @@ const engagementRef = collection(firestore, 'userEngagement');
 
 // Initialize user engagement (called on first login or signup)
 export const initializeUserEngagement = async (
-  odUserId: string
+  odUserId: string,
 ): Promise<UserEngagement> => {
   try {
     const docRef = doc(engagementRef, odUserId);
@@ -316,7 +326,9 @@ export const initializeUserEngagement = async (
     }
 
     const now = new Date().toISOString();
-    const initialEngagement: Omit<UserEngagement, 'levelName'> & { levelName?: string } = {
+    const initialEngagement: Omit<UserEngagement, 'levelName'> & {
+      levelName?: string;
+    } = {
       odUserId,
       points: 0,
       level: 1,
@@ -349,7 +361,7 @@ export const initializeUserEngagement = async (
 
 // Get user engagement
 export const getUserEngagement = async (
-  odUserId: string
+  odUserId: string,
 ): Promise<UserEngagement | null> => {
   try {
     const docRef = doc(engagementRef, odUserId);
@@ -368,8 +380,13 @@ export const getUserEngagement = async (
 export const awardPoints = async (
   odUserId: string,
   activityType: ActivityType,
-  customPoints?: number
-): Promise<{ newPoints: number; leveledUp: boolean; newLevel: LevelConfig | null; pointsAwarded: number }> => {
+  customPoints?: number,
+): Promise<{
+  newPoints: number;
+  leveledUp: boolean;
+  newLevel: LevelConfig | null;
+  pointsAwarded: number;
+}> => {
   try {
     const docRef = doc(engagementRef, odUserId);
     const docSnap = await getDoc(docRef);
@@ -450,8 +467,12 @@ export const awardPoints = async (
 
 // Update streak
 export const updateStreak = async (
-  odUserId: string
-): Promise<{ streakDays: number; streakBonus: number | null; isNewDay: boolean }> => {
+  odUserId: string,
+): Promise<{
+  streakDays: number;
+  streakBonus: number | null;
+  isNewDay: boolean;
+}> => {
   try {
     const docRef = doc(engagementRef, odUserId);
     const docSnap = await getDoc(docRef);
@@ -466,13 +487,23 @@ export const updateStreak = async (
     const now = new Date();
 
     // Check if it's a new day
-    const lastActiveDay = new Date(lastActive.getFullYear(), lastActive.getMonth(), lastActive.getDate());
+    const lastActiveDay = new Date(
+      lastActive.getFullYear(),
+      lastActive.getMonth(),
+      lastActive.getDate(),
+    );
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const daysDiff = Math.floor((today.getTime() - lastActiveDay.getTime()) / (1000 * 60 * 60 * 24));
+    const daysDiff = Math.floor(
+      (today.getTime() - lastActiveDay.getTime()) / (1000 * 60 * 60 * 24),
+    );
 
     if (daysDiff === 0) {
       // Same day, no streak update
-      return { streakDays: data.streakDays, streakBonus: null, isNewDay: false };
+      return {
+        streakDays: data.streakDays,
+        streakBonus: null,
+        isNewDay: false,
+      };
     }
 
     let newStreak: number;
@@ -511,7 +542,7 @@ export const updateStreak = async (
 // Get activity log
 export const getActivityLog = async (
   odUserId: string,
-  limitCount: number = 20
+  limitCount: number = 20,
 ): Promise<ActivityLog[]> => {
   try {
     const docRef = doc(engagementRef, odUserId);
@@ -520,7 +551,7 @@ export const getActivityLog = async (
     const q = query(
       activityLogRef,
       orderBy('createdAt', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     const snapshot = await getDocs(q);
@@ -529,7 +560,7 @@ export const getActivityLog = async (
       serializeFirestoreData<ActivityLog>({
         ...doc.data(),
         id: doc.id,
-      })
+      }),
     );
   } catch (error) {
     console.error('Get activity log error:', error);
@@ -540,7 +571,7 @@ export const getActivityLog = async (
 // Get leaderboard
 export const getLeaderboard = async (
   type: 'weekly' | 'monthly' | 'allTime' = 'allTime',
-  limitCount: number = 50
+  limitCount: number = 50,
 ): Promise<LeaderboardEntry[]> => {
   try {
     // For now, we'll query directly from userEngagement
@@ -548,7 +579,7 @@ export const getLeaderboard = async (
     const q = query(
       engagementRef,
       orderBy('points', 'desc'),
-      limit(limitCount)
+      limit(limitCount),
     );
 
     const snapshot = await getDocs(q);
@@ -578,9 +609,7 @@ export const getLeaderboard = async (
 };
 
 // Get user rank
-export const getUserRank = async (
-  odUserId: string
-): Promise<number> => {
+export const getUserRank = async (odUserId: string): Promise<number> => {
   try {
     const userDoc = await getDoc(doc(engagementRef, odUserId));
     if (!userDoc.exists()) return 0;
@@ -588,10 +617,7 @@ export const getUserRank = async (
     const userPoints = userDoc.data().points || 0;
 
     // Count users with more points
-    const q = query(
-      engagementRef,
-      where('points', '>', userPoints)
-    );
+    const q = query(engagementRef, where('points', '>', userPoints));
 
     const snapshot = await getDocs(q);
     return snapshot.size + 1;
@@ -605,7 +631,7 @@ export const getUserRank = async (
 export const updateLeaderboardInfo = async (
   odUserId: string,
   userName: string,
-  userAvatar: string | null
+  userAvatar: string | null,
 ): Promise<void> => {
   try {
     const docRef = doc(engagementRef, odUserId);
