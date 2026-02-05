@@ -22,6 +22,7 @@ export default function EditProfile() {
   const router = useRouter();
   const { currentUser } = useAuthSlice();
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
 
   // Editable fields state
   const [primaryPhone, setPrimaryPhone] = useState(
@@ -31,10 +32,17 @@ export default function EditProfile() {
     currentUser?.secondaryPhone || '',
   );
   const [address, setAddress] = useState(currentUser?.address || '');
+  const [occupation, setOccupation] = useState(currentUser?.occupation || '');
+  const [maritalStatus, setMaritalStatus] = useState(
+    currentUser?.maritalStatus || '',
+  );
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
+  const [hasChanges, setHasChanges] = useState(false);
 
   const handlePickImage = async () => {
     try {
+      setIsUploadingPhoto(true);
+
       // Request permissions
       const permissionResult =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -44,6 +52,7 @@ export default function EditProfile() {
           'Permission Required',
           'Please allow access to your photo library to change your profile picture.',
         );
+        setIsUploadingPhoto(false);
         return;
       }
 
@@ -57,10 +66,13 @@ export default function EditProfile() {
 
       if (!result.canceled && result.assets[0]) {
         setAvatarUri(result.assets[0].uri);
+        setHasChanges(true);
       }
     } catch (error) {
       console.error('Error picking image:', error);
       Alert.alert('Error', 'Failed to pick image. Please try again.');
+    } finally {
+      setIsUploadingPhoto(false);
     }
   };
 
@@ -78,6 +90,7 @@ export default function EditProfile() {
           style: 'destructive',
           onPress: () => {
             setAvatarUri('');
+            setHasChanges(true);
           },
         },
       ],
@@ -85,12 +98,30 @@ export default function EditProfile() {
   };
 
   const handleSave = async () => {
+    // Validation
+    if (!primaryPhone.trim()) {
+      Alert.alert('Validation Error', 'Primary phone number is required.');
+      return;
+    }
+
+    // Basic phone validation (should have at least 10 digits)
+    const phoneDigits = primaryPhone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      Alert.alert(
+        'Validation Error',
+        'Please enter a valid phone number (at least 10 digits).',
+      );
+      return;
+    }
+
     setIsSaving(true);
     try {
       const updateData: any = {
         primaryPhone,
         secondaryPhone,
         address,
+        occupation,
+        maritalStatus,
       };
 
       // If user picked a new image
@@ -106,6 +137,7 @@ export default function EditProfile() {
       // Update user profile in database
       await dispatch(updateUserProfileThunk(updateData)).unwrap();
 
+      setHasChanges(false);
       Alert.alert('Success', 'Your profile has been updated successfully!', [
         {
           text: 'OK',
@@ -123,21 +155,25 @@ export default function EditProfile() {
   };
 
   const handleCancel = () => {
-    Alert.alert(
-      'Discard Changes',
-      'Are you sure you want to discard changes?',
-      [
-        {
-          text: 'Keep Editing',
-          style: 'cancel',
-        },
-        {
-          text: 'Discard',
-          style: 'destructive',
-          onPress: () => router.back(),
-        },
-      ],
-    );
+    if (hasChanges) {
+      Alert.alert(
+        'Discard Changes',
+        'You have unsaved changes. Are you sure you want to discard them?',
+        [
+          {
+            text: 'Keep Editing',
+            style: 'cancel',
+          },
+          {
+            text: 'Discard',
+            style: 'destructive',
+            onPress: () => router.back(),
+          },
+        ],
+      );
+    } else {
+      router.back();
+    }
   };
 
   const ReadOnlyField = ({
@@ -202,6 +238,7 @@ export default function EditProfile() {
     icon,
     keyboardType = 'default',
     multiline = false,
+    required = false,
   }: {
     label: string;
     value: string;
@@ -210,6 +247,7 @@ export default function EditProfile() {
     icon?: string;
     keyboardType?: 'default' | 'email-address' | 'phone-pad';
     multiline?: boolean;
+    required?: boolean;
   }) => (
     <View className="mb-4">
       <View className="flex-row items-center mb-2">
@@ -227,11 +265,17 @@ export default function EditProfile() {
           style={{ color: theme.heading }}
         >
           {label}
+          {required && (
+            <Text style={{ color: '#ef4444' }}> *</Text>
+          )}
         </Text>
       </View>
       <TextInput
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={(text) => {
+          onChangeText(text);
+          setHasChanges(true);
+        }}
         placeholder={placeholder}
         placeholderTextColor={theme.muted}
         keyboardType={keyboardType}
@@ -334,7 +378,7 @@ export default function EditProfile() {
                 <Text
                   variant="caption"
                   className="font-semibold"
-                  style={{ color: theme.destructive || '#ef4444' }}
+                  style={{ color: theme.error || '#ef4444' }}
                 >
                   Remove
                 </Text>
@@ -426,13 +470,14 @@ export default function EditProfile() {
           placeholder="+234 801 234 5678"
           keyboardType="phone-pad"
           icon="phone.fill"
+          required
         />
 
         <EditableField
-          label="Secondary Phone (Optional)"
+          label="Secondary Phone"
           value={secondaryPhone}
           onChangeText={setSecondaryPhone}
-          placeholder="+234 801 234 5678"
+          placeholder="+234 801 234 5678 (Optional)"
           keyboardType="phone-pad"
           icon="phone.badge.plus"
         />
@@ -444,6 +489,31 @@ export default function EditProfile() {
           placeholder="Enter your home address"
           icon="location.fill"
           multiline
+        />
+
+        {/* Additional Information Section */}
+        <Text
+          variant="h6"
+          className="font-bold mb-3 mt-6"
+          style={{ color: theme.heading }}
+        >
+          Additional Information
+        </Text>
+
+        <EditableField
+          label="Occupation"
+          value={occupation}
+          onChangeText={setOccupation}
+          placeholder="e.g. Software Engineer, Teacher, etc."
+          icon="briefcase.fill"
+        />
+
+        <EditableField
+          label="Marital Status"
+          value={maritalStatus}
+          onChangeText={setMaritalStatus}
+          placeholder="e.g. Single, Married, etc."
+          icon="heart.fill"
         />
 
         {/* Action Buttons */}

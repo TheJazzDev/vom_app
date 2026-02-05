@@ -78,7 +78,7 @@ export default function NotificationsScreen() {
   }, [currentUser?.id, loadNotifications]);
 
   const filteredNotifications = useMemo(
-    () => notifications?.filter((n) => filter === 'all' || !n.read) || [],
+    () => notifications?.filter((n) => n != null && (filter === 'all' || !n.read)) || [],
     [notifications, filter],
   );
 

@@ -28,6 +28,7 @@ const VerseOfTheDay = () => {
 
     scrollAnimation.start();
     return () => scrollAnimation.stop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

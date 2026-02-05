@@ -61,6 +61,7 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({
         ),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, newLevel]);
 
   const containerStyle = useAnimatedStyle(() => ({

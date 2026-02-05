@@ -70,14 +70,16 @@ export default function MinistryIndex() {
                 </View>
                 <Text
                   variant="h1"
-                  className="text-white dark:text-white font-bold"
+                  className="font-bold"
+                  style={{ color: 'white' }}
                 >
                   Ministry
                 </Text>
               </View>
               <Text
                 variant="body"
-                className="text-white/90 dark:text-white/90 leading-6 pr-2"
+                className="leading-6 pr-2"
+                style={{ color: 'rgba(255,255,255,0.9)' }}
               >
                 Grow spiritually through our programs and connect with
                 God&apos;s family
@@ -97,14 +99,16 @@ export default function MinistryIndex() {
               <View className="flex-1">
                 <Text
                   variant="caption"
-                  className="text-white/90 dark:text-white/90 italic leading-5 mb-1"
+                  className="italic leading-5 mb-1"
+                  style={{ color: 'rgba(255,255,255,0.9)' }}
                 >
                   &ldquo;Therefore go and make disciples of all
                   nations...&rdquo;
                 </Text>
                 <Text
                   variant="caption"
-                  className="text-white/70 dark:text-white/70 font-semibold"
+                  className="font-semibold"
+                  style={{ color: 'rgba(255,255,255,0.75)' }}
                 >
                   Matthew 28:19
                 </Text>
@@ -138,7 +142,7 @@ export default function MinistryIndex() {
             ))}
           </View>
 
-          {/* Enhanced Call to Action */}
+          {/* Call to Action */}
           <View
             className="mt-8 rounded-2xl p-4 border"
             style={{
@@ -168,42 +172,13 @@ export default function MinistryIndex() {
                 <Text
                   variant="body"
                   className="leading-6"
-                  style={{ color: theme.muted }}
+                  style={{ color: theme.text }}
                 >
                   Join us in building God&apos;s kingdom through fellowship,
                   worship, and service. Every member has a role to play in our
                   church family.
                 </Text>
               </View>
-            </View>
-
-            {/* Quick Action Buttons */}
-            <View className="flex-row gap-2 mt-4">
-              <Pressable
-                className="flex-1 rounded-xl py-3 items-center flex-row justify-center gap-2"
-                style={{ backgroundColor: theme.brand }}
-              >
-                <IconSymbol name="plus.circle.fill" size={18} color="white" />
-                <Text
-                  variant="body"
-                  className="text-white dark:text-white font-semibold"
-                >
-                  Join Now
-                </Text>
-              </Pressable>
-              <Pressable
-                className="flex-1 rounded-xl py-3 items-center flex-row justify-center gap-2 border"
-                style={{ borderColor: theme.brand }}
-              >
-                <IconSymbol name="info.circle" size={18} color={theme.brand} />
-                <Text
-                  variant="body"
-                  className="font-semibold"
-                  style={{ color: theme.brand }}
-                >
-                  Learn More
-                </Text>
-              </Pressable>
             </View>
           </View>
         </View>

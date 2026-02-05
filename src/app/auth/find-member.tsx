@@ -55,6 +55,21 @@ export default function ActivateAccountScreen() {
           });
         }
       }
+
+      if (findMemberForActivationThunk.rejected.match(result)) {
+        const errorMessage = result.payload as string;
+
+        // Handle unverified account case
+        if (errorMessage?.startsWith('ACCOUNT_EXISTS_UNVERIFIED:')) {
+          // Redirect to login with a message that they need to verify
+          router.push({
+            pathname: '/auth',
+            params: {
+              message: 'Please login to resend verification email',
+            },
+          });
+        }
+      }
     } catch (error: any) {
       console.error('Member search failed:', error);
     }

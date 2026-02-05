@@ -15,7 +15,7 @@ const QuickAccess = () => {
       </Text>
       <View className="flex-row justify-between">
         <Pressable
-          onPress={() => router.push('/directory' as any)}
+          onPress={() => router.push('/(tabs)/directory' as any)}
           className="items-center flex-1"
         >
           <View
@@ -34,7 +34,7 @@ const QuickAccess = () => {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push('/ministry' as any)}
+          onPress={() => router.push('/(tabs)/ministry' as any)}
           className="items-center flex-1"
         >
           <View
@@ -53,7 +53,7 @@ const QuickAccess = () => {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push('/programme' as any)}
+          onPress={() => router.push('/(tabs)/programme' as any)}
           className="items-center flex-1"
         >
           <View
@@ -72,7 +72,7 @@ const QuickAccess = () => {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push('/info' as any)}
+          onPress={() => router.push('/(tabs)/more' as any)}
           className="items-center flex-1"
         >
           <View

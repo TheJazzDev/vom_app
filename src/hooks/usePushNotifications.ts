@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 
 // Configure notification handler
@@ -77,7 +77,7 @@ export function usePushNotifications() {
         responseListener.current.remove();
       }
     };
-  }, []);
+  }, [handleNotificationResponse]);
 
   const setupNotificationChannels = async () => {
     if (Platform.OS === 'android') {
@@ -119,7 +119,7 @@ export function usePushNotifications() {
     setIsLoading(false);
   };
 
-  const handleNotificationResponse = (
+  const handleNotificationResponse = useCallback((
     response: Notifications.NotificationResponse,
   ) => {
     const data = response.notification.request.content.data;
@@ -152,7 +152,7 @@ export function usePushNotifications() {
           router.push('/(tabs)/notifications');
       }
     }
-  };
+  }, [router]);
 
   /**
    * Request notification permissions and get push token

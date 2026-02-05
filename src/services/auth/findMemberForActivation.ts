@@ -24,6 +24,12 @@ export const findMemberForActivation = async (
         });
 
         if (member && (member.hasPassword || member.phoneVerified)) {
+          // Check if email is verified
+          if (member.hasPassword && !member.emailVerified) {
+            throw new Error(
+              'ACCOUNT_EXISTS_UNVERIFIED:' + member.email,
+            );
+          }
           throw new Error(
             'You already have an account. Please use the login option instead.',
           );
@@ -49,6 +55,12 @@ export const findMemberForActivation = async (
       });
 
       if (member.hasPassword || member.phoneVerified) {
+        // Check if email is verified
+        if (member.hasPassword && !member.emailVerified) {
+          throw new Error(
+            'ACCOUNT_EXISTS_UNVERIFIED:' + (member.email || normalizedPhone),
+          );
+        }
         throw new Error(
           'You already have an account. Please use the login option instead.',
         );
@@ -71,6 +83,12 @@ export const findMemberForActivation = async (
       });
 
       if (member.hasPassword || member.phoneVerified) {
+        // Check if email is verified
+        if (member.hasPassword && !member.emailVerified) {
+          throw new Error(
+            'ACCOUNT_EXISTS_UNVERIFIED:' + (member.email || normalizedPhone),
+          );
+        }
         throw new Error(
           'You already have an account. Please use the login option instead.',
         );
@@ -81,7 +99,10 @@ export const findMemberForActivation = async (
 
     return null;
   } catch (error: any) {
-    if (error.message.includes('already have an account')) {
+    if (
+      error.message.includes('already have an account') ||
+      error.message.includes('ACCOUNT_EXISTS_UNVERIFIED')
+    ) {
       throw error;
     }
 

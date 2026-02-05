@@ -6,6 +6,8 @@ interface UpdateProfileData {
   primaryPhone?: string;
   secondaryPhone?: string;
   address?: string;
+  occupation?: string;
+  maritalStatus?: string;
   avatar?: string;
   avatarUri?: string;
   oldAvatarUrl?: string;
@@ -40,6 +42,9 @@ export async function updateUserProfile(data: UpdateProfileData) {
     if (data.secondaryPhone !== undefined)
       updateData.secondaryPhone = data.secondaryPhone;
     if (data.address !== undefined) updateData.address = data.address;
+    if (data.occupation !== undefined) updateData.occupation = data.occupation;
+    if (data.maritalStatus !== undefined)
+      updateData.maritalStatus = data.maritalStatus;
     if (avatarUrl !== undefined) updateData.avatar = avatarUrl;
 
     // Update member document in Firestore

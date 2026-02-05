@@ -24,21 +24,21 @@ export const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
     switch (entry.rank) {
       case 1:
         return {
-          backgroundColor: '#FEF3C7',
-          color: '#D97706',
+          backgroundColor: '#F59E0B25',
+          color: '#F59E0B',
           icon: '1',
           medal: true,
         };
       case 2:
         return {
-          backgroundColor: '#E5E7EB',
-          color: '#6B7280',
+          backgroundColor: '#9CA3AF25',
+          color: '#9CA3AF',
           icon: '2',
           medal: true,
         };
       case 3:
         return {
-          backgroundColor: '#FED7AA',
+          backgroundColor: '#EA580C25',
           color: '#EA580C',
           icon: '3',
           medal: true,

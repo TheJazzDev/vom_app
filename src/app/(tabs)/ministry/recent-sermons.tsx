@@ -392,7 +392,7 @@ export default function RecentSermonsScreen() {
           </View>
 
           {/* Scripture & Actions */}
-          <View className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <View className="mt-3 pt-3" style={{ borderTopWidth: 1, borderTopColor: theme.border }}>
             <View className="flex-row items-center justify-between">
               <View
                 className="flex-row items-center gap-1 px-2 py-1 rounded-lg"

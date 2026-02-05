@@ -244,7 +244,7 @@ export default function BibleStudyScreen() {
           {/* Description */}
           <Text
             variant="body"
-            style={{ color: theme.muted }}
+            style={{ color: theme.text }}
             className="leading-5"
             numberOfLines={2}
           >
@@ -252,7 +252,7 @@ export default function BibleStudyScreen() {
           </Text>
 
           {/* Footer */}
-          <View className="flex-row items-center justify-between mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <View className="flex-row items-center justify-between mt-3 pt-3" style={{ borderTopWidth: 1, borderTopColor: theme.border }}>
             <View className="flex-row items-center gap-2">
               {item.videoUrl && (
                 <View className="flex-row items-center gap-1">

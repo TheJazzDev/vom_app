@@ -14,7 +14,7 @@ export function ProfileHeader() {
 
   return (
     <Pressable
-      onPress={() => router.push(isAuthenticated ? '/profile' : '/auth')}
+      onPress={() => router.push(isAuthenticated ? '/(tabs)/profile' : '/auth')}
       className="mr-4 flex-row gap-2 items-center"
     >
       <View className="w-10 h-10 bg-primary/20 dark:bg-primary/30 rounded-full items-center justify-center">

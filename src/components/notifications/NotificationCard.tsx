@@ -18,25 +18,28 @@ interface NotificationCardProps {
 export const NotificationCard = memo(
   ({ notification, onPress }: NotificationCardProps) => {
     const theme = useTheme();
-    const iconConfig = getNotificationIcon(notification.type, theme.muted);
+
+    const iconConfig = getNotificationIcon(notification?.type || 'message', theme.muted);
     const displayTimestamp =
-      notification.timestamp || formatTimestamp(notification.createdAt);
+      notification?.timestamp || (notification?.createdAt ? formatTimestamp(notification.createdAt) : 'Recently');
 
     const handlePress = useCallback(() => {
-      onPress(notification);
+      if (notification) {
+        onPress(notification);
+      }
     }, [onPress, notification]);
 
     const containerStyle = useMemo(
       () => ({
-        backgroundColor: notification.read ? theme.card : `${theme.primary}05`,
+        backgroundColor: notification?.read ? theme.card : `${theme.primary}05`,
         borderWidth: 1,
-        borderColor: notification.read ? theme.border : `${theme.primary}20`,
+        borderColor: notification?.read ? theme.border : `${theme.primary}20`,
         borderLeftWidth: 4,
-        borderLeftColor: getPriorityColor(notification.priority),
+        borderLeftColor: getPriorityColor(notification?.priority || 'low'),
       }),
       [
-        notification.read,
-        notification.priority,
+        notification?.read,
+        notification?.priority,
         theme.card,
         theme.primary,
         theme.border,
@@ -49,6 +52,9 @@ export const NotificationCard = memo(
       }),
       [iconConfig.color],
     );
+
+    // Safety check after hooks
+    if (!notification) return null;
 
     return (
       <Pressable
@@ -75,8 +81,9 @@ export const NotificationCard = memo(
                 variant="h5"
                 className="font-semibold flex-1"
                 style={{ color: theme.heading }}
+                numberOfLines={2}
               >
-                {notification.title}
+                {notification.title || 'Notification'}
               </Text>
               {!notification.read && (
                 <View
@@ -90,8 +97,9 @@ export const NotificationCard = memo(
               variant="body"
               className="mb-2 leading-5"
               style={{ color: theme.text }}
+              numberOfLines={3}
             >
-              {notification.message}
+              {notification.message || 'No message'}
             </Text>
 
             <View className="flex-row items-center justify-between">

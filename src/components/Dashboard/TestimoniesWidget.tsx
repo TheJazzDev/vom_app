@@ -136,7 +136,7 @@ const TestimoniesWidget = () => {
         ) : (
           <Pressable
             onPress={() =>
-              router.push(`/ministry/testimonies/${displayTestimony.id}` as any)
+              router.push(`/(tabs)/ministry/testimonies/${displayTestimony.id}` as any)
             }
             style={{
               backgroundColor: theme.card,

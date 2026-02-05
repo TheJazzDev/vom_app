@@ -115,7 +115,7 @@ const DailyPrayerWidget = () => {
         ) : (
           <Pressable
             onPress={() =>
-              router.push(`/ministry/daily-prayers/${todaysPrayer.id}` as any)
+              router.push(`/(tabs)/ministry/daily-prayers/${todaysPrayer.id}` as any)
             }
             style={{
               backgroundColor: theme.card,

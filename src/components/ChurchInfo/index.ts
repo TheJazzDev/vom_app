@@ -1,3 +1,1 @@
-import InfoCategoryCard from './InfoCategoryCard';
-
-export { InfoCategoryCard };
+export { InfoCategoryCard } from './InfoCategoryCard';

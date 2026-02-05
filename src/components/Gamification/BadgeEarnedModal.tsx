@@ -45,6 +45,7 @@ export const BadgeEarnedModal: React.FC<BadgeEarnedModalProps> = ({
         true,
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, badges]);
 
   const containerStyle = useAnimatedStyle(() => ({

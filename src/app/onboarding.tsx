@@ -44,7 +44,7 @@ export default function OnboardingScreen() {
     }
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     if (currentIndex > 0) {
       const prevIndex = currentIndex - 1;
       setCurrentIndex(prevIndex);
@@ -53,7 +53,7 @@ export default function OnboardingScreen() {
         animated: true,
       });
     }
-  };
+  }, [currentIndex]);
 
   // Handle Android back button - prevents accidental exit during onboarding
   const handleBackPress = useCallback(() => {
@@ -79,7 +79,7 @@ export default function OnboardingScreen() {
       );
       return true; // Prevent default back behavior
     }
-  }, [currentIndex, goToPrevious]);
+  }, [currentIndex, goToPrevious, router]);
 
   useBackHandler(handleBackPress);
 

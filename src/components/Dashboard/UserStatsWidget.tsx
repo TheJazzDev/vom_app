@@ -43,7 +43,7 @@ const UserStatsWidget = () => {
 
   return (
     <Pressable
-      onPress={() => router.push('/profile/achievements' as any)}
+      onPress={() => router.push('/(tabs)/profile' as any)}
       android_ripple={{ color: 'rgba(139,92,246,0.1)' }}
     >
       <Card variant="ghost" className="mb-4 relative overflow-hidden">

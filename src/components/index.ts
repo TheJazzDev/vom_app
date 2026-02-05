@@ -3,6 +3,7 @@ import { Collapsible } from './Collapsible';
 import { DrawerContent } from './DrawerContent';
 import ErrorBoundary from './ErrorBoundary';
 import { ExternalLink } from './ExternalLink';
+import FirebaseRecaptchaVerifier from './FirebaseRecaptchaVerifier';
 import { HapticTab } from './HapticTab';
 import { HelloWave } from './HelloWave';
 import { SourceAwareBackButton } from './Navigation/SourceAwareBackButton';
@@ -26,6 +27,7 @@ export {
   DrawerContent,
   ErrorBoundary,
   ExternalLink,
+  FirebaseRecaptchaVerifier,
   HapticTab,
   HelloWave,
   ProgressIndicator,

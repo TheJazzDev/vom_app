@@ -96,6 +96,7 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
     }, duration);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dismissToast = () => {

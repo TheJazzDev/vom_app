@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   ReactNode,
+  useCallback,
 } from 'react';
 import * as Notifications from 'expo-notifications';
 import { useRouter } from 'expo-router';
@@ -69,7 +70,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     if (!isAuthenticated) {
       hasRegistered.current = false;
     }
-  }, [isAuthenticated, currentUser?.id]);
+  }, [isAuthenticated, currentUser?.id, registerNotifications]);
 
   // Setup notification listeners
   useEffect(() => {
@@ -102,7 +103,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
         responseListener.current.remove();
       }
     };
-  }, [currentUser?.id, incrementUnreadCount, loadNotifications]);
+  }, [currentUser?.id, incrementUnreadCount, loadNotifications, checkPermissionStatus, handleNotificationResponse]);
 
   // Re-check permission status when app comes to foreground
   useEffect(() => {
@@ -136,7 +137,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     return () => {
       subscription.remove();
     };
-  }, [currentUser?.id, registerNotifications]);
+  }, [currentUser?.id, registerNotifications, checkPermissionStatus]);
 
   const setupAndroidChannels = async () => {
     await Promise.all([
@@ -165,7 +166,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     ]);
   };
 
-  const checkPermissionStatus = async () => {
+  const checkPermissionStatus = useCallback(async () => {
     const { status } = await Notifications.getPermissionsAsync();
     if (status === 'granted') {
       setPermissionStatus('granted');
@@ -174,9 +175,9 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     } else {
       setPermissionStatus('undetermined');
     }
-  };
+  }, [setPermissionStatus]);
 
-  const handleNotificationResponse = (
+  const handleNotificationResponse = useCallback((
     response: Notifications.NotificationResponse,
   ) => {
     const data = response.notification.request.content.data;
@@ -207,7 +208,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
           router.push('/(tabs)/notifications');
       }
     }
-  };
+  }, [router]);
 
   const requestPermission = async () => {
     if (currentUser?.id) {

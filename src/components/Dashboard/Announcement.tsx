@@ -121,7 +121,7 @@ const Announcement = () => {
                 <Text color="heading" className="font-semibold mb-2">
                   {announcement.title}
                 </Text>
-                <Text variant="body" style={{ color: theme.muted }}>
+                <Text variant="body" style={{ color: theme.text }}>
                   {truncateText(announcement.content, 80)}
                 </Text>
               </View>

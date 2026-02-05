@@ -48,6 +48,7 @@ export const activateMemberAccountThunk = createAsyncThunk(
       member: UserProfile;
       emailOrPhone: string;
       password?: string;
+      recaptchaVerifier?: any;
     },
     { rejectWithValue },
   ) => {
@@ -140,11 +141,15 @@ export const getMemberByIdThunk = createAsyncThunk(
 // Send email verification code thunk
 export const sendEmailVerificationLinkThunk = createAsyncThunk<
   { success: boolean },
-  void,
+  { email?: string; password?: string } | void,
   { rejectValue: string }
->('auth/sendEmailVerificationLink', async (_, { rejectWithValue }) => {
+>('auth/sendEmailVerificationLink', async (credentials, { rejectWithValue }) => {
   try {
-    await sendEmailVerificationLink();
+    const creds = credentials && 'email' in credentials && credentials.email && credentials.password
+      ? { email: credentials.email, password: credentials.password }
+      : undefined;
+
+    await sendEmailVerificationLink(creds);
     return { success: true };
   } catch (error: any) {
     return rejectWithValue(
@@ -160,6 +165,8 @@ export const updateUserProfileThunk = createAsyncThunk(
       primaryPhone?: string;
       secondaryPhone?: string;
       address?: string;
+      occupation?: string;
+      maritalStatus?: string;
       avatar?: string;
       avatarUri?: string;
       oldAvatarUrl?: string;

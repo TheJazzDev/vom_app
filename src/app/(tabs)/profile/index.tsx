@@ -4,7 +4,7 @@ import { IconSymbolName } from '@/src/components/Icons/IconSymbol';
 import { Badge, Card, Text } from '@/src/components/UI';
 import { LevelIndicator } from '@/src/components/Gamification';
 import { useTheme } from '@/src/hooks';
-import { useAuthSlice, useGamificationSlice } from '@/src/store';
+import { dispatch, logoutThunk, useAuthSlice, useGamificationSlice } from '@/src/store';
 import { fetchUserEngagementThunk } from '@/src/store/thunks';
 import { getUserInitials } from '@/src/utils';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +16,9 @@ import {
   View,
   Pressable,
   StyleSheet,
+  Alert,
+  ActivityIndicator,
+  useColorScheme,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/src/store/store';
@@ -23,9 +26,11 @@ import { useRouter } from 'expo-router';
 
 export default function ProfileIndex() {
   const theme = useTheme();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useAuthSlice();
+  const { user, isLoggingOut } = useAuthSlice();
   const { engagement } = useGamificationSlice();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -48,6 +53,27 @@ export default function ProfileIndex() {
       setRefreshing(false);
     }
   }, [dispatch, user?.id]);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutThunk()).unwrap();
+      router.replace('/auth');
+    } catch (error: any) {
+      Alert.alert('Error', 'Failed to sign out. Please try again.');
+      console.error('Logout error:', error);
+    }
+  };
+
+  const confirmLogout = () => {
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: handleLogout,
+      },
+    ]);
+  };
 
   const getVerificationStatus = () => {
     if (user?.verified) return { text: 'Verified', color: '#10B981' };
@@ -92,7 +118,11 @@ export default function ProfileIndex() {
       {/* Enhanced Profile Header */}
       <View className="relative">
         <LinearGradient
-          colors={[theme.primary, theme.secondary || theme.primary]}
+          colors={
+            isDark
+              ? ['#1E293B', '#334155'] // Subtle dark gradient for dark mode
+              : [theme.primary, theme.secondary || theme.primary] // Original gradient for light mode
+          }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{
@@ -101,6 +131,7 @@ export default function ProfileIndex() {
             paddingHorizontal: 24,
           }}
         >
+          {/* Decorative background */}
           <View
             style={{
               position: 'absolute',
@@ -108,7 +139,7 @@ export default function ProfileIndex() {
               left: 0,
               right: 0,
               bottom: 0,
-              opacity: 0.08,
+              opacity: isDark ? 0.05 : 0.08,
             }}
           >
             <View style={{ position: 'absolute', top: 20, right: 30 }}>
@@ -120,6 +151,52 @@ export default function ProfileIndex() {
             <View style={{ position: 'absolute', top: 80, left: 60 }}>
               <IconSymbol name="star.fill" size={40} color="white" />
             </View>
+          </View>
+
+          {/* Header Actions */}
+          <View className="absolute top-6 right-6 flex-row gap-2">
+            {/* Logout Button */}
+            <Pressable
+              onPress={confirmLogout}
+              disabled={isLoggingOut}
+              className="rounded-full p-2.5"
+              style={{
+                backgroundColor: isDark ? '#EF4444' : 'rgba(239,68,68,0.95)',
+                borderWidth: 1.5,
+                borderColor: '#DC2626',
+                opacity: isLoggingOut ? 0.5 : 1,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 4,
+              }}
+              android_ripple={{ color: 'rgba(185,28,28,0.5)' }}
+            >
+              {isLoggingOut ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <IconSymbol
+                  name="rectangle.portrait.and.arrow.right"
+                  size={20}
+                  color="white"
+                />
+              )}
+            </Pressable>
+
+            {/* Edit Profile Button */}
+            <Pressable
+              onPress={() => router.push('/profile/edit')}
+              className="rounded-full p-2.5"
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.25)',
+                borderWidth: 1.5,
+                borderColor: 'rgba(255,255,255,0.4)',
+              }}
+              android_ripple={{ color: 'rgba(255,255,255,0.3)' }}
+            >
+              <IconSymbol name="pencil" size={20} color="white" />
+            </Pressable>
           </View>
 
           <View
@@ -430,15 +507,7 @@ export default function ProfileIndex() {
           >
             Church Involvement
           </Text>
-          <Card
-            variant="gradient-soft"
-            className="rounded-xl p-4 "
-            style={{
-              backgroundColor: theme.card,
-              borderWidth: 1,
-              borderColor: theme.border,
-            }}
-          >
+          <Card variant="gradient-soft">
             {user?.position && user.position.length > 0 && (
               <View className="mb-4">
                 <Text

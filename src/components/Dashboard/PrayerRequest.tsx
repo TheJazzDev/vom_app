@@ -107,7 +107,7 @@ const PrayerRequest = () => {
           <Pressable
             key={request.id}
             onPress={() =>
-              router.push(`/ministry/prayer-requests/${request.id}` as any)
+              router.push(`/(tabs)/ministry/prayer-requests/${request.id}` as any)
             }
             style={{
               backgroundColor: theme.card,

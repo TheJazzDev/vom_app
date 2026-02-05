@@ -59,6 +59,7 @@ export const PointsAnimation: React.FC<PointsAnimationProps> = ({
         withDelay(1400, withTiming(0.8, { duration: 200 })),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   const animatedStyle = useAnimatedStyle(() => ({

@@ -61,22 +61,31 @@ export default function LoginScreen() {
           pathname: '/auth/phone-login',
           params: { phoneNumber: data.emailOrPhone },
         });
-      } else {
-        const result = await dispatch(
-          loginThunk({
-            emailOrPhone: data.emailOrPhone,
-            password: data.password,
-          }),
-        );
+        return;
+      }
 
-        if (loginThunk.fulfilled.match(result)) {
-          navigateTo(ROUTES.HOME, true);
-        }
+      // Email login flow
+      const result = await dispatch(
+        loginThunk({
+          emailOrPhone: data.emailOrPhone,
+          password: data.password,
+        }),
+      );
 
-        if (loginThunk.rejected.match(result)) {
-          if (result.payload === 'Email is not verified') {
-            navigateTo('/auth/email-link-sent');
-          }
+      if (loginThunk.fulfilled.match(result)) {
+        navigateTo(ROUTES.HOME, true);
+      }
+
+      if (loginThunk.rejected.match(result)) {
+        if (result.payload === 'Email is not verified') {
+          // Pass credentials so user can resend verification email
+          router.push({
+            pathname: '/auth/email-link-sent',
+            params: {
+              email: data.emailOrPhone,
+              password: data.password,
+            },
+          });
         }
       }
     } catch (error: any) {
@@ -146,7 +155,7 @@ export default function LoginScreen() {
 
         {/* Forgot Password Link */}
         <TouchableOpacity onPress={handleForgotPassword} className="mb-6">
-          <Text className="text-blue-500 text-center">
+          <Text className="text-blue-500 text-center text-xs sm:text-sm">
             Forgot your password?
           </Text>
         </TouchableOpacity>

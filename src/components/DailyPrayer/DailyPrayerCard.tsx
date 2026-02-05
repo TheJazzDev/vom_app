@@ -110,7 +110,7 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
       {/* Content */}
       <Text
         variant="body"
-        style={{ color: theme.muted }}
+        style={{ color: theme.text }}
         className="leading-6 mb-4"
         numberOfLines={showFullContent ? undefined : 3}
       >
@@ -118,7 +118,7 @@ export const DailyPrayerCard: React.FC<DailyPrayerCardProps> = ({
       </Text>
 
       {/* Footer */}
-      <View className="flex-row items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+      <View className="flex-row items-center justify-between pt-3" style={{ borderTopWidth: 1, borderTopColor: theme.border }}>
         <View className="flex-row items-center gap-4">
           {onLikeToggle && (
             <LikeButton

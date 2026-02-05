@@ -1,9 +1,9 @@
 import { Card, Divider, IconSymbol, Text, View } from '@/src/components';
 import { useTheme, useThemeMode, useToast } from '@/src/hooks';
-import { useAuthSlice, useNotificationSlice } from '@/src/store';
+import { dispatch, logoutThunk, useAuthSlice, useNotificationSlice } from '@/src/store';
 import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Alert, Linking, Pressable, Switch, Platform } from 'react-native';
+import { Alert, Linking, Pressable, Switch, Platform, ActivityIndicator } from 'react-native';
 
 type ThemeMode = 'automatic' | 'light' | 'dark';
 
@@ -16,6 +16,7 @@ interface SettingOption {
   onPress?: () => void;
   icon: string;
   disabled?: boolean;
+  isDestructive?: boolean;
 }
 
 const ThemeOption = ({
@@ -63,56 +64,74 @@ const SettingItem = ({
   option,
   theme,
   onToggle,
+  isLoading,
 }: {
   option: SettingOption;
   theme: any;
   onToggle?: (id: string, value: boolean) => void;
-}) => (
-  <Pressable
-    onPress={option.onPress}
-    className="flex-row justify-between items-center px-4 py-4"
-    android_ripple={{ color: 'rgba(59,130,246,0.1)' }}
-    disabled={option.disabled}
-    style={{ opacity: option.disabled ? 0.5 : 1 }}
-  >
-    <View className="flex-row items-center flex-1">
-      <View className="mr-4">
-        <IconSymbol size={20} color={theme.muted} name={option.icon as any} />
-      </View>
-      <View className="flex-1">
-        <Text className="font-medium mb-1" style={{ color: theme.text }}>
-          {option.label}
-        </Text>
-        {option.description && (
-          <Text className="text-sm" style={{ color: theme.muted }}>
-            {option.description}
+  isLoading?: boolean;
+}) => {
+  const iconColor = option.isDestructive ? '#EF4444' : theme.muted;
+  const textColor = option.isDestructive ? '#EF4444' : theme.text;
+  const descriptionColor = option.isDestructive ? '#EF4444' : theme.muted;
+
+  return (
+    <Pressable
+      onPress={option.onPress}
+      className="flex-row justify-between items-center px-4 py-4"
+      android_ripple={{
+        color: option.isDestructive
+          ? 'rgba(239,68,68,0.1)'
+          : 'rgba(59,130,246,0.1)',
+      }}
+      disabled={option.disabled || isLoading}
+      style={{ opacity: option.disabled || isLoading ? 0.5 : 1 }}
+    >
+      <View className="flex-row items-center flex-1">
+        <View className="mr-4">
+          <IconSymbol size={20} color={iconColor} name={option.icon as any} />
+        </View>
+        <View className="flex-1">
+          <Text className="font-medium mb-1" style={{ color: textColor }}>
+            {option.label}
           </Text>
-        )}
+          {option.description && (
+            <Text className="text-sm" style={{ color: descriptionColor }}>
+              {option.description}
+            </Text>
+          )}
+        </View>
       </View>
-    </View>
 
-    {option.type === 'toggle' && onToggle && (
-      <Switch
-        value={option.value || false}
-        onValueChange={(value) => onToggle(option.id, value)}
-        trackColor={{ false: theme.border, true: `${theme.primary}50` }}
-        thumbColor={option.value ? theme.primary : theme.muted}
-        disabled={option.disabled}
-      />
-    )}
+      {option.type === 'toggle' && onToggle && (
+        <Switch
+          value={option.value || false}
+          onValueChange={(value) => onToggle(option.id, value)}
+          trackColor={{ false: theme.border, true: `${theme.primary}50` }}
+          thumbColor={option.value ? theme.primary : theme.muted}
+          disabled={option.disabled}
+        />
+      )}
 
-    {option.type === 'navigation' && (
-      <IconSymbol name="chevron.right" size={16} color={theme.muted} />
-    )}
-  </Pressable>
-);
+      {option.type === 'navigation' && (
+        <>
+          {isLoading && option.id === 'logout' ? (
+            <ActivityIndicator size="small" color="#EF4444" />
+          ) : (
+            <IconSymbol name="chevron.right" size={16} color={iconColor} />
+          )}
+        </>
+      )}
+    </Pressable>
+  );
+};
 
 export default function Settings() {
   const theme = useTheme();
   const router = useRouter();
   const toast = useToast();
   const { themeMode, setThemeMode } = useThemeMode();
-  const { currentUser } = useAuthSlice();
+  const { currentUser, isLoggingOut } = useAuthSlice();
   const { settings, permissionStatus, loadSettings, saveSettings } =
     useNotificationSlice();
 
@@ -121,7 +140,7 @@ export default function Settings() {
     if (currentUser?.id) {
       loadSettings(currentUser.id);
     }
-  }, [currentUser?.id]);
+  }, [currentUser?.id, loadSettings]);
 
   const handleThemeChange = (newTheme: ThemeMode) => {
     setThemeMode(newTheme);
@@ -171,6 +190,16 @@ export default function Settings() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutThunk()).unwrap();
+      router.replace('/auth');
+    } catch (error: any) {
+      toast.error('Failed to sign out. Please try again.');
+      console.error('Logout error:', error);
+    }
+  };
+
   const handleAccountAction = (action: string) => {
     switch (action) {
       case 'profile':
@@ -197,9 +226,7 @@ export default function Settings() {
           {
             text: 'Sign Out',
             style: 'destructive',
-            onPress: () => {
-              router.replace('/auth');
-            },
+            onPress: handleLogout,
           },
         ]);
         break;
@@ -295,6 +322,15 @@ export default function Settings() {
       type: 'navigation',
       onPress: () => handleAccountAction('about'),
       icon: 'info.circle.fill',
+    },
+    {
+      id: 'logout',
+      label: 'Sign Out',
+      description: 'Sign out of your account',
+      type: 'navigation',
+      onPress: () => handleAccountAction('logout'),
+      icon: 'rectangle.portrait.and.arrow.right',
+      isDestructive: true,
     },
   ];
 
@@ -416,7 +452,11 @@ export default function Settings() {
         <Card variant="outlined" className="p-0 mb-6">
           {accountOptions.map((option, index) => (
             <View key={option.id}>
-              <SettingItem option={option} theme={theme} />
+              <SettingItem
+                option={option}
+                theme={theme}
+                isLoading={option.id === 'logout' && isLoggingOut}
+              />
               {index < accountOptions.length - 1 && <Divider height={1} />}
             </View>
           ))}

@@ -11,13 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // Quick action items configuration
 const QUICK_ACTIONS = [
   {
-    title: 'Settings',
-    icon: 'gearshape.fill' as IconSymbolName,
-    route: ROUTES.SETTINGS,
-    color: '#8B5CF6',
-    description: 'App preferences',
-  },
-  {
     title: 'About Us',
     icon: 'info.circle.fill' as IconSymbolName,
     route: ROUTES.ABOUT,
@@ -31,6 +24,13 @@ const QUICK_ACTIONS = [
     color: '#10B981',
     description: 'Get in touch',
   },
+  {
+    title: 'Settings',
+    icon: 'gearshape.fill' as IconSymbolName,
+    route: ROUTES.SETTINGS,
+    color: '#8B5CF6',
+    description: 'App preferences',
+  },
 ];
 
 // Additional menu items
@@ -41,6 +41,24 @@ const ADDITIONAL_ITEMS = [
     route: ROUTES.BIRTHDAYS,
     color: '#EC4899',
     description: 'Celebrate with members',
+  },
+];
+
+// Account & Preferences items
+const ACCOUNT_ITEMS = [
+  {
+    title: 'Settings',
+    icon: 'gearshape.fill' as IconSymbolName,
+    route: ROUTES.SETTINGS,
+    color: '#8B5CF6',
+    description: 'Manage app preferences and notifications',
+  },
+  {
+    title: 'My Profile',
+    icon: 'person.circle.fill' as IconSymbolName,
+    route: '/(tabs)/profile' as any,
+    color: '#3B82F6',
+    description: 'View and edit your profile information',
   },
 ];
 
@@ -69,6 +87,7 @@ export default function MoreIndex() {
         borderColor: theme.border,
         borderRadius: 16,
         padding: 12,
+        minWidth: '31%',
         flex: 1,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -86,14 +105,14 @@ export default function MoreIndex() {
       </View>
       <Text
         variant="body"
-        className="font-semibold mb-0.5"
+        className="font-semibold mb-0.5 text-xs sm:text-sm"
         style={{ color: theme.heading }}
       >
         {item.title}
       </Text>
       <Text
         variant="caption"
-        className="text-xs"
+        className="text-[10px] sm:text-xs"
         style={{ color: theme.muted }}
       >
         {item.description}
@@ -213,7 +232,7 @@ export default function MoreIndex() {
           >
             Quick Access
           </Text>
-          <View className="flex-row gap-2">
+          <View className="flex-row flex-wrap gap-2">
             {QUICK_ACTIONS.map((action) => (
               <QuickActionCard key={action.route} item={action} />
             ))}
@@ -334,6 +353,62 @@ export default function MoreIndex() {
           </Text>
           {ADDITIONAL_ITEMS.map((item) => (
             <BirthdayCard key={item.route} item={item} />
+          ))}
+        </View>
+
+        {/* Account & Preferences Section */}
+        <View className="px-4 mb-6">
+          <Text
+            variant="h6"
+            className="font-semibold mb-3"
+            style={{ color: theme.heading }}
+          >
+            Account & Preferences
+          </Text>
+          {ACCOUNT_ITEMS.map((item) => (
+            <Pressable
+              key={item.route}
+              onPress={() => router.push(item.route)}
+              style={{
+                backgroundColor: theme.card,
+                borderWidth: 1,
+                borderColor: theme.border,
+                borderRadius: 16,
+                padding: 16,
+                marginBottom: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+              android_ripple={{ color: 'rgba(0,0,0,0.05)' }}
+            >
+              <View
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl items-center justify-center mr-3 sm:mr-4"
+                style={{ backgroundColor: `${item.color}15` }}
+              >
+                <IconSymbol name={item.icon} size={24} color={item.color} />
+              </View>
+              <View className="flex-1">
+                <Text
+                  variant="h6"
+                  className="font-semibold mb-1"
+                  style={{ color: theme.heading }}
+                >
+                  {item.title}
+                </Text>
+                <Text
+                  variant="caption"
+                  className="text-xs sm:text-sm"
+                  style={{ color: theme.muted }}
+                >
+                  {item.description}
+                </Text>
+              </View>
+              <IconSymbol
+                name="chevron.right"
+                size={20}
+                color={theme.muted}
+              />
+            </Pressable>
           ))}
         </View>
       </ScrollView>

@@ -95,7 +95,7 @@ const RecentSermons = () => {
           <Pressable
             key={sermon.id}
             onPress={() =>
-              router.push(`/ministry/recent-sermons/${sermon.id}` as any)
+              router.push(`/(tabs)/ministry/recent-sermons/${sermon.id}` as any)
             }
             style={{
               backgroundColor: theme.card,
