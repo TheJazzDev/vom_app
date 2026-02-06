@@ -51,6 +51,11 @@ export const ROUTES = {
   ANNOUNCEMENT: '/(tabs)/more/announcement',
   BIRTHDAYS: '/(tabs)/more/birthdays',
   FIRST_TIMERS: '/(tabs)/more/first-timers',
+  WEEKLY_ACTIVITIES: '/(tabs)/more/weekly-activities',
+  MONTHLY_ACTIVITIES: '/(tabs)/more/monthly-activities',
+
+  // Directory - Youth
+  YOUTH_MINISTRY: '/(tabs)/directory/youth',
 } as const;
 
 export type RouteKeys = keyof typeof ROUTES;

@@ -3,6 +3,7 @@ declare global {
   type AuthType = 'email' | 'phone';
   type AccountType = 'member' | 'guest';
   type Role = 'user' | 'admin' | 'super_admin';
+  type Ministry = 'Children Ministry' | 'Youth Fellowship';
 
   interface UserProfile {
     id: string;
@@ -28,6 +29,7 @@ declare global {
     department: DepartmentData[];
     band: BandData[];
     bandKeys: BandKeys[];
+    ministry?: Ministry[];
     hasPassword?: boolean;
     authType: AuthType;
     primaryPhone: string;

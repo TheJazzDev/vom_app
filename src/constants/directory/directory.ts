@@ -23,6 +23,13 @@ export const DIRECTORY_CATEGORIES: DirectoryProps[] = [
     gradient: ['#8B5CF6', '#5B21B6'],
   },
   {
+    title: 'Youth Ministry',
+    description: 'Connect with our youth fellowship',
+    route: ROUTES.YOUTH_MINISTRY,
+    icon: 'person.3.fill',
+    gradient: ['#14B8A6', '#0F766E'],
+  },
+  {
     title: 'Departments',
     description: 'Church ministries and departments',
     route: ROUTES.DEPARTMENTS,

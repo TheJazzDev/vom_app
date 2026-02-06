@@ -2,16 +2,32 @@ import { bandsRef, firestore, membersRef } from '@/src/config';
 import { doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { serializeFirestoreData } from '@/src/utils';
 
+const isYouthBandDoc = (band: {
+  id?: string;
+  name?: string;
+  displayName?: string;
+}): boolean => {
+  const values = [band.id, band.name, band.displayName]
+    .filter(Boolean)
+    .map((value) => String(value).toLowerCase());
+
+  return values.some((value) => value.includes('youth'));
+};
+
+export { isYouthBandDoc };
+
 export const getAllBands = async (): Promise<Band[]> => {
   try {
     const bandsSnapshot = await getDocs(bandsRef);
 
-    return bandsSnapshot.docs.map((doc) =>
+    const bands = bandsSnapshot.docs.map((doc) =>
       serializeFirestoreData<Band>({
         id: doc.id,
         ...doc.data(),
       }),
     );
+
+    return bands.filter((band) => !isYouthBandDoc(band));
   } catch (error) {
     console.error('Error fetching bands:', error);
     throw new Error('Failed to fetch bands');

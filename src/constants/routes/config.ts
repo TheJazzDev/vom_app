@@ -157,6 +157,13 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     description: 'Departments directory - members only',
   },
   {
+    path: ROUTES.YOUTH_MINISTRY,
+    access: 'protected',
+    fallbackRoute: ROUTES.AUTH,
+    showUnauthorized: true,
+    description: 'Youth ministry directory - members only',
+  },
+  {
     path: ROUTES.PRAYER_REQUEST,
     access: 'protected',
     fallbackRoute: ROUTES.AUTH,

@@ -24,6 +24,7 @@ export default function DirectoryLayout() {
       <Stack.Screen name="members/index" options={{ title: 'Members' }} />
       <Stack.Screen name="children/index" options={{ title: 'Children' }} />
       <Stack.Screen name="bands/index" options={{ title: 'Bands' }} />
+      <Stack.Screen name="youth/index" options={{ title: 'Youth Ministry' }} />
       <Stack.Screen name="bands/[band]" options={{ title: 'Band Members' }} />
       <Stack.Screen
         name="departments/index"

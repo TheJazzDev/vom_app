@@ -5,6 +5,7 @@ import {
   guestsRef,
   membersRef,
 } from '@/src/config';
+import { isYouthBandDoc } from '@/src/services/directory/bands';
 import { getDocs } from 'firebase/firestore';
 
 export async function getDirectoryStats() {
@@ -29,7 +30,18 @@ export async function getDirectoryStats() {
     stats.guestsCount = guestsSnap.size;
     stats.membersCount = membersSnap.size;
     stats.childrenCount = childrenSnap.size;
-    stats.bandsCount = bandsSnap.size - 1;
+    const filteredBands = bandsSnap.docs.filter((doc) => {
+      if (doc.id === 'UNASSIGNED') return false;
+
+      const data = doc.data() as { name?: string; displayName?: string };
+      return !isYouthBandDoc({
+        id: doc.id,
+        name: data?.name,
+        displayName: data?.displayName,
+      });
+    });
+
+    stats.bandsCount = filteredBands.length;
     stats.departmentsCount = departmentsSnap.size;
 
     return stats;

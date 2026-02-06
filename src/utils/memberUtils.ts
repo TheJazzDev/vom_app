@@ -95,7 +95,10 @@ export const filterAndGroupMembers = (
     const matchesChurchInfo =
       member.position?.some((pos) => pos.toLowerCase().includes(query)) ||
       member.bandKeys?.some((band) => band.toLowerCase().includes(query)) ||
-      member.departmentKeys?.some((dept) => dept.toLowerCase().includes(query));
+      member.departmentKeys?.some((dept) => dept.toLowerCase().includes(query)) ||
+      member.ministry?.some((ministry) =>
+        ministry.toLowerCase().includes(query),
+      );
 
     const matchesDates =
       member.dob?.includes(query) || member.joinDate?.includes(query);
